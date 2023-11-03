@@ -90,9 +90,9 @@ const config = {
   // To hide the `My Projects` section, keep it empty.
   externalProjects: [
     {
-      title: '',
+      title: 'Mika WhatsApp Bot',
       description:
-        '',
+        'Bot WhatsApp Gratis',
       imageUrl: '',
       link: '',
     },
