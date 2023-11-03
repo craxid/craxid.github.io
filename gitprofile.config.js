@@ -69,8 +69,8 @@ const config = {
     {
       institution: '',
       degree: '',
-      from: '2005',
-      to: '2008',
+      from: '',
+      to: '',
     },
     /*{
       institution: '',
