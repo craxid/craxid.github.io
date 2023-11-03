@@ -51,9 +51,9 @@ const config = {
   experiences: [
     {
       company: 'CraXID Project',
-      position: 'Founder',
+      position: 'Pendiri',
       from: 'Februari 2018',
-      to: 'Aekarang',
+      to: 'Sekarang',
       companyLink: 'https://crax.my.id',
     },
     {
@@ -75,7 +75,7 @@ const config = {
   education: [
     {
       institution: 'SDN Klender 24 Pagi',
-      degree: 'Degree',
+      degree: '',
       from: '2005',
       to: '2008',
     },
