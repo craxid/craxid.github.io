@@ -74,7 +74,7 @@ const config = {
   ], */
   education: [
     {
-      institution: 'SDN Klender 24 Pagi',
+      institution: 'SDN Klender 24 Pagi Jakarta',
       degree: '',
       from: '2005',
       to: '2008',
