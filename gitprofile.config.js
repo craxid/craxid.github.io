@@ -76,14 +76,14 @@ const config = {
     {
       institution: 'SDN Klender 24 Pagi',
       degree: 'Degree',
-      from: '2015',
-      to: '2019',
+      from: '2005',
+      to: '2008',
     },
     {
-      institution: 'Institution Name',
-      degree: 'Degree',
-      from: '2012',
-      to: '2014',
+      institution: '',
+      degree: '',
+      from: '',
+      to: '',
     },
   ],
 
