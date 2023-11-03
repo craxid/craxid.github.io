@@ -179,7 +179,7 @@ const config = {
   },
 
   // Optional Footer. Supports plain text or HTML.
-  footer: `Made wit ❤️ by <a 
+  footer: `Made with ❤️ by <a 
       class="text-primary" href="https://github.com/craxid/"
       target="_blank"
       rel="noreferrer"
