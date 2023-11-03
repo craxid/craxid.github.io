@@ -56,13 +56,13 @@ const config = {
       to: 'Sekarang',
       companyLink: 'https://crax.my.id',
     },
-    {
+    /*{
       company: '',
       position: '',
       from: '',
       to: '',
       companyLink: '',
-    },
+    },*/
   ],
   /* certifications: [
     {
