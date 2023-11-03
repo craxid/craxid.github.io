@@ -114,7 +114,7 @@ const config = {
         '',
       imageUrl: '',
       link: '',
-    },*/
+    },
   ],*/
   // Display blog posts from your medium or dev account. (Optional)
   blog: {
