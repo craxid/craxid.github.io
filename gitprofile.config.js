@@ -41,7 +41,7 @@ const config = {
     'Docker',
     'CSS',
   ],
-  experiences: [
+  /*experiences: [
     {
       company: 'CraXID Project',
       position: 'Pendiri',
@@ -56,7 +56,7 @@ const config = {
       to: '',
       companyLink: '',
     },*/
-  ],
+  ],*/
   /* certifications: [
     {
       name: 'Lorem ipsum',
@@ -65,7 +65,7 @@ const config = {
       link: 'https://example.com'
     },
   ], */
-  education: [
+ /*education: [
     {
       institution: 'SDN Klender 24 Pagi Jakarta',
       degree: '',
@@ -78,7 +78,7 @@ const config = {
       from: '',
       to: '',
     },*/
-  ],
+  ],*/
 
   // To hide the `My Projects` section, keep it empty.
   externalProjects: [
