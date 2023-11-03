@@ -83,7 +83,7 @@ const config = {
   // To hide the `My Projects` section, keep it empty.
   externalProjects: [
     {
-      title: 'WhatsApp Bot Mika',
+      title: 'Bot Mika',
       description:
         'Bot WhatsApp gratis yang memiliki banyak fitur unggul!',
       imageUrl: 'https://telegra.ph/file/81294ddc338c1d69ca45e.jpg',
