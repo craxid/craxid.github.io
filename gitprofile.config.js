@@ -93,8 +93,8 @@ const config = {
       title: 'Mika WhatsApp Bot',
       description:
         'Bot WhatsApp Gratis',
-      imageUrl: '',
-      link: '',
+      imageUrl: 'https://telegra.ph/file/81294ddc338c1d69ca45e.jpg',
+      link: 'https://crax.my.id/mika',
     },
     {
       title: '',
