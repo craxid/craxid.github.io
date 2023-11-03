@@ -41,13 +41,13 @@ const config = {
     'Docker',
     'CSS',
   ],
-  /*experiences: [
+  experiences: [
     {
-      company: 'CraXID Project',
-      position: 'Pendiri',
-      from: 'Februari 2018',
-      to: 'Sekarang',
-      companyLink: 'https://crax.my.id',
+      company: '',
+      position: '',
+      from: '',
+      to: '',
+      companyLink: '',
     },
     /*{
       company: '',
@@ -56,7 +56,7 @@ const config = {
       to: '',
       companyLink: '',
     },*/
-  ],*/
+  ],
   /* certifications: [
     {
       name: 'Lorem ipsum',
@@ -65,9 +65,9 @@ const config = {
       link: 'https://example.com'
     },
   ], */
- /*education: [
+ education: [
     {
-      institution: 'SDN Klender 24 Pagi Jakarta',
+      institution: '',
       degree: '',
       from: '2005',
       to: '2008',
@@ -78,7 +78,7 @@ const config = {
       from: '',
       to: '',
     },*/
-  ],*/
+  ],
 
   // To hide the `My Projects` section, keep it empty.
   externalProjects: [
