@@ -11,7 +11,6 @@ const config = {
     },
   },
   social: {
-    location: 'Jakarta',
     linkedin: '',
     twitter: 'dede_klender',
     mastodon: '',
