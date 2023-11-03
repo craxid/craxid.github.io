@@ -33,7 +33,7 @@ const config = {
       'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', // Empty fileUrl will hide the `Download Resume` button.
   },
   
-    // To hide the `My Projects` section, keep it empty.
+// To hide the `My Projects` section, keep it empty.
   externalProjects: [
     {
       title: 'Bot Mika',
