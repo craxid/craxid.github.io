@@ -79,12 +79,12 @@ const config = {
       from: '2005',
       to: '2008',
     },
-    {
+    /*{
       institution: '',
       degree: '',
       from: '',
       to: '',
-    },
+    },*/
   ],
 
   // To hide the `My Projects` section, keep it empty.
@@ -96,13 +96,13 @@ const config = {
       imageUrl: 'https://telegra.ph/file/81294ddc338c1d69ca45e.jpg',
       link: 'https://crax.my.id/mika',
     },
-    {
+    /*{
       title: '',
       description:
         '',
       imageUrl: '',
       link: '',
-    },
+    },*/
   ],
   // Display blog posts from your medium or dev account. (Optional)
   blog: {
