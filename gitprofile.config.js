@@ -33,20 +33,20 @@ const config = {
       'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', // Empty fileUrl will hide the `Download Resume` button.
   },
   skills: [
-    'PHP',
+    '',
     '',
     'JavaScript',
     'React.js',
     'Node.js',
-    'Nest.js',
+    '',
     'MySQL',
-    'PostgreSQL',
+    '',
     'Git',
     'Docker',
-    'PHPUnit',
+    '',
     'CSS',
-    'Antd',
-    'Tailwind',
+    '',
+    '',
   ],
   experiences: [
     {
@@ -74,7 +74,7 @@ const config = {
   ], */
   education: [
     {
-      institution: 'Institution Name',
+      institution: '',
       degree: 'Degree',
       from: '2015',
       to: '2019',
