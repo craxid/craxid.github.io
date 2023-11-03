@@ -42,14 +42,14 @@ const config = {
     'CSS',
   ],
   experiences: [
-    {
+    /*{
       company: '',
       position: '',
       from: '',
       to: '',
       companyLink: '',
     },
-    /*{
+    {
       company: '',
       position: '',
       from: '',
@@ -66,13 +66,13 @@ const config = {
     },
   ], */
  education: [
-    {
+    /*{
       institution: '',
       degree: '',
       from: '',
       to: '',
     },
-    /*{
+    {
       institution: '',
       degree: '',
       from: '',
