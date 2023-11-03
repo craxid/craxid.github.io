@@ -32,6 +32,25 @@ const config = {
     fileUrl:
       'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', // Empty fileUrl will hide the `Download Resume` button.
   },
+  
+    // To hide the `My Projects` section, keep it empty.
+  externalProjects: [
+    {
+      title: 'Mika WhatsApp Bot',
+      description:
+        'Bot WhatsApp Gratis',
+      imageUrl: 'https://telegra.ph/file/81294ddc338c1d69ca45e.jpg',
+      link: 'https://crax.my.id/mika',
+    },
+    /*{
+      title: '',
+      description:
+        '',
+      imageUrl: '',
+      link: '',
+    },*/
+  ],
+  
   skills: [
     'JavaScript',
     'React.js',
@@ -80,23 +99,6 @@ const config = {
     },*/
   ],
 
-  // To hide the `My Projects` section, keep it empty.
-  externalProjects: [
-    {
-      title: 'Mika WhatsApp Bot',
-      description:
-        'Bot WhatsApp Gratis',
-      imageUrl: 'https://telegra.ph/file/81294ddc338c1d69ca45e.jpg',
-      link: 'https://crax.my.id/mika',
-    },
-    /*{
-      title: '',
-      description:
-        '',
-      imageUrl: '',
-      link: '',
-    },*/
-  ],
   // Display blog posts from your medium or dev account. (Optional)
   blog: {
     source: '', // medium | dev
