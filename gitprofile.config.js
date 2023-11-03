@@ -53,7 +53,7 @@ const config = {
       company: 'CraXID Project',
       position: 'Founder',
       from: 'Februari 2018',
-      to: 'Present',
+      to: 'Aekarang',
       companyLink: 'https://crax.my.id',
     },
     {
@@ -101,7 +101,7 @@ const config = {
       description:
         '',
       imageUrl: '',
-      link: 'https://example.com',
+      link: '',
     },
   ],
   // Display blog posts from your medium or dev account. (Optional)
@@ -119,7 +119,7 @@ const config = {
     snippetVersion: 6,
   },
   themeConfig: {
-    defaultTheme: 'dark',
+    defaultTheme: 'light',
 
     // Hides the switch in the navbar
     // Useful if you want to support a single color mode
