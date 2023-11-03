@@ -53,13 +53,7 @@ const config = {
   ],
   
   skills: [
-    'JavaScript',
-    'React.js',
-    'Node.js',
-    'MySQL',
-    'Git',
-    'Docker',
-    'CSS',
+    'Masih Belajar',
   ],
   experiences: [
     /*{
