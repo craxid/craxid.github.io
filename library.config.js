@@ -16,7 +16,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/components/GitProfile.jsx'),
-      name: 'GitProfile',
+      name: 'CraXID',
       fileName: (format) => `gitprofile.${format}.js`,
     },
     rollupOptions: {
