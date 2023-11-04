@@ -21,7 +21,7 @@ export default defineConfig({
       },
       includeAssets: ['logo.png'],
       manifest: {
-        name: 'CraXID Project',
+        name: 'CraXID',
         short_name: 'CraXID',
         description: 'Seorang Freelance',
         icons: [
