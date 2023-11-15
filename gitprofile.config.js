@@ -30,8 +30,8 @@ const config = {
   },
   resume: {
     fileUrl:
-      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', // Empty fileUrl will hide the `Download Resume` button.
-  },
+      '', // Empty fileUrl will hide the `Download Resume` button.
+  } <script type='text/javascript' src='https://assets.trakteer.id/js/trbtn-overlay.min.js'></script><script type='text/javascript' class='troverlay'>(function() {var trbtnId = trbtnOverlay.init('Dukung Bot!','#1E8CBE','https://trakteer.id/dede_klender/tip/embed/modal','https://cdn.trakteer.id/images/embed/trbtn-icon.png','35','inline');trbtnOverlay.draw(trbtnId);})();</script>,
   
 // To hide the `My Projects` section, keep it empty.
   externalProjects: [
