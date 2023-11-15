@@ -32,9 +32,7 @@ const config = {
     fileUrl:
       '', // Empty fileUrl will hide the `Download Resume` button.
   },
-  
-  <script type='text/javascript' src='https://assets.trakteer.id/js/trbtn-overlay.min.js'></script><script type='text/javascript' class='troverlay'>(function() {var trbtnId = trbtnOverlay.init('Dukung Bot!','#1E8CBE','https://trakteer.id/dede_klender/tip/embed/modal','https://cdn.trakteer.id/images/embed/trbtn-icon.png','35','inline');trbtnOverlay.draw(trbtnId);})();</script>
-  
+
 // To hide the `My Projects` section, keep it empty.
   externalProjects: [
     {
