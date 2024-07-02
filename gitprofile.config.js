@@ -40,7 +40,7 @@ const config = {
       description:
         'Bot WhatsApp gratis yang memiliki banyak fitur unggul!',
       imageUrl: 'https://telegra.ph/file/98338f32943a9812f2544.jpg',
-      link: 'https://crax.us.kg/mika/',
+      link: 'https://crax.us.kg/bot/',
     },
     /*{
       title: '',
