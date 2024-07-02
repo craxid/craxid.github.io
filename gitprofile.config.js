@@ -24,9 +24,9 @@ const config = {
     stackoverflow: '', // example: '1/jeff-atwood'
     skype: '',
     telegram: 'ClanDare',
-    website: 'https://crax.my.id',
+    website: 'https://crax.us.kg',
     phone: '',
-    email: 'dev@crax.my.id',
+    email: 'dev@crax.us.kg',
   },
   resume: {
     fileUrl:
@@ -36,11 +36,11 @@ const config = {
 // To hide the `My Projects` section, keep it empty.
   externalProjects: [
     {
-      title: 'Bot Mika',
+      title: 'CraXID Bot',
       description:
         'Bot WhatsApp gratis yang memiliki banyak fitur unggul!',
       imageUrl: 'https://telegra.ph/file/81294ddc338c1d69ca45e.jpg',
-      link: 'https://crax.my.id/mika/',
+      link: 'https://crax.us.kg/mika/',
     },
     /*{
       title: '',
