@@ -24,9 +24,9 @@ const config = {
     stackoverflow: '', // example: '1/jeff-atwood'
     skype: '',
     telegram: 'ClanDare',
-    website: 'https://crax.us.kg',
+    website: 'https://crax.my.id',
     phone: '',
-    email: 'dev@crax.us.kg',
+    email: 'dev@crax.my.id',
   },
   resume: {
     fileUrl:
@@ -40,7 +40,7 @@ const config = {
       description:
         'Bot WhatsApp gratis yang memiliki banyak fitur unggul!',
       imageUrl: 'https://telegra.ph/file/98338f32943a9812f2544.jpg',
-      link: 'https://crax.us.kg/bot/',
+      link: 'https://crax.my.id/bot/',
     },
     /*{
       title: '',
