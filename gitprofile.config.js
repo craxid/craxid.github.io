@@ -48,7 +48,7 @@ const config = {
         '',
       imageUrl: 'https://www.backlink.co.id/wp-content/uploads/2024/02/badge-blogpartner-backlinkcoid.webp',
       link: 'https://blogpartner.id',
-    },*/
+    },
   ],
   
   skills: [
