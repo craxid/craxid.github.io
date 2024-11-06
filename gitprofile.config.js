@@ -42,13 +42,13 @@ const config = {
       imageUrl: 'https://telegra.ph/file/98338f32943a9812f2544.jpg',
       link: 'https://crax.my.id/bot/',
     },
-    {
+    /*{
       title: 'FREE BACKLINK',
       description:
         '',
       imageUrl: 'https://www.backlink.co.id/wp-content/uploads/2024/02/badge-blogpartner-backlinkcoid.webp',
       link: 'https://blogpartner.id',
-    },
+    },*/
   ],
   
   skills: [
