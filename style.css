@@ -1,0 +1,128 @@
+/* Gaya Dasar untuk Body */
+body {
+    font-family: sans-serif;
+    background-color: #f0f0f0;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    width: 100%;
+    position: relative;
+}
+
+/* Gaya untuk Container Status Bar (Jam di kiri, Baterai di kanan) */
+.status-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 25px; /* Tinggi status bar (sesuaikan jika perlu) */
+    background-color: #333; /* Warna latar belakang status bar (misalnya hitam/abu-abu gelap) */
+    color: white; /* Warna teks default di status bar */
+    z-index: 100;
+    display: flex;
+    justify-content: space-between; /* Dorong item ke kiri dan kanan */
+    align-items: center; /* Tengahkan item secara vertikal */
+    padding: 0 10px; /* Padding di kiri dan kanan */
+    box-sizing: border-box;
+    font-size: 12px; /* Ukuran font di status bar */
+}
+
+/* Gaya untuk teks waktu di status bar */
+.status-text {
+    color: white;
+    font-family: sans-serif;
+}
+
+/* Gaya untuk container status baterai (di dalam status-bar) */
+#battery-status {
+    display: flex;
+    align-items: center;
+    color: white; /* Warna teks persentase dan outline baterai */
+    font-family: sans-serif;
+    font-size: 12px;
+    position: relative; /* Diperlukan untuk absolute positioning icon petir di dalamnya */
+}
+
+/* Gaya untuk bingkai baterai */
+.battery-outline {
+    width: 24px; /* Lebar ikon baterai */
+    height: 12px; /* Tinggi ikon baterai */
+    border: 1px solid white; /* Border bingkai putih */
+    border-radius: 2px;
+    position: relative; /* Diperlukan untuk absolute positioning isi baterai dan icon petir */
+    margin-right: 4px; /* Jarak antara ikon dan teks persentase */
+    overflow: hidden;
+}
+
+/* Gaya untuk bagian kepala baterai (opsional) */
+.battery-outline::after {
+    content: '';
+    width: 2px;
+    height: 6px;
+    background-color: white;
+    position: absolute;
+    top: 2px;
+    right: -3px;
+    border-radius: 0 1px 1px 0;
+}
+
+/* Gaya untuk isi level baterai */
+.battery-fill {
+    height: 100%;
+    width: 0%; /* Lebar awal 0%, akan diubah oleh JavaScript */
+    background-color: limegreen; /* Warna default (penuh) */
+    border-radius: 1px;
+    transition: width 0.5s ease;
+}
+
+/* Gaya untuk teks persentase baterai */
+.battery-text {
+    color: white; /* Warna teks persentase */
+}
+
+/* Gaya warna isi baterai berdasarkan level (ditambahkan oleh JavaScript) */
+.battery-fill.low {
+    background-color: red;
+}
+.battery-fill.medium {
+    background-color: orange;
+}
+.battery-fill.charging {
+    background-color: #007bff;
+}
+
+/* Gaya untuk icon petir (charging indicator) */
+.lightning-icon {
+    position: absolute; /* Posisikan secara absolut di dalam .battery-outline */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: yellow;
+    font-size: 8px; /* Ukuran icon petir (sesuaikan jika perlu) */
+    z-index: 1;
+    display: none; /* Sembunyikan secara default */
+}
+
+
+/* Gaya untuk Konten Utama */
+.main-content {
+    margin-top: 25px; /* Beri jarak dari atas agar tidak tertutup status bar */
+    padding: 20px; /* Padding di sekitar konten */
+    text-align: center;
+    font-family: sans-serif;
+    width: 100%; /* Agar konten utama mengambil lebar penuh */
+    box-sizing: border-box;
+}
+
+.main-content h1 {
+    color: #333;
+}
+
+.main-content p {
+    color: #555;
+}
+
+/* Gaya untuk Footer (jika ada footer di web baru ini) */
+/* footer { ... } */
+/* footer p { ... } */
