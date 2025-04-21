@@ -240,6 +240,69 @@ p {
     background-color: #C13584;
 }
 
+/* === Gaya Spesifik untuk Tombol Sosial Media Tambahan === */
+
+/* Gaya spesifik untuk tombol TikTok */
+.tiktok-button {
+    background-color: #000000; /* Warna hitam TikTok */
+    color: white;
+}
+.tiktok-button:hover {
+    background-color: #333333; /* Warna hover */
+}
+
+/* Gaya spesifik untuk tombol Telegram */
+.telegram-button {
+    background-color: #229ED9; /* Warna biru Telegram */
+    color: white;
+}
+.telegram-button:hover {
+    background-color: #1a8ac1; /* Warna hover */
+}
+
+/* Gaya spesifik untuk tombol LinkedIn */
+.linkedin-button {
+    background-color: #0A66C2; /* Warna biru LinkedIn */
+    color: white;
+}
+.linkedin-button:hover {
+    background-color: #084c91; /* Warna hover */
+}
+
+/* Gaya spesifik untuk tombol YouTube */
+.youtube-button {
+    background-color: #FF0000; /* Warna merah YouTube */
+    color: white;
+}
+.youtube-button:hover {
+    background-color: #cc0000; /* Warna hover */
+}
+
+/* Contoh gaya untuk sosial media lain (opsional) */
+/* Kalau Producer-san mau tambahkan tombol sosial media lain, bisa tambahkan di sini */
+/* Misalnya untuk GitHub: */
+
+.github-button {
+    background-color: #181717;
+    color: white;
+}
+.github-button:hover {
+    background-color: #444444;
+}
+
+/* Misalnya untuk Discord: */
+
+.discord-button {
+    background-color: #5865F2;
+    color: white;
+}
+.discord-button:hover {
+    background-color: #454fbf;
+}
+
+
+/* === Akhir Gaya Spesifik untuk Tombol Sosial Media Tambahan === */
+
 /* Gaya untuk icon di dalam tombol */
 .link-button i {
     font-size: 18px;
