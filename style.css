@@ -16,16 +16,16 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 25px; /* Tinggi status bar (sesuaikan jika perlu) */
-    background-color: #333; /* Warna latar belakang status bar (misalnya hitam/abu-abu gelap) */
-    color: white; /* Warna teks default di status bar */
+    height: 25px;
+    background-color: #333;
+    color: white;
     z-index: 100;
     display: flex;
-    justify-content: space-between; /* Dorong item ke kiri dan kanan */
-    align-items: center; /* Tengahkan item secara vertikal */
-    padding: 0 10px; /* Padding di kiri dan kanan */
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
     box-sizing: border-box;
-    font-size: 12px; /* Ukuran font di status bar */
+    font-size: 12px;
 }
 
 /* Gaya untuk teks waktu di status bar */
@@ -38,20 +38,20 @@ body {
 #battery-status {
     display: flex;
     align-items: center;
-    color: white; /* Warna teks persentase dan outline baterai */
+    color: white;
     font-family: sans-serif;
     font-size: 12px;
-    position: relative; /* Diperlukan untuk absolute positioning icon petir di dalamnya */
+    position: relative;
 }
 
 /* Gaya untuk bingkai baterai */
 .battery-outline {
-    width: 24px; /* Lebar ikon baterai */
-    height: 12px; /* Tinggi ikon baterai */
-    border: 1px solid white; /* Border bingkai putih */
+    width: 24px;
+    height: 12px;
+    border: 1px solid white;
     border-radius: 2px;
-    position: relative; /* Diperlukan untuk absolute positioning isi baterai dan icon petir */
-    margin-right: 4px; /* Jarak antara ikon dan teks persentase */
+    position: relative;
+    margin-right: 4px;
     overflow: hidden;
 }
 
@@ -70,15 +70,15 @@ body {
 /* Gaya untuk isi level baterai */
 .battery-fill {
     height: 100%;
-    width: 0%; /* Lebar awal 0%, akan diubah oleh JavaScript */
-    background-color: limegreen; /* Warna default (penuh) */
+    width: 0%;
+    background-color: limegreen;
     border-radius: 1px;
     transition: width 0.5s ease;
 }
 
 /* Gaya untuk teks persentase baterai */
 .battery-text {
-    color: white; /* Warna teks persentase */
+    color: white;
 }
 
 /* Gaya warna isi baterai berdasarkan level (ditambahkan oleh JavaScript) */
@@ -94,35 +94,168 @@ body {
 
 /* Gaya untuk icon petir (charging indicator) */
 .lightning-icon {
-    position: absolute; /* Posisikan secara absolut di dalam .battery-outline */
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: yellow;
-    font-size: 8px; /* Ukuran icon petir (sesuaikan jika perlu) */
+    font-size: 8px;
     z-index: 1;
-    display: none; /* Sembunyikan secara default */
+    display: none;
 }
 
 
-/* Gaya untuk Konten Utama */
-.main-content {
-    margin-top: 25px; /* Beri jarak dari atas agar tidak tertutup status bar */
-    padding: 20px; /* Padding di sekitar konten */
-    text-align: center;
-    font-family: sans-serif;
-    width: 100%; /* Agar konten utama mengambil lebar penuh */
+/* Gaya untuk Wrapper Konten Utama (membungkus container dan footer) */
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
     box-sizing: border-box;
+    margin-top: 25px; /* Beri jarak dari atas agar tidak tertutup status bar */
 }
 
-.main-content h1 {
+/* Gaya untuk Container Utama */
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Wrapper untuk Gambar Profil dan Badge */
+.profile-image-wrapper {
+    position: relative;
+    display: block;
+    margin: 0 auto 30px auto;
+    width: fit-content;
+}
+
+/* Gaya untuk gambar profil */
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #007bff;
+}
+
+/* Gaya untuk shield badge di bawah foto profil */
+.profile-badge {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    color: #007bff;
+    font-size: 24px;
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+/* Gaya untuk judul utama */
+h1 {
     color: #333;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.main-content p {
+/* Gaya untuk centang biru di samping nama */
+.verified-icon {
+    color: #1877F2; /* Warna biru Facebook */
+    font-size: 18px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/* Gaya untuk paragraf di bawah judul utama */
+p {
     color: #555;
+    margin-bottom: 20px;
 }
 
-/* Gaya untuk Footer (jika ada footer di web baru ini) */
-/* footer { ... } */
-/* footer p { ... } */
+
+/* Gaya untuk container link tombol */
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Gaya umum untuk semua tombol link */
+.link-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+    gap: 10px;
+}
+
+/* Gaya spesifik untuk tombol WhatsApp */
+.whatsapp-button {
+    background-color: #25D366;
+}
+.whatsapp-button:hover {
+    background-color: #1DA851;
+}
+
+/* Gaya spesifik untuk tombol Facebook */
+.facebook-button {
+    background-color: #1877F2;
+}
+.facebook-button:hover {
+    background-color: #145CB3;
+}
+
+/* Gaya spesifik untuk tombol Twitter/X */
+.twitter-button {
+    background-color: #000000;
+    color: white;
+}
+.twitter-button:hover {
+    background-color: #333333;
+    color: white;
+}
+
+/* Gaya spesifik untuk tombol Instagram */
+.instagram-button {
+    background-color: #E1306C;
+}
+.instagram-button:hover {
+    background-color: #C13584;
+}
+
+/* Gaya untuk icon di dalam tombol */
+.link-button i {
+    font-size: 18px;
+}
+
+/* Gaya untuk Footer */
+footer {
+    margin-top: 40px;
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-size: 14px;
+    width: 100%;
+}
+
+/* Gaya untuk paragraf di dalam Footer (untuk dua baris) */
+footer p {
+    margin: 5px 0;
+    padding: 0;
+}
