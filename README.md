@@ -38,7 +38,7 @@ This project is a static HTML page and does not require any complex installation
 
 If you find this project useful or simply wish to support the developer, any contributions are highly appreciated! You can support by scanning the QRIS code below:
 
-![QRIS Donation Code](![QRIS](https://github.com/user-attachments/assets/afd5191f-2af2-4769-84a0-63725944d7e9)
+![QRIS Donation Code](![QRIS](QRIS.png)
 )
 
 ## License
