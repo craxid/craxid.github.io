@@ -38,8 +38,7 @@ This project is a static HTML page and does not require any complex installation
 
 If you find this project useful or simply wish to support the developer, any contributions are highly appreciated! You can support by scanning the QRIS code below:
 
-![QRIS Donation Code](![QRIS](QRIS.png)
-)
+![QRIS Donation Code](QRIS.png)
 
 ## License
-MIT Licence
+MIT License
