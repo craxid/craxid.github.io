@@ -300,6 +300,16 @@ p {
     background-color: #454fbf;
 }
 
+/* netral button */
+.netral-button {
+    background-color: #6c757d; /* Warna abu-abu netral, Producer-san bisa ganti desu! */
+    color: white;
+}
+
+.netral-button:hover {
+    background-color: #5a6268; /* Warna hover yang sedikit lebih gelap */
+}
+
 
 /* === Akhir Gaya Spesifik untuk Tombol Sosial Media Tambahan === */
 
