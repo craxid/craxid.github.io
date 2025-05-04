@@ -1,335 +1,535 @@
-/* Gaya Dasar untuk Body */
-body {
-    font-family: sans-serif;
-    background-color: #f0f0f0;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    width: 100%;
-    position: relative;
-}
+    /* Gaya CSS di sini */
+        /* Base Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
 
-/* Gaya untuk Container Status Bar (Jam di kiri, Baterai di kanan) */
-.status-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 25px;
-    background-color: rgba(0, 0, 0, 0.5);;
-    color: white;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 10px;
-    box-sizing: border-box;
-    font-size: 12px;
-}
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px 0;
+        }
 
-/* Gaya untuk teks waktu di status bar */
-.status-text {
-    color: white;
-    font-family: sans-serif;
-}
+        /* Header Styles */
+        header {
+            background: #333;
+            color: #fff;
+            padding-top: 50px; /* Padding atas */
+            padding-bottom: 100px; /* Ruang untuk foto profil yang overlapping */
+            border-bottom: #075e54 5px solid; /* Garis batas header */
+            text-align: center;
+            position: relative; /* Untuk posisi absolut foto profil */
+            overflow: visible; /* Pastikan foto profil tidak terpotong */
+            transition: background-color 0.3s ease;
+        }
 
-/* Gaya untuk container status baterai (di dalam status-bar) */
-#battery-status {
-    display: flex;
-    align-items: center;
-    color: white;
-    font-family: sans-serif;
-    font-size: 12px;
-    position: relative;
-}
+        header .container {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             justify-content: center;
+             min-height: 250px; /* Tinggi minimum konten header */
+        }
 
-/* Gaya untuk bingkai baterai */
-.battery-outline {
-    width: 24px;
-    height: 12px;
-    border: 1px solid white;
-    border-radius: 2px;
-    position: relative;
-    margin-right: 4px;
-    overflow: hidden;
-}
+        header h1 {
+            margin-top: 10px;
+            font-size: 2.8em;
+            margin-bottom: 5px;
+        }
 
-/* Gaya untuk bagian kepala baterai (opsional) */
-.battery-outline::after {
-    content: '';
-    width: 2px;
-    height: 6px;
-    background-color: white;
-    position: absolute;
-    top: 2px;
-    right: -3px;
-    border-radius: 0 1px 1px 0;
-}
+        header p {
+            font-size: 1.3em;
+            margin-top: 0;
+            margin-bottom: 30px; /* Jarak bawah sebelum nav */
+        }
 
-/* Gaya untuk isi level baterai */
-.battery-fill {
-    height: 100%;
-    width: 0%;
-    background-color: limegreen;
-    border-radius: 1px;
-    transition: width 0.5s ease;
-}
+        /* Navigasi */
+        header nav ul {
+            padding: 0;
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 25px; /* Jarak antar item menu */
+            margin-top: 20px;
+        }
 
-/* Gaya untuk teks persentase baterai */
-.battery-text {
-    color: white;
-}
+        header nav a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
 
-/* Gaya warna isi baterai berdasarkan level (ditambahkan oleh JavaScript) */
-.battery-fill.low {
-    background-color: red;
-}
-.battery-fill.medium {
-    background-color: orange;
-}
-.battery-fill.charging {
-    background-color: #007bff;
-}
+        header nav a:hover {
+            color: #075e54;
+        }
 
-/* Gaya untuk icon petir (charging indicator) */
-.lightning-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: yellow;
-    font-size: 8px;
-    z-index: 1;
-    display: none;
-}
+        /* Foto Profil (Posisi di tengah garis) */
+        header .profile-img {
+            width: 150px; /* Lebar foto */
+            height: 150px; /* Tinggi foto */
+            border-radius: 50%; /* Bentuk bulat */
+            object-fit: cover;
+            border: 7px solid #fff; /* Border putih tebal */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Shadow */
+            position: absolute; /* Posisikan absolut */
+            bottom: -75px; /* Geser ke atas sejauh setengah tinggi foto (150/2) dari batas bawah header */
+            left: 50%; /* Posisikan tepi kiri foto di tengah header */
+            transform: translateX(-50%); /* Geser foto ke kiri sejauh setengah lebarnya */
+            z-index: 10; /* Pastikan foto di atas konten lain */
+            background-color: #fff; /* Latar putih di belakang border */
+        }
 
+        /* Tombol Toggle Tema */
+        .theme-toggle {
+            position: absolute; /* Posisikan absolut */
+            top: 20px; /* Jarak dari atas header */
+            right: 20px; /* Jarak dari kanan header */
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5em;
+            cursor: pointer;
+            outline: none;
+            transition: color 0.3s ease;
+        }
 
-/* Gaya untuk Wrapper Konten Utama (membungkus container dan footer) */
-.main-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    margin-top: 25px; /* Beri jarak dari atas agar tidak tertutup status bar */
-}
-
-/* Gaya untuk Container Utama */
-.container {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    max-width: 400px;
-    width: 100%;
-}
-
-/* Wrapper untuk Gambar Profil dan Badge */
-.profile-image-wrapper {
-    position: relative;
-    display: block;
-    margin: 0 auto 30px auto;
-    width: fit-content;
-}
-
-/* Gaya untuk gambar profil */
-.profile-image {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #007bff;
-}
-
-/* Gaya untuk shield badge di bawah foto profil */
-.profile-badge {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 50%);
-    color: #007bff;
-    font-size: 20px;
-    background-color: #fff;
-    border-radius: 50%;
-    padding: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    z-index: 2;
-}
-
-/* Gaya untuk judul utama */
-h1 {
-    color: #333;
-    margin-bottom: 10px;
-    font-size: 28;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Gaya untuk centang biru di samping nama */
-.verified-icon {
-    color: #1877F2; /* Warna biru Facebook */
-    font-size: 15px;
-    margin-left: 5px;
-    vertical-align: middle;
-}
-
-/* Gaya untuk paragraf di bawah judul utama */
-p {
-    color: #555;
-    margin-bottom: 20px;
-}
+        .theme-toggle:hover {
+            color: #075e54;
+        }
 
 
-/* Gaya untuk container link tombol */
-.links {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+        /* Section Styles */
+        section {
+            padding: 80px 0 40px 0; /* Tambahkan padding atas untuk memberi ruang foto profil */
+            border-bottom: #ccc 1px solid;
+        }
 
-/* Gaya umum untuk semua tombol link */
-.link-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px 20px;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    font-size: 16px;
-    font-weight: bold;
-    gap: 10px;
-}
+        section h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 2em;
+        }
 
-/* Gaya spesifik untuk tombol WhatsApp */
-.whatsapp-button {
-    background-color: #25D366;
-}
-.whatsapp-button:hover {
-    background-color: #1DA851;
-}
+        /* About Section */
+        #about .container p {
+            text-align: justify;
+            max-width: 800px;
+            margin: auto;
+            font-size: 1.1em;
+        }
 
-/* Gaya spesifik untuk tombol Facebook */
-.facebook-button {
-    background-color: #1877F2;
-}
-.facebook-button:hover {
-    background-color: #145CB3;
-}
+        /* Skills Section */
+        #skills {
+            background-color: #e5ddd5; /* Warna latar berbeda */
+            transition: background-color 0.3s ease;
+        }
 
-/* Gaya spesifik untuk tombol Twitter/X */
-.twitter-button {
-    background-color: #000000;
-    color: white;
-}
-.twitter-button:hover {
-    background-color: #333333;
-    color: white;
-}
+        #skills .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            text-align: center;
+        }
 
-/* Gaya spesifik untuk tombol Instagram */
-.instagram-button {
-    background-color: #E1306C;
-}
-.instagram-button:hover {
-    background-color: #C13584;
-}
+        .skill-item {
+            flex: 1 1 120px; /* Flex basis */
+            max-width: 150px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-/* === Gaya Spesifik untuk Tombol Sosial Media Tambahan === */
+        .skill-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
 
-/* Gaya spesifik untuk tombol TikTok */
-.tiktok-button {
-    background-color: #000000; /* Warna hitam TikTok */
-    color: white;
-}
-.tiktok-button:hover {
-    background-color: #333333; /* Warna hover */
-}
+        .skill-item i {
+            font-size: 3.5em; /* Ukuran ikon */
+            color: #075e54;
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
 
-/* Gaya spesifik untuk tombol Telegram */
-.telegram-button {
-    background-color: #229ED9; /* Warna biru Telegram */
-    color: white;
-}
-.telegram-button:hover {
-    background-color: #1a8ac1; /* Warna hover */
-}
-
-/* Gaya spesifik untuk tombol LinkedIn */
-.linkedin-button {
-    background-color: #0A66C2; /* Warna biru LinkedIn */
-    color: white;
-}
-.linkedin-button:hover {
-    background-color: #084c91; /* Warna hover */
-}
-
-/* Gaya spesifik untuk tombol YouTube */
-.youtube-button {
-    background-color: #FF0000; /* Warna merah YouTube */
-    color: white;
-}
-.youtube-button:hover {
-    background-color: #cc0000; /* Warna hover */
-}
-
-/* Contoh gaya untuk sosial media lain (opsional) */
-/* Kalau Producer-san mau tambahkan tombol sosial media lain, bisa tambahkan di sini */
-/* Misalnya untuk GitHub: */
-
-.github-button {
-    background-color: #181717;
-    color: white;
-}
-.github-button:hover {
-    background-color: #444444;
-}
-
-/* Misalnya untuk Discord: */
-
-.discord-button {
-    background-color: #5865F2;
-    color: white;
-}
-.discord-button:hover {
-    background-color: #454fbf;
-}
-
-/* netral button */
-.netral-button {
-    background-color: #6c757d; /* Warna abu-abu netral, Producer-san bisa ganti desu! */
-    color: white;
-}
-
-.netral-button:hover {
-    background-color: #5a6268; /* Warna hover yang sedikit lebih gelap */
-}
+         .skill-item h3 {
+             margin: 0;
+             font-size: 1.2em;
+             color: #333;
+             transition: color 0.3s ease;
+         }
 
 
-/* === Akhir Gaya Spesifik untuk Tombol Sosial Media Tambahan === */
+        /* Projects Section */
+        #projects .projects-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+            gap: 40px; /* Jarak antar proyek */
+        }
 
-/* Gaya untuk icon di dalam tombol */
-.link-button i {
-    font-size: 18px;
-}
+        .project-item {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            text-align: left; /* Rata kiri untuk deskripsi */
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-/* Gaya untuk Footer */
-footer {
-    margin-top: 40px;
-    text-align: center;
-    padding: 20px;
-    color: #777;
-    font-size: 14px;
-    width: 100%;
-}
+        .project-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
 
-/* Gaya untuk paragraf di dalam Footer (untuk dua baris) */
-footer p {
-    margin: 5px 0;
-    padding: 0;
-}
+        /* Gaya untuk placeholder ikon gambar proyek */
+        .project-item .project-icon-placeholder { /* <-- Kelas baru */
+            width: 100%; /* Sama lebar dengan gambar */
+            height: 200px; /* Sama tinggi dengan gambar */
+            background-color: #eee; /* Latar belakang abu-abu muda */
+            display: flex; /* Untuk menengahkan ikon */
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            align-self: center;
+            color: #555; /* Warna ikon default */
+            font-size: 4em; /* Ukuran ikon di placeholder */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode .project-item .project-icon-placeholder {
+             background-color: #444;
+             color: #bbb;
+        }
+
+
+        /* .project-item img { ... } */ /* Gaya img tetap ada jika Kamu nanti pakai gambar asli */
+
+
+        .project-item h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #075e54;
+            font-size: 1.5em;
+        }
+
+         .project-item p {
+             font-size: 1em;
+             margin-bottom: 15px;
+             flex-grow: 1; /* Agar deskripsi mengisi ruang */
+             color: #555;
+         }
+
+         .project-item .project-meta {
+              font-size: 0.9em;
+              color: #777;
+              margin-bottom: 15px;
+         }
+
+         .project-item .project-meta i {
+             margin-right: 5px;
+             color: #ffc107; /* Warna bintang */
+         }
+
+
+        .project-item .btn {
+            display: inline-block;
+            background: #075e54;
+            color: #fff;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            align-self: flex-start; /* Tombol rata kiri */
+            transition: background-color 0.3s ease;
+        }
+
+        .project-item .btn:hover {
+            background: #054a40;
+        }
+
+        .project-item .btn i {
+            margin-left: 8px;
+            font-size: 1em;
+        }
+
+
+        /* Contact Section */
+        #contact .container {
+            text-align: center;
+        }
+
+        #contact .contact-info {
+            margin-top: 30px;
+        }
+
+        .contact-info p {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+            color: #075e54;
+        }
+
+        .contact-info a {
+            color: #075e54;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 30px 0;
+            transition: background-color 0.3s ease;
+        }
+
+        footer p {
+            margin: 5px 0;
+            font-size: 0.95em;
+            color: #ccc;
+        }
+
+        /* --- Dark Mode Styles --- */
+        body.dark-mode {
+            background-color: #222;
+            color: #eee;
+        }
+
+        body.dark-mode header {
+            background: #444;
+            border-bottom-color: #03dac6;
+        }
+
+        body.dark-mode header nav a:hover {
+            color: #03dac6;
+        }
+
+        body.dark-mode header .profile-img {
+            border-color: #222;
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+            background-color: #444;
+        }
+
+        body.dark-mode .theme-toggle {
+             color: #eee;
+        }
+
+        body.dark-mode .theme-toggle:hover {
+             color: #03dac6;
+        }
+
+
+        body.dark-mode section h2 {
+             color: #eee;
+        }
+
+        body.dark-mode #skills {
+             background-color: #333;
+        }
+
+        body.dark-mode .skill-item {
+            background: #555;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .skill-item:hover {
+             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-mode .skill-item i {
+             color: #03dac6;
+        }
+
+         body.dark-mode .skill-item h3 {
+             color: #eee;
+         }
+
+
+        body.dark-mode .project-item {
+            background: #555;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+         body.dark-mode .project-item:hover {
+             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+         }
+
+        body.dark-mode .project-item h3 {
+            color: #03dac6;
+        }
+
+         body.dark-mode .project-item p {
+             color: #ccc;
+         }
+
+         body.dark-mode .project-item .project-meta {
+              color: #bbb;
+         }
+
+         body.dark-mode .project-item .project-meta i {
+              color: #ffd700; /* Warna bintang di dark mode */
+         }
+
+
+        body.dark-mode .project-item .btn {
+            background: #03dac6;
+            color: #333;
+        }
+
+        body.dark-mode .project-item .btn:hover {
+            background: #02bdae;
+        }
+
+        body.dark-mode .contact-info i {
+             color: #03dac6;
+        }
+
+        body.dark-mode .contact-info a {
+             color: #03dac6;
+        }
+
+        body.dark-mode footer {
+            background: #444;
+        }
+
+        body.dark-mode footer p {
+            color: #bbb;
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+
+            header {
+                padding-top: 30px;
+                padding-bottom: 80px; /* Sesuaikan padding bawah header */
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+
+            header nav ul {
+                flex-direction: column; /* Stack navbar items vertically */
+                gap: 10px;
+                margin-top: 15px;
+            }
+
+             .theme-toggle {
+                 top: 15px;
+                 right: 15px;
+                 font-size: 1.3em;
+             }
+
+
+            header .profile-img {
+                width: 120px; /* Ukuran foto mobile */
+                height: 120px; /* Ukuran foto mobile */
+                bottom: -60px; /* Geser ke atas sejauh setengah tinggi (120/2) */
+            }
+
+            section {
+                 padding-top: 60px; /* Sesuaikan padding atas section */
+                 padding-bottom: 30px;
+            }
+
+            section h2 {
+                 font-size: 1.8em;
+                 margin-bottom: 30px;
+            }
+
+            #about .container p {
+                font-size: 1em;
+            }
+
+
+            #skills .skills-list {
+                gap: 20px;
+            }
+
+            .skill-item {
+                flex: 1 1 100px;
+                max-width: 130px;
+                padding: 15px;
+            }
+
+            .skill-item i {
+                font-size: 3em;
+                margin-bottom: 10px;
+            }
+
+             .skill-item h3 {
+                 font-size: 1.1em;
+             }
+
+
+            #projects .projects-list {
+                gap: 30px;
+            }
+
+            .project-item {
+                 padding: 20px;
+            }
+
+            .project-item img {
+                 height: 160px;
+            }
+
+             .project-item h3 {
+                 font-size: 1.3em;
+             }
+
+             .project-item p {
+                 font-size: 0.95em;
+             }
+
+             .project-item .project-meta {
+                 font-size: 0.85em;
+             }
+
+            .project-item .btn {
+                 padding: 10px 15px;
+                 font-size: 0.9em;
+            }
+
+            .contact-info p {
+                font-size: 1.1em;
+            }
+
+            footer {
+                 padding: 20px 0;
+            }
+
+            footer p {
+                font-size: 0.85em;
+            }
+        }
