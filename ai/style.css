@@ -1,426 +1,282 @@
-/* Base Styles for Body */
+/* Gaya Dasar */
 body {
     font-family: sans-serif;
-    background-color: #e5ddd5; /* WhatsApp background color */
     margin: 0;
     padding: 0;
-    display: flex; /* Using flexbox for centering */
-    flex-direction: column; /* Stack children vertically */
-    justify-content: center; /* Center horizontal */
-    align-items: center; /* Center vertical */
-    min-height: 100vh; /* Minimum full viewport height */
-    overflow: hidden; /* Hide body scrollbar */
-}
-
-/* --- Login Container Styles --- */
-.login-container {
-    width: 100%;
-    max-width: 400px; /* Max width for login form */
-    padding: 30px;
-    background-color: #ffffff; /* White background */
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    display: flex; /* Using flexbox */
-    flex-direction: column; /* Stack items vertically */
-    gap: 20px; /* Space between items */
-    /* display: none; /* Hidden by default, shown by JavaScript */
-    margin: auto; /* Center horizontal and vertical in body flex */
-}
-
-.login-container h2 {
-    margin-top: 0;
+    line-height: 1.6;
+    background-color: #f4f4f4;
     color: #333;
 }
 
-.login-input {
-    display: flex;
-    gap: 10px; /* Space between input and button */
-    align-items: center;
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    padding: 20px 0;
 }
 
-.login-input input[type="text"] {
-    flex-grow: 1; /* Take up remaining space */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-    outline: none;
+/* Header Styles */
+header {
+    background: #333;
+    color: #fff;
+    padding-top: 30px;
+    min-height: 400px; /* Tinggi minimum header */
+    border-bottom: #075e54 3px solid;
+    text-align: center;
+    position: relative; /* Untuk memposisikan elemen di dalamnya */
 }
 
-.login-input button {
-    padding: 10px 20px;
-    background-color: #075e54; /* WhatsApp green color */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.login-input button:hover {
-    background-color: #054a40; /* Hover color */
-}
-
-.login-info {
-    font-size: 0.9em;
-    color: #555;
-    margin-bottom: 0;
-}
-
-
-/* --- Chat Container Styles --- */
-.chat-container {
-    width: 100%;
-    max-width: 600px; /* Max width like a phone screen */
-    /* height: 90vh; */ /* Removed */
-    height: 100%; /* Take 100% height of parent (body flex) */
-    flex-grow: 1; /* Important: Allows chat container to fill space in body flex */
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    overflow: hidden; /* Hide anything outside the container */
-    display: flex; /* Using flexbox */
-    flex-direction: column; /* Header, messages, input stacked vertically */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #f0f0f0; /* Background behind messages */
-    /* display: flex; */ /* Shown by default, hidden by JavaScript */
-    display: none; /* Hidden by default by JavaScript */
-    margin: auto; /* Center horizontal and vertical in body flex */
-}
-
-/* Chat Header */
-.chat-header {
-    background-color: #075e54;
-    color: white;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    flex-shrink: 0; /* Prevent header from shrinking */
-}
-
-.chat-header .profile-pic {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-    object-fit: cover;
-    border: 2px solid white;
-}
-
-.chat-header .chat-title {
-    font-size: 1.2em;
-    font-weight: bold;
-    flex-grow: 1;
-}
-
-.chat-header .logged-in-user {
-    font-size: 0.9em;
-    color: rgba(255, 255, 255, 0.8);
-    margin-left: 10px;
-}
-
-
-/* Message Area */
-.chat-messages {
-    flex-grow: 1; /* Take up remaining space, pushing chat-input down */
-    padding: 10px;
-    overflow-y: auto; /* Add scroll if messages overflow vertically */
-    display: flex;
-    flex-direction: column; /* Messages stacked vertically */
-    background-image: url('./media/whatsapp-bg.png');
-    background-size: cover;
-    background-position: center;
-}
-
-/* Style for each Message Bubble */
-.message {
-    max-width: 80%; /* Max width of message bubbles */
-    margin-bottom: 15px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    position: relative; /* For chat bubble "tail" if needed */
-    word-wrap: break-word; /* Wrap long text */
-    box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.1);
-    /* Set display flex to arrange text and timestamp vertically */
+header .container {
     display: flex;
     flex-direction: column;
-}
-
-/* Style for HTML elements inside message bubbles (Markdown parse result) */
-.message > * { /* Target direct children inside .message (p, ul, ol, pre, etc) */
-    margin: 0 0 5px 0; /* Add slight bottom margin */
-    padding: 0;
-    /* color: inherit; */ /* Let color inherit from bubble color */
-}
-
-.message > *:last-child {
-    margin-bottom: 0; /* Remove bottom margin on the last child */
-}
-
-.message ul,
-.message ol {
-    margin: 0 0 10px 20px; /* Basic list style */
-    padding: 0;
-}
-
-.message li {
-    margin-bottom: 5px; /* Space between list items */
-}
-
-.message pre { /* Style for code block */
-    background-color: rgba(0, 0, 0, 0.05);
-    padding: 10px;
-    border-radius: 4px;
-    overflow-x: auto; /* Horizontal scroll for wide code blocks */
-    font-family: monospace; /* Monospace font for code */
-    font-size: 0.9em;
-    margin: 5px 0 10px 0;
-}
-
-.message code { /* Style for inline code */
-    background-color: rgba(0, 0, 0, 0.05);
-    padding: 2px 4px;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.9em;
-}
-
-.message strong {
-    font-weight: bold;
-}
-
-.message em {
-    font-style: italic;
-}
-/* Add styles for other Markdown elements if needed (e.g., blockquote, hr, table) */
-
-
-/* Style for Timestamp */
-.timestamp {
-    font-size: 0.7em; /* Smaller text size for timestamp */
-    color: rgba(0, 0, 0, 0.5); /* Timestamp text color (semi-transparent) */
-    align-self: flex-end; /* Align to the right within the flex bubble */
-    margin-top: -3px; /* Move up slightly to be closer to text */
-    flex-shrink: 0; /* Prevent timestamp from shrinking */
-}
-
-
-/* Style for Sent Messages */
-.message.sent {
-    align-self: flex-end;
-    background-color: #dcf8c6;
-    color: #303030;
-    border-bottom-right-radius: 0;
-}
-
-.message.sent .timestamp {
-     color: rgba(0, 0, 0, 0.5); /* Timestamp color in sent messages */
-}
-
-/* Style for Received Messages */
-.message.received {
-    align-self: flex-start;
-    background-color: #ffffff;
-    color: #303030;
-    border-bottom-left-radius: 0;
-}
-
-.message.received .timestamp {
-     color: rgba(0, 0, 0, 0.5); /* Timestamp color in received messages */
-}
-
-
-/* Message Input Area */
-.chat-input {
-    display: flex;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border-top: 1px solid #ccc;
     align-items: center;
-    flex-shrink: 0;
-}
-
-.chat-input input[type="text"] {
-    flex-grow: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 20px;
-    margin-right: 10px;
-    font-size: 1em;
-    outline: none;
-}
-
-.chat-input button {
-    background-color: #128c7e;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
     justify-content: center;
-    align-items: center;
+    min-height: 350px; /* Sesuaikan dengan min-height header - padding */
+}
+
+
+header h1 {
+    margin-top: 10px;
+    font-size: 2.5em;
+    margin-bottom: 5px;
+}
+
+header p {
     font-size: 1.2em;
-    cursor: pointer;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+header .profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+header nav ul {
+    padding: 0;
+    list-style: none;
+    display: flex; /* Navbar horizontal */
+    justify-content: center;
+    gap: 20px; /* Jarak antar item menu */
+    margin-top: 20px;
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 1em;
+    transition: color 0.3s ease;
+}
+
+header nav a:hover {
+    color: #075e54;
+}
+
+
+/* Section Styles */
+section {
+    padding: 40px 0;
+    border-bottom: #ccc 1px solid;
+}
+
+section h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* About Section */
+#tentang p {
+    text-align: justify;
+    max-width: 800px; /* Batasi lebar teks */
+    margin: auto;
+}
+
+/* Skills Section */
+#keahlian .skills-list {
+    display: flex;
+    flex-wrap: wrap; /* Wrap items to next line */
+    justify-content: center; /* Center skill items */
+    gap: 30px; /* Space between skill items */
+    text-align: center;
+}
+
+.skill-item {
+    flex: 1 1 120px; /* Flex basis */
+    max-width: 150px; /* Max width for each item */
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.skill-item:hover {
+    transform: translateY(-5px); /* Slight lift effect */
+}
+
+.skill-item i {
+    font-size: 3em;
+    color: #075e54;
+    margin-bottom: 10px;
+}
+
+/* Projects Section */
+#proyek {
+    background: #e5ddd5; /* Warna latar belakang berbeda */
+}
+
+#proyek .projects-list {
+    display: grid; /* Use grid for projects */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 30px;
+}
+
+.project-item {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.project-item:hover {
+    transform: translateY(-5px);
+}
+
+.project-item img {
+    max-width: 100%;
+    height: 180px; /* Fixed height for images */
+    object-fit: cover; /* Cover area without distorting aspect ratio */
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.project-item h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.project-item p {
+    font-size: 0.95em;
+    margin-bottom: 15px;
+}
+
+.project-item .btn {
+    display: inline-block;
+    background: #075e54;
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
-.chat-input button:hover {
-    background-color: #075e54;
+.project-item .btn:hover {
+    background: #054a40;
 }
 
-/* --- Styles for Dark Mode --- */
-body.dark-mode {
-    background-color: #222;
+.project-item .btn i {
+    margin-left: 5px;
+    font-size: 0.9em;
 }
 
-body.dark-mode .login-container {
-    background-color: #333;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+
+/* Contact Section */
+#kontak .contact-info {
+    text-align: center;
+    margin-top: 20px;
 }
 
-body.dark-mode .login-container h2 {
-    color: #eee;
+.contact-info p {
+    margin-bottom: 10px;
+    font-size: 1.1em;
 }
 
-body.dark-mode .login-input input[type="text"] {
-    background-color: #444;
-    color: #eee;
-    border-color: #555;
+.contact-info i {
+    margin-right: 8px;
+    color: #075e54;
 }
 
-body.dark-mode .login-input button {
-    background-color: #555;
-    color: #eee;
+.contact-info a {
+    color: #075e54;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
-body.dark-mode .login-input button:hover {
-    background-color: #666;
+.contact-info a:hover {
+    text-decoration: underline;
 }
 
-body.dark-mode .login-info {
+
+/* Footer Styles */
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+footer p {
+    margin: 5px 0;
+    font-size: 0.9em;
     color: #ccc;
 }
 
-
-body.dark-mode .chat-container {
-    background-color: #333;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-}
-
-body.dark-mode .chat-header {
-    background-color: #444;
-    color: #eee;
-}
-
-body.dark-mode .chat-header .profile-pic {
-     border-color: #eee;
-}
-
-body.dark-mode .chat-header .logged-in-user {
-    color: rgba(238, 238, 238, 0.8);
-}
-
-body.dark-mode .chat-messages {
-     background-color: #2d2d2d;
-     background-image: none; /* Remove background image in dark mode if it conflicts */
-}
-
-/* Dark Mode styles for HTML elements inside message bubbles (Markdown parse result) */
-body.dark-mode .message.sent {
-    background-color: #555;
-    color: #eee;
-}
-
-body.dark-mode .message.received {
-    background-color: #444;
-    color: #eee;
-}
-
-body.dark-mode .message pre {
-     background-color: rgba(255, 255, 255, 0.1);
-     color: #eee;
-}
-
-body.dark-mode .message code {
-     background-color: rgba(255, 255, 255, 0.1);
-     color: #eee;
-}
-
-/* Dark Mode style for Timestamp */
-body.dark-mode .timestamp {
-    color: rgba(238, 238, 238, 0.5);
-}
-
-
-body.dark-mode .chat-input {
-    background-color: #333;
-    border-top-color: #555;
-}
-
-body.dark-mode .chat-input input[type="text"] {
-    background-color: #444;
-    color: #eee;
-}
-
-body.dark-mode .chat-input button {
-    background-color: #555;
-    color: #eee;
-}
-
-body.dark-mode .chat-input button:hover {
-    background-color: #666;
-}
-
-
-/* Basic Responsiveness */
-@media (max-width: 600px) {
-    body {
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: stretch;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
     }
 
-     .login-container {
-        margin: auto;
-        padding: 20px;
-        max-width: calc(100% - 40px);
-     }
+    header h1 {
+        font-size: 2em;
+    }
 
-    .chat-container {
-        height: 100vh;
-        border-radius: 0;
-        box-shadow: none;
-        flex-grow: 1;
-        width: 100%;
-        max-width: 100%;
-        margin: 0;
+    header p {
+        font-size: 1em;
     }
-    .chat-header {
-        padding: 10px;
+
+    header nav ul {
+        flex-direction: column; /* Stack navbar items vertically on small screens */
+        gap: 10px;
+        margin-top: 15px;
     }
-    .chat-header .profile-pic {
-        width: 35px;
-        height: 35px;
+
+    #tentang p {
+        text-align: left; /* Kembali ke rata kiri di mobile */
     }
-    .chat-header .chat-title {
-        font-size: 1.1em;
+
+    #keahlian .skills-list {
+        gap: 20px;
     }
-    .message {
-        max-width: 85%;
+
+    .skill-item {
+        flex: 1 1 100px; /* Adjust flex basis */
+        max-width: 130px;
+        padding: 15px;
     }
-    .chat-input {
-        padding: 8px;
+
+    .skill-item i {
+        font-size: 2.5em;
     }
-    .chat-input input[type="text"] {
-        padding: 8px;
+
+    #proyek .projects-list {
+        gap: 20px;
     }
-    .chat-input button {
-        width: 35px;
-        height: 35px;
+
+    .project-item img {
+         height: 150px; /* Smaller fixed height for project images */
+    }
+
+    .contact-info p {
         font-size: 1em;
     }
 }
-
