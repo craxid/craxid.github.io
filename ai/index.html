@@ -715,10 +715,13 @@
                     projectsListDiv.innerHTML = '<p>Tidak ada proyek yang ditampilkan.</p>';
                 } else {
                     topProjects.forEach(project => {
+                        // URL gambar default. Sensei bisa ganti ini dengan URL gambar lain.
+                        const defaultImageUrl = 'https://via.placeholder.com/400x200?text=Project+Image'; // <-- URL gambar default
+
                         const projectItemHtml = `
                             <div class="project-item">
-                                <!-- Jika tidak ada gambar spesifik, mungkin bisa pakai ikon atau thumbnail default -->
-                                <img src="https://via.placeholder.com/400x200?text=${project.name}" alt="Gambar Proyek ${project.name}">
+                                <!-- Menggunakan gambar default -->
+                                <img src="${defaultImageUrl}" alt="Gambar Proyek ${project.name}"> <!-- <-- Diubah di sini! -->
                                 <h3>${project.name}</h3>
                                 <p>${project.description || 'Tidak ada deskripsi.'}</p>
                                 <div class="project-meta">
