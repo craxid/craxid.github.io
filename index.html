@@ -3,163 +3,771 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dede Kurniawan</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <!-- Favicon (opsional) -->
-    <link rel="icon" href="akebi.jpg" type="image/x-icon">
+    <title>Portofolio Dede Kurniawan</title>
+    <!-- Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Favicon menggunakan link GitHub -->
+    <link rel="icon" href="https://github.com/craxid.png" type="image/x-icon">
+
+    <!-- Gaya CSS di sini -->
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        /* Header Styles */
+        header {
+            background: #333;
+            color: #fff;
+            padding-top: 50px; /* Padding atas */
+            padding-bottom: 100px; /* Ruang untuk foto profil yang overlapping */
+            border-bottom: #075e54 5px solid; /* Garis batas header */
+            text-align: center;
+            position: relative; /* Untuk posisi absolut foto profil */
+            overflow: visible; /* Pastikan foto profil tidak terpotong */
+            transition: background-color 0.3s ease;
+        }
+
+        header .container {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             justify-content: center;
+             min-height: 250px; /* Tinggi minimum konten header */
+        }
+
+        header h1 {
+            margin-top: 10px;
+            font-size: 2.8em;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.3em;
+            margin-top: 0;
+            margin-bottom: 30px; /* Jarak bawah sebelum nav */
+        }
+
+        /* Navigasi */
+        header nav ul {
+            padding: 0;
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 25px; /* Jarak antar item menu */
+            margin-top: 20px;
+        }
+
+        header nav a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+
+        header nav a:hover {
+            color: #075e54;
+        }
+
+        /* Foto Profil (Posisi di tengah garis) */
+        header .profile-img {
+            width: 150px; /* Lebar foto */
+            height: 150px; /* Tinggi foto */
+            border-radius: 50%; /* Bentuk bulat */
+            object-fit: cover;
+            border: 7px solid #fff; /* Border putih tebal */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Shadow */
+            position: absolute; /* Posisikan absolut */
+            bottom: -75px; /* Geser ke atas sejauh setengah tinggi foto (150/2) dari batas bawah header */
+            left: 50%; /* Posisikan tepi kiri foto di tengah header */
+            transform: translateX(-50%); /* Geser foto ke kiri sejauh setengah lebarnya */
+            z-index: 10; /* Pastikan foto di atas konten lain */
+            background-color: #fff; /* Latar putih di belakang border */
+        }
+
+        /* Tombol Toggle Tema */
+        .theme-toggle {
+            position: absolute; /* Posisikan absolut */
+            top: 20px; /* Jarak dari atas header */
+            right: 20px; /* Jarak dari kanan header */
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5em;
+            cursor: pointer;
+            outline: none;
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: #075e54;
+        }
+
+
+        /* Section Styles */
+        section {
+            padding: 80px 0 40px 0; /* Tambahkan padding atas untuk memberi ruang foto profil */
+            border-bottom: #ccc 1px solid;
+        }
+
+        section h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 2em;
+        }
+
+        /* About Section */
+        #about .container p {
+            text-align: justify;
+            max-width: 800px;
+            margin: auto;
+            font-size: 1.1em;
+        }
+
+        /* Skills Section */
+        #skills {
+            background-color: #e5ddd5; /* Warna latar berbeda */
+            transition: background-color 0.3s ease;
+        }
+
+        #skills .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            text-align: center;
+        }
+
+        .skill-item {
+            flex: 1 1 120px; /* Flex basis */
+            max-width: 150px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .skill-item i {
+            font-size: 3.5em; /* Ukuran ikon */
+            color: #075e54;
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+
+         .skill-item h3 {
+             margin: 0;
+             font-size: 1.2em;
+             color: #333;
+             transition: color 0.3s ease;
+         }
+
+
+        /* Projects Section */
+        #projects .projects-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+            gap: 40px; /* Jarak antar proyek */
+        }
+
+        .project-item {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            text-align: left; /* Rata kiri untuk deskripsi */
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .project-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Gaya untuk placeholder ikon gambar proyek */
+        .project-item .project-icon-placeholder { /* <-- Kelas baru */
+            width: 100%; /* Sama lebar dengan gambar */
+            height: 200px; /* Sama tinggi dengan gambar */
+            background-color: #eee; /* Latar belakang abu-abu muda */
+            display: flex; /* Untuk menengahkan ikon */
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            align-self: center;
+            color: #555; /* Warna ikon default */
+            font-size: 4em; /* Ukuran ikon di placeholder */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode .project-item .project-icon-placeholder {
+             background-color: #444;
+             color: #bbb;
+        }
+
+
+        /* .project-item img { ... } */ /* Gaya img tetap ada jika Kamu nanti pakai gambar asli */
+
+
+        .project-item h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #075e54;
+            font-size: 1.5em;
+        }
+
+         .project-item p {
+             font-size: 1em;
+             margin-bottom: 15px;
+             flex-grow: 1; /* Agar deskripsi mengisi ruang */
+             color: #555;
+         }
+
+         .project-item .project-meta {
+              font-size: 0.9em;
+              color: #777;
+              margin-bottom: 15px;
+         }
+
+         .project-item .project-meta i {
+             margin-right: 5px;
+             color: #ffc107; /* Warna bintang */
+         }
+
+
+        .project-item .btn {
+            display: inline-block;
+            background: #075e54;
+            color: #fff;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            align-self: flex-start; /* Tombol rata kiri */
+            transition: background-color 0.3s ease;
+        }
+
+        .project-item .btn:hover {
+            background: #054a40;
+        }
+
+        .project-item .btn i {
+            margin-left: 8px;
+            font-size: 1em;
+        }
+
+
+        /* Contact Section */
+        #contact .container {
+            text-align: center;
+        }
+
+        #contact .contact-info {
+            margin-top: 30px;
+        }
+
+        .contact-info p {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+            color: #075e54;
+        }
+
+        .contact-info a {
+            color: #075e54;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 30px 0;
+            transition: background-color 0.3s ease;
+        }
+
+        footer p {
+            margin: 5px 0;
+            font-size: 0.95em;
+            color: #ccc;
+        }
+
+        /* --- Dark Mode Styles --- */
+        body.dark-mode {
+            background-color: #222;
+            color: #eee;
+        }
+
+        body.dark-mode header {
+            background: #444;
+            border-bottom-color: #03dac6;
+        }
+
+        body.dark-mode header nav a:hover {
+            color: #03dac6;
+        }
+
+        body.dark-mode header .profile-img {
+            border-color: #222;
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+            background-color: #444;
+        }
+
+        body.dark-mode .theme-toggle {
+             color: #eee;
+        }
+
+        body.dark-mode .theme-toggle:hover {
+             color: #03dac6;
+        }
+
+
+        body.dark-mode section h2 {
+             color: #eee;
+        }
+
+        body.dark-mode #skills {
+             background-color: #333;
+        }
+
+        body.dark-mode .skill-item {
+            background: #555;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .skill-item:hover {
+             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-mode .skill-item i {
+             color: #03dac6;
+        }
+
+         body.dark-mode .skill-item h3 {
+             color: #eee;
+         }
+
+
+        body.dark-mode .project-item {
+            background: #555;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+         body.dark-mode .project-item:hover {
+             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+         }
+
+        body.dark-mode .project-item h3 {
+            color: #03dac6;
+        }
+
+         body.dark-mode .project-item p {
+             color: #ccc;
+         }
+
+         body.dark-mode .project-item .project-meta {
+              color: #bbb;
+         }
+
+         body.dark-mode .project-item .project-meta i {
+              color: #ffd700; /* Warna bintang di dark mode */
+         }
+
+
+        body.dark-mode .project-item .btn {
+            background: #03dac6;
+            color: #333;
+        }
+
+        body.dark-mode .project-item .btn:hover {
+            background: #02bdae;
+        }
+
+        body.dark-mode .contact-info i {
+             color: #03dac6;
+        }
+
+        body.dark-mode .contact-info a {
+             color: #03dac6;
+        }
+
+        body.dark-mode footer {
+            background: #444;
+        }
+
+        body.dark-mode footer p {
+            color: #bbb;
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+
+            header {
+                padding-top: 30px;
+                padding-bottom: 80px; /* Sesuaikan padding bawah header */
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+
+            header nav ul {
+                flex-direction: column; /* Stack navbar items vertically */
+                gap: 10px;
+                margin-top: 15px;
+            }
+
+             .theme-toggle {
+                 top: 15px;
+                 right: 15px;
+                 font-size: 1.3em;
+             }
+
+
+            header .profile-img {
+                width: 120px; /* Ukuran foto mobile */
+                height: 120px; /* Ukuran foto mobile */
+                bottom: -60px; /* Geser ke atas sejauh setengah tinggi (120/2) */
+            }
+
+            section {
+                 padding-top: 60px; /* Sesuaikan padding atas section */
+                 padding-bottom: 30px;
+            }
+
+            section h2 {
+                 font-size: 1.8em;
+                 margin-bottom: 30px;
+            }
+
+            #about .container p {
+                font-size: 1em;
+            }
+
+
+            #skills .skills-list {
+                gap: 20px;
+            }
+
+            .skill-item {
+                flex: 1 1 100px;
+                max-width: 130px;
+                padding: 15px;
+            }
+
+            .skill-item i {
+                font-size: 3em;
+                margin-bottom: 10px;
+            }
+
+             .skill-item h3 {
+                 font-size: 1.1em;
+             }
+
+
+            #projects .projects-list {
+                gap: 30px;
+            }
+
+            .project-item {
+                 padding: 20px;
+            }
+
+            .project-item img {
+                 height: 160px;
+            }
+
+             .project-item h3 {
+                 font-size: 1.3em;
+             }
+
+             .project-item p {
+                 font-size: 0.95em;
+             }
+
+             .project-item .project-meta {
+                 font-size: 0.85em;
+             }
+
+            .project-item .btn {
+                 padding: 10px 15px;
+                 font-size: 0.9em;
+            }
+
+            .contact-info p {
+                font-size: 1.1em;
+            }
+
+            footer {
+                 padding: 20px 0;
+            }
+
+            footer p {
+                font-size: 0.85em;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Container untuk Status Bar (Jam di kiri, Baterai di kanan) ->
-    <!-<div class="status-bar">
-        <!- Elemen untuk menampilkan waktu (Akan diisi oleh JavaScript) ->
-        <span id="current-time" class="status-text"></span>
-        <!- Elemen untuk Menampilkan Status Baterai ->
-        <div id="battery-status">
-            <div class="battery-outline">
-                <div class="battery-fill"></div>
-                <!- Elemen untuk Icon Petir (Charging) - Posisinya di dalam outline ->
-                <i class="fas fa-bolt lightning-icon"></i>
-            </div>
-            <span class="battery-text"></span>
-        </div>
-    </div>-->
-
-    <!-- Wrapper untuk konten utama (memperbaiki centering) -->
-    <div class="main-wrapper">
+    <header>
         <div class="container">
-            <!-- Wrapper untuk Gambar Profil dan Badge -->
-            <div class="profile-image-wrapper">
-                <img src="akebi.jpg" alt="Gambar Profil" class="profile-image">
-                <i class="fas fa-shield-alt profile-badge"></i> <!-- Shield badge -->
-            </div>
+            <!-- Foto Profil menggunakan link GitHub -->
+            <img src="https://github.com/craxid.png?size=150" alt="Foto Profil Dede Kurniawan" class="profile-img">
+            <h1>Dede Kurniawan</h1> <!-- Ganti dengan Nama Lengkap Kamu -->
+            <p>Pengembang Web | AI Enthusiast</p> <!-- Ganti dengan Bidang/Profesi Kamu -->
+            <nav>
+                <ul>
+                    <li><a href="#about">Tentang Saya</a></li>
+                    <li><a href="#skills">Keahlian</a></li>
+                    <li><a href="#projects">Proyek</a></li>
+                    <li><a href="#contact">Kontak</a></li>
+                </ul>
+            </nav>
+        </div>
+         <!-- Tombol Toggle Tema -->
+         <button id="theme-toggle" class="theme-toggle">
+            <i class="fas fa-moon"></i> <!-- Ikon bulan untuk tema default (light) -->
+        </button>
+    </header>
 
-            <h1>Dede Kurniawan <i class="fas fa-check-circle verified-icon"></i></h1> <!-- Nama dengan Centang biru -->
-            <p>Ngapain ngoding njir, mending skrol fesnuk.</p>
-            <div class="links">
+    <section id="about">
+        <div class="container">
+            <h2>Tentang Saya</h2>
+            <p>
+                Saya adalah Dede Kurniawan, seorang pengembang yang bersemangat dalam menciptakan solusi digital. Saya memiliki minat yang kuat pada pengembangan web dan kecerdasan buatan. Saya senang mempelajari teknologi baru dan menerapkannya dalam proyek-proyek yang menarik.
+                <!-- Ganti dengan deskripsi diri Kamu -->
+            </p>
+        </div>
+    </section>
 
-                <a href="https://chat.crax.my.id/" class="link-button whatsapp-button" target="_blank">
-                    <i class="fab fa-whatsapp"></i> Chat AI GRATIS
-                </a>
-
-                <a href="https://github.com/craxid/connexis" class="link-button netral-button" target="_blank">
-                    <i class="fas fa-cloud-download"></i> Unduh Template Ini
-                </a>
-                
-                <a href="https://facebook.com/dede2015k" class="link-button facebook-button" target="_blank">
-                    <i class="fab fa-facebook-f"></i> Facebook
-                </a>
-
-                <a href="https://github.com/craxid" class="link-button github-button" target="_blank">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-                
-                <a href="/bot/" class="link-button whatsapp-button" target="_blank">
-                    <i class="fab fa-whatsapp"></i> WhatsApp (BOT)
-                </a>
-
-                <a href="https://youtube.com/clandare" class="link-button youtube-button" target="_blank">
-                    <i class="fab fa-youtube"></i> YouTube 
-                </a>
-
-                <a href="https://x.com/dede_klender" class="link-button twitter-button" target="_blank">
-                    <i class="fab fa-x-twitter"></i> X/Twitter
-                </a>
-
-                <a href="https://instagram.com/dede_klender" class="link-button instagram-button" target="_blank">
-                    <i class="fab fa-instagram"></i> Instagram
-                </a>
+    <section id="skills">
+        <div class="container">
+            <h2>Keahlian</h2>
+            <div class="skills-list">
+                <div class="skill-item">
+                    <i class="fab fa-html5"></i>
+                    <h3>HTML5</h3>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-css3-alt"></i>
+                    <h3>CSS3</h3>
+                </div>
+                 <div class="skill-item">
+                    <i class="fab fa-js"></i>
+                    <h3>JavaScript</h3>
+                </div>
+                 <div class="skill-item">
+                    <i class="fab fa-node-js"></i>
+                    <h3>Node.js</h3>
+                </div>
+                 <div class="skill-item">
+                     <i class="fab fa-react"></i> <!-- Contoh ikon React -->
+                     <h3>React</h3>
+                 </div>
+                 <div class="skill-item">
+                     <i class="fas fa-database"></i>
+                     <h3>Database</h3> <!-- Umumkan saja, detail bisa di deskripsi proyek -->
+                 </div>
+                 <div class="skill-item">
+                     <i class="fab fa-python"></i>
+                     <h3>Python</h3>
+                 </div>
+                 <div class="skill-item">
+                      <i class="fas fa-brain"></i> <!-- Contoh ikon AI/ML -->
+                      <h3>AI/ML Basics</h3>
+                  </div>
+                <!-- Tambahkan keahlian lain sesuai ikon Font Awesome -->
             </div>
         </div>
+    </section>
 
-        <footer>
-            <p>Made with ♥️ by <a href="/">CraXID Project</a></p>
-            <p>Copyright &copy; <span id="currentYear"></span></p>
-        </footer>
-    </div>
+    <section id="projects">
+        <div class="container">
+            <h2>Project Saya</h2>
+            <!-- Area ini akan diisi oleh JavaScript -->
+            <div class="projects-list">
+                <!-- Project items will be loaded here by JS -->
+                 <p id="projects-loading">Memuat proyek dari GitHub...</p>
+                 <p id="projects-error" style="color: red; display: none;">Gagal memuat proyek. Silakan coba lagi nanti.</p>
+            </div>
+        </div>
+    </section>
 
+    <section id="contact">
+        <div class="container">
+            <h2>Kontak</h2>
+            <p>Kamu bisa menghubungi saya melalui:</p>
+            <div class="contact-info">
+                <p><i class="fas fa-envelope"></i> Email: <a href="mailto:dev@crax.my.id">dev@crax.my.id</a></p> <!-- Ganti Email -->
+                <p><i class="fab fa-linkedin"></i> LinkedIn: <a href="https://www.linkedin.com/in/ClanDare" target="_blank">ClanDare</a></p> <!-- Ganti Link LinkedIn -->
+                <p><i class="fab fa-github"></i> GitHub: <a href="https://github.com/craxid" target="_blank">github.com/craxid</a></p> <!-- Link GitHub Kamu -->
+                <!-- Tambahkan kontak lain (misal: Twitter, portofolio lain) -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Dede Kurniawan.</p> <!-- Ganti dengan Nama Kamu -->
+             <p>Inspired by Gemini AI, developed by CraXID Project.</p> <!-- Tambahkan ini jika Kamu suka :) -->
+        </div>
+    </footer>
+
+    <!-- JavaScript di sini -->
     <script>
-        const yearSpan = document.getElementById('currentYear');
-        const currentYear = new Date().getFullYear();
-        if (yearSpan) {
-            yearSpan.textContent = currentYear;
-        }
+        // --- Theme Toggle Logic ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleIcon = themeToggleBtn.querySelector('i');
 
-        const timeSpan = document.getElementById('current-time');
-
-        function updateTime() {
-            const now = new Date();
-            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const dayName = days[now.getDay()];
-            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            const monthName = months[now.getMonth()];
-            const date = now.getDate();
-            const year = now.getFullYear();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            const formattedString = `${dayName}, ${date} ${monthName} ${year} ${hours}:${minutes}:${seconds}`;
-
-            if (timeSpan) {
-                timeSpan.textContent = formattedString;
+        // Apply saved theme on load
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.body.classList.add(savedTheme + '-mode');
+            if (savedTheme === 'dark') {
+                 themeToggleIcon.classList.remove('fa-moon');
+                 themeToggleIcon.classList.add('fa-sun');
+            } else {
+                 themeToggleIcon.classList.remove('fa-sun');
+                 themeToggleIcon.classList.add('fa-moon');
             }
-        }
-
-        updateTime();
-        setInterval(updateTime, 1000);
-
-        const batteryStatusDiv = document.getElementById('battery-status');
-        const batteryOutlineDiv = batteryStatusDiv ? batteryStatusDiv.querySelector('.battery-outline') : null;
-        const batteryFillDiv = batteryStatusDiv ? batteryStatusDiv.querySelector('.battery-fill') : null;
-        const batteryTextSpan = batteryStatusDiv ? batteryStatusDiv.querySelector('.battery-text') : null;
-        const lightningIcon = batteryStatusDiv ? batteryStatusDiv.querySelector('.lightning-icon') : null;
-
-        if ('getBattery' in navigator) {
-            navigator.getBattery().then(function(battery) {
-                function updateBatteryDisplay() {
-                    const levelPercentage = Math.round(battery.level * 100);
-
-                    if (batteryFillDiv) {
-                        batteryFillDiv.style.width = levelPercentage + '%';
-                        batteryFillDiv.classList.remove('low', 'medium', 'charging');
-                        if (battery.charging) {
-                            batteryFillDiv.classList.add('charging');
-                        } else if (levelPercentage < 20) {
-                            batteryFillDiv.classList.add('low');
-                        } else if (levelPercentage < 50) {
-                             batteryFillDiv.classList.add('medium');
-                        }
-                         // Jika >= 50% dan tidak charging, warnanya tetap default (hijau)
-                    }
-
-                    if (batteryTextSpan) {
-                         batteryTextSpan.textContent = levelPercentage + '%';
-                    }
-
-                    if (lightningIcon) {
-                        if (battery.charging) {
-                            lightningIcon.style.display = 'block';
-                        } else {
-                            lightningIcon.style.display = 'none';
-                        }
-                    }
-                }
-
-                updateBatteryDisplay();
-                battery.addEventListener('levelchange', updateBatteryDisplay);
-                battery.addEventListener('chargingchange', updateBatteryDisplay);
-            }).catch(function(error) {
-                console.error('Error accessing Battery Status API: ', error);
-                 if (batteryStatusDiv) {
-                    batteryStatusDiv.style.display = 'none';
-                }
-            });
         } else {
-            if (batteryStatusDiv) {
-                batteryStatusDiv.style.display = 'none';
+             // Default to light mode if no theme is saved
+             document.body.classList.add('light-mode'); // Meskipun tidak ada gaya .light-mode, ini untuk konsistensi
+             themeToggleIcon.classList.remove('fa-sun');
+             themeToggleIcon.classList.add('fa-moon');
+        }
+
+        // Event listener for theme toggle button
+        themeToggleBtn.addEventListener('click', () => {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            if (isDarkMode) {
+                document.body.classList.remove('dark-mode');
+                document.body.classList.add('light-mode');
+                themeToggleIcon.classList.remove('fa-sun');
+                themeToggleIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.remove('light-mode'); // Hapus kelas light-mode jika ada
+                document.body.classList.add('dark-mode');
+                themeToggleIcon.classList.remove('fa-moon');
+                themeToggleIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // --- GitHub Projects Fetch Logic ---
+        const githubUsername = 'craxid'; // Ganti dengan username GitHub Kamu
+        const projectsListDiv = document.querySelector('#projects .projects-list');
+        const projectsLoading = document.getElementById('projects-loading');
+        const projectsError = document.getElementById('projects-error');
+
+        async function fetchGitHubProjects() {
+            try {
+                projectsLoading.style.display = 'block'; // Tampilkan pesan loading
+                projectsError.style.display = 'none'; // Sembunyikan pesan error
+
+                // Memanggil GitHub API tanpa parameter sort yang tidak didukung di endpoint ini
+                // Kita akan mengurutkan secara manual di JavaScript
+                const response = await fetch(`https://api.github.com/users/${githubUsername}/repos`);
+
+                if (!response.ok) {
+                    throw new Error(`GitHub API error! status: ${response.status}`);
+                }
+
+                const repositories = await response.json();
+
+                // Urutkan repository berdasarkan stargazers_count secara descending di JavaScript
+                const sortedRepositories = repositories.sort((a, b) => b.stargazers_count - a.stargazers_count);
+
+                // Filter fork dan ambil 3 teratas dari hasil yang SUDAH diurutkan
+                const topProjects = sortedRepositories
+                    .filter(repo => !repo.fork)
+                    .slice(0, 3);
+
+
+                projectsListDiv.innerHTML = ''; // Kosongkan area loading/error
+
+                if (topProjects.length === 0) {
+                    projectsListDiv.innerHTML = '<p>Tidak ada proyek yang ditampilkan.</p>';
+                } else {
+                    topProjects.forEach(project => {
+                        // URL gambar default. Kamu bisa ganti ini dengan URL gambar lain.
+                        // Atau, kita bisa gunakan Font Awesome ikon sebagai placeholder!
+                        // const defaultImageUrl = 'https://via.placeholder.com/400x200?text=Project+Image'; // URL gambar default
+                        const defaultIconClass = 'fas fa-code'; // <-- Kelas Font Awesome untuk ikon default
+
+                        const projectItemHtml = `
+                            <div class="project-item">
+                                <!-- Menggunakan Font Awesome ikon sebagai placeholder gambar -->
+                                <div class="project-icon-placeholder"> <!-- <-- Div placeholder baru -->
+                                     <i class="${defaultIconClass}"></i> <!-- <-- Ikon Font Awesome di sini -->
+                                </div>
+                                <h3>${project.name}</h3>
+                                <p>${project.description || 'Tidak ada deskripsi.'}</p>
+                                <div class="project-meta">
+                                     <i class="fas fa-star"></i> ${project.stargazers_count} stars
+                                     <i class="fas fa-code-branch"></i> ${project.forks_count} forks
+                                </div>
+                                <a href="${project.html_url}" target="_blank" class="btn">Lihat di GitHub <i class="fas fa-external-link-alt"></i></a>
+                            </div>
+                        `;
+                        projectsListDiv.innerHTML += projectItemHtml;
+                    });
+                }
+
+            } catch (error) {
+                console.error('Error fetching GitHub projects:', error);
+                projectsListDiv.innerHTML = '';
+                projectsError.style.display = 'block';
+                 projectsError.textContent = `Gagal memuat proyek: ${error.message}. Silakan cek username GitHub atau coba lagi nanti.`;
+            } finally {
+                 projectsLoading.style.display = 'none';
             }
         }
+
+        // Fetch projects when the page loads
+        document.addEventListener('DOMContentLoaded', fetchGitHubProjects);
+
     </script>
 
 </body>
