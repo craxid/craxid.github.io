@@ -86,7 +86,7 @@
             height: 150px; /* Tinggi foto */
             border-radius: 50%; /* Bentuk bulat */
             object-fit: cover;
-            border: 5px solid #007bff; /* Border putih tebal */
+            border: 2px solid #007bff; /* Border putih tebal */
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Shadow */
             /* Hapus positioning absolut dan relative */
             /* position: absolute; bottom: -75px; left: 50%; transform: translateX(-50%); */
