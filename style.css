@@ -1,4 +1,4 @@
-    /* Gaya CSS di sini */
+/* Gaya CSS di sini */
         /* Base Styles */
         body {
             font-family: 'Arial', sans-serif;
@@ -25,8 +25,8 @@
             padding-bottom: 100px; /* Ruang untuk foto profil yang overlapping */
             border-bottom: #075e54 5px solid; /* Garis batas header */
             text-align: center;
-            position: relative; /* Untuk posisi absolut foto profil */
-            overflow: visible; /* Pastikan foto profil tidak terpotong */
+            position: relative; /* Untuk posisi absolut foto profil dan badge */
+            overflow: visible; /* Pastikan foto profil dan badge tidak terpotong */
             transition: background-color 0.3s ease;
         }
 
@@ -87,6 +87,31 @@
             z-index: 10; /* Pastikan foto di atas konten lain */
             background-color: #fff; /* Latar putih di belakang border */
         }
+
+        /* Gaya untuk Badge Profil (Lingkaran Biru dengan Ikon Shield) */
+        .profile-badge {
+            position: absolute; /* Posisikan absolut */
+            bottom: -95px; /* Sesuaikan posisi di bawah foto. -75px (bawah foto) + sekitar 20px (untuk jarak/overlap) */
+            left: 50%; /* Tengah secara horizontal */
+            transform: translateX(-50%); /* Geser ke kiri sejauh setengah lebarnya */
+            width: 35px; /* Ukuran lingkaran badge */
+            height: 35px; /* Ukuran lingkaran badge */
+            background-color: #007bff; /* Warna biru (mirip Facebook verified) */
+            border-radius: 50%; /* Buat bulat */
+            display: flex; /* Gunakan flexbox untuk menengahkan ikon di dalamnya */
+            justify-content: center; /* Tengahkan horizontal */
+            align-items: center; /* Tengahkan vertikal */
+            border: 3px solid #fff; /* Border putih agar terlihat jelas */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sedikit bayangan */
+            z-index: 11; /* Pastikan badge di atas foto profil */
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-badge i {
+            color: #fff; /* Warna ikon putih */
+            font-size: 1.2em; /* Ukuran ikon */
+        }
+
 
         /* Tombol Toggle Tema */
         .theme-toggle {
@@ -332,6 +357,18 @@
             background-color: #444;
         }
 
+        /* Dark Mode Styles untuk Badge */
+        body.dark-mode .profile-badge {
+            background-color: #03dac6; /* Warna berbeda di dark mode (sesuai tema dark mode) */
+            border-color: #222; /* Warna border sesuai background dark mode */
+            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .profile-badge i {
+            color: #333; /* Warna ikon di dark mode */
+        }
+
+
         body.dark-mode .theme-toggle {
              color: #eee;
         }
@@ -373,7 +410,7 @@
         }
 
          body.dark-mode .project-item:hover {
-             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+             box-shadow: 0 88px 20px rgba(0, 0, 0, 0.4);
          }
 
         body.dark-mode .project-item h3 {
@@ -456,6 +493,18 @@
                 height: 120px; /* Ukuran foto mobile */
                 bottom: -60px; /* Geser ke atas sejauh setengah tinggi (120/2) */
             }
+
+            /* Responsive Adjustments untuk Badge */
+            .profile-badge {
+                bottom: -75px; /* Sesuaikan posisi untuk ukuran foto mobile (120px, bottom -60px) */
+                width: 30px; /* Ukuran lebih kecil di mobile */
+                height: 30px; /* Ukuran lebih kecil di mobile */
+                border-width: 2px; /* Border lebih tipis */
+            }
+            .profile-badge i {
+                font-size: 1em; /* Ukuran ikon lebih kecil */
+            }
+
 
             section {
                  padding-top: 60px; /* Sesuaikan padding atas section */
