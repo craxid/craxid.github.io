@@ -73,6 +73,13 @@
             color: #075e54;
         }
 
+        /* Wrapper for Profile Image and Badge */
+        .profile-wrapper {
+            position: relative; /* Positioning context for the badge */
+            display: inline-block; /* Wrap tightly around the image+badge */
+            margin-bottom: 20px; /* Space below the wrapper (adjust as needed) */
+        }
+
         /* Foto Profil (Sekarang di atas nama) */
         header .profile-img {
             width: 150px; /* Lebar foto */
@@ -81,20 +88,21 @@
             object-fit: cover;
             border: 7px solid #fff; /* Border putih tebal */
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Shadow */
-            /* Hapus positioning absolut */
+            /* Hapus positioning absolut dan relative */
             /* position: absolute; bottom: -75px; left: 50%; transform: translateX(-50%); */
-            position: relative; /* Tambahkan relative agar badge bisa diposisikan relatif terhadapnya */
+            /* position: relative; */
             z-index: 10; /* Pastikan foto di atas badge */
             background-color: #fff; /* Latar putih di belakang border */
-            margin-bottom: 20px; /* Jarak antara foto dan nama */
+            /* Hapus margin-bottom di sini, pindah ke profile-wrapper */
+            /* margin-bottom: 20px; */
         }
 
         /* Gaya untuk Badge Profil (Lingkaran Biru dengan Ikon Shield) */
         .profile-badge {
             position: absolute; /* Tetap absolut */
-            /* Posisikan relatif terhadap .profile-img (karena img sekarang relative) */
-            bottom: 0; /* Posisikan di bagian bawah elemen .profile-img */
-            right: 0; /* Posisikan di bagian kanan elemen .profile-img */
+            /* Posisikan relatif terhadap .profile-wrapper */
+            bottom: 0; /* Posisikan di bagian bawah elemen .profile-wrapper */
+            right: 0; /* Posisikan di bagian kanan elemen .profile-wrapper */
             width: 35px; /* Ukuran lingkaran badge */
             height: 35px; /* Ukuran lingkaran badge */
             background-color: #007bff; /* Warna biru (mirip Facebook verified) */
@@ -293,9 +301,19 @@
             transition: background-color 0.3s ease;
         }
 
+        body.dark-mode .project-item .btn {
+            background: #03dac6; /* Warna di dark mode */
+            color: #333; /* Warna di dark mode */
+        }
+
         .project-item .btn:hover {
             background: #054a40;
         }
+
+        body.dark-mode .project-item .btn:hover {
+            background: #02bdae; /* Warna hover di dark mode */
+        }
+
 
         .project-item .btn i {
             margin-left: 8px;
@@ -422,7 +440,7 @@
 
         body.dark-mode .skill-item:hover {
              box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        }
+         }
 
         body.dark-mode .skill-item i {
              color: #03dac6;
@@ -449,16 +467,6 @@
          body.dark-mode .project-item p {
              color: #ccc;
          }
-
-
-        body.dark-mode .project-item .btn {
-            background: #03dac6;
-            color: #333;
-        }
-
-        body.dark-mode .project-item .btn:hover {
-            background: #02bdae;
-        }
 
 
         /* Responsive Design */
@@ -492,19 +500,26 @@
                  font-size: 1.3em;
              }
 
+            /* Responsive Wrapper */
+             .profile-wrapper {
+                 margin-bottom: 15px; /* Space below wrapper mobile */
+             }
+
 
             header .profile-img {
                 width: 120px; /* Ukuran foto mobile */
                 height: 120px; /* Ukuran foto mobile */
                 /* Hapus positioning absolut mobile */
                 /* bottom: -60px; */
-                 position: relative; /* Tambahkan relative untuk mobile juga */
-                 margin-bottom: 15px; /* Jarak di mobile */
+                 /* Hapus relative mobile juga */
+                 /* position: relative; */
+                 /* Hapus margin-bottom mobile juga */
+                 /* margin-bottom: 15px; */
             }
 
             /* Responsive Adjustments untuk Badge */
             .profile-badge {
-                /* Posisikan relatif terhadap .profile-img mobile */
+                /* Posisikan relatif terhadap .profile-wrapper mobile */
                 bottom: 0;
                 right: 0;
                 width: 30px; /* Ukuran lebih kecil di mobile */
