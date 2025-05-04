@@ -104,8 +104,8 @@
             bottom: 0; /* Posisikan di bagian bawah elemen .profile-wrapper */
             left: 50%; /* Posisikan tepi kiri badge di tengah parent */
             /* right: 0; <-- Hapus ini */
-            width: 15px; /* Ukuran lingkaran badge */
-            height: 15px; /* Ukuran lingkaran badge */
+            width: 13px; /* Ukuran lingkaran badge */
+            height: 13px; /* Ukuran lingkaran badge */
             background-color: #007bff; /* Warna biru (mirip Facebook verified) */
             border-radius: 50%; /* Buat bulat */
             display: flex; /* Gunakan flexbox untuk menengahkan ikon di dalamnya */
