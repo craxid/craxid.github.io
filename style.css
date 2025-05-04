@@ -102,7 +102,8 @@
             position: absolute; /* Tetap absolut */
             /* Posisikan relatif terhadap .profile-wrapper */
             bottom: 0; /* Posisikan di bagian bawah elemen .profile-wrapper */
-            right: 0; /* Posisikan di bagian kanan elemen .profile-wrapper */
+            left: 50%; /* Posisikan tepi kiri badge di tengah parent */
+            /* right: 0; <-- Hapus ini */
             width: 35px; /* Ukuran lingkaran badge */
             height: 35px; /* Ukuran lingkaran badge */
             background-color: #007bff; /* Warna biru (mirip Facebook verified) */
@@ -114,8 +115,8 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sedikit bayangan */
             z-index: 11; /* Pastikan badge di atas foto profil */
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            /* Geser sedikit agar menempel di pojok bawah kanan foto */
-            transform: translate(25%, 25%); /* Geser 25% dari lebar badge ke kanan, 25% dari tinggi badge ke bawah */
+            /* Geser ke kiri sejauh setengah lebar badge (-50%) untuk menengahkan horizontal, dan geser ke bawah 25% dari tinggi badge */
+            transform: translate(-50%, 25%); /* <-- Modifikasi transform di sini */
         }
 
         .profile-badge i {
@@ -521,11 +522,12 @@
             .profile-badge {
                 /* Posisikan relatif terhadap .profile-wrapper mobile */
                 bottom: 0;
-                right: 0;
+                left: 50%; /* Posisikan tepi kiri badge di tengah parent */
+                /* right: 0; <-- Hapus ini */
                 width: 30px; /* Ukuran lebih kecil di mobile */
                 height: 30px; /* Ukuran lebih kecil di mobile */
                 border-width: 2px; /* Border lebih tipis */
-                 transform: translate(20%, 20%); /* Sesuaikan offset mobile */
+                 transform: translate(-50%, 20%); /* <-- Modifikasi transform di sini */
             }
             .profile-badge i {
                 font-size: 1em; /* Ukuran ikon lebih kecil */
