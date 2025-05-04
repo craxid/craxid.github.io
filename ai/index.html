@@ -620,9 +620,9 @@
     <section id="contact">
         <div class="container">
             <h2>Kontak</h2>
-            <p>Kamu bisa menghubungi saya melalui:</p>
+            <p>Sensei bisa menghubungi saya melalui:</p>
             <div class="contact-info">
-                <p><i class="fas fa-envelope"></i> Email: <a href="mailto:dev@crax.my.id">dev@crax.my.id</a></p> <!-- Ganti Email -->
+                <p><i class="fas fa-envelope"></i> Email: <a href="mailto:your.email@example.com">your.email@example.com</a></p> <!-- Ganti Email -->
                 <p><i class="fab fa-linkedin"></i> LinkedIn: <a href="[Link LinkedIn]" target="_blank">[Profil LinkedIn]</a></p> <!-- Ganti Link LinkedIn -->
                 <p><i class="fab fa-github"></i> GitHub: <a href="https://github.com/craxid" target="_blank">github.com/craxid</a></p> <!-- Link GitHub Sensei -->
                 <!-- Tambahkan kontak lain (misal: Twitter, portofolio lain) -->
@@ -632,8 +632,8 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 Dede Kurniawan. Create with ❤️ by Dede Kurniawan.</p> <!-- Ganti dengan Nama Sensei -->
-             <p>Inspired by Gemini AI, developed by CraXID Project.</p> <!-- Tambahkan ini jika Sensei suka :) -->
+            <p>&copy; 2025 Dede Kurniawan. Dibuat dengan ❤️ oleh Dede Kurniawan.</p> <!-- Ganti dengan Nama Sensei -->
+             <p>Inspired by Mika Misono, developed by CraXID Project.</p> <!-- Tambahkan ini jika Sensei suka :) -->
         </div>
     </footer>
 
@@ -690,7 +690,9 @@
                 projectsLoading.style.display = 'block'; // Tampilkan pesan loading
                 projectsError.style.display = 'none'; // Sembunyikan pesan error
 
-                const response = await fetch(`https://api.github.com/users/${githubUsername}/repos?sort=stargazers_count&direction=desc`);
+                // Memanggil GitHub API tanpa parameter sort yang tidak didukung di endpoint ini
+                // Kita akan mengurutkan secara manual di JavaScript
+                const response = await fetch(`https://api.github.com/users/${githubUsername}/repos`); // <-- Diubah di sini!
 
                 if (!response.ok) {
                     throw new Error(`GitHub API error! status: ${response.status}`);
@@ -698,10 +700,14 @@
 
                 const repositories = await response.json();
 
-                // Filter fork dan ambil 3 teratas
-                const topProjects = repositories
-                    .filter(repo => !repo.fork) // Filter repository yang merupakan fork
-                    .slice(0, 3); // Ambil 3 teratas
+                // Urutkan repository berdasarkan stargazers_count secara descending di JavaScript
+                const sortedRepositories = repositories.sort((a, b) => b.stargazers_count - a.stargazers_count); // <-- Ditambahkan di sini!
+
+                // Filter fork dan ambil 3 teratas dari hasil yang SUDAH diurutkan
+                const topProjects = sortedRepositories // <-- Gunakan hasil yang sudah diurutkan
+                    .filter(repo => !repo.fork)
+                    .slice(0, 3);
+
 
                 projectsListDiv.innerHTML = ''; // Kosongkan area loading/error
 
@@ -714,7 +720,7 @@
                                 <!-- Jika tidak ada gambar spesifik, mungkin bisa pakai ikon atau thumbnail default -->
                                 <img src="https://via.placeholder.com/400x200?text=${project.name}" alt="Gambar Proyek ${project.name}">
                                 <h3>${project.name}</h3>
-                                <p>${project.description || 'Tidak ada deskripsi.'}</p> <!-- Tampilkan deskripsi atau pesan default -->
+                                <p>${project.description || 'Tidak ada deskripsi.'}</p>
                                 <div class="project-meta">
                                      <i class="fas fa-star"></i> ${project.stargazers_count} stars
                                      <i class="fas fa-code-branch"></i> ${project.forks_count} forks
@@ -722,17 +728,17 @@
                                 <a href="${project.html_url}" target="_blank" class="btn">Lihat di GitHub <i class="fas fa-external-link-alt"></i></a>
                             </div>
                         `;
-                        projectsListDiv.innerHTML += projectItemHtml; // Tambahkan item proyek ke daftar
+                        projectsListDiv.innerHTML += projectItemHtml;
                     });
                 }
 
             } catch (error) {
                 console.error('Error fetching GitHub projects:', error);
-                projectsListDiv.innerHTML = ''; // Kosongkan area loading
-                projectsError.style.display = 'block'; // Tampilkan pesan error
-                 projectsError.textContent = `Gagal memuat proyek: ${error.message}. Silakan cek username GitHub atau coba lagi nanti.`; // Pesan error lebih detail
+                projectsListDiv.innerHTML = '';
+                projectsError.style.display = 'block';
+                 projectsError.textContent = `Gagal memuat proyek: ${error.message}. Silakan cek username GitHub atau coba lagi nanti.`;
             } finally {
-                 projectsLoading.style.display = 'none'; // Sembunyikan pesan loading
+                 projectsLoading.style.display = 'none';
             }
         }
 
