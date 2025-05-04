@@ -82,8 +82,8 @@
 
         /* Foto Profil (Sekarang di atas nama) */
         header .profile-img {
-            width: 150px; /* Lebar foto */
-            height: 150px; /* Tinggi foto */
+            width: 200px; /* Lebar foto */
+            height: 200px; /* Tinggi foto */
             border-radius: 50%; /* Bentuk bulat */
             object-fit: cover;
             border: 3px solid #007bff; /* Border putih tebal */
@@ -104,8 +104,8 @@
             bottom: 0; /* Posisikan di bagian bawah elemen .profile-wrapper */
             left: 50%; /* Posisikan tepi kiri badge di tengah parent */
             /* right: 0; <-- Hapus ini */
-            width: 20px; /* Ukuran lingkaran badge */
-            height: 20px; /* Ukuran lingkaran badge */
+            width: 15px; /* Ukuran lingkaran badge */
+            height: 15px; /* Ukuran lingkaran badge */
             background-color: #007bff; /* Warna biru (mirip Facebook verified) */
             border-radius: 50%; /* Buat bulat */
             display: flex; /* Gunakan flexbox untuk menengahkan ikon di dalamnya */
