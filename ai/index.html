@@ -3,262 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chat</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <!-- Favicon (opsional) -->
-    <link rel="icon" href="akebi.jpg" type="image/x-icon">
-    <!-- Tambahkan library Marked.js untuk mengolah Markdown -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.0/marked.min.js"></script>
+    <title>Portofolio [Nama Kamu]</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link ke file CSS -->
+    <link rel="icon" href="./media/favicon.ico" type="image/x-icon"> <!-- Favicon opsional -->
+    <!-- Tambahkan link font atau ikon lainnya jika perlu -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Login Container (sembunyikan secara default, tampilkan jika belum login) -->
-    <div class="login-container" id="login-container">
-        <h2>Masukkan Username Kamu</h2>
-        <div class="login-input">
-            <input type="text" id="username-input" placeholder="Username...">
-            <button id="login-button">Login</button>
+    <header>
+        <div class="container">
+            <img src="../media/profile.jpg" alt="Foto Profil [Nama Kamu]" class="profile-img">
+            <h1>[Nama Lengkap Kamu]</h1>
+            <p>Pengembang [Bidang Kamu] | [Gelar/Profesi Singkat]</p>
+            <nav>
+                <ul>
+                    <li><a href="#tentang">Tentang Saya</a></li>
+                    <li><a href="#keahlian">Keahlian</a></li>
+                    <li><a href="#proyek">Proyek</a></li>
+                    <li><a href="#kontak">Kontak</a></li>
+                </ul>
+            </nav>
         </div>
-        <p class="login-info">Username akan digunakan untuk menyimpan riwayat percakapan.</p>
-    </div>
+    </header>
 
-    <!-- Chat Container (sembunyikan secara default, tampilkan jika sudah login) -->
-    <div class="chat-container" id="chat-container">
-        <div class="chat-header">
-            <img src="akebi.jpg" alt="AI Profile" class="profile-pic">
-            <span class="chat-title">CraXID AI</span>
-             <span class="logged-in-user" id="logged-in-user"></span> <!-- Tampilkan username yang login -->
+    <section id="tentang">
+        <div class="container">
+            <h2>Tentang Saya</h2>
+            <p>
+                [Tulis deskripsi singkat tentang diri kamu di sini. Jelaskan siapa kamu, apa yang kamu lakukan, minat, dan passion kamu di bidang yang kamu geluti.]
+                <br><br>
+                Contoh: Saya adalah seorang pengembang web yang passionate dengan fokus pada pembuatan aplikasi web yang responsif dan user-friendly. Saya suka belajar teknologi baru dan berkontribusi pada proyek-proyek open source.
+            </p>
         </div>
+    </section>
 
-        <div class="chat-messages" id="chat-messages">
-            <!-- Pesan akan muncul di sini -->
-            <div class="message received">
-                <p>Halo! Masukkan username Anda untuk memulai chat.</p>
-                <span class="timestamp">--:--</span> <!-- Tambahkan elemen timestamp -->
+    <section id="keahlian">
+        <div class="container">
+            <h2>Keahlian</h2>
+            <div class="skills-list">
+                <div class="skill-item">
+                    <i class="fab fa-html5"></i> <!-- Contoh ikon Font Awesome -->
+                    <h3>HTML5</h3>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-css3-alt"></i>
+                    <h3>CSS3</h3>
+                </div>
+                 <div class="skill-item">
+                    <i class="fab fa-js"></i>
+                    <h3>JavaScript</h3>
+                </div>
+                 <div class="skill-item">
+                    <i class="fab fa-node-js"></i>
+                    <h3>Node.js</h3>
+                </div>
+                <!-- Tambahkan keahlian lain di sini -->
+                <div class="skill-item">
+                     <i class="fas fa-database"></i>
+                     <h3>Database (misal: MongoDB, SQL)</h3>
+                 </div>
+                 <div class="skill-item">
+                     <i class="fab fa-python"></i>
+                     <h3>Python</h3>
+                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="chat-input">
-            <input type="text" id="message-input" placeholder="Ketik pesan...">
-            <button id="send-button"><i class="fas fa-paper-plane"></i></button>
+    <section id="proyek">
+        <div class="container">
+            <h2>Proyek Pilihan</h2>
+            <div class="projects-list">
+                <div class="project-item">
+                    <img src="./media/project1.jpg" alt="Gambar Proyek 1">
+                    <h3>Nama Proyek 1</h3>
+                    <p>Deskripsi singkat tentang Proyek 1. Jelaskan teknologi yang digunakan dan apa fungsinya.</p>
+                    <a href="[Link ke Proyek/Repo]" target="_blank" class="btn">Lihat Proyek <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="project-item">
+                    <img src="./media/project2.jpg" alt="Gambar Proyek 2">
+                    <h3>Nama Proyek 2</h3>
+                    <p>Deskripsi singkat tentang Proyek 2. Jelaskan teknologi yang digunakan dan apa fungsinya.</p>
+                    <a href="[Link ke Proyek/Repo]" target="_blank" class="btn">Lihat Proyek <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <!-- Tambahkan proyek lain di sini -->
+            </div>
         </div>
-    </div>
+    </section>
 
-    <script>
-        const loginContainer = document.getElementById('login-container');
-        const usernameInput = document.getElementById('username-input');
-        const loginButton = document.getElementById('login-button');
-        const chatContainer = document.getElementById('chat-container');
-        const loggedInUserSpan = document.getElementById('logged-in-user');
+    <section id="kontak">
+        <div class="container">
+            <h2>Kontak</h2>
+            <p>Sensei bisa menghubungi saya melalui:</p>
+            <div class="contact-info">
+                <p><i class="fas fa-envelope"></i> Email: <a href="mailto:[email-kamu]">[email-kamu]</a></p>
+                <p><i class="fab fa-linkedin"></i> LinkedIn: <a href="[Link LinkedIn]" target="_blank">[Profil LinkedIn]</a></p>
+                <p><i class="fab fa-github"></i> GitHub: <a href="[Link GitHub]" target="_blank">[Profil GitHub]</a></p>
+                <!-- Tambahkan kontak lain (misal: Twitter, portofolio lain) -->
+            </div>
+        </div>
+    </section>
 
-        const messageInput = document.getElementById('message-input');
-        const sendButton = document.getElementById('send-button');
-        const chatMessages = document.getElementById('chat-messages');
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 [Nama Lengkap Kamu]. Dibuat dengan ❤️ oleh [Nama Kamu].</p>
+             <p>Powered by Mika Misono, developed by CraXID Project.</p>
+        </div>
+    </footer>
 
-        let currentUsername = null;
-
-        // Fungsi untuk mendapatkan waktu saat ini dalam format HH:MM
-        function getCurrentTime() {
-            const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            return `${hours}:${minutes}`;
-        }
-
-        // Fungsi untuk Menampilkan Tampilan Sesuai Status Login
-        function showChatInterface(username) {
-            currentUsername = username;
-            loggedInUserSpan.textContent = `(${username})`;
-            loginContainer.style.display = 'none';
-            chatContainer.style.display = 'flex'; // Use flex as per CSS
-
-            // Add welcome message after login (optional)
-             if (chatMessages.children.length <= 1) {
-                const welcomeMessage = document.createElement('div');
-                welcomeMessage.classList.add('message', 'received');
-                welcomeMessage.innerHTML = `<p>Selamat datang, ${username}! Saya adalah CraXID AI. Ada yang bisa saya bantu?</p>`;
-                 const timestampSpan = document.createElement('span');
-                 timestampSpan.classList.add('timestamp');
-                 timestampSpan.textContent = getCurrentTime();
-                 welcomeMessage.appendChild(timestampSpan);
-
-                chatMessages.appendChild(welcomeMessage);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-             } else {
-                 // If there are already messages (e.g., from a previous session loaded from backend),
-                 // you might need a function to load history here after login.
-                 // This function should also use addReceivedMessage to display them correctly.
-             }
-        }
-
-        function showLoginForm() {
-            currentUsername = null;
-            loggedInUserSpan.textContent = '';
-            loginContainer.style.display = 'flex'; // Use flex as per CSS
-            chatContainer.style.display = 'none';
-        }
-
-        // Check Login Status on Page Load
-        const savedUsername = localStorage.getItem('chatUsername');
-        if (savedUsername) {
-            showChatInterface(savedUsername);
-             // If you have adapted the backend to load history based on username,
-             // call the function to load history here after showChatInterface(savedUsername).
-             // Example: loadChatHistory(savedUsername);
-        } else {
-            showLoginForm();
-        }
-
-        // Event Listener for Login Button
-        loginButton.addEventListener('click', () => {
-            const username = usernameInput.value.trim();
-            if (username !== '') {
-                localStorage.setItem('chatUsername', username);
-                showChatInterface(username);
-                usernameInput.value = '';
-
-                // --- OPTIONAL: Send username to backend to start session ---
-                // If your backend has a /login endpoint for session setup, call fetch here.
-                /*
-                fetch('YOUR_BACKEND_API_ENDPOINT/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: username }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Login successful on backend?', data);
-                    // If login is successful on backend, the backend might return chat history
-                    // if (data && data.history) {
-                    //    displayChatHistory(data.history); // Function to display history
-                    // }
-                })
-                .catch((error) => {
-                    console.error('Error sending login info to backend:', error);
-                });
-                */
-                // --- END OF OPTIONAL ---
-
-            } else {
-                alert('Username tidak boleh kosong!');
-            }
-        });
-
-        // Event Listener for Username Input (Press Enter)
-        usernameInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                loginButton.click(); // Trigger login button click on Enter
-            }
-        });
-
-
-        // Fungsi untuk Mengirim Pesan (Diperbarui untuk Menambahkan Jam)
-        function sendMessage() {
-            const messageText = messageInput.value.trim();
-
-            if (messageText !== '') {
-                 // Tampilkan pesan yang dikirim
-                const sentMessageElement = document.createElement('div');
-                sentMessageElement.classList.add('message', 'sent');
-                sentMessageElement.innerHTML = `<p>${messageText}</p>`; // Pesan sendiri tetap plain text dalam <p>
-
-                 const timestampSpan = document.createElement('span');
-                 timestampSpan.classList.add('timestamp');
-                 timestampSpan.textContent = getCurrentTime();
-                 sentMessageElement.appendChild(timestampSpan);
-
-                chatMessages.appendChild(sentMessageElement);
-
-                // Bersihkan input
-                messageInput.value = '';
-
-                // Scroll ke pesan terbaru
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                // --- KIRIM PESAN KE BACKEND API (TERMASUK USERNAME) ---
-                
-                fetch('https://servai.onrender.com/chat', { // ✨ REPLACE THIS URL WITH YOUR RENDER.COM URL + /chat endpoint ✨
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    // ✨ Send messageText AND currentUsername to the backend ✨
-                    body: JSON.stringify({ message: messageText, user: currentUsername }),
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data && data.reply) {
-                         // ✨ addReceivedMessage akan otomatis menambahkan timestamp di dalamnya ✨
-                         addReceivedMessage(data.reply);
-                    } else {
-                         addReceivedMessage("Maaf, tidak ada balasan yang valid dari AI.");
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error sending message to backend:', error);
-                    addReceivedMessage("Maaf, terjadi kesalahan saat menghubungi AI.");
-                });
-                
-                // --- END OF SEND MESSAGE TO BACKEND API ---
-            }
-        }
-
-        // Function to add a received message (e.g., AI reply from backend)
-        // ✨ Fungsi ini sekarang akan mengolah teks menggunakan Marked.js DAN menambahkan Jam ✨
-        function addReceivedMessage(text) {
-             const receivedMessageElement = document.createElement('div');
-             receivedMessageElement.classList.add('message', 'received');
-
-             // Gunakan Marked.js untuk mengkonversi teks Markdown ke HTML
-             const htmlContent = marked.parse(text);
-
-             // Masukkan hasil HTML (bukan plain text) ke dalam elemen pesan
-             receivedMessageElement.innerHTML = htmlContent;
-
-             const timestampSpan = document.createElement('span');
-             timestampSpan.classList.add('timestamp');
-             timestampSpan.textContent = getCurrentTime();
-             receivedMessageElement.appendChild(timestampSpan);
-
-             chatMessages.appendChild(receivedMessageElement);
-
-             // Scroll ke pesan terbaru
-             chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        // Send message on button click
-        sendButton.addEventListener('click', sendMessage);
-
-        // Send message on Enter key press
-        messageInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                sendMessage();
-            }
-        });
-
-        // --- Manual Reply Instructions (REMOVE OR COMMENT OUT IF USING BACKEND) ---
-        /*
-        // If you are NOT using a backend to integrate your AI directly,
-        // you can simulate the AI's replies manually using your browser's Developer Console (F12).
-        // 1. Open your web chat page in the browser.
-        // 2. Open the Developer Console (F12).
-        // 3. Type or paste this command: addReceivedMessage("PASTE_AI_REPLY_TEXT_HERE");
-        //    Replace "PASTE_AI_REPLY_TEXT_HERE" with the actual reply text.
-        //    Example: addReceivedMessage("Wah, ide yang menarik desu!");
-        // 4. Press Enter. The AI's reply will appear in the chat (with timestamp).
-        // Repeat steps 3-4 for each AI reply you want to display.
-        */
-        // --- End of Manual Reply Instructions ---
-
-    </script>
+    <!-- Optional: Tambahkan link ke file JavaScript di sini jika ada -->
+    <!-- <script src="script.js"></script> -->
 
 </body>
 </html>
