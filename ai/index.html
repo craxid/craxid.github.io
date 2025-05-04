@@ -207,14 +207,30 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .project-item img {
-            max-width: 100%;
-            height: 200px; /* Tinggi gambar proyek */
-            object-fit: cover;
+        /* Gaya untuk placeholder ikon gambar proyek */
+        .project-item .project-icon-placeholder { /* <-- Kelas baru */
+            width: 100%; /* Sama lebar dengan gambar */
+            height: 200px; /* Sama tinggi dengan gambar */
+            background-color: #eee; /* Latar belakang abu-abu muda */
+            display: flex; /* Untuk menengahkan ikon */
+            justify-content: center;
+            align-items: center;
             border-radius: 8px;
             margin-bottom: 15px;
-            align-self: center; /* Tengah gambar */
+            align-self: center;
+            color: #555; /* Warna ikon default */
+            font-size: 4em; /* Ukuran ikon di placeholder */
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
+
+        body.dark-mode .project-item .project-icon-placeholder {
+             background-color: #444;
+             color: #bbb;
+        }
+
+
+        /* .project-item img { ... } */ /* Gaya img tetap ada jika Sensei nanti pakai gambar asli */
+
 
         .project-item h3 {
             margin-top: 0;
@@ -692,7 +708,7 @@
 
                 // Memanggil GitHub API tanpa parameter sort yang tidak didukung di endpoint ini
                 // Kita akan mengurutkan secara manual di JavaScript
-                const response = await fetch(`https://api.github.com/users/${githubUsername}/repos`); // <-- Diubah di sini!
+                const response = await fetch(`https://api.github.com/users/${githubUsername}/repos`);
 
                 if (!response.ok) {
                     throw new Error(`GitHub API error! status: ${response.status}`);
@@ -701,10 +717,10 @@
                 const repositories = await response.json();
 
                 // Urutkan repository berdasarkan stargazers_count secara descending di JavaScript
-                const sortedRepositories = repositories.sort((a, b) => b.stargazers_count - a.stargazers_count); // <-- Ditambahkan di sini!
+                const sortedRepositories = repositories.sort((a, b) => b.stargazers_count - a.stargazers_count);
 
                 // Filter fork dan ambil 3 teratas dari hasil yang SUDAH diurutkan
-                const topProjects = sortedRepositories // <-- Gunakan hasil yang sudah diurutkan
+                const topProjects = sortedRepositories
                     .filter(repo => !repo.fork)
                     .slice(0, 3);
 
@@ -716,12 +732,16 @@
                 } else {
                     topProjects.forEach(project => {
                         // URL gambar default. Sensei bisa ganti ini dengan URL gambar lain.
-                        const defaultImageUrl = 'https://via.placeholder.com/400x200?text=Project+Image'; // <-- URL gambar default
+                        // Atau, kita bisa gunakan Font Awesome ikon sebagai placeholder!
+                        // const defaultImageUrl = 'https://via.placeholder.com/400x200?text=Project+Image'; // URL gambar default
+                        const defaultIconClass = 'fas fa-code'; // <-- Kelas Font Awesome untuk ikon default
 
                         const projectItemHtml = `
                             <div class="project-item">
-                                <!-- Menggunakan gambar default -->
-                                <img src="${defaultImageUrl}" alt="Gambar Proyek ${project.name}"> <!-- <-- Diubah di sini! -->
+                                <!-- Menggunakan Font Awesome ikon sebagai placeholder gambar -->
+                                <div class="project-icon-placeholder"> <!-- <-- Div placeholder baru -->
+                                     <i class="${defaultIconClass}"></i> <!-- <-- Ikon Font Awesome di sini -->
+                                </div>
                                 <h3>${project.name}</h3>
                                 <p>${project.description || 'Tidak ada deskripsi.'}</p>
                                 <div class="project-meta">
