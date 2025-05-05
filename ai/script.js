@@ -1,4 +1,3 @@
-<script>
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.cv-form');
     const cvOutput = document.getElementById('cv-output');
@@ -221,6 +220,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial preview update on page load
     updatePreview();
 });
-</script>
-</body>
-</html>
