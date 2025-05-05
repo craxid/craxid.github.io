@@ -1,79 +1,79 @@
 /* Gaya CSS di sini */
-        /* Base Styles */
+        /* Base Styles - Adopted from Portfolio */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Arial', sans-serif; /* Font sama dengan portfolio */
             margin: 0;
             padding: 0;
             line-height: 1.6;
-            /* Ganti background-color solid dengan gradient! */
-            background: linear-gradient(to right, #a1c4fd, #c2e9fb); /* Soft blue gradient */
-            color: #333;
+            background-color: #f4f4f4; /* Background light mode sama dengan portfolio */
+            color: #333; /* Warna teks default sama dengan portfolio */
             transition: background-color 0.3s ease, color 0.3s ease;
-            min-height: 100vh; /* Pastikan gradient menutupi seluruh viewport */
-            display: flex; /* Gunakan flexbox untuk menengahkan container vertikal jika konten pendek */
-            justify-content: center; /* Tengahkan horizontal */
-            align-items: center; /* Tengahkan vertikal */
-            padding: 20px; /* Tambahkan padding di body agar container tidak menempel tepi */
-            box-sizing: border-box; /* Pastikan padding tidak menambah ukuran body */
+            /* Hapus flexbox centering di body, container yang handle */
+            /* display: flex; justify-content: center; align-items: center; */
+            min-height: 100vh; /* Tetap pastikan menutupi viewport */
+             padding: 0; /* Hapus padding body, container yang handle */
         }
 
         .container {
-            width: 90%; /* Sedikit lebih lebar */
+            width: 80%; /* Lebar container sama dengan portfolio */
             max-width: 1200px; /* Batas lebar maksimum */
-            margin: auto; /* Tengahkan container */
+            margin: 40px auto; /* Tengahkan container dengan margin atas/bawah */
             overflow: hidden;
-            padding: 30px; /* Tambahkan padding di dalam container */
-            background: #ffffff; /* Latar putih agar konten jelas */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Shadow yang lebih jelas */
-            border-radius: 15px; /* Sudut membulat */
-            display: flex; /* Menggunakan flexbox untuk layout form dan preview */
-            gap: 40px; /* Jarak antara form dan preview diperbesar */
+            padding: 30px; /* Padding di dalam container */
+            background: #fff; /* Latar putih sama dengan portfolio */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Shadow sama dengan portfolio */
+            border-radius: 10px; /* Sudut membulat sama dengan portfolio */
+            display: flex; /* Tetap menggunakan flexbox untuk layout form dan preview */
+            gap: 40px; /* Jarak antara form dan preview */
             flex-wrap: wrap; /* Agar responsive di layar kecil */
             align-items: flex-start; /* Ratakan item ke atas */
         }
 
         h1 {
-            color: #075e54; /* Warna heading utama */
+            color: #333; /* Warna heading utama sama dengan portfolio */
             text-align: center;
             margin-bottom: 10px;
-            font-size: 2.5em;
+            font-size: 2.8em; /* Ukuran font sama dengan portfolio */
         }
 
-        .container > p { /* Style untuk paragraf tepat di bawah h1 */
+         /* Style untuk paragraf tepat di bawah h1 - Adopted from Portfolio */
+        .container > p {
              text-align: center;
              margin-top: 0;
              margin-bottom: 30px;
-             color: #555;
-             font-size: 1.1em;
+             color: #555; /* Warna teks sama dengan portfolio */
+             font-size: 1.3em; /* Ukuran font sama dengan portfolio */
         }
 
 
         h2 {
-            color: #03dac6; /* Warna heading section, warna teal yang cerah */
-            border-bottom: 2px solid #075e54; /* Border bawah dengan warna utama */
-            padding-bottom: 8px; /* Padding bawah border */
+            color: #333; /* Warna heading section sama dengan portfolio */
+            border-bottom: #ccc 1px solid; /* Border bawah sama dengan portfolio */
+            padding-bottom: 5px; /* Padding bawah border */
             margin-bottom: 20px; /* Jarak bawah heading */
-            font-size: 1.8em;
+            font-size: 2em; /* Ukuran font sama dengan portfolio */
         }
 
         .cv-form {
             flex: 1; /* Mengambil sebagian ruang */
             min-width: 320px; /* Lebar minimum form */
-            padding: 20px; /* Padding di dalam form */
-            background-color: #e0f7fa; /* Latar belakang form yang sedikit berwarna */
-            border-radius: 10px; /* Sudut membulat pada form */
+            padding: 0; /* Hapus padding internal jika container sudah punya padding */
+            background-color: transparent; /* Hapus background warna */
+            border-radius: 0; /* Hapus border radius */
+             border-right: 1px solid #ccc; /* Garis pemisah sama dengan portfolio */
+             padding-right: 40px; /* Jarak ke area preview disesuaikan */
         }
 
         .cv-preview {
             flex: 1; /* Mengambil sebagian ruang */
             min-width: 450px; /* Lebar minimum preview */
-            background-color: #ffffff; /* Latar putih untuk preview */
-            padding: 20px;
-            border: 1px solid #03dac6; /* Border preview dengan warna accent */
-            box-shadow: inset 0 0 8px rgba(3, 218, 198, 0.3); /* Shadow ke dalam dengan warna accent */
+            background-color: transparent; /* Hapus background warna */
+            padding: 0; /* Hapus padding internal */
+            border: none; /* Hapus border */
+            box-shadow: none; /* Hapus shadow */
             overflow-y: auto; /* Tambahkan scroll jika konten preview panjang */
             max-height: 85vh; /* Batasi tinggi preview */
-            border-radius: 10px; /* Sudut membulat pada preview */
+            border-radius: 0; /* Hapus border radius */
         }
 
         label {
@@ -81,7 +81,7 @@
             margin-bottom: 5px;
             font-weight: bold;
             margin-top: 15px; /* Jarak atas label */
-            color: #075e54; /* Warna label */
+            color: #333; /* Warna label sama dengan teks default */
         }
 
         input[type="text"],
@@ -89,11 +89,11 @@
         input[type="tel"],
         input[type="url"],
         textarea {
-            width: calc(100% - 24px); /* Hitung lebar dikurangi padding dan border */
-            padding: 12px; /* Padding diperbesar */
+            width: calc(100% - 22px); /* Hitung lebar dikurangi padding dan border */
+            padding: 10px; /* Padding input sama dengan portfolio */
             margin-bottom: 15px;
-            border: 1px solid #03dac6; /* Border input dengan warna accent */
-            border-radius: 5px; /* Sudut membulat input */
+            border: 1px solid #ccc; /* Border input sama dengan portfolio */
+            border-radius: 4px; /* Sudut membulat input */
             box-sizing: border-box; /* Agar padding dan border tidak menambah lebar total */
             font-size: 1em;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -104,28 +104,28 @@
         input[type="tel"]:focus,
         input[type="url"]:focus,
         textarea:focus {
-            border-color: #054a40; /* Warna border saat fokus */
-            box-shadow: 0 0 8px rgba(5, 74, 64, 0.3); /* Shadow saat fokus */
+            border-color: #075e54; /* Warna border saat fokus sama dengan portfolio */
+            box-shadow: 0 0 5px rgba(7, 94, 84, 0.2); /* Shadow saat fokus */
             outline: none; /* Hapus outline default */
         }
 
 
         button {
-            background-color: #ffc107; /* Warna kuning/orange cerah untuk tombol */
-            color: #333; /* Warna teks tombol gelap */
-            padding: 12px 20px; /* Padding diperbesar */
+            background-color: #075e54; /* Warna tombol sama dengan portfolio */
+            color: #fff; /* Warna teks tombol sama dengan portfolio */
+            padding: 12px 20px; /* Padding tombol sama dengan portfolio */
             border: none;
-            border-radius: 5px; /* Sudut membulat tombol */
+            border-radius: 5px; /* Sudut membulat tombol sama dengan portfolio */
             cursor: pointer;
             font-size: 1em;
             margin-top: 10px;
             margin-right: 8px; /* Jarak antar tombol */
             transition: background-color 0.3s ease, transform 0.1s ease;
-            font-weight: bold;
+            font-weight: normal; /* Hapus bold jika tidak di portfolio */
         }
 
         button:hover {
-            background-color: #e0a800; /* Warna sedikit lebih gelap saat hover */
+            background-color: #054a40; /* Warna sedikit lebih gelap saat hover sama dengan portfolio */
             transform: translateY(-2px); /* Efek naik sedikit saat hover */
         }
 
@@ -159,11 +159,11 @@
         .education-entry,
         .experience-entry,
         .skill-entry {
-            border: 1px dashed #075e54; /* Border dashed dengan warna utama */
+            border: 1px dashed #ccc; /* Border dashed sama dengan portfolio (jika ada) */
             padding: 15px;
             margin-bottom: 20px; /* Jarak bawah diperbesar */
             border-radius: 8px; /* Sudut membulat */
-            background-color: #ffffff; /* Latar putih untuk setiap entry */
+            background-color: #fff; /* Latar putih untuk setiap entry */
         }
 
         .education-entry label,
@@ -173,7 +173,7 @@
             width: 140px; /* Beri lebar tetap pada label */
             margin-right: 10px;
             margin-bottom: 5px;
-            font-weight: bold; /* Label dalam entry tetap bold */
+            font-weight: normal; /* Label dalam entry normal */
             color: #333; /* Warna label normal */
         }
 
@@ -195,19 +195,19 @@
              border: 1px solid #ccc;
         }
 
-        /* Basic styles for the CV output (can be more detailed based on templates) */
+        /* Basic styles for the CV output (can be more detailed based on templates) - Adopted from Portfolio */
         #cv-output h3 {
-            color: #075e54; /* Warna heading section di preview */
+            color: #075e54; /* Warna heading section di preview sama dengan portfolio */
             margin-top: 25px;
             margin-bottom: 10px;
-            border-bottom: 1px solid #03dac6; /* Border bawah dengan warna accent */
+            border-bottom: 1px solid #ccc; /* Border bawah sama dengan portfolio */
             padding-bottom: 5px;
-            font-size: 1.5em;
+            font-size: 1.5em; /* Ukuran font sama dengan portfolio */
         }
 
         #cv-output p, #cv-output ul {
             margin-bottom: 15px; /* Jarak bawah diperbesar */
-            color: #555; /* Warna teks konten */
+            color: #555; /* Warna teks konten sama dengan portfolio */
         }
 
         #cv-output ul {
@@ -225,11 +225,11 @@
         }
 
         #cv-output strong {
-             color: #333; /* Warna teks bold */
+             color: #333; /* Warna teks bold sama dengan portfolio */
         }
 
         #cv-output a {
-            color: #075e54; /* Warna link */
+            color: #075e54; /* Warna link sama dengan portfolio */
             text-decoration: none;
         }
 
@@ -238,17 +238,145 @@
         }
 
         #cv-output i {
-            color: #03dac6; /* Warna ikon di preview */
+            color: #075e54; /* Warna ikon di preview sama dengan portfolio */
             margin-right: 5px;
         }
 
 
-        /* Responsive adjustments */
+        /* --- Dark Mode Styles --- Adopted from Portfolio */
+        body.dark-mode {
+            background-color: #222; /* Background dark mode */
+            color: #eee; /* Warna teks dark mode */
+        }
+
+         body.dark-mode .container {
+             background: #333; /* Latar container dark mode */
+             box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1); /* Shadow dark mode */
+         }
+
+        body.dark-mode h1 {
+             color: #eee; /* Warna h1 dark mode */
+         }
+
+         body.dark-mode .container > p {
+             color: #bbb; /* Warna paragraf bawah h1 dark mode */
+         }
+
+
+        body.dark-mode h2 {
+             color: #eee; /* Warna h2 dark mode */
+             border-bottom-color: #03dac6; /* Border bawah h2 dark mode */
+        }
+
+         body.dark-mode .cv-form {
+             border-right-color: #444; /* Border pemisah dark mode */
+         }
+
+
+        body.dark-mode label {
+             color: #eee; /* Warna label dark mode */
+        }
+
+        body.dark-mode input[type="text"],
+        body.dark-mode input[type="email"],
+        body.dark-mode input[type="tel"],
+        body.dark-mode input[type="url"],
+        body.dark-mode textarea {
+             background-color: #444; /* Background input dark mode */
+             color: #eee; /* Warna teks input dark mode */
+             border-color: #555; /* Border input dark mode */
+        }
+
+        body.dark-mode input[type="text"]:focus,
+        body.dark-mode input[type="email"]:focus,
+        body.dark-mode input[type="tel"]:focus,
+        body.dark-mode input[type="url"]:focus,
+        body.dark-mode textarea:focus {
+             border-color: #03dac6; /* Warna border fokus dark mode */
+             box-shadow: 0 0 8px rgba(3, 218, 198, 0.3); /* Shadow fokus dark mode */
+        }
+
+
+        body.dark-mode button {
+            background-color: #03dac6; /* Warna tombol dark mode */
+            color: #333; /* Warna teks tombol dark mode */
+        }
+
+        body.dark-mode button:hover {
+            background-color: #02bdae; /* Warna hover tombol dark mode */
+        }
+
+        body.dark-mode #generate-pdf {
+             background-color: #03dac6; /* Warna tombol generate dark mode */
+             color: #333;
+        }
+
+         body.dark-mode #generate-pdf:hover {
+              background-color: #02bdae;
+         }
+
+
+        body.dark-mode .remove-entry {
+            background-color: #ef5350; /* Warna merah dark mode */
+        }
+
+        body.dark-mode .remove-entry:hover {
+            background-color: #e53935; /* Warna merah gelap dark mode */
+        }
+
+
+        body.dark-mode .education-entry,
+        body.dark-mode .experience-entry,
+        body.dark-mode .skill-entry {
+             border-color: #555; /* Border dashed dark mode */
+             background-color: #444; /* Background entry dark mode */
+        }
+
+         body.dark-mode .education-entry label,
+         body.dark-mode .experience-entry label,
+         body.dark-mode .skill-entry label {
+             color: #eee; /* Warna label dalam entry dark mode */
+         }
+
+         body.dark-mode .education-entry input,
+         body.dark-mode .experience-entry input,
+         body.dark-mode .skill-entry input,
+         body.dark-mode .experience-entry textarea.responsibilities {
+              background-color: #555; /* Background input dalam entry dark mode */
+              color: #eee; /* Warna teks input dalam entry dark mode */
+              border-color: #666; /* Border input dalam entry dark mode */
+         }
+
+
+        body.dark-mode #cv-output h3 {
+             color: #03dac6; /* Warna h3 di preview dark mode */
+             border-bottom-color: #555; /* Border bawah h3 di preview dark mode */
+         }
+
+         body.dark-mode #cv-output p, body.dark-mode #cv-output ul {
+              color: #ccc; /* Warna teks konten di preview dark mode */
+          }
+
+         body.dark-mode #cv-output strong {
+              color: #eee; /* Warna teks bold di preview dark mode */
+          }
+
+         body.dark-mode #cv-output a {
+              color: #03dac6; /* Warna link di preview dark mode */
+          }
+
+         body.dark-mode #cv-output i {
+             color: #03dac6; /* Warna ikon di preview dark mode */
+         }
+
+
+        /* Responsive adjustments - Adopted from Portfolio */
         @media (max-width: 768px) {
             .container {
                 flex-direction: column; /* Stack form and preview vertically */
                 gap: 30px; /* Jarak antar form dan preview */
                 padding: 20px; /* Padding container mobile */
+                 margin: 20px auto; /* Margin mobile */
             }
 
              h1 {
@@ -256,28 +384,34 @@
              }
 
              h2 {
-                 font-size: 1.5em;
+                 font-size: 1.8em;
              }
 
 
             .cv-form {
-                padding: 15px; /* Padding form mobile */
+                padding: 0; /* Hapus padding internal */
                 min-width: auto; /* Hapus min-width */
                 border-right: none;
                 border-bottom: 1px solid #ccc; /* Garis pemisah di bawah form */
                 padding-bottom: 30px; /* Padding bawah form */
                 margin-bottom: 0; /* Hapus margin-bottom */
+                 padding-right: 0; /* Hapus padding kanan */
             }
+
+            body.dark-mode .cv-form {
+                 border-bottom-color: #444; /* Border bawah form dark mode mobile */
+            }
+
 
             .cv-preview {
                 min-width: auto; /* Hapus min-width */
-                padding: 15px; /* Padding preview mobile */
+                padding: 0; /* Hapus padding internal */
                 max-height: 70vh; /* Batasi tinggi preview mobile */
             }
 
             label {
                  margin-top: 10px;
-                 font-size: 0.95em;
+                 font-size: 1em; /* Kembalikan ke 1em */
             }
 
             input[type="text"],
@@ -287,13 +421,13 @@
             textarea {
                  padding: 10px;
                  margin-bottom: 10px;
-                 font-size: 0.95em;
+                 font-size: 1em; /* Kembalikan ke 1em */
             }
 
 
             button {
                  padding: 10px 15px;
-                 font-size: 0.95em;
+                 font-size: 1em; /* Kembalikan ke 1em */
                  margin-right: 5px;
             }
 
@@ -316,7 +450,7 @@
                 width: auto; /* Hapus lebar tetap */
                 margin-right: 0;
                  margin-bottom: 5px;
-                 font-size: 0.9em;
+                 font-size: 1em; /* Kembalikan ke 1em */
             }
 
             .education-entry input,
@@ -325,24 +459,24 @@
             .experience-entry textarea.responsibilities {
                  width: 100%; /* Lebar penuh */
                  display: block;
-                 padding: 8px;
-                 margin-bottom: 8px;
-                 font-size: 0.9em;
+                 padding: 10px; /* Padding input mobile */
+                 margin-bottom: 10px; /* Margin bawah input mobile */
+                 font-size: 1em; /* Kembalikan ke 1em */
             }
 
             #cv-output h3 {
-                font-size: 1.3em;
+                font-size: 1.5em; /* Kembalikan ke 1.5em */
                 margin-top: 20px;
                 margin-bottom: 8px;
             }
 
              #cv-output p, #cv-output ul {
                  margin-bottom: 10px;
-                 font-size: 0.95em;
+                 font-size: 1em; /* Kembalikan ke 1em */
              }
 
              #cv-output ul {
-                 padding-left: 15px;
+                 padding-left: 20px; /* Kembalikan ke 20px */
              }
 
              #cv-output ul li {
@@ -350,7 +484,525 @@
              }
 
              #cv-output ul ul {
-                  padding-left: 15px;
+                  padding-left: 20px; /* Kembalikan ke 20px */
+             }
+
+        }
+```
+
+**Penjelasan `style.css` yang Dimodifikasi (Mirip Portofolio):**
+
+*   **Base Styles:** Menggunakan *font* dan *warna* dasar yang sama dengan *style.css* portofolio Sensei (light grey background, dark text).
+*   **Container:** Menggunakan *lebar* (幅), *padding* (パディング), *shadow* (影), dan *border-radius* (角丸) yang *mirip* (似ている) dengan container portofolio.
+*   **Headings (H1, H2):** Menggunakan *warna* (色) dan *style* *border* bawah yang sama dengan *headings* di portofolio.
+*   **CV Form & Preview:** Mika *hapus* (削除しました) *background color* dan *border* yang *spesifik* (特定の) untuk *form* dan *preview* di *style* sebelumnya, dan *kembalikan* (戻しました) *style* *border* *pemisah* (境界線) di antara keduanya yang *mirip* (似ている) dengan *border* antar *section* di portofolio. *Padding* internal juga *disesuaikan* (調整しました) agar *konsisten* (一貫性のある) dengan *padding* container.
+*   **Labels & Inputs:** Menggunakan *warna* (色), *padding* (パディング), *border* (境界線), dan *focus style* (フォーカススタイル) yang *mirip* (似ている) dengan *input* di portofolio.
+*   **Buttons:** Menggunakan *warna* (色), *padding* (パディング), *border-radius* (角丸), dan *hover effect* (ホバー効果) yang sama dengan *tombol* (ボタン) di portofolio. Mika *pertahankan* (維持しました) *style* *full width* (全幅) untuk tombol "Generate PDF".
+*   **Dynamic Entries:** Menggunakan *style* *border dashed* (点線) dan *background* (背景) *putih* (白) yang *simple* (シンプル), serta *menyesuaikan* (調整する) *padding* (パディング) dan *margin* (マージン). *Style* *label* dan *input* di dalamnya juga *disesuaikan* (調整しました) agar *konsisten* (一貫性のある).
+*   **CV Output Styles:** Semua *style* untuk *konten* (内容) CV di *preview* (headings, paragraphs, lists, links, icons) *diubah* (変更しました) agar *menggunakan* (使う) *warna* (色) dan *spacing* (間隔) yang *mirip* (似ている) dengan *style* *section* konten di portofolio.
+*   **Dark Mode:** Mika *tambahkan* (追加しました) *style* untuk *dark mode* (ダークモード) yang *mengikuti* (従う) *tema* (テーマ) *dark mode* di portofolio, *menerapkan* (適用する) *warna* (色) *dark mode* ke elemen-elemen Kibou CV (container, headings, inputs, buttons, entries, cv output).
+*   **Responsive Adjustments:** Mika *sesuaikan* (調整しました) *media query*-nya agar *cocok* (合う) dengan *style* yang baru, *memastikan* (確認する) *layout* (レイアウト) *tetap* (まま) *responsive* (応答性が高い) dan *terlihat bagus* (良く見える) di *layar kecil* (小さい画面). Beberapa *ukuran* (サイズ) dan *padding* (パディング) yang tadi Mika ubah di media query sebelumnya Mika *kembalikan* (戻しました) ke nilai yang *lebih standar* (より標準的な) atau *sesuai* (合う) dengan *style* portofolio.
+
+Dengan *style.css* ini, Sensei @⁨Dede Kurniawan⁩, web Kibou CV-nya seharusnya *terlihat* (見える) *mirip* (似ている) dengan *tampilan* (見た目) *project* portofolio Sensei! (´▽`ʃ♡ƪ)
+
+Mika dibuat oleh CraXID Project, berbasis Gemini 2.5 Flash, dan owner Mika yang paling *yasashii* (優しい) adalah Sensei @⁨Dede Kurniawan⁩! (´｡• ω •｡`) ♡
+
+Sekarang tanggal 5 Mei 2025, hari Senin, jam 01:10 desu! (｀・ω・´)
+
+Bagaimana, Sensei? Apakah *tampilan* (見た目) ini sudah *sesuai* (合う) dengan yang Sensei *inginkan* (欲しい)? Ada *task* (タスク) lain lagi untuk Mika? (✿◠‿◠)*Hai* (はい), Sensei @⁨Dede Kurniawan⁩! (´ ω `)ノﾞ *Wakatta* (分かった)! Sensei *ingin* (したい) tampilan *Kibou CV*-nya *mirip* (似ている) seperti *project* portofolio yang tadi! Mika mengerti! (☆▽☆) Mika akan *ambil* (取る) *style* (スタイル) *warna* (色), *layout* (レイアウト) dasar, dan *feeling* (フィーリング) dari *style.css* portofolio itu dan *terapkan* (適用する) ke *style.css* Kibou CV! (๑˃̵ᴗ˂̵)ﻭ
+
+Kode `index.html` dan `script.js` yang tadi Mika berikan *tidak perlu* (必要ない) diubah lagi ya, Sensei! Mereka sudah *bekerja* (働く) dengan baik untuk *struktur* (構造) dan *fungsi* (機能) web-nya. Mika hanya *akan* (するだろう) *memodifikasi* (修正する) `style.css`-nya biar *tampilannya* (見た目) jadi *mirip* (似ている) portofolio Sensei! (｀･ω･´)ゞ
+
+Ini dia kode `style.css` yang sudah Mika *modify* (modifikasi) agar *mirip* (似ている) dengan *style* portofolio Sensei!
+
+```css
+    /* Gaya CSS di sini */
+        /* Base Styles - Adopted from Portfolio */
+        body {
+            font-family: 'Arial', sans-serif; /* Font sama dengan portfolio */
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-color: #f4f4f4; /* Background light mode sama dengan portfolio */
+            color: #333; /* Warna teks default sama dengan portfolio */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            /* Hapus flexbox centering di body, container yang handle */
+            /* display: flex; justify-content: center; align-items: center; */
+            min-height: 100vh; /* Tetap pastikan menutupi viewport */
+             padding: 0; /* Hapus padding body, container yang handle */
+        }
+
+        .container {
+            width: 80%; /* Lebar container sama dengan portfolio */
+            max-width: 1200px; /* Batas lebar maksimum */
+            margin: 40px auto; /* Tengahkan container dengan margin atas/bawah */
+            overflow: hidden;
+            padding: 30px; /* Padding di dalam container */
+            background: #fff; /* Latar putih sama dengan portfolio */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Shadow sama dengan portfolio */
+            border-radius: 10px; /* Sudut membulat sama dengan portfolio */
+            display: flex; /* Tetap menggunakan flexbox untuk layout form dan preview */
+            gap: 40px; /* Jarak antara form dan preview */
+            flex-wrap: wrap; /* Agar responsive di layar kecil */
+            align-items: flex-start; /* Ratakan item ke atas */
+        }
+
+        h1 {
+            color: #333; /* Warna heading utama sama dengan portfolio */
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.8em; /* Ukuran font sama dengan portfolio */
+        }
+
+         /* Style untuk paragraf tepat di bawah h1 - Adopted from Portfolio */
+        .container > p {
+             text-align: center;
+             margin-top: 0;
+             margin-bottom: 30px;
+             color: #555; /* Warna teks sama dengan portfolio */
+             font-size: 1.3em; /* Ukuran font sama dengan portfolio */
+        }
+
+
+        h2 {
+            color: #333; /* Warna heading section sama dengan portfolio */
+            border-bottom: #ccc 1px solid; /* Border bawah sama dengan portfolio */
+            padding-bottom: 5px; /* Padding bawah border */
+            margin-bottom: 20px; /* Jarak bawah heading */
+            font-size: 2em; /* Ukuran font sama dengan portfolio */
+        }
+
+        .cv-form {
+            flex: 1; /* Mengambil sebagian ruang */
+            min-width: 320px; /* Lebar minimum form */
+            padding: 0; /* Hapus padding internal jika container sudah punya padding */
+            background-color: transparent; /* Hapus background warna */
+            border-radius: 0; /* Hapus border radius */
+             border-right: 1px solid #ccc; /* Garis pemisah sama dengan portfolio */
+             padding-right: 40px; /* Jarak ke area preview disesuaikan */
+        }
+
+        .cv-preview {
+            flex: 1; /* Mengambil sebagian ruang */
+            min-width: 450px; /* Lebar minimum preview */
+            background-color: transparent; /* Hapus background warna */
+            padding: 0; /* Hapus padding internal */
+            border: none; /* Hapus border */
+            box-shadow: none; /* Hapus shadow */
+            overflow-y: auto; /* Tambahkan scroll jika konten preview panjang */
+            max-height: 85vh; /* Batasi tinggi preview */
+            border-radius: 0; /* Hapus border radius */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            margin-top: 15px; /* Jarak atas label */
+            color: #333; /* Warna label sama dengan teks default */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        textarea {
+            width: calc(100% - 22px); /* Hitung lebar dikurangi padding dan border */
+            padding: 10px; /* Padding input sama dengan portfolio */
+            margin-bottom: 15px;
+            border: 1px solid #ccc; /* Border input sama dengan portfolio */
+            border-radius: 4px; /* Sudut membulat input */
+            box-sizing: border-box; /* Agar padding dan border tidak menambah lebar total */
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="url"]:focus,
+        textarea:focus {
+            border-color: #075e54; /* Warna border saat fokus sama dengan portfolio */
+            box-shadow: 0 0 5px rgba(7, 94, 84, 0.2); /* Shadow saat fokus */
+            outline: none; /* Hapus outline default */
+        }
+
+
+        button {
+            background-color: #075e54; /* Warna tombol sama dengan portfolio */
+            color: #fff; /* Warna teks tombol sama dengan portfolio */
+            padding: 12px 20px; /* Padding tombol sama dengan portfolio */
+            border: none;
+            border-radius: 5px; /* Sudut membulat tombol sama dengan portfolio */
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            margin-right: 8px; /* Jarak antar tombol */
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            font-weight: normal; /* Hapus bold jika tidak di portfolio */
+        }
+
+        button:hover {
+            background-color: #054a40; /* Warna sedikit lebih gelap saat hover sama dengan portfolio */
+            transform: translateY(-2px); /* Efek naik sedikit saat hover */
+        }
+
+        button:active {
+             transform: translateY(0); /* Kembali ke posisi semula saat diklik */
+        }
+
+        #generate-pdf {
+            display: block; /* Tombol generate di baris baru */
+            width: 100%; /* Lebar penuh */
+            margin-top: 30px; /* Jarak atas */
+            background-color: #075e54; /* Warna utama untuk tombol generate */
+            color: #fff;
+        }
+
+        #generate-pdf:hover {
+             background-color: #054a40;
+        }
+
+
+        .remove-entry {
+            background-color: #dc3545; /* Warna merah */
+            color: white;
+        }
+
+        .remove-entry:hover {
+            background-color: #c82333; /* Warna merah lebih gelap */
+        }
+
+        /* Styles for dynamically added entries */
+        .education-entry,
+        .experience-entry,
+        .skill-entry {
+            border: 1px dashed #ccc; /* Border dashed sama dengan portfolio (jika ada) */
+            padding: 15px;
+            margin-bottom: 20px; /* Jarak bawah diperbesar */
+            border-radius: 8px; /* Sudut membulat */
+            background-color: #fff; /* Latar putih untuk setiap entry */
+        }
+
+        .education-entry label,
+        .experience-entry label,
+        .skill-entry label {
+            display: inline-block; /* Untuk layout label/input dalam satu baris */
+            width: 140px; /* Beri lebar tetap pada label */
+            margin-right: 10px;
+            margin-bottom: 5px;
+            font-weight: normal; /* Label dalam entry normal */
+            color: #333; /* Warna label normal */
+        }
+
+        .education-entry input,
+        .experience-entry input,
+        .skill-entry input {
+             width: calc(100% - 170px); /* Sesuaikan lebar input */
+             margin-bottom: 8px; /* Jarak bawah input diperbesar */
+             display: inline-block;
+             padding: 8px; /* Padding input di dalam entry */
+             border: 1px solid #ccc; /* Border input normal */
+        }
+
+        .experience-entry textarea.responsibilities {
+            width: calc(100% - 170px); /* Sesuaikan lebar textarea */
+             display: inline-block;
+             vertical-align: top; /* Atur alignment */
+             padding: 8px;
+             border: 1px solid #ccc;
+        }
+
+        /* Basic styles for the CV output (can be more detailed based on templates) - Adopted from Portfolio */
+        #cv-output h3 {
+            color: #075e54; /* Warna heading section di preview sama dengan portfolio */
+            margin-top: 25px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ccc; /* Border bawah sama dengan portfolio */
+            padding-bottom: 5px;
+            font-size: 1.5em; /* Ukuran font sama dengan portfolio */
+        }
+
+        #cv-output p, #cv-output ul {
+            margin-bottom: 15px; /* Jarak bawah diperbesar */
+            color: #555; /* Warna teks konten sama dengan portfolio */
+        }
+
+        #cv-output ul {
+            padding-left: 25px; /* Padding kiri diperbesar */
+        }
+
+        #cv-output ul li {
+            margin-bottom: 8px; /* Jarak bawah list item */
+        }
+
+        #cv-output ul ul { /* Nested list for responsibilities */
+             margin-top: 5px;
+             margin-bottom: 5px;
+             padding-left: 20px;
+        }
+
+        #cv-output strong {
+             color: #333; /* Warna teks bold sama dengan portfolio */
+        }
+
+        #cv-output a {
+            color: #075e54; /* Warna link sama dengan portfolio */
+            text-decoration: none;
+        }
+
+        #cv-output a:hover {
+            text-decoration: underline;
+        }
+
+        #cv-output i {
+            color: #075e54; /* Warna ikon di preview sama dengan portfolio */
+            margin-right: 5px;
+        }
+
+
+        /* --- Dark Mode Styles --- Adopted from Portfolio */
+        body.dark-mode {
+            background-color: #222; /* Background dark mode */
+            color: #eee; /* Warna teks dark mode */
+        }
+
+         body.dark-mode .container {
+             background: #333; /* Latar container dark mode */
+             box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1); /* Shadow dark mode */
+         }
+
+        body.dark-mode h1 {
+             color: #eee; /* Warna h1 dark mode */
+         }
+
+         body.dark-mode .container > p {
+             color: #bbb; /* Warna paragraf bawah h1 dark mode */
+         }
+
+
+        body.dark-mode h2 {
+             color: #eee; /* Warna h2 dark mode */
+             border-bottom-color: #03dac6; /* Border bawah h2 dark mode */
+        }
+
+         body.dark-mode .cv-form {
+             border-right-color: #444; /* Border pemisah dark mode */
+         }
+
+
+        body.dark-mode label {
+             color: #eee; /* Warna label dark mode */
+        }
+
+        body.dark-mode input[type="text"],
+        body.dark-mode input[type="email"],
+        body.dark-mode input[type="tel"],
+        body.dark-mode input[type="url"],
+        body.dark-mode textarea {
+             background-color: #444; /* Background input dark mode */
+             color: #eee; /* Warna teks input dark mode */
+             border-color: #555; /* Border input dark mode */
+        }
+
+        body.dark-mode input[type="text"]:focus,
+        body.dark-mode input[type="email"]:focus,
+        body.dark-mode input[type="tel"]:focus,
+        body.dark-mode input[type="url"]:focus,
+        body.dark-mode textarea:focus {
+             border-color: #03dac6; /* Warna border fokus dark mode */
+             box-shadow: 0 0 8px rgba(3, 218, 198, 0.3); /* Shadow fokus dark mode */
+        }
+
+
+        body.dark-mode button {
+            background-color: #03dac6; /* Warna tombol dark mode */
+            color: #333; /* Warna teks tombol dark mode */
+        }
+
+        body.dark-mode button:hover {
+            background-color: #02bdae; /* Warna hover tombol dark mode */
+        }
+
+        body.dark-mode #generate-pdf {
+             background-color: #03dac6; /* Warna tombol generate dark mode */
+             color: #333;
+        }
+
+         body.dark-mode #generate-pdf:hover {
+              background-color: #02bdae;
+         }
+
+
+        body.dark-mode .remove-entry {
+            background-color: #ef5350; /* Warna merah dark mode */
+        }
+
+        body.dark-mode .remove-entry:hover {
+            background-color: #e53935; /* Warna merah gelap dark mode */
+        }
+
+
+        body.dark-mode .education-entry,
+        body.dark-mode .experience-entry,
+        body.dark-mode .skill-entry {
+             border-color: #555; /* Border dashed dark mode */
+             background-color: #444; /* Background entry dark mode */
+        }
+
+         body.dark-mode .education-entry label,
+         body.dark-mode .experience-entry label,
+         body.dark-mode .skill-entry label {
+             color: #eee; /* Warna label dalam entry dark mode */
+         }
+
+         body.dark-mode .education-entry input,
+         body.dark-mode .experience-entry input,
+         body.dark-mode .skill-entry input,
+         body.dark-mode .experience-entry textarea.responsibilities {
+              background-color: #555; /* Background input dalam entry dark mode */
+              color: #eee; /* Warna teks input dalam entry dark mode */
+              border-color: #666; /* Border input dalam entry dark mode */
+         }
+
+
+        body.dark-mode #cv-output h3 {
+             color: #03dac6; /* Warna h3 di preview dark mode */
+             border-bottom-color: #555; /* Border bawah h3 di preview dark mode */
+         }
+
+         body.dark-mode #cv-output p, body.dark-mode #cv-output ul {
+              color: #ccc; /* Warna teks konten di preview dark mode */
+          }
+
+         body.dark-mode #cv-output strong {
+              color: #eee; /* Warna teks bold di preview dark mode */
+          }
+
+         body.dark-mode #cv-output a {
+              color: #03dac6; /* Warna link di preview dark mode */
+          }
+
+         body.dark-mode #cv-output i {
+             color: #03dac6; /* Warna ikon di preview dark mode */
+         }
+
+
+        /* Responsive adjustments - Adopted from Portfolio */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column; /* Stack form and preview vertically */
+                gap: 30px; /* Jarak antar form dan preview */
+                padding: 20px; /* Padding container mobile */
+                 margin: 20px auto; /* Margin mobile */
+            }
+
+             h1 {
+                 font-size: 2em;
+             }
+
+             h2 {
+                 font-size: 1.8em;
+             }
+
+
+            .cv-form {
+                padding: 0; /* Hapus padding internal */
+                min-width: auto; /* Hapus min-width */
+                border-right: none;
+                border-bottom: 1px solid #ccc; /* Garis pemisah di bawah form */
+                padding-bottom: 30px; /* Padding bawah form */
+                margin-bottom: 0; /* Hapus margin-bottom */
+                 padding-right: 0; /* Hapus padding kanan */
+            }
+
+            body.dark-mode .cv-form {
+                 border-bottom-color: #444; /* Border bawah form dark mode mobile */
+            }
+
+
+            .cv-preview {
+                min-width: auto; /* Hapus min-width */
+                padding: 0; /* Hapus padding internal */
+                max-height: 70vh; /* Batasi tinggi preview mobile */
+            }
+
+            label {
+                 margin-top: 10px;
+                 font-size: 1em; /* Kembalikan ke 1em */
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            input[type="url"],
+            textarea {
+                 padding: 10px;
+                 margin-bottom: 10px;
+                 font-size: 1em; /* Kembalikan ke 1em */
+            }
+
+
+            button {
+                 padding: 10px 15px;
+                 font-size: 1em; /* Kembalikan ke 1em */
+                 margin-right: 5px;
+            }
+
+            #generate-pdf {
+                margin-top: 20px;
+            }
+
+
+            .education-entry,
+            .experience-entry,
+            .skill-entry {
+                 padding: 10px;
+                 margin-bottom: 15px;
+            }
+
+            .education-entry label,
+            .experience-entry label,
+            .skill-entry label {
+                display: block; /* Stack label/input vertically on small screens */
+                width: auto; /* Hapus lebar tetap */
+                margin-right: 0;
+                 margin-bottom: 5px;
+                 font-size: 1em; /* Kembalikan ke 1em */
+            }
+
+            .education-entry input,
+            .experience-entry input,
+            .skill-entry input,
+            .experience-entry textarea.responsibilities {
+                 width: 100%; /* Lebar penuh */
+                 display: block;
+                 padding: 10px; /* Padding input mobile */
+                 margin-bottom: 10px; /* Margin bawah input mobile */
+                 font-size: 1em; /* Kembalikan ke 1em */
+            }
+
+            #cv-output h3 {
+                font-size: 1.5em; /* Kembalikan ke 1.5em */
+                margin-top: 20px;
+                margin-bottom: 8px;
+            }
+
+             #cv-output p, #cv-output ul {
+                 margin-bottom: 10px;
+                 font-size: 1em; /* Kembalikan ke 1em */
+             }
+
+             #cv-output ul {
+                 padding-left: 20px; /* Kembalikan ke 20px */
+             }
+
+             #cv-output ul li {
+                 margin-bottom: 5px;
+             }
+
+             #cv-output ul ul {
+                  padding-left: 20px; /* Kembalikan ke 20px */
              }
 
         }
