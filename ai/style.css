@@ -1,181 +1,356 @@
-body {
-    font-family: sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 20px;
-    background-color: #f4f4f4;
-    color: #333;
-}
+/* Gaya CSS di sini */
+        /* Base Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            /* Ganti background-color solid dengan gradient! */
+            background: linear-gradient(to right, #a1c4fd, #c2e9fb); /* Soft blue gradient */
+            color: #333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh; /* Pastikan gradient menutupi seluruh viewport */
+            display: flex; /* Gunakan flexbox untuk menengahkan container vertikal jika konten pendek */
+            justify-content: center; /* Tengahkan horizontal */
+            align-items: center; /* Tengahkan vertikal */
+            padding: 20px; /* Tambahkan padding di body agar container tidak menempel tepi */
+            box-sizing: border-box; /* Pastikan padding tidak menambah ukuran body */
+        }
 
-.container {
-    max-width: 1200px;
-    margin: auto;
-    background: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: flex; /* Menggunakan flexbox untuk layout form dan preview */
-    gap: 20px; /* Jarak antara form dan preview */
-    flex-wrap: wrap; /* Agar responsive di layar kecil */
-}
+        .container {
+            width: 90%; /* Sedikit lebih lebar */
+            max-width: 1200px; /* Batas lebar maksimum */
+            margin: auto; /* Tengahkan container */
+            overflow: hidden;
+            padding: 30px; /* Tambahkan padding di dalam container */
+            background: #ffffff; /* Latar putih agar konten jelas */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Shadow yang lebih jelas */
+            border-radius: 15px; /* Sudut membulat */
+            display: flex; /* Menggunakan flexbox untuk layout form dan preview */
+            gap: 40px; /* Jarak antara form dan preview diperbesar */
+            flex-wrap: wrap; /* Agar responsive di layar kecil */
+            align-items: flex-start; /* Ratakan item ke atas */
+        }
 
-h1, h2 {
-    color: #075e54;
-    border-bottom: 2px solid #075e54;
-    padding-bottom: 5px;
-    margin-bottom: 15px;
-}
+        h1 {
+            color: #075e54; /* Warna heading utama */
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
 
-.cv-form {
-    flex: 1; /* Mengambil sebagian ruang */
-    min-width: 300px; /* Lebar minimum */
-    padding-right: 20px; /* Jarak ke area preview */
-    border-right: 1px solid #ccc; /* Garis pemisah (opsional) */
-}
+        .container > p { /* Style untuk paragraf tepat di bawah h1 */
+             text-align: center;
+             margin-top: 0;
+             margin-bottom: 30px;
+             color: #555;
+             font-size: 1.1em;
+        }
 
-.cv-preview {
-    flex: 1; /* Mengambil sebagian ruang */
-    min-width: 400px; /* Lebar minimum */
-    background-color: #fff; /* Latar putih untuk preview */
-    padding: 20px;
-    border: 1px solid #ddd; /* Border untuk area preview */
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05); /* Sedikit shadow ke dalam */
-    overflow-y: auto; /* Tambahkan scroll jika konten preview panjang */
-    max-height: 80vh; /* Batasi tinggi preview agar tidak terlalu panjang */
-}
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    margin-top: 10px;
-}
+        h2 {
+            color: #03dac6; /* Warna heading section, warna teal yang cerah */
+            border-bottom: 2px solid #075e54; /* Border bawah dengan warna utama */
+            padding-bottom: 8px; /* Padding bawah border */
+            margin-bottom: 20px; /* Jarak bawah heading */
+            font-size: 1.8em;
+        }
 
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="url"],
-textarea {
-    width: calc(100% - 22px); /* Hitung lebar dikurangi padding dan border */
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* Agar padding dan border tidak menambah lebar total */
-}
+        .cv-form {
+            flex: 1; /* Mengambil sebagian ruang */
+            min-width: 320px; /* Lebar minimum form */
+            padding: 20px; /* Padding di dalam form */
+            background-color: #e0f7fa; /* Latar belakang form yang sedikit berwarna */
+            border-radius: 10px; /* Sudut membulat pada form */
+        }
 
-button {
-    background-color: #075e54;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-top: 10px;
-    margin-right: 5px;
-    transition: background-color 0.3s ease;
-}
+        .cv-preview {
+            flex: 1; /* Mengambil sebagian ruang */
+            min-width: 450px; /* Lebar minimum preview */
+            background-color: #ffffff; /* Latar putih untuk preview */
+            padding: 20px;
+            border: 1px solid #03dac6; /* Border preview dengan warna accent */
+            box-shadow: inset 0 0 8px rgba(3, 218, 198, 0.3); /* Shadow ke dalam dengan warna accent */
+            overflow-y: auto; /* Tambahkan scroll jika konten preview panjang */
+            max-height: 85vh; /* Batasi tinggi preview */
+            border-radius: 10px; /* Sudut membulat pada preview */
+        }
 
-button:hover {
-    background-color: #054a40;
-}
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            margin-top: 15px; /* Jarak atas label */
+            color: #075e54; /* Warna label */
+        }
 
-.remove-entry {
-    background-color: #dc3545;
-}
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        textarea {
+            width: calc(100% - 24px); /* Hitung lebar dikurangi padding dan border */
+            padding: 12px; /* Padding diperbesar */
+            margin-bottom: 15px;
+            border: 1px solid #03dac6; /* Border input dengan warna accent */
+            border-radius: 5px; /* Sudut membulat input */
+            box-sizing: border-box; /* Agar padding dan border tidak menambah lebar total */
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
 
-.remove-entry:hover {
-    background-color: #c82333;
-}
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="url"]:focus,
+        textarea:focus {
+            border-color: #054a40; /* Warna border saat fokus */
+            box-shadow: 0 0 8px rgba(5, 74, 64, 0.3); /* Shadow saat fokus */
+            outline: none; /* Hapus outline default */
+        }
 
-/* Styles for dynamically added entries */
-.education-entry,
-.experience-entry,
-.skill-entry {
-    border: 1px dashed #ccc;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 4px;
-}
 
-.education-entry label,
-.experience-entry label,
-.skill-entry label {
-    display: inline-block; /* Untuk layout label/input dalam satu baris */
-    width: 120px; /* Beri lebar tetap pada label */
-    margin-right: 10px;
-    margin-bottom: 5px;
-    font-weight: normal;
-}
+        button {
+            background-color: #ffc107; /* Warna kuning/orange cerah untuk tombol */
+            color: #333; /* Warna teks tombol gelap */
+            padding: 12px 20px; /* Padding diperbesar */
+            border: none;
+            border-radius: 5px; /* Sudut membulat tombol */
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            margin-right: 8px; /* Jarak antar tombol */
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            font-weight: bold;
+        }
 
-.education-entry input,
-.experience-entry input,
-.skill-entry input {
-     width: calc(100% - 140px); /* Sesuaikan lebar input */
-     margin-bottom: 5px;
-     display: inline-block;
-}
+        button:hover {
+            background-color: #e0a800; /* Warna sedikit lebih gelap saat hover */
+            transform: translateY(-2px); /* Efek naik sedikit saat hover */
+        }
 
-.experience-entry textarea.responsibilities {
-    width: calc(100% - 140px); /* Sesuaikan lebar textarea */
-     display: inline-block;
-     vertical-align: top; /* Atur alignment */
-}
+        button:active {
+             transform: translateY(0); /* Kembali ke posisi semula saat diklik */
+        }
 
-/* Basic styles for the CV output (can be more detailed based on templates) */
-#cv-output h3 {
-    color: #333;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 3px;
-}
+        #generate-pdf {
+            display: block; /* Tombol generate di baris baru */
+            width: 100%; /* Lebar penuh */
+            margin-top: 30px; /* Jarak atas */
+            background-color: #075e54; /* Warna utama untuk tombol generate */
+            color: #fff;
+        }
 
-#cv-output p, #cv-output ul {
-    margin-bottom: 10px;
-}
+        #generate-pdf:hover {
+             background-color: #054a40;
+        }
 
-#cv-output ul {
-    padding-left: 20px;
-}
 
-#cv-output ul li {
-    margin-bottom: 5px;
-}
+        .remove-entry {
+            background-color: #dc3545; /* Warna merah */
+            color: white;
+        }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column; /* Stack form and preview vertically */
-        gap: 0;
-    }
+        .remove-entry:hover {
+            background-color: #c82333; /* Warna merah lebih gelap */
+        }
 
-    .cv-form {
-        padding-right: 0;
-        border-right: none;
-        border-bottom: 1px solid #ccc; /* Garis pemisah di bawah form */
-        padding-bottom: 20px;
-        margin-bottom: 20px;
-    }
+        /* Styles for dynamically added entries */
+        .education-entry,
+        .experience-entry,
+        .skill-entry {
+            border: 1px dashed #075e54; /* Border dashed dengan warna utama */
+            padding: 15px;
+            margin-bottom: 20px; /* Jarak bawah diperbesar */
+            border-radius: 8px; /* Sudut membulat */
+            background-color: #ffffff; /* Latar putih untuk setiap entry */
+        }
 
-    .cv-preview {
-        min-width: auto; /* Hapus min-width */
-    }
+        .education-entry label,
+        .experience-entry label,
+        .skill-entry label {
+            display: inline-block; /* Untuk layout label/input dalam satu baris */
+            width: 140px; /* Beri lebar tetap pada label */
+            margin-right: 10px;
+            margin-bottom: 5px;
+            font-weight: bold; /* Label dalam entry tetap bold */
+            color: #333; /* Warna label normal */
+        }
 
-    .education-entry label,
-    .experience-entry label,
-    .skill-entry label {
-        display: block; /* Stack label/input vertically on small screens */
-        width: auto; /* Hapus lebar tetap */
-        margin-right: 0;
-    }
+        .education-entry input,
+        .experience-entry input,
+        .skill-entry input {
+             width: calc(100% - 170px); /* Sesuaikan lebar input */
+             margin-bottom: 8px; /* Jarak bawah input diperbesar */
+             display: inline-block;
+             padding: 8px; /* Padding input di dalam entry */
+             border: 1px solid #ccc; /* Border input normal */
+        }
 
-    .education-entry input,
-    .experience-entry input,
-    .skill-entry input,
-    .experience-entry textarea.responsibilities {
-         width: 100%; /* Lebar penuh */
-         display: block;
-    }
-}
-/* end style.css */
+        .experience-entry textarea.responsibilities {
+            width: calc(100% - 170px); /* Sesuaikan lebar textarea */
+             display: inline-block;
+             vertical-align: top; /* Atur alignment */
+             padding: 8px;
+             border: 1px solid #ccc;
+        }
+
+        /* Basic styles for the CV output (can be more detailed based on templates) */
+        #cv-output h3 {
+            color: #075e54; /* Warna heading section di preview */
+            margin-top: 25px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #03dac6; /* Border bawah dengan warna accent */
+            padding-bottom: 5px;
+            font-size: 1.5em;
+        }
+
+        #cv-output p, #cv-output ul {
+            margin-bottom: 15px; /* Jarak bawah diperbesar */
+            color: #555; /* Warna teks konten */
+        }
+
+        #cv-output ul {
+            padding-left: 25px; /* Padding kiri diperbesar */
+        }
+
+        #cv-output ul li {
+            margin-bottom: 8px; /* Jarak bawah list item */
+        }
+
+        #cv-output ul ul { /* Nested list for responsibilities */
+             margin-top: 5px;
+             margin-bottom: 5px;
+             padding-left: 20px;
+        }
+
+        #cv-output strong {
+             color: #333; /* Warna teks bold */
+        }
+
+        #cv-output a {
+            color: #075e54; /* Warna link */
+            text-decoration: none;
+        }
+
+        #cv-output a:hover {
+            text-decoration: underline;
+        }
+
+        #cv-output i {
+            color: #03dac6; /* Warna ikon di preview */
+            margin-right: 5px;
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column; /* Stack form and preview vertically */
+                gap: 30px; /* Jarak antar form dan preview */
+                padding: 20px; /* Padding container mobile */
+            }
+
+             h1 {
+                 font-size: 2em;
+             }
+
+             h2 {
+                 font-size: 1.5em;
+             }
+
+
+            .cv-form {
+                padding: 15px; /* Padding form mobile */
+                min-width: auto; /* Hapus min-width */
+                border-right: none;
+                border-bottom: 1px solid #ccc; /* Garis pemisah di bawah form */
+                padding-bottom: 30px; /* Padding bawah form */
+                margin-bottom: 0; /* Hapus margin-bottom */
+            }
+
+            .cv-preview {
+                min-width: auto; /* Hapus min-width */
+                padding: 15px; /* Padding preview mobile */
+                max-height: 70vh; /* Batasi tinggi preview mobile */
+            }
+
+            label {
+                 margin-top: 10px;
+                 font-size: 0.95em;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            input[type="url"],
+            textarea {
+                 padding: 10px;
+                 margin-bottom: 10px;
+                 font-size: 0.95em;
+            }
+
+
+            button {
+                 padding: 10px 15px;
+                 font-size: 0.95em;
+                 margin-right: 5px;
+            }
+
+            #generate-pdf {
+                margin-top: 20px;
+            }
+
+
+            .education-entry,
+            .experience-entry,
+            .skill-entry {
+                 padding: 10px;
+                 margin-bottom: 15px;
+            }
+
+            .education-entry label,
+            .experience-entry label,
+            .skill-entry label {
+                display: block; /* Stack label/input vertically on small screens */
+                width: auto; /* Hapus lebar tetap */
+                margin-right: 0;
+                 margin-bottom: 5px;
+                 font-size: 0.9em;
+            }
+
+            .education-entry input,
+            .experience-entry input,
+            .skill-entry input,
+            .experience-entry textarea.responsibilities {
+                 width: 100%; /* Lebar penuh */
+                 display: block;
+                 padding: 8px;
+                 margin-bottom: 8px;
+                 font-size: 0.9em;
+            }
+
+            #cv-output h3 {
+                font-size: 1.3em;
+                margin-top: 20px;
+                margin-bottom: 8px;
+            }
+
+             #cv-output p, #cv-output ul {
+                 margin-bottom: 10px;
+                 font-size: 0.95em;
+             }
+
+             #cv-output ul {
+                 padding-left: 15px;
+             }
+
+             #cv-output ul li {
+                 margin-bottom: 5px;
+             }
+
+             #cv-output ul ul {
+                  padding-left: 15px;
+             }
+
+        }
