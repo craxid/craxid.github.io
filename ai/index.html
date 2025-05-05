@@ -3,164 +3,332 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dede Kurniawan</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+    <title>Kibou CV Generator</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Favicon (opsional) -->
-    <link rel="icon" href="akebi.jpg" type="image/x-icon">
+    <!-- Font Awesome untuk ikon (opsional, tapi bagus untuk skill atau kontak) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Library untuk generate PDF di frontend (opsional, bisa juga pakai backend) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
-    <!-- Container untuk Status Bar (Jam di kiri, Baterai di kanan) ->
-    <!-<div class="status-bar">
-        <!- Elemen untuk menampilkan waktu (Akan diisi oleh JavaScript) ->
-        <span id="current-time" class="status-text"></span>
-        <!- Elemen untuk Menampilkan Status Baterai ->
-        <div id="battery-status">
-            <div class="battery-outline">
-                <div class="battery-fill"></div>
-                <!- Elemen untuk Icon Petir (Charging) - Posisinya di dalam outline ->
-                <i class="fas fa-bolt lightning-icon"></i>
+    <div class="container">
+        <h1>Kibou CV Generator</h1>
+        <p>Buat CV profesionalmu dengan mudah!</p>
+
+        <div class="cv-form">
+            <h2>Data Pribadi</h2>
+            <label for="name">Nama Lengkap:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="title">Judul/Profesi:</label>
+            <input type="text" id="title" name="title">
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Telepon:</label>
+            <input type="tel" id="phone" name="phone">
+
+            <label for="location">Lokasi:</label>
+            <input type="text" id="location" name="location">
+
+            <label for="linkedin">LinkedIn (URL):</label>
+            <input type="url" id="linkedin" name="linkedin">
+
+            <label for="github">GitHub (URL):</label>
+            <input type="url" id="github" name="github">
+
+            <label for="summary">Ringkasan Profil:</label>
+            <textarea id="summary" name="summary" rows="4"></textarea>
+
+            <h2>Pendidikan</h2>
+            <div id="education-entries">
+                <!-- Education entries will be added here by JS -->
+                <div class="education-entry">
+                    <label for="degree-0">Gelar/Jenjang:</label>
+                    <input type="text" class="degree" data-index="0">
+                    <label for="major-0">Jurusan:</label>
+                    <input type="text" class="major" data-index="0">
+                    <label for="institution-0">Institusi:</label>
+                    <input type="text" class="institution" data-index="0">
+                    <label for="edu-years-0">Tahun (Contoh: 2016-2020):</label>
+                    <input type="text" class="edu-years" data-index="0">
+                    <button type="button" class="remove-entry">Hapus</button>
+                </div>
             </div>
-            <span class="battery-text"></span>
+            <button type="button" id="add-education">Tambah Pendidikan</button>
+
+            <h2>Pengalaman Kerja</h2>
+            <div id="experience-entries">
+                 <!-- Experience entries will be added here by JS -->
+                 <div class="experience-entry">
+                     <label for="job-title-0">Posisi:</label>
+                     <input type="text" class="job-title" data-index="0">
+                     <label for="company-0">Perusahaan:</label>
+                     <input type="text" class="company" data-index="0">
+                     <label for="exp-years-0">Tahun (Contoh: 2020-Sekarang):</label>
+                     <input type="text" class="exp-years" data-index="0">
+                     <label for="responsibilities-0">Tanggung Jawab/Deskripsi:</label>
+                     <textarea class="responsibilities" data-index="0" rows="3"></textarea>
+                     <button type="button" class="remove-entry">Hapus</button>
+                 </div>
+            </div>
+            <button type="button" id="add-experience">Tambah Pengalaman</button>
+
+             <h2>Keahlian (Skills)</h2>
+             <div id="skills-entries">
+                  <!-- Skill entries will be added here by JS -->
+                  <div class="skill-entry">
+                       <label for="skill-name-0">Nama Skill:</label>
+                       <input type="text" class="skill-name" data-index="0">
+                       <button type="button" class="remove-entry">Hapus</button>
+                  </div>
+             </div>
+             <button type="button" id="add-skill">Tambah Skill</button>
+
+            <!-- Add more sections as needed: Projects, Awards, Organizations, etc. -->
+
         </div>
-    </div>-->
 
-    <!-- Wrapper untuk konten utama (memperbaiki centering) -->
-    <div class="main-wrapper">
-        <div class="container">
-            <!-- Wrapper untuk Gambar Profil dan Badge -->
-            <div class="profile-image-wrapper">
-                <img src="akebi.jpg" alt="Gambar Profil" class="profile-image">
-                <i class="fas fa-shield-alt profile-badge"></i> <!-- Shield badge -->
-            </div>
-
-            <h1>Dede Kurniawan <i class="fas fa-check-circle verified-icon"></i></h1> <!-- Nama dengan Centang biru -->
-            <p>Ngapain ngoding njir, mending skrol fesnuk.</p>
-            <div class="links">
-
-                <a href="https://chat.crax.my.id/" class="link-button whatsapp-button" target="_blank">
-                    <i class="fab fa-whatsapp"></i> Chat AI GRATIS
-                </a>
-
-                <a href="https://github.com/craxid/connexis" class="link-button netral-button" target="_blank">
-                    <i class="fas fa-cloud-download"></i> Unduh Template Ini
-                </a>
-                
-                <a href="https://facebook.com/dede2015k" class="link-button facebook-button" target="_blank">
-                    <i class="fab fa-facebook-f"></i> Facebook
-                </a>
-
-                <a href="https://github.com/craxid" class="link-button github-button" target="_blank">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-                
-                <a href="/bot/" class="link-button whatsapp-button" target="_blank">
-                    <i class="fab fa-whatsapp"></i> WhatsApp (BOT)
-                </a>
-
-                <a href="https://youtube.com/clandare" class="link-button youtube-button" target="_blank">
-                    <i class="fab fa-youtube"></i> YouTube 
-                </a>
-
-                <a href="https://x.com/dede_klender" class="link-button twitter-button" target="_blank">
-                    <i class="fab fa-x-twitter"></i> X/Twitter
-                </a>
-
-                <a href="https://instagram.com/dede_klender" class="link-button instagram-button" target="_blank">
-                    <i class="fab fa-instagram"></i> Instagram
-                </a>
+        <div class="cv-preview">
+            <h2>Preview CV</h2>
+            <!-- This is where the generated CV HTML will be displayed -->
+            <div id="cv-output">
+                <!-- CV content will be generated here by script.js -->
+                 <p>Isi formulir di samping untuk melihat pratinjau CV.</p>
             </div>
         </div>
 
-        <footer>
-            <p>Made with ♥️ by <a href="/">CraXID Project</a></p>
-            <p>Copyright &copy; <span id="currentYear"></span></p>
-        </footer>
+        <button id="generate-pdf">Generate PDF</button>
+
     </div>
 
-    <script>
-        const yearSpan = document.getElementById('currentYear');
-        const currentYear = new Date().getFullYear();
-        if (yearSpan) {
-            yearSpan.textContent = currentYear;
+    <script src="script.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('.cv-form');
+    const cvOutput = document.getElementById('cv-output');
+    const addEducationBtn = document.getElementById('add-education');
+    const addExperienceBtn = document.getElementById('add-experience');
+    const addSkillBtn = document.getElementById('add-skill');
+    const generatePdfBtn = document.getElementById('generate-pdf');
+
+    // --- Function to update CV preview ---
+    function updatePreview() {
+        const formData = {
+            name: document.getElementById('name').value,
+            title: document.getElementById('title').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            location: document.getElementById('location').value,
+            linkedin: document.getElementById('linkedin').value,
+            github: document.getElementById('github').value,
+            summary: document.getElementById('summary').value,
+            education: [],
+            experience: [],
+            skills: []
+        };
+
+        // Collect Education Data
+        document.querySelectorAll('#education-entries .education-entry').forEach(entry => {
+            formData.education.push({
+                degree: entry.querySelector('.degree').value,
+                major: entry.querySelector('.major').value,
+                institution: entry.querySelector('.institution').value,
+                years: entry.querySelector('.edu-years').value
+            });
+        });
+
+        // Collect Experience Data
+        document.querySelectorAll('#experience-entries .experience-entry').forEach(entry => {
+             formData.experience.push({
+                 title: entry.querySelector('.job-title').value,
+                 company: entry.querySelector('.company').value,
+                 years: entry.querySelector('.exp-years').value,
+                 responsibilities: entry.querySelector('.responsibilities').value
+             });
+        });
+
+        // Collect Skills Data
+        document.querySelectorAll('#skills-entries .skill-entry').forEach(entry => {
+             formData.skills.push({
+                 name: entry.querySelector('.skill-name').value
+             });
+        });
+
+
+        // --- Generate HTML for Preview ---
+        let cvHtml = '';
+
+        // Personal Info
+        if (formData.name || formData.title || formData.email || formData.phone || formData.location || formData.linkedin || formData.github) {
+            cvHtml += `<h2>${formData.name || 'Nama Lengkap'}</h2>`;
+            if (formData.title) cvHtml += `<p><strong>${formData.title}</strong></p>`;
+            cvHtml += '<p>';
+            if (formData.email) cvHtml += `<i class="fas fa-envelope"></i> ${formData.email} &bull; `;
+            if (formData.phone) cvHtml += `<i class="fas fa-phone"></i> ${formData.phone} &bull; `;
+            if (formData.location) cvHtml += `<i class="fas fa-map-marker-alt"></i> ${formData.location}`;
+            cvHtml += '</p>';
+             cvHtml += '<p>'; // Pisahkan link sosmed
+             if (formData.linkedin) cvHtml += `<i class="fab fa-linkedin"></i> <a href="${formData.linkedin}" target="_blank">${formData.linkedin}</a> &bull; `;
+             if (formData.github) cvHtml += `<i class="fab fa-github"></i> <a href="${formData.github}" target="_blank">${formData.github}</a>`;
+             cvHtml += '</p>';
+
         }
+         if (formData.summary) {
+             cvHtml += `<h3>Ringkasan Profil</h3><p>${formData.summary}</p>`;
+         }
 
-        const timeSpan = document.getElementById('current-time');
 
-        function updateTime() {
-            const now = new Date();
-            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const dayName = days[now.getDay()];
-            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            const monthName = months[now.getMonth()];
-            const date = now.getDate();
-            const year = now.getFullYear();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            const formattedString = `${dayName}, ${date} ${monthName} ${year} ${hours}:${minutes}:${seconds}`;
-
-            if (timeSpan) {
-                timeSpan.textContent = formattedString;
-            }
-        }
-
-        updateTime();
-        setInterval(updateTime, 1000);
-
-        const batteryStatusDiv = document.getElementById('battery-status');
-        const batteryOutlineDiv = batteryStatusDiv ? batteryStatusDiv.querySelector('.battery-outline') : null;
-        const batteryFillDiv = batteryStatusDiv ? batteryStatusDiv.querySelector('.battery-fill') : null;
-        const batteryTextSpan = batteryStatusDiv ? batteryStatusDiv.querySelector('.battery-text') : null;
-        const lightningIcon = batteryStatusDiv ? batteryStatusDiv.querySelector('.lightning-icon') : null;
-
-        if ('getBattery' in navigator) {
-            navigator.getBattery().then(function(battery) {
-                function updateBatteryDisplay() {
-                    const levelPercentage = Math.round(battery.level * 100);
-
-                    if (batteryFillDiv) {
-                        batteryFillDiv.style.width = levelPercentage + '%';
-                        batteryFillDiv.classList.remove('low', 'medium', 'charging');
-                        if (battery.charging) {
-                            batteryFillDiv.classList.add('charging');
-                        } else if (levelPercentage < 20) {
-                            batteryFillDiv.classList.add('low');
-                        } else if (levelPercentage < 50) {
-                             batteryFillDiv.classList.add('medium');
-                        }
-                         // Jika >= 50% dan tidak charging, warnanya tetap default (hijau)
-                    }
-
-                    if (batteryTextSpan) {
-                         batteryTextSpan.textContent = levelPercentage + '%';
-                    }
-
-                    if (lightningIcon) {
-                        if (battery.charging) {
-                            lightningIcon.style.display = 'block';
-                        } else {
-                            lightningIcon.style.display = 'none';
-                        }
-                    }
-                }
-
-                updateBatteryDisplay();
-                battery.addEventListener('levelchange', updateBatteryDisplay);
-                battery.addEventListener('chargingchange', updateBatteryDisplay);
-            }).catch(function(error) {
-                console.error('Error accessing Battery Status API: ', error);
-                 if (batteryStatusDiv) {
-                    batteryStatusDiv.style.display = 'none';
+        // Education
+        if (formData.education.length > 0 && (formData.education[0].degree || formData.education[0].major || formData.education[0].institution || formData.education[0].years)) {
+            cvHtml += '<h3>Pendidikan</h3><ul>';
+            formData.education.forEach(edu => {
+                if (edu.degree || edu.major || edu.institution || edu.years) {
+                    cvHtml += `<li><strong>${edu.degree || ''} ${edu.major || ''}</strong>, ${edu.institution || ''} (${edu.years || ''})</li>`;
                 }
             });
-        } else {
-            if (batteryStatusDiv) {
-                batteryStatusDiv.style.display = 'none';
-            }
+            cvHtml += '</ul>';
         }
-    </script>
 
+        // Experience
+        if (formData.experience.length > 0 && (formData.experience[0].title || formData.experience[0].company || formData.experience[0].years || formData.experience[0].responsibilities)) {
+             cvHtml += '<h3>Pengalaman Kerja</h3><ul>';
+             formData.experience.forEach(exp => {
+                  if (exp.title || exp.company || exp.years || exp.responsibilities) {
+                       cvHtml += `<li><strong>${exp.title || ''}</strong> di ${exp.company || ''} (${exp.years || ''})`;
+                       if (exp.responsibilities) {
+                            // Split responsibilities by newline and create list items
+                            const responsibilitiesList = exp.responsibilities.split('\n').map(item => `<li>${item.trim()}</li>`).join('');
+                            if (responsibilitiesList) {
+                                 cvHtml += `<ul>${responsibilitiesList}</ul>`;
+                            }
+                       }
+                       cvHtml += '</li>';
+                  }
+             });
+             cvHtml += '</ul>';
+        }
+
+        // Skills
+        if (formData.skills.length > 0 && formData.skills[0].name) {
+             cvHtml += '<h3>Keahlian</h3><ul>';
+             formData.skills.forEach(skill => {
+                  if (skill.name) {
+                       cvHtml += `<li>${skill.name}</li>`;
+                  }
+             });
+             cvHtml += '</ul>';
+        }
+
+
+        // Update the preview div
+        cvOutput.innerHTML = cvHtml || '<p>Isi formulir di samping untuk melihat pratinjau CV.</p>';
+    }
+
+    // --- Function to add new entry fields ---
+    function addEntry(containerId, entryClass, labelsAndClasses) {
+        const container = document.getElementById(containerId);
+        const currentIndex = container.querySelectorAll(`.${entryClass}`).length;
+        const newEntry = document.createElement('div');
+        newEntry.classList.add(entryClass);
+
+        let entryHtml = '';
+        labelsAndClasses.forEach(({ label, className, type = 'text', tag = 'input', rows = 1 }) => {
+             const id = `${className}-${currentIndex}`;
+             entryHtml += `<label for="${id}">${label}:</label>`;
+             if (tag === 'input') {
+                  entryHtml += `<input type="${type}" class="${className}" id="${id}" data-index="${currentIndex}">`;
+             } else if (tag === 'textarea') {
+                  entryHtml += `<textarea class="${className}" id="${id}" data-index="${currentIndex}" rows="${rows}"></textarea>`;
+             }
+        });
+
+        entryHtml += '<button type="button" class="remove-entry">Hapus</button>';
+
+        newEntry.innerHTML = entryHtml;
+        container.appendChild(newEntry);
+
+        // Add event listener to the new remove button
+        newEntry.querySelector('.remove-entry').addEventListener('click', () => {
+            container.removeChild(newEntry);
+            updatePreview(); // Update preview after removing
+        });
+
+         // Add event listeners to new inputs for real-time preview
+         newEntry.querySelectorAll('input, textarea').forEach(input => {
+             input.addEventListener('input', updatePreview);
+         });
+    }
+
+    // --- Event Listeners ---
+
+    // Real-time preview update on any form input change
+    form.addEventListener('input', updatePreview);
+
+    // Add Education Entry
+    addEducationBtn.addEventListener('click', () => {
+        addEntry('education-entries', 'education-entry', [
+            { label: 'Gelar/Jenjang', className: 'degree' },
+            { label: 'Jurusan', className: 'major' },
+            { label: 'Institusi', className: 'institution' },
+            { label: 'Tahun', className: 'edu-years' }
+        ]);
+    });
+
+    // Add Experience Entry
+    addExperienceBtn.addEventListener('click', () => {
+         addEntry('experience-entries', 'experience-entry', [
+              { label: 'Posisi', className: 'job-title' },
+              { label: 'Perusahaan', className: 'company' },
+              { label: 'Tahun', className: 'exp-years' },
+              { label: 'Tanggung Jawab/Deskripsi', className: 'responsibilities', tag: 'textarea', rows: 3 }
+         ]);
+    });
+
+     // Add Skill Entry
+     addSkillBtn.addEventListener('click', () => {
+          addEntry('skills-entries', 'skill-entry', [
+               { label: 'Nama Skill', className: 'skill-name' }
+          ]);
+     });
+
+
+    // Handle initial remove buttons (for the default entry)
+    document.querySelectorAll('.remove-entry').forEach(button => {
+        button.addEventListener('click', (event) => {
+            // Find the closest parent entry div and remove it
+            const entry = event.target.closest('.education-entry, .experience-entry, .skill-entry');
+            if (entry) {
+                entry.parentElement.removeChild(entry);
+                updatePreview(); // Update preview after removing
+            }
+        });
+    });
+
+    // Generate PDF Button
+    generatePdfBtn.addEventListener('click', () => {
+        const element = document.getElementById('cv-output'); // Element yang akan diubah jadi PDF
+
+        // html2pdf options (bisa disesuaikan)
+        const options = {
+            margin: [10, 10, 10, 10], // top, left, bottom, right in mm
+            filename: 'CV_DedeKurniawan.pdf', // Nama file PDF
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Use html2pdf library
+        html2pdf().from(element).set(options).save();
+    });
+
+
+    // Initial preview update on page load
+    updatePreview();
+});
+</script>
 </body>
 </html>
