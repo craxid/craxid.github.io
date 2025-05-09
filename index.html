@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Link ke file CSS kita -->
     <link rel="stylesheet" href="style.css">
-    <!-- Link Font Awesome 6.7.0 -->
+    <!-- Link Font Awesome 6.7.0 (untuk icon tech stack) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200">
@@ -22,7 +22,7 @@
             </div>
             <h1 class="text-4xl font-bold mt-6">Dede Kurniawan</h1>
             <!-- Tagline Profesional -->
-            <!-- <p class="text-lg mt-2">Full-stack Developer | Crafting Digital Experiences</p>-->
+            <p class="text-lg mt-2">Full-stack Developer | Crafting Digital Experiences</p>
         </section>
 
         <!-- About Section -->
@@ -32,6 +32,31 @@
             <p>I am a passionate full-stack developer with experience in building robust and scalable web applications. I enjoy creating efficient and user-friendly digital experiences from front-end to back-end. I am always eager to learn new technologies and contribute to challenging projects.</p>
         </section>
 
+        <!-- === NEW: Contact/Social Buttons Section === -->
+        <section class="my-12 text-center">
+             <h2 class="text-2xl font-semibold mb-6">Connect with Me</h2>
+             <div class="flex flex-wrap justify-center gap-6">
+
+                 <!-- Bot WhatsApp Button -->
+                 <a href="/bot" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-block"> <!-- Menggunakan <a> untuk link -->
+                     Bot WhatsApp (/bot)
+                 </a>
+
+                 <!-- Facebook Button -->
+                 <a href="https://www.facebook.com/dede2015k" target="_blank" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-block">
+                     Facebook (@dede2015k)
+                 </a>
+
+                 <!-- Instagram Button -->
+                 <a href="https://www.instagram.com/dede_klender" target="_blank" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-block">
+                     Instagram (@dede_klender)
+                 </a>
+
+             </div>
+        </section>
+        <!-- ========================================= -->
+
+
         <!-- Tech Stack Section -->
         <section class="my-12">
             <h2 class="text-2xl font-semibold mb-6 text-center">Tech Stack</h2>
@@ -39,31 +64,31 @@
 
                 <!-- React Icon (Font Awesome) -->
                 <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
-                    <i class="fa-brands fa-react text-4xl mb-2"></i> <!-- Icon React dari Font Awesome -->
+                    <i class="fa-brands fa-react text-4xl mb-2"></i>
                     <span class="text-sm">React</span>
                 </div>
 
                 <!-- Javascript Icon (Font Awesome) -->
                 <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
-                     <i class="fa-brands fa-js text-4xl mb-2"></i> <!-- Icon Javascript dari Font Awesome -->
+                     <i class="fa-brands fa-js text-4xl mb-2"></i>
                     <span class="text-sm">Javascript</span>
                 </div>
 
                 <!-- HTML Icon (Font Awesome) -->
                 <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
-                     <i class="fa-brands fa-html5 text-4xl mb-2"></i> <!-- Icon HTML dari Font Awesome -->
+                     <i class="fa-brands fa-html5 text-4xl mb-2"></i>
                     <span class="text-sm">HTML</span>
                 </div>
 
                  <!-- CSS Icon (Font Awesome) -->
                 <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
-                     <i class="fa-brands fa-css3-alt text-4xl mb-2"></i> <!-- Icon CSS dari Font Awesome -->
+                     <i class="fa-brands fa-css3-alt text-4xl mb-2"></i>
                     <span class="text-sm">CSS</span>
                 </div>
 
                  <!-- Lain (Others) Icon (Font Awesome - Generic) -->
                 <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
-                     <i class="fa-solid fa-code text-4xl mb-2"></i> <!-- Icon Generik untuk Others (Code) -->
+                     <i class="fa-solid fa-code text-4xl mb-2"></i>
                     <span class="text-sm">Others</span>
                 </div>
 
