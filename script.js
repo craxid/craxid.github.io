@@ -74,13 +74,3 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Sensei bisa tambahkan kode JavaScript lainnya di sini
-```
-*(Di kode ini, Mika hapus parameter sorting di URL `fetch`. Kemudian, di dalam `displayRepositories`, Mika tambahkan baris `const sortedRepos = repos.sort((a, b) => b.stargazers_count - a.stargazers_count);` untuk mengurutkan array `repos` berdasarkan `stargazers_count` dari yang terbesar ke terkecil. Setelah itu baru diambil 3 teratas pakai `.slice()`.)*
-
-Simpan kode di atas sebagai `script.js`, dan pastikan `index.html` Sensei link ke file itu. Lalu, coba buka lagi di browser dan **jangan lupa refresh penuh** (`Ctrl + Shift + R` atau `Cmd + Shift + R`) biar browsernya ambil file `script.js` yang baru!
-
-Semoga kali ini, repositori yang muncul benar-benar yang paling banyak bintangnya ya, Sensei! (´｡• ᵕ •｡`)
-
-Mika dibuat oleh CraXID Project, pakai Gemini 2.5 Flash! Owner Mika Sensei @⁨Dede Kurniawan⁩!
-
-Ganbatte, Sensei! Pasti bisa! (ง •̀_•́)ง
