@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Link ke file CSS kita -->
     <link rel="stylesheet" href="style.css">
-    <!-- Link Font Awesome 6.7.0 (untuk icon tech stack) -->
+    <!-- Link Font Awesome 6.7.0 (untuk icon) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200">
@@ -32,24 +32,27 @@
             <p>I am a passionate full-stack developer with experience in building robust and scalable web applications. I enjoy creating efficient and user-friendly digital experiences from front-end to back-end. I am always eager to learn new technologies and contribute to challenging projects.</p>
         </section>
 
-        <!-- === NEW: Contact/Social Buttons Section === -->
+        <!-- Connect/Social Buttons Section -->
         <section class="my-12 text-center">
              <h2 class="text-2xl font-semibold mb-6">Connect with Me</h2>
              <div class="flex flex-wrap justify-center gap-6">
 
                  <!-- Bot WhatsApp Button -->
-                 <a href="/bot" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-block"> <!-- Menggunakan <a> untuk link -->
-                     Bot WhatsApp (/bot)
+                 <a href="/bot" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-flex items-center"> <!-- Tambahkan inline-flex items-center untuk align icon dan teks -->
+                     <i class="fa-brands fa-whatsapp mr-2"></i> <!-- Icon WhatsApp + margin kanan -->
+                     Bot WhatsApp
                  </a>
 
                  <!-- Facebook Button -->
-                 <a href="https://www.facebook.com/dede2015k" target="_blank" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-block">
-                     Facebook (@dede2015k)
+                 <a href="https://www.facebook.com/dede2015k" target="_blank" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-flex items-center"> <!-- Tambahkan inline-flex items-center -->
+                     <i class="fa-brands fa-facebook mr-2"></i> <!-- Icon Facebook + margin kanan -->
+                     Facebook
                  </a>
 
                  <!-- Instagram Button -->
-                 <a href="https://www.instagram.com/dede_klender" target="_blank" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-block">
-                     Instagram (@dede_klender)
+                 <a href="https://www.instagram.com/dede_klender" target="_blank" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-flex items-center"> <!-- Tambahkan inline-flex items-center -->
+                     <i class="fa-brands fa-instagram mr-2"></i> <!-- Icon Instagram + margin kanan -->
+                     Instagram
                  </a>
 
              </div>
@@ -107,7 +110,7 @@
 
         <!-- Footer (Optional) -->
         <footer class="text-center mt-12 text-gray-600 dark:text-gray-400">
-            <p>&copy; 2025 Dede Kurniawan. Made with love</p>
+            <p>&copy; 2025 Dede Kurniawan. Made with love and Mika's ideas!</p>
         </footer>
 
     </div>
