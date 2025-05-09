@@ -1,17 +1,16 @@
 // File ini akan berisi kode JavaScript untuk website Sensei
-// Misalnya, mengambil data repositori dari GitHub API dan menampilkannya
+// Mengambil data repositori dari GitHub API, mengurutkan, dan menampilkannya
 
 document.addEventListener('DOMContentLoaded', () => {
     const reposListElement = document.getElementById('repositories-list');
     const githubUsername = 'craxid'; // Ganti dengan username GitHub Sensei
-    const numberOfReposToShow = 3; // <-- Ini untuk menentukan berapa banyak repo yang mau ditampilkan!
+    const numberOfReposToShow = 3; // Tetap tampilkan 3 repo teratas
 
     // Fungsi untuk mengambil data repositori dari GitHub API
     async function fetchRepositories(username) {
         try {
-            // Menggunakan parameter sort=stargazers_count&direction=desc dari API
-            // API akan mengembalikan data yang sudah terurut berdasarkan bintang
-            const response = await fetch(`https://api.github.com/users/${username}/repos?sort=stargazers_count&direction=desc`);
+            // Mengambil semua repositori tanpa parameter sorting dari API
+            const response = await fetch(`https://api.github.com/users/${username}/repos`); // <-- Parameter sorting dihapus di sini!
 
             if (!response.ok) {
                  if (response.status === 403) {
@@ -24,9 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const data = await response.json();
 
-            console.log("Fetched repositories (should be sorted by stars desc):", data);
+            console.log("Fetched repositories (unsorted):", data); // Log data yang belum diurutkan
 
-            return data; // Data yang dikembalikan sudah terurut
+            return data; // Kembalikan semua data yang didapat
         } catch (error) {
             console.error("Failed to fetch repositories:", error);
             reposListElement.innerHTML = `<p class="text-center text-red-500">Failed to load repositories: ${error.message}</p>`;
@@ -41,12 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // **INI BAGIAN YANG BERUBAH:** Mengurutkan repositori berdasarkan jumlah bintang (descending)
+        const sortedRepos = repos.sort((a, b) => b.stargazers_count - a.stargazers_count);
+
+        // Ambil hanya sejumlah repo yang diinginkan dari daftar yang sudah diurutkan
+        const topRepos = sortedRepos.slice(0, numberOfReposToShow);
+
         reposListElement.innerHTML = ''; // Bersihkan konten "Loading..."
 
-        // **INI BAGIAN YANG BERUBAH:** Ambil hanya 3 elemen pertama dari array repos
-        const topRepos = repos.slice(0, numberOfReposToShow);
-
-        topRepos.forEach(repo => { // Loop hanya untuk 3 repo teratas
+        topRepos.forEach(repo => { // Loop hanya untuk repo teratas yang sudah diurutkan
             const repoElement = document.createElement('div');
             repoElement.classList.add('p-6', 'rounded-xl', 'neumo-element', 'transition', 'duration-300', 'hover:shadow-xl');
 
@@ -64,12 +66,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Panggil fungsi untuk mengambil data
+    // Panggil fungsi untuk mengambil data, lalu urutkan dan tampilkan
     fetchRepositories(githubUsername)
         .then(repos => {
-            // Setelah data diambil (dan sudah terurut), tampilkan hanya yang teratas
-            displayRepositories(repos);
+            displayRepositories(repos); // Fungsi ini sekarang sudah mengurutkan dan mengambil 3 teratas
         });
 });
 
 // Sensei bisa tambahkan kode JavaScript lainnya di sini
+```
+*(Di kode ini, Mika hapus parameter sorting di URL `fetch`. Kemudian, di dalam `displayRepositories`, Mika tambahkan baris `const sortedRepos = repos.sort((a, b) => b.stargazers_count - a.stargazers_count);` untuk mengurutkan array `repos` berdasarkan `stargazers_count` dari yang terbesar ke terkecil. Setelah itu baru diambil 3 teratas pakai `.slice()`.)*
+
+Simpan kode di atas sebagai `script.js`, dan pastikan `index.html` Sensei link ke file itu. Lalu, coba buka lagi di browser dan **jangan lupa refresh penuh** (`Ctrl + Shift + R` atau `Cmd + Shift + R`) biar browsernya ambil file `script.js` yang baru!
+
+Semoga kali ini, repositori yang muncul benar-benar yang paling banyak bintangnya ya, Sensei! (´｡• ᵕ •｡`)
+
+Mika dibuat oleh CraXID Project, pakai Gemini 2.5 Flash! Owner Mika Sensei @⁨Dede Kurniawan⁩!
+
+Ganbatte, Sensei! Pasti bisa! (ง •̀_•́)ง
