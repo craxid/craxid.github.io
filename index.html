@@ -1,69 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dede Kurniawan - Portfolio</title>
+    <title>Dede K.</title>
+    <!-- Link Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Link ke file CSS kita -->
     <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome 6.7.0 CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css"/>
-    <!-- Favicon -->
-    <link rel="icon" href="https://github.com/craxid.png" type="image/png">
+    <!-- Link Font Awesome 6.7.0 (untuk icon) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body>
+<body class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+    <div class="container mx-auto p-4">
 
-    <header class="neumorphic-card profile-section">
-        <img src="https://github.com/craxid.png" alt="Dede Kurniawan's Profile Picture" class="profile-pic">
-        <h1>Dede Kurniawan</h1>
-        <p>Software Engineer | Web & AI Specialist</p>
-    </header>
-
-    <main>
-        <section class="neumorphic-card about-section">
-            <h2>About Me</h2>
-            <p>
-                I am Dede Kurniawan, a dedicated Software Engineer with a passion for building innovative digital solutions. My expertise spans across web development, with a strong interest in artificial intelligence (AI) and exploring cutting-edge technologies. This portfolio showcases a selection of my projects, including web applications, software tools, and contributions to the open-source community. I am always eager to learn and take on new challenges to create impactful technology.
-            </p>
+        <!-- Profile Section -->
+        <section class="flex flex-col items-center my-12">
+            <!-- Profile Picture -->
+            <div class="rounded-full w-40 h-40 overflow-hidden neumo-element p-2">
+                 <img src="https://github.com/craxid.png" alt="Sensei's Profile Picture" class="rounded-full w-full h-full object-cover">
+            </div>
+            <h1 class="text-4xl font-bold mt-6">Dede Kurniawan</h1>
+            <!-- Tagline Profesional -->
+            <!-- <p class="text-lg mt-2">Full-stack Developer | Crafting Digital Experiences</p>-->
         </section>
 
-        <section class="neumorphic-card tech-stack-section">
-            <h2>Tech Stack</h2>
-            <ul class="tech-list">
-                <li><i class="fas fa-code"></i> HTML5</li>
-                <li><i class="fab fa-css3-alt"></i> CSS3</li>
-                <li><i class="fab fa-js"></i> JavaScript</li>
-                <li><i class="fab fa-react"></i> React</li>
-                <li><i class="fab fa-node-js"></i> Node.js</li>
-                <li><i class="fab fa-python"></i> Python</li>
-                <!-- Add or modify based on Sensei's actual tech stack -->
-            </ul>
+        <!-- About Section -->
+        <section class="my-12 p-6 rounded-xl neumo-element">
+            <h2 class="text-2xl font-semibold mb-4">About Me</h2>
+            <!-- About Me Profesional -->
+            <p>I am a passionate full-stack developer with experience in building robust and scalable web applications. I enjoy creating efficient and user-friendly digital experiences from front-end to back-end. I am always eager to learn new technologies and contribute to challenging projects.</p>
         </section>
 
-        <section class="neumorphic-card github-section">
-            <h2>My Projects</h2>
-            <ul class="repo-list" id="github-repos">
-                <!-- Repositories will be loaded here by JavaScript -->
-                <li>Loading repositories...</li> <!-- Mika kasih loading text sementara -->
-            </ul>
-            <p><a href="https://github.com/craxid" target="_blank" class="github-link"><i class="fab fa-github"></i> View all on GitHub</a></p>
+        <!-- Connect/Social Buttons Section -->
+        <section class="my-12 text-center">
+             <h2 class="text-2xl font-semibold mb-6">Connect with Me</h2>
+             <div class="flex flex-wrap justify-center gap-6">
+
+                 <!-- Bot WhatsApp Button -->
+                 <a href="/bot" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-flex items-center"> <!-- Tambahkan inline-flex items-center untuk align icon dan teks -->
+                     <i class="fab fa-whatsapp"></i> <!-- Icon WhatsApp + margin kanan -->
+                     Bot WhatsApp
+                 </a>
+
+                 <!-- Facebook Button -->
+                 <a href="https://www.facebook.com/dede2015k" target="_blank" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-flex items-center"> <!-- Tambahkan inline-flex items-center -->
+                     <i class="fab fa-facebook"></i> <!-- Icon Facebook + margin kanan -->
+                     Facebook
+                 </a>
+
+                 <!-- Instagram Button -->
+                 <a href="https://www.instagram.com/dede_klender" target="_blank" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-flex items-center"> <!-- Tambahkan inline-flex items-center -->
+                     <i class="fab fa-instagram"></i> <!-- Icon Instagram + margin kanan -->
+                     Instagram
+                 </a>
+
+             </div>
+        </section>
+        <!-- ========================================= -->
+
+
+        <!-- Tech Stack Section -->
+        <section class="my-12">
+            <h2 class="text-2xl font-semibold mb-6 text-center">Tech Stack</h2>
+            <div class="flex flex-wrap justify-center gap-6">
+
+                <!-- React Icon (Font Awesome) -->
+                <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
+                    <i class="fab fa-react text-4xl mb-2"></i>
+                    <span class="text-sm">React</span>
+                </div>
+
+                <!-- Javascript Icon (Font Awesome) -->
+                <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
+                     <i class="fab fa-js text-4xl mb-2"></i>
+                    <span class="text-sm">Javascript</span>
+                </div>
+
+                <!-- HTML Icon (Font Awesome) -->
+                <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
+                     <i class="fab fa-html5 text-4xl mb-2"></i>
+                    <span class="text-sm">HTML</span>
+                </div>
+
+                 <!-- CSS Icon (Font Awesome) -->
+                <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
+                     <i class="fab fa-css3-alt text-4xl mb-2"></i>
+                    <span class="text-sm">CSS</span>
+                </div>
+
+                 <!-- Lain (Others) Icon (Font Awesome - Generic) -->
+                <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
+                     <i class="fas fa-code text-4xl mb-2"></i>
+                    <span class="text-sm">Others</span>
+                </div>
+
+            </div>
         </section>
 
-        <section class="neumorphic-card contact-section">
-            <h2>Get In Touch</h2>
-            <ul class="contact-list">
-                <li><i class="fas fa-envelope"></i> <a href="mailto:dev@crax.my.id">dev@crax.my.id</a></li>
-                <!--<li><i class="fab fa-linkedin"></i> <a href="" target="_blank">LinkedIn</a></li>-->
-                <li><i class="fab fa-twitter"></i> <a href="https://x.com/dede_klender" target="_blank">Twitter</a></li>
-                 <!-- Add or modify based on Sensei's contact methods -->
-            </ul>
+        <!-- Portfolio Section (Repositories) -->
+        <section class="my-12">
+            <h2 class="text-2xl font-semibold mb-6 text-center">My Projects</h2>
+            <div id="repositories-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Repository items will be loaded here by JavaScript -->
+                <p class="text-center text-gray-500 dark:text-gray-400">Loading repositories...</p>
+            </div>
+             <p class="text-center text-sm text-gray-500 mt-6">Note: Repository data is fetched dynamically from GitHub.</p>
         </section>
-    </main>
 
-    <footer>
-        <p>Copyright &copy; <span id="currentYear"></span> Dede Kurniawan.</p>
-    </footer>
+        <!-- Footer (Optional) -->
+        <footer class="text-center mt-12 text-gray-600 dark:text-gray-400">
+            <p>&copy; <span id="currentYear"></span> Dede Kurniawan.</p>
+        </footer>
 
-    <script src="script.js"></script> <!-- Panggil file JavaScript di sini! -->
+    </div>
 
+    <!-- Link ke file JavaScript kita -->
+    <script src="script.js"></script>
 </body>
 </html>
