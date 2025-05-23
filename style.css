@@ -1,25 +1,149 @@
-/* Custom CSS for neumorphism effects */
-.neumo-element {
-    background: #e0e0e0; /* Or your background color */
-    box-shadow: 8px 8px 15px #bebebe,
-                -8px -8px 15px #ffffff;
+
+:root {
+    --bg-color: #e0e0e0; /* Warna background netral untuk neumorphism */
+    --light-shadow: #ffffff;
+    --dark-shadow: #a7a7a7;
+    --card-radius: 20px;
+    --padding: 20px;
+    --margin-bottom: 30px;
+    --text-color: #333;
+    --link-color: #007bff;
 }
 
-.neumo-inset {
-     background: #e0e0e0; /* Or your background color */
-     box-shadow: inset 8px 8px 15px #bebebe,
-                 inset -8px -8px 15px #ffffff;
+body {
+    font-family: sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Example for dark mode */
-.dark .neumo-element {
-    background: #333333;
-    box-shadow: 8px 8px 15px #222222,
-                -8px -8px 15px #444444;
+main {
+    width: 100%;
+    max-width: 800px; /* Lebar konten maksimum */
+    margin-top: var(--margin-bottom);
 }
 
-.dark .neumo-inset {
-    background: #333333;
-    box-shadow: inset 8px 8px 15px #222222,
-                inset -8px -8px 15px #444444;
+.neumorphic-card {
+    background-color: var(--bg-color);
+    padding: var(--padding);
+    border-radius: var(--card-radius);
+    box-shadow: 7px 7px 15px var(--dark-shadow),
+                -7px -7px 15px var(--light-shadow);
+    margin-bottom: var(--margin-bottom);
+    text-align: center; /* Default text alignment */
+}
+
+/* Specific styles for sections */
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    /* Neumorphic effect for image */
+     box-shadow: inset 5px 5px 10px var(--dark-shadow),
+                 inset -5px -5px 10px var(--light-shadow);
+    padding: 5px; /* Padding inside the shadow */
+    background-color: var(--bg-color); /* Match background */
+}
+
+.about-section,
+.tech-stack-section,
+.github-section,
+.contact-section {
+    text-align: left; /* Align text left for content sections */
+}
+
+h1, h2 {
+    color: var(--text-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center; /* Center headings */
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background-color: var(--bg-color);
+    /* Subtle inner shadow for list items */
+    box-shadow: inset 3px 3px 7px var(--dark-shadow),
+                inset -3px -3px 7px var(--light-shadow);
+     display: flex;
+     align-items: center;
+}
+
+ul li i {
+    margin-right: 10px;
+    color: var(--link-color); /* Or another accent color */
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #0056b3; /* Darker shade on hover */
+}
+
+.tech-list li {
+    display: inline-block; /* Display tech items inline */
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.repo-list .stars {
+    margin-left: auto; /* Push stars to the right */
+    font-weight: bold;
+     color: #ffc107; /* Star color */
+}
+
+.repo-list .stars i {
+    margin-right: 5px;
+    color: #ffc107; /* Star icon color */
+}
+
+.github-link {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 15px;
+    border-radius: 10px;
+     background-color: var(--bg-color);
+     box-shadow: 5px 5px 10px var(--dark-shadow),
+                 -5px -5px 10px var(--light-shadow);
+     transition: all 0.3s ease;
+}
+
+.github-link:hover {
+     box-shadow: 2px 2px 5px var(--dark-shadow),
+                 -2px -2px 5px var(--light-shadow); /* Press effect */
+     transform: translateY(2px);
+}
+
+footer {
+    margin-top: var(--margin-bottom);
+    text-align: center;
+    color: #666;
+    font-size: 0.9em;
 }
