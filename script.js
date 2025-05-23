@@ -64,3 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             githubReposElement.innerHTML = `<li>Error loading repositories. (${error.message})</li>`;
         });
 });
+
+const yearSpan = document.getElementById('currentYear');
+        const currentYear = new Date().getFullYear();
+        if (yearSpan) {
+            yearSpan.textContent = currentYear;
+        }
