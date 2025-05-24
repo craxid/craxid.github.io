@@ -4,7 +4,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const reposListElement = document.getElementById('repositories-list');
     const githubUsername = 'craxid'; // Ganti dengan username GitHub milikmu
-    const numberOfReposToShow = 3; // Tetap tampilkan 3 repo teratas
+    const numberOfReposToShow = 3; // Tampilkan 3 repo teratas
 
     // Fungsi untuk mengambil data repositori dari GitHub API
     async function fetchRepositories(username) {
