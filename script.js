@@ -1,9 +1,9 @@
-// File ini akan berisi kode JavaScript untuk website Sensei
+// File ini akan berisi kode JavaScript untuk website
 // Mengambil data repositori dari GitHub API, mengurutkan, dan menampilkannya
 
 document.addEventListener('DOMContentLoaded', () => {
     const reposListElement = document.getElementById('repositories-list');
-    const githubUsername = 'craxid'; // Ganti dengan username GitHub Sensei
+    const githubUsername = 'craxid'; // Ganti dengan username GitHub milikmu
     const numberOfReposToShow = 3; // Tetap tampilkan 3 repo teratas
 
     // Fungsi untuk mengambil data repositori dari GitHub API
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 });
 
-// Sensei bisa tambahkan kode JavaScript lainnya di sini
+// Kamu bisa tambahkan kode JavaScript lainnya di sini
 const yearSpan = document.getElementById('currentYear');
         const currentYear = new Date().getFullYear();
         if (yearSpan) {
