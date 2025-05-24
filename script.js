@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 });
 
-// Sensei bisa tambahkan kode JavaScript lainnya di sini
+// Kamu bisa tambahkan kode JavaScript lainnya di sini
 const yearSpan = document.getElementById('currentYear');
         const currentYear = new Date().getFullYear();
         if (yearSpan) {
