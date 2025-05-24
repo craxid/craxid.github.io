@@ -5,4 +5,4 @@ Disallow: /wp-includes/
 Allow: /
 Allow: /bot
 
-Sitemap: https://nama-domain-anda.com/sitemap.xml
+Sitemap: https://crax.my.id/sitemap.xml
