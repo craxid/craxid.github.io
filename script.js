@@ -1,10 +1,49 @@
-// File ini akan berisi kode JavaScript untuk website
+// File ini akan berisi kode JavaScript untuk website Sensei
 // Mengambil data repositori dari GitHub API, mengurutkan, dan menampilkannya
+// Ditambah logika Mode Gelap/Terang
 
 document.addEventListener('DOMContentLoaded', () => {
     const reposListElement = document.getElementById('repositories-list');
     const githubUsername = 'craxid'; // Ganti dengan username GitHub Sensei
     const numberOfReposToShow = 3; // Tetap tampilkan 3 repo teratas
+
+    // --- Logika Mode Gelap/Terang ---
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+    const localStorageKey = 'themePreference'; // Kunci untuk localStorage
+
+    // Fungsi untuk menerapkan tema
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            body.classList.add('dark');
+        } else {
+            body.classList.remove('dark');
+        }
+        // Icon visibility is handled by CSS based on body.dark class
+    }
+
+    // Fungsi untuk mengganti tema
+    function toggleTheme() {
+        const currentTheme = body.classList.contains('dark') ? 'dark' : 'light';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        applyTheme(newTheme);
+        localStorage.setItem(localStorageKey, newTheme); // Simpan preferensi di localStorage
+    }
+
+    // Cek preferensi tema saat halaman dimuat
+    const savedTheme = localStorage.getItem(localStorageKey);
+    if (savedTheme) {
+        applyTheme(savedTheme);
+    } else {
+        // Jika belum ada preferensi, cek preferensi sistem
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        applyTheme(prefersDarkMode ? 'dark' : 'light');
+    }
+
+    // Tambahkan event listener ke tombol toggle
+    themeToggleBtn.addEventListener('click', toggleTheme);
+
+    // --- Logika Ambil Repositori GitHub (Kode sebelumnya) ---
 
     // Fungsi untuk mengambil data repositori dari GitHub API
     async function fetchRepositories(username) {
@@ -76,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 });
 
-// Kamu bisa tambahkan kode JavaScript lainnya di sini
+// Sensei bisa tambahkan kode JavaScript lainnya di sini
 const yearSpan = document.getElementById('currentYear');
         const currentYear = new Date().getFullYear();
         if (yearSpan) {
