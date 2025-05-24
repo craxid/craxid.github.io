@@ -11,14 +11,22 @@
     <!-- Link Font Awesome 6.7.0 (untuk icon) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" />
 </head>
-<body class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+<body class="bg-gray-100 text-gray-800"> <!-- Hapus dark:bg-gray-800 dan dark:text-gray-200 di sini, kita atur di CSS -->
     <div class="container mx-auto p-4">
+
+        <!-- Tombol Mode Gelap/Terang -->
+        <button id="theme-toggle" class="fixed top-4 right-4 z-50 p-3 rounded-full neumo-element transition duration-300 hover:shadow-xl">
+            <!-- Icon Matahari (Mode Terang) -->
+            <i class="fas fa-sun text-yellow-500 text-xl"></i>
+            <!-- Icon Bulan (Mode Gelap) -->
+            <i class="fas fa-moon text-gray-700 text-xl"></i>
+        </button>
 
         <!-- Profile Section -->
         <section class="flex flex-col items-center my-12">
             <!-- Profile Picture -->
             <div class="rounded-full w-40 h-40 overflow-hidden neumo-element p-2">
-                 <img src="https://github.com/craxid.png" alt="Profile Picture" class="rounded-full w-full h-full object-cover">
+                 <img src="https://github.com/craxid.png" alt="Sensei's Profile Picture" class="rounded-full w-full h-full object-cover">
             </div>
             <h1 class="text-4xl font-bold mt-6">Dede Kurniawan</h1>
             <!-- Tagline Profesional -->
@@ -101,7 +109,7 @@
 
         <!-- Footer (Optional) -->
         <footer class="text-center mt-12 text-gray-600 dark:text-gray-400">
-            <p>Copyright &copy; <span id="currentYear"></span> Dede Kurniawan.</p>
+            <p>&copy; <span id="currentYear"></span> Dede Kurniawan.</p>
         </footer>
 
     </div>
