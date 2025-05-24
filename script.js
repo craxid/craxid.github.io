@@ -1,4 +1,4 @@
-// File ini akan berisi kode JavaScript untuk website Sensei
+// File ini akan berisi kode JavaScript untuk website
 // Mengambil data repositori dari GitHub API, mengurutkan, dan menampilkannya
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 });
 
-// Sensei bisa tambahkan kode JavaScript lainnya di sini
+// Kamu bisa tambahkan kode JavaScript lainnya di sini
 const yearSpan = document.getElementById('currentYear');
         const currentYear = new Date().getFullYear();
         if (yearSpan) {
