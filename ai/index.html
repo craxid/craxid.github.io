@@ -9,31 +9,31 @@
 <body>
     <div class="container">
         <h1>CraXID CV Generator</h1>
-        <p>Sensei, ayo buat CV yang keren! :D</p>
+        <p>Kamu, ayo buat CV yang keren! :D</p>
 
         <div class="form-section">
             <h2>Data Diri (Jiko Shoukai)</h2>
             <label for="name">Nama:</label>
-            <input type="text" id="name" placeholder="Nama lengkap Sensei">
+            <input type="text" id="name" placeholder="Nama lengkap Kamu">
 
             <label for="email">Email:</label>
-            <input type="email" id="email" placeholder="Email Sensei">
+            <input type="email" id="email" placeholder="Email Kamu">
 
             <label for="phone">Telepon:</label>
-            <input type="text" id="phone" placeholder="Nomor telepon Sensei">
+            <input type="text" id="phone" placeholder="Nomor telepon Kamu">
 
             <label for="linkedin">LinkedIn (Opsional):</label>
-            <input type="text" id="linkedin" placeholder="Link LinkedIn Sensei">
+            <input type="text" id="linkedin" placeholder="Link LinkedIn Kamu">
         </div>
 
         <div class="form-section">
             <h2>Pengalaman (Keiken)</h2>
-            <textarea id="experience" placeholder="Ceritakan pengalaman Sensei..."></textarea>
+            <textarea id="experience" placeholder="Ceritakan pengalaman Kamu..."></textarea>
         </div>
 
         <div class="form-section">
             <h2>Pendidikan (Kyouiku)</h2>
-            <textarea id="education" placeholder="Riwayat pendidikan Sensei..."></textarea>
+            <textarea id="education" placeholder="Riwayat pendidikan Kamu..."></textarea>
         </div>
 
         <!-- Tombol yang bisa di-customize! -->
@@ -89,7 +89,7 @@ document.getElementById('generate-btn').addEventListener('click', function() {
     }
 
     if (!name && !email && !phone && !linkedin && !experience && !education) {
-         cvHtml = '<p>Sensei, belum ada data yang diisi! >_<</p>';
+         cvHtml = '<p>Kamu, belum ada data yang diisi! >_<</p>';
     }
 
 
