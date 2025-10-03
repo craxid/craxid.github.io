@@ -251,7 +251,7 @@ minMagisk=2318
   // Trigger download
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${data.namaKode}_magisk_module_by_CraXID_Project.zip`;
+  a.download = `${data.namaBrand}_${data.namaKode}_magisk_module_by_CraXID_Project.zip`;
   a.click();
   URL.revokeObjectURL(url);
 });
