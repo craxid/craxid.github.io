@@ -4,5 +4,6 @@ Disallow: /wp-admin/
 Disallow: /wp-includes/
 Allow: /
 Allow: /bot
+Allow: /props
 
 Sitemap: https://crax.my.id/sitemap.xml
