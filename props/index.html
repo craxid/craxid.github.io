@@ -3,53 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Situs Material Sederhana</title>
+  <title>Build.prop ZIP Generator</title>
 
   <!-- Roboto Font & Material Icons -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="https://crax.my.id/props/css/style.css">
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
   <header class="app-bar">
     <div class="container">
-      <span class="material-icons app-bar__icon">dashboard</span>
-      <h1 class="app-bar__title">My Material Site</h1>
+      <span class="material-icons app-bar__icon">settings</span>
+      <h1 class="app-bar__title">Build.prop ZIP Generator</h1>
     </div>
   </header>
 
   <main class="container">
-    <section class="hero">
-      <h2>Selamat Datang!</h2>
-      <p>Ini adalah contoh situs statis dengan gaya Material Design yang sederhana dan modern.</p>
-      <button class="btn btn--primary">Pelajari Lebih Lanjut</button>
-    </section>
-
-    <section class="cards">
-      <div class="card">
-        <span class="material-icons card__icon">favorite</span>
-        <h3 class="card__title">Fitur 1</h3>
-        <p class="card__desc">Deskripsi singkat tentang fitur pertama.</p>
+    <form id="propForm" class="form">
+      <div class="form__group">
+        <label for="namaBrand">Nama Brand</label>
+        <input type="text" id="namaBrand" required>
       </div>
-      <div class="card">
-        <span class="material-icons card__icon">build</span>
-        <h3 class="card__title">Fitur 2</h3>
-        <p class="card__desc">Deskripsi singkat tentang fitur kedua.</p>
+      <div class="form__group">
+        <label for="namaKode">Kode Device</label>
+        <input type="text" id="namaKode" required>
       </div>
-      <div class="card">
-        <span class="material-icons card__icon">launch</span>
-        <h3 class="card__title">Fitur 3</h3>
-        <p class="card__desc">Deskripsi singkat tentang fitur ketiga.</p>
+      <div class="form__group">
+        <label for="pembuat">Pembuat</label>
+        <input type="text" id="pembuat" required>
       </div>
-    </section>
+      <div class="form__group">
+        <label for="model">Model</label>
+        <input type="text" id="model" required>
+      </div>
+      <div class="form__group">
+        <label for="versiAndroid">Versi Android (contoh: 12)</label>
+        <input type="text" id="versiAndroid" required>
+      </div>
+      <div class="form__group">
+        <label for="versiSDK">Versi SDK (contoh: 31)</label>
+        <input type="number" id="versiSDK" required>
+      </div>
+      <button type="submit" class="btn btn--primary">
+        Generate build.prop ZIP
+      </button>
+    </form>
   </main>
 
-  <footer class="footer">
-    <div class="container">
-      <p>© 2025 My Material Site. All rights reserved.</p>
-    </div>
-  </footer>
+  <!-- JSZip untuk mengemas file ke dalam ZIP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+  <!-- Script utama -->
+  <script src="./js/app.js"></script>
 </body>
 </html>
+```[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/akarisan/NT-theme/tree/3ee35224e44be22ce876f1d1cbf2408ef918070e/ver1%2Fheader.php?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "1")
