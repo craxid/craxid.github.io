@@ -226,11 +226,11 @@ document.getElementById('propForm').addEventListener('submit', async (e) => {
   // Buat module.prop
   const moduleProp = `
 id=${data.namaKode}_buildprop
-name=Custom BuildProp Overrides for ${data.namaKode}
+name=Custom BuildProp ${data.namaKode} by CraXID Project
 version=1.0.0
 versionCode=1
-author=${data.pembuat}
-description=Auto-generated Magisk module to override build.prop entries
+author=@ CraXID Project
+description=Auto-generated Magisk/APatch/KernelSU/SukiSU  module to override build.prop entries by CraXID Project
 minMagisk=2318
 `.trim();
 
