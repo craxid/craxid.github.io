@@ -229,8 +229,8 @@ id=${data.namaKode}_buildprop
 name=Custom BuildProp ${data.namaKode} by CraXID Project
 version=1.0.0
 versionCode=1
-author=@ CraXID Project
-description=Auto-generated Magisk/APatch/KernelSU/SukiSU module to override build.prop entries by CraXID Project
+author=CraXID Project
+description=Auto-generated Magisk/APatch/KernelSU/SukiSU module to override build.prop entries by CraXID Project === https://crax.my.id/
 minMagisk=2318
 `.trim();
 
