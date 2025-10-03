@@ -1,47 +1,128 @@
-/* Custom CSS for neumorphism effects */
-.neumo-element {
-    background: #e0e0e0; /* Or your background color */
-    box-shadow: 8px 8px 15px #bebebe,
-                -8px -8px 15px #ffffff;
+:root {
+  --primary: #2962ff;
+  --background: #f5f5f5;
+  --text: #212121;
+  --card: #ffffff;
 }
 
-.neumo-inset {
-     background: #e0e0e0; /* Or your background color */
-     box-shadow: inset 8px 8px 15px #bebebe,
-                 inset -8px -8px 15px #ffffff;
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: var(--background);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
 }
 
-/* Dark mode styles */
-body.dark { /* Target body when it has the 'dark' class */
-    background-color: #000000; /* FULL BLACK background */
-    color: #e0e0e0; /* Light text color */
+header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
 }
 
-.dark .neumo-element {
-    background: #121212; /* Very dark gray for neumo elements */
-    box-shadow: 8px 8px 15px #0a0a0a, /* Darker shadows */
-                -8px -8px 15px #1a1a1a;
+.theme-toggle {
+  position: relative;
 }
 
-.dark .neumo-inset {
-    background: #121212; /* Very dark gray for neumo elements */
-    box-shadow: inset 8px 8px 15px #0a0a0a, /* Darker shadows */
-                 inset -8px -8px 15px #1a1a1a;
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
 }
 
-/* Hide moon icon in light mode */
-body:not(.dark) .fa-moon {
-    display: none;
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-/* Hide sun icon in dark mode */
-body.dark .fa-sun {
-    display: none;
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 34px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.4s;
 }
 
-/* Style for the theme toggle button */
-#theme-toggle {
-    border: none; /* Remove default button border */
-    cursor: pointer; /* Show pointer cursor */
-    outline: none; /* Remove outline on focus */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: var(--primary);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+body.dark {
+  --background: #000000;
+  --text: #ffffff;
+  --card {
+  text-align: center;
+  padding: 2rem;
+}
+
+.avatar-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid var(--primary);
+}
+
+.guard-badge {
+  position: absolute;
+  bottom: -10px;
+  right: 0;
+  background: var(--primary);
+  border-radius: 50%;
+  padding: 6px;
+}
+
+.guard-badge img {
+  width: 24px;
+  height: 24px;
+}
+
+.tagline {
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+section {
+  margin-top: 2rem;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 0.5rem 0;
+}
+
+footer {
+  margin-top: 3rem;
+  padding: 1rem;
+  background: var(--card);
+  color: var(--text);
 }
