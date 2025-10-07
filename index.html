@@ -3,37 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dede K.</title>
-  <link rel="stylesheet" href="./styles.css">
+  <title>Portofolio</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-white dark:bg-gray-900 transition duration-300">
-  <header class="bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 py-4 text-white">
-    <nav class="container mx-auto flex justify-between items-center">
-      <h1 class="text-3xl font-bold">Dede K.</h1>
-      <ul class="flex items-center space-x-4">
-        <li><a href="#portfolio" class="hover:text-gray-200 transition duration-300">Portfolio</a></li>
-        <li><button id="theme-toggle" class="bg-gray-200 dark:bg-gray-700 p-2 rounded-full transition duration-300">
-          <svg id="theme-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-          </svg>
-        </button></li>
+<body>
+  <header class="header">
+    <nav class="nav">
+      <ul class="nav-list">
+      <li class="nav-item"><button id="theme-toggle" class="theme-toggle">Toggle Tema</button></li>
       </ul>
     </nav>
   </header>
-  <main class="container mx-auto p-4 mt-4">
-    <section id="portfolio">
-      <h2 class="text-2xl font-bold mb-4">Portfolio</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  <main class="main">
+    <section id="portfolio" class="portfolio">
+      <h2 class="portfolio-title">Portfolio</h2>
+      <div class="portfolio-grid">
         <!-- portfolio items will be generated dynamically -->
       </div>
     </section>
   </main>
-  <footer class="bg-gray-200 dark:bg-gray-700 py-4 text-gray-600 dark:text-gray-400">
-    <div class="container mx-auto text-center">
-      <p>&copy; 2025 Portofolio. All rights reserved.</p>
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2023 Portofolio. All rights reserved.</p>
     </div>
   </footer>
 
-  <script src="./script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
