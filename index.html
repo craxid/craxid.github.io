@@ -1,51 +1,49 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dede Kurniawan</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.0/dist/tailwind.min.css" rel="stylesheet">
+  <title>Portofolio Saya</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 font-sans">
-
+<body class="light-mode">
   <!-- 🌈 Header Pelangi -->
-  <header class="w-full h-20 flex items-center justify-center animate-gradient-x text-white font-bold text-2xl">
-    Dede K.
+  <header class="header">
+    <h1>Portofolio Saya</h1>
   </header>
 
   <!-- 🌗 Toggle Tema -->
-  <div class="flex justify-end p-4">
-    <button id="themeToggle" class="px-4 py-2 bg-maroon-600 text-white rounded hover:bg-maroon-700 transition">Toggle Tema</button>
+  <div class="theme-toggle">
+    <button id="toggleTheme">Toggle Tema</button>
   </div>
 
   <!-- 🧑‍💻 Tentang Saya -->
-  <section class="p-6">
-    <h2 class="text-2xl font-semibold mb-2">Tentang Saya</h2>
+  <section class="section">
+    <h2>Tentang Saya</h2>
     <p>Saya adalah seorang web developer yang fokus pada desain modern dan performa tinggi.</p>
   </section>
 
   <!-- ⭐️ Proyek GitHub -->
-  <section class="p-6">
-    <h2 class="text-2xl font-semibold mb-4">Proyek Terpopuler</h2>
-    <div id="projects" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+  <section class="section">
+    <h2>Proyek Terpopuler</h2>
+    <div id="projects" class="projects"></div>
   </section>
 
   <!-- 🛠️ Tech Stack -->
-  <section class="p-6">
-    <h2 class="text-2xl font-semibold mb-4">Tech Stack</h2>
-    <ul class="list-disc ml-6">
-      <li>Tailwind CSS</li>
-      <li>React</li>
-      <li>TypeScript</li>
-      <li>Firebase</li>
-      <li>Vite</li>
+  <section class="section">
+    <h2>Tech Stack</h2>
+    <ul>
+      <li>HTML</li>
+      <li>CSS</li>
+      <li>JavaScript</li>
+      <li>Node.js</li>
+      <li>MongoDB</li>
     </ul>
   </section>
 
   <!-- 🦶 Footer Dinamis -->
-  <footer class="w-full p-4 text-center bg-maroon-600 text-white">
-    <p id="footerText">© <span id="year"></span> Dibuat dengan ❤️ oleh Saya</p>
+  <footer class="footer">
+    <p>© <span id="year"></span> Dibuat dengan ❤️ oleh Saya</p>
   </footer>
 
   <script src="script.js"></script>
