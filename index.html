@@ -1,91 +1,53 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dede Kurniawan | Portofolio</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#6750A4',
-            surface: '#F5F5F5',
-            onPrimary: '#FFFFFF',
-            onSurface: '#1C1B1F'
-}
-}
-}
-}
-  </script>
+  <title>Dede Kurniawan</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.0/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-surface text-onSurface font-sans">
+<body class="font-sans">
 
-  <!-- Navbar -->
-  <header class="sticky top-0 bg-primary text-onPrimary shadow-md p-4 flex justify-between items-center z-50">
-    <h1 class="text-xl font-semibold">Dede Kurniawan</h1>
-    <nav class="space-x-4">
-      <a href="#projects" class="hover:underline">Projects</a>
-      <a href="#skills" class="hover:underline">Skills</a>
-      <a href="#contact" class="hover:underline">Contact</a>
-    </nav>
+  <!-- 🌈 Header Pelangi -->
+  <header class="w-full h-16 bg-gradient-to-r from-red-500 via-yellow-500 to-purple-500 animate-gradient-x text-white flex items-center justify-center">
+    <h1 class="text-xl font-bold">Dede Kurniawan</h1>
   </header>
 
-  <!-- Hero -->
-  <section class="text-center py-16 px-4">
-    <img src="https://avatars.githubusercontent.com/u/122842349?v=4" alt="Avatar" class="mx-auto w-32 h-32 rounded-full shadow-lg mb-4" />
-    <h2 class="text-3xl font-bold">Never give up even though you fall thousands of times</h2>
-    <p class="mt-2 text-gray-600">Developer | 25 Tahun | Aktif di GitHub</p>
-    <a href="#projects" class="mt-6 inline-block bg-primary text-onPrimary px-6 py-2 rounded-full shadow hover:bg-purple-700 transition">Lihat Proyek Saya</a>
+  <!-- 🌗 Toggle Tema -->
+  <div class="flex justify-end p-4">
+    <button id="themeToggle" class="px-4 py-2 bg-maroon-600 text-white rounded hover:bg-maroon-700 transition">Toggle Tema</button>
+  </div>
+
+  <!-- 🧑‍💻 Portofolio -->
+  <section class="p-6">
+    <h2 class="text-2xl font-semibold mb-4">Tentang Saya</h2>
+    <p>Saya adalah seorang developer yang fokus pada pengembangan web modern dengan pendekatan desain yang estetis dan fungsional.</p>
   </section>
 
-  <!-- Skills -->
-  <section id="skills" class="py-12 px-6 bg-white rounded-t-3xl shadow-inner">
-    <h3 class="text-xl font-bold mb-4">Skills</h3>
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-gray-700">
-      <div class="bg-surface p-4 rounded shadow hover:shadow-lg transition">HTML</div>
-      <div class="bg-surface p-4 rounded shadow hover:shadow-lg transition">CSS</div>
-      <div class="bg-surface p-4 rounded shadow hover:shadow-lg transition">JavaScript</div>
-      <div class="bg-surface p-4 rounded shadow hover:shadow-lg transition">Docker</div>
-      <div class="bg-surface p-4 rounded shadow hover:shadow-lg transition">Shell</div>
-      <div class="bg-surface p-4 rounded shadow hover:shadow-lg transition">TailwindCSS</div>
-    </div>
+  <!-- ⭐️ Proyek GitHub -->
+  <section class="p-6">
+    <h2 class="text-2xl font-semibold mb-4">Proyek Terpopuler</h2>
+    <div id="projects" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
   </section>
 
-  <!-- Projects -->
-  <section id="projects" class="py-12 px-6">
-    <h3 class="text-xl font-bold mb-6">Proyek Unggulan</h3>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="bg-white p-6 rounded-xl shadow hover:shadow-xl transition">
-        <h4 class="text-lg font-semibold">rairu-kun</h4>
-        <p class="text-gray-600 mb-2">Railway SSH VPS Lifetime dengan Dockerfile</p>
-        <a href="https://github.com/craxid/rairu-kun" class="text-primary hover:underline">Lihat di GitHub</a>
-      </div>
-      <div class="bg-white p-6 rounded-xl shadow hover:shadow-xl transition">
-        <h4 class="text-lg font-semibold">gooshe-kun</h4>
-        <p class="text-gray-600 mb-2">VPS Lifetime berbasis Google Shell</p>
-        <a href="https://github.com/craxid/gooshe-kun" class="text-primary hover:underline">Lihat di GitHub</a>
-      </div>
-      <div class="bg-white p-6 rounded-xl shadow hover:shadow-xl transition">
-        <h4 class="text-lg font-semibold">connexis</h4>
-                <p class="text-gray-600 mb-2">Linktree sederhana dengan HTML dan CSS</p>
-        <a href="https://github.com/craxid/connexis" class="text-primary hover:underline">Lihat di GitHub</a>
-      </div>
-    </div>
+  <!-- 🛠️ Tech Stack -->
+  <section class="p-6">
+    <h2 class="text-2xl font-semibold mb-4">Tech Stack</h2>
+    <ul class="list-disc ml-6">
+      <li>Tailwind CSS</li>
+      <li>JavaScript (ES6+)</li>
+      <li>React</li>
+      <li>Firebase</li>
+      <li>Vite</li>
+    </ul>
   </section>
 
-  <!-- Contact -->
-  <section id="contact" class="py-12 px-6 bg-surface">
-    <h3 class="text-xl font-bold mb-4">Kontak</h3>
-    <p>GitHub: <a href="https://github.com/craxid" class="text-primary hover:underline">@craxid</a></p>
-    <p>Email: (tambahkan jika tersedia)</p>
-  </section>
-
-  <!-- Footer -->
-  <footer class="text-center py-6 text-sm text-gray-500">
-    &copy; 2025 Dede Kurniawan. Dibuat dengan ❤️ dan Material Tailwind.
+  <!-- 🦶 Footer Dinamis -->
+  <footer class="w-full p-4 text-center bg-maroon-600 text-white">
+    <p id="footerText">© <span id="year"></span> Dibuat dengan ❤️ oleh Saya</p>
   </footer>
 
+  <script src="script.js"></script>
 </body>
 </html>
