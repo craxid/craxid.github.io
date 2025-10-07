@@ -7,7 +7,7 @@ document.getElementById('themeToggle').addEventListener('click', () => {
 document.getElementById('year').textContent = new Date().getFullYear();
 
 // Ambil Proyek GitHub
-const username = "YOUR_GITHUB_USERNAME"; // Ganti dengan username kamu
+const username = "craxid"; // Ganti dengan username kamu
 fetch(`https://api.github.com/users/${username}/repos`)
 .then(res => res.json())
 .then(data => {
