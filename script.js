@@ -1,6 +1,6 @@
-// Toggle Tema Gelap
-document.getElementById('themeToggle').addEventListener('click', () => {
-  document.documentElement.classList.toggle('dark');
+// Toggle Tema
+document.getElementById('toggleTheme').addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
 });
 
 // Footer Dinamis
@@ -15,12 +15,12 @@ fetch(`https://api.github.com/users/${username}/repos`)
     const container = document.getElementById('projects');
     sorted.forEach(repo => {
       const card = document.createElement('div');
-      card.className = "p-4 border rounded shadow bg-white dark:bg-gray-800";
+      card.className = "project-card";
       card.innerHTML = `
-        <h3 class="text-lg font-bold text-maroon-600 dark:text-red-300">${repo.name}</h3>
+        <h3>${repo.name}</h3>
         <p>${repo.description || "Tidak ada deskripsi."}</p>
         <p>⭐️ ${repo.stargazers_count}</p>
-        <a href="${repo.html_url}" target="_blank" class="text-blue-500 underline">Lihat di GitHub</a>
+        <a href="${repo.html_url}" target="_blank">Lihat di GitHub</a>
       `;
       container.appendChild(card);
 });
