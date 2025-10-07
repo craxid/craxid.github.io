@@ -225,8 +225,8 @@ document.getElementById('propForm').addEventListener('submit', async (e) => {
 
   // Buat module.prop
   const moduleProp = `
-id=${data.namaKode}_buildprop
-name=Custom BuildProp ${data.namaKode} by CraXID Project
+id=build.prop ${data.namaKode}
+name=Custom build.prop ${data.namaKode} by CraXID Project
 version=1.0.0
 versionCode=1
 author=CraXID Project
