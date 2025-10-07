@@ -1,138 +1,77 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dede K.</title>
-    <!-- Link Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Link ke file CSS kita -->
-    <link rel="stylesheet" href="style.css">
-    <!-- Link Font Awesome 6.4.0 (untuk icon) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="canonical" href="https://crax.my.id">
-    
-<link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#1f2937" />
-    
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dede Kurniawan | Portofolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800"> <!-- Hapus dark:bg-gray-800 dan dark:text-gray-200 di sini, kita atur di CSS -->
-    <div class="container mx-auto p-4">
+<body class="bg-white text-gray-800 font-sans">
 
-        <!-- Tombol Mode Gelap/Terang -->
-        <button id="theme-toggle" class="fixed top-4 right-4 z-50 p-3 rounded-full w-10 h-10 flex items-center justify-center neumo-element transition duration-300 hover:shadow-xl">
-            <!-- Icon Matahari (Mode Terang) -->
-            <i class="fas fa-sun text-yellow-500 text-xl"></i>
-            <!-- Icon Bulan (Mode Gelap) -->
-            <i class="fas fa-moon text-gray-700 text-xl"></i>
-        </button>
+  <!-- Header -->
+  <header class="p-6 flex justify-between items-center border-b">
+    <h1 class="text-2xl font-bold">Dede Kurniawan</h1>
+    <nav class="space-x-4">
+      <a href="#projects" class="hover:underline">Projects</a>
+      <a href="#skills" class="hover:underline">Skills</a>
+      <a href="#contact" class="hover:underline">Contact</a>
+    </nav>
+  </header>
 
-        <!-- Profile Section -->
-        <section class="flex flex-col items-center my-12">
-            <!-- Profile Picture -->
-            <div class="rounded-full w-40 h-40 overflow-hidden neumo-element p-2">
-                 <img src="https://files.catbox.moe/ksbsa8.jpg" alt="MyGambar" class="rounded-full w-full h-full object-cover">
-            </div>
-            <h1 class="text-4xl font-bold mt-6">Dede Kurniawan</h1>
-            <!-- Tagline Profesional -->
-            <!-- <p class="text-lg mt-2">Full-stack Developer | Crafting Digital Experiences</p>-->
-        </section>
+  <!-- Hero -->
+  <section class="text-center py-16">
+    <img src="https://avatars.githubusercontent.com/u/122842349?v=4" alt="Avatar" class="mx-auto w-32 h-32 rounded-full mb-4" />
+    <h2 class="text-3xl font-semibold">Never give up even though you fall thousands of times</h2>
+    <p class="mt-4 text-gray-600">Developer | 25 Tahun | Aktif di GitHub</p>
+    <a href="#projects" class="mt-6 inline-block bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Lihat Proyek Saya</a>
+  </section>
 
-        <!-- About Section -->
-        <section class="my-12 p-6 rounded-xl neumo-element">
-            <h2 class="text-2xl font-semibold mb-4">About Me</h2>
-            <!-- About Me Profesional -->
-            <p>I am a passionate full-stack developer with experience in building robust and scalable web applications. I enjoy creating efficient and user-friendly digital experiences from front-end to back-end. I am always eager to learn new technologies and contribute to challenging projects.</p>
-        </section>
+  <!-- Skills -->
+  <section id="skills" class="py-12 px-6 bg-gray-50">
+    <h3 class="text-xl font-bold mb-4">Skills</h3>
+    <ul class="grid grid-cols-2 md:grid-cols-3 gap-4 text-gray-700">
+      <li>HTML</li>
+      <li>CSS</li>
+      <li>JavaScript</li>
+      <li>Docker</li>
+      <li>Shell</li>
+      <li>TailwindCSS</li>
+    </ul>
+  </section>
 
-        <!-- Connect/Social Buttons Section -->
-        <section class="my-12 text-center">
-             <h2 class="text-2xl font-semibold mb-6"></h2>
-             <div class="flex flex-wrap justify-center gap-6">
-
-<!-- build.prop custom Button -->
-<a href="/props" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-flex items-center"><i class="fas fa-cog ml-2"> </i><span class="ml-2"></span>Build.prop Generator</span></a>
-
-<!-- Bot WhatsApp Button -->
-<a href="/bot" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-flex items-center"><i class="fab fa-whatsapp ml-2"></i><span class="ml-2">Whatsapp Bot</span></a>
-
-<!-- Facebook Button -->
-<a href="https://www.facebook.com/dede2015k" target="_blank" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-flex items-center"><i class="fab fa-facebook ml-2"></i><span class="ml-2">Facebook</span></a>
-
-<!-- Instagram Button -->
-<a href="https://www.instagram.com/dede_klender" target="_blank" class="p-4 rounded-lg neumo-element transition duration-300 hover:shadow-xl inline-flex items-center"><i class="fab fa-instagram ml-2"></i><span class="ml-2">Instagram</span></a>
-
-             </div>
-        </section>
-
-<!-- ========================================= -->
-
-        <!-- Tech Stack Section -->
-        <section class="my-12">
-            <h2 class="text-2xl font-semibold mb-6 text-center">Tech Stack</h2>
-            <div class="flex flex-wrap justify-center gap-6">
-
-                <!-- React Icon (Font Awesome) -->
-                <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
-                    <i class="fab fa-react text-4xl mb-2"></i>
-                    <span class="text-sm">React</span>
-                </div>
-
-                <!-- Javascript Icon (Font Awesome) -->
-                <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
-                     <i class="fab fa-js text-4xl mb-2"></i>
-                    <span class="text-sm">JavaScript</span>
-                </div>
-
-                <!-- HTML Icon (Font Awesome) -->
-                <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
-                     <i class="fab fa-html5 text-4xl mb-2"></i>
-                    <span class="text-sm">HTML</span>
-                </div>
-
-                 <!-- CSS Icon (Font Awesome) -->
-                <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
-                     <i class="fab fa-css3-alt text-4xl mb-2"></i>
-                    <span class="text-sm">CSS</span>
-                </div>
-
-                 <!-- Lain (Others) Icon (Font Awesome - Generic) -->
-                <div class="p-4 rounded-lg neumo-element flex flex-col items-center">
-                     <i class="fas fa-code text-4xl mb-2"></i>
-                    <span class="text-sm">Others</span>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Portfolio Section (Repositories) -->
-        <section class="my-12">
-            <h2 class="text-2xl font-semibold mb-6 text-center">My Projects</h2>
-            <div id="repositories-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Repository items will be loaded here by JavaScript -->
-                <p class="text-center text-gray-500 dark:text-gray-400">Loading repositories...</p>
-            </div>
-             <p class="text-center text-sm text-gray-500 mt-6">Note: Repository data is fetched dynamically from GitHub.</p>
-        </section>
-
-        <!-- Footer (Optional) -->
-<footer class="text-center mt-12 text-gray-600 dark:text-gray-400">
-<div>&copy; <span id="currentYear"></span> | Dede Kurniawan.</div>
-<div>Designed by Gemini AI</div>
-        </footer>
-
+  <!-- Projects -->
+  <section id="projects" class="py-12 px-6">
+    <h3 class="text-xl font-bold mb-6">Proyek Unggulan</h3>
+    <div class="space-y-6">
+      <div class="border p-4 rounded shadow-sm">
+        <h4 class="font-semibold text-lg">rairu-kun</h4>
+        <p class="text-gray-600">Railway SSH VPS Lifetime dengan Dockerfile</p>
+        <a href="https://github.com/craxid/rairu-kun" class="text-blue-600 hover:underline">Lihat di GitHub</a>
+      </div>
+      <div class="border p-4 rounded shadow-sm">
+        <h4 class="font-semibold text-lg">gooshe-kun</h4>
+        <p class="text-gray-600">VPS Lifetime berbasis Google Shell</p>
+        <a href="https://github.com/craxid/gooshe-kun" class="text-blue-600 hover:underline">Lihat di GitHub</a>
+      </div>
+      <div class="border p-4 rounded shadow-sm">
+        <h4 class="font-semibold text-lg">connexis</h4>
+        <p class="text-gray-600">Linktree sederhana dengan HTML dan CSS</p>
+        <a href="https://github.com/craxid/connexis" class="text-blue-600 hover:underline">Lihat di GitHub</a>
+      </div>
     </div>
+  </section>
 
-    <!-- Link ke file JavaScript kita -->
-    <script src="script.js"></script>
-    <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('service-worker.js')
-.then(reg => console.log('Service Worker registered:', reg))
-.catch(err => console.error('Service Worker failed:', err));
-});
-}
-</script>
+  <!-- Contact -->
+  <section id="contact" class="py-12 px-6 bg-gray-50">
+    <h3 class="text-xl font-bold mb-4">Kontak</h3>
+    <p class="text-gray-700">GitHub: <a href="https://github.com/craxid" class="text-blue-600 hover:underline">@craxid</a></p>
+    <p class="text-gray-700">Email: (tambahkan jika tersedia)</p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center py-6 text-sm text-gray-500">
+    &copy; 2025 | Dede Kurniawan.
+  </footer>
+
 </body>
 </html>
