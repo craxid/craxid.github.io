@@ -1,4 +1,4 @@
-module.exports = {
+/**module.exports = {
   darkMode: 'class',
   content: ['./index.html', './script.js'],
   theme: {
@@ -23,3 +23,4 @@ module.exports = {
 },
   plugins: [],
 }
+**/
