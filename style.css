@@ -1,12 +1,13 @@
-keyframes gradient-x {
+@keyframes gradient-x {
   0% { background-position: 0% 50%;}
   50% { background-position: 100% 50%;}
   100% { background-position: 0% 50%;}
 }
 
 .animate-gradient-x {
-  background-size: 200% 200%;
-  animation: gradient-x 5s ease infinite;
+  background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 1400% 1400%;
+  animation: gradient-x 10s ease infinite;
 }
 
 .bg-maroon-600 {
@@ -15,4 +16,8 @@ keyframes gradient-x {
 
 .hover\:bg-maroon-700:hover {
   background-color: #660000;
+}
+
+.text-maroon-600 {
+  color: #800000;
 }
