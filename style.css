@@ -1,125 +1,47 @@
-:root {
-  --primary-color: #b71c1c; /* merah maroon */
-  --secondary-color: #ff9800; /* oranye */
-  --background-color: #f9f9f9; /* putih */
-  --text-color: #333; /* abu-abu */
+/* Custom CSS for neumorphism effects */
+.neumo-element {
+    background: #e0e0e0; /* Or your background color */
+    box-shadow: 8px 8px 15px #bebebe,
+                -8px -8px 15px #ffffff;
 }
 
-body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  transition: background-color 0.3s ease-in-out;
+.neumo-inset {
+     background: #e0e0e0; /* Or your background color */
+     box-shadow: inset 8px 8px 15px #bebebe,
+                 inset -8px -8px 15px #ffffff;
 }
 
-.header {
-  background-image: linear-gradient(to right, #b71c1c, #ff9800, #ffff00, #008000, #0000ff, #4b0082);
-  background-size: 200% 200%;
-  animation: gradient 10s ease infinite;
-  padding: 1rem;
-  text-align: center;
+/* Dark mode styles */
+body.dark { /* Target body when it has the 'dark' class */
+    background-color: #000000; /* FULL BLACK background */
+    color: #e0e0e0; /* Light text color */
 }
 
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.dark .neumo-element {
+    background: #121212; /* Very dark gray for neumo elements */
+    box-shadow: 8px 8px 15px #0a0a0a, /* Darker shadows */
+                -8px -8px 15px #1a1a1a;
 }
 
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
+.dark .neumo-inset {
+    background: #121212; /* Very dark gray for neumo elements */
+    box-shadow: inset 8px 8px 15px #0a0a0a, /* Darker shadows */
+                 inset -8px -8px 15px #1a1a1a;
 }
 
-.nav-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
+/* Hide moon icon in light mode */
+body:not(.dark) .fa-moon {
+    display: none;
 }
 
-.nav-item {
-  margin-right: 20px;
+/* Hide sun icon in dark mode */
+body.dark .fa-sun {
+    display: none;
 }
 
-.nav-link {
-  color: #fff;
-  text-decoration: none;
-  transition: color 0.3s ease-in-out;
-}
-
-.nav-link:hover {
-  color: #ccc;
-}
-
-.theme-toggle {
-  background-color: #333;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.theme-toggle:hover {
-  background-color: #444;
-}
-
-.portfolio {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-}
-
-.portfolio-title {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.footer {
-  background-color: #333;
-  color: #fff;
-  padding: 1rem;
-  text-align: center;
-  clear: both;
-}
-
-.footer-content {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* tema gelap */
-body.dark {
-  background-color: #333;
-  color: #fff;
-}
-
-body.dark .header {
-  background-image: linear-gradient(to right, #4b0082, #0000ff, #008000, #ffff00, #ff9800, #b71c1c);
-}
-
-body.dark .nav-link {
-  color: #ccc;
-}
-
-body.dark .nav-link:hover {
-  color: #fff;
+/* Style for the theme toggle button */
+#theme-toggle {
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Show pointer cursor */
+    outline: none; /* Remove outline on focus */
 }
