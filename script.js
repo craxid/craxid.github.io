@@ -7,7 +7,7 @@ document.getElementById('themeToggle').addEventListener('click', () => {
 document.getElementById('year').textContent = new Date().getFullYear();
 
 // Ambil Proyek GitHub
-const username = "craxid"; // Ganti dengan username kamu
+const username = "YOUR_GITHUB_USERNAME"; // Ganti dengan username kamu
 fetch(`https://api.github.com/users/${username}/repos`)
 .then(res => res.json())
 .then(data => {
@@ -17,7 +17,7 @@ fetch(`https://api.github.com/users/${username}/repos`)
       const card = document.createElement('div');
       card.className = "p-4 border rounded shadow bg-white dark:bg-gray-800";
       card.innerHTML = `
-        <h3 class="text-lg font-bold">${repo.name}</h3>
+        <h3 class="text-lg font-bold text-maroon-600 dark:text-red-300">${repo.name}</h3>
         <p>${repo.description || "Tidak ada deskripsi."}</p>
         <p>⭐️ ${repo.stargazers_count}</p>
         <a href="${repo.html_url}" target="_blank" class="text-blue-500 underline">Lihat di GitHub</a>
