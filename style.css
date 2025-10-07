@@ -1,79 +1,11 @@
-:root {
-  --maroon: #800000;
-  --light-bg: #ffffff;
-  --light-text: #000000;
-  --dark-bg: #121212;
-  --dark-text: #f0f0f0;
-}
-
 body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: var(--light-bg);
-  color: var(--light-text);
-  transition: background-color 0.3s, color 0.3s;
+  font-family: 'Inter', sans-serif;
 }
 
-body.dark-mode {
-  background-color: var(--dark-bg);
-  color: var(--dark-text);
+.bg-gradient-to-r {
+  background-image: linear-gradient(to right, #ef4444, #f97316, #facc15);
 }
 
-.header {
-  background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet);
-  background-size: 1400% 1400%;
-  animation: gradientMove 10s ease infinite;
-  text-align: center;
-  padding: 20px;
-  color: white;
-}
-
-@keyframes gradientMove {
-  0% { background-position: 0% 50%;}
-  50% { background-position: 100% 50%;}
-  100% { background-position: 0% 50%;}
-}
-
-.theme-toggle {
-  text-align: right;
-  padding: 10px 20px;
-}
-
-.theme-toggle button {
-  background-color: var(--maroon);
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.section {
-  padding: 20px;
-}
-
-.projects {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.project-card {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 8px;
-  width: calc(33% - 20px);
-}
-
-body.dark-mode.project-card {
-  background-color: #1e1e1e;
-  border-color: #444;
-}
-
-.footer {
-  background-color: var(--maroon);
-  color: white;
-  text-align: center;
-  padding: 15px;
+.dark\:bg-gray-900 {
+  background-color: #1a202c;
 }
