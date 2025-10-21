@@ -1,1 +1,70 @@
-dummy
+:root {
+  --primary: #6750a4;
+  --background: #fef7ff;
+  --surface: #ffffff;
+  --text: #1c1b1f;
+  --radius: 12px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: var(--background);
+  color: var(--text);
+}
+
+header.hero {
+  background: var(--primary);
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+}
+
+nav.nav {
+  background: var(--surface);
+  padding: 10px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+nav.nav a {
+  margin: 0 12px;
+  text-decoration: none;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+main {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+section {
+  margin-bottom: 40px;
+}
+
+.card {
+  background: var(--surface);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.card h3 a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+footer {
+  background: var(--primary);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+}
