@@ -121,4 +121,3 @@ const yearSpan = document.getElementById('currentYear');
         if (yearSpan) {
             yearSpan.textContent = currentYear;
         }
-        
