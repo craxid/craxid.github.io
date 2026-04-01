@@ -1,7 +1,9 @@
 const GITHUB_USERNAME = 'craxid';
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('year').textContent = new Date().getFullYear();
+    // Set tahun otomatis
+    const yearElement = document.getElementById('year');
+    if(yearElement) yearElement.textContent = new Date().getFullYear();
 
     const themeBtn = document.getElementById('theme-toggle');
     const themeIcon = themeBtn.querySelector('i');
@@ -10,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     };
 
+    // Load preferensi tema
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
     updateIcon(savedTheme);
@@ -29,15 +32,16 @@ async function loadTopProjects() {
     const container = document.getElementById('project-container');
     try {
         const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`);
+        if (!response.ok) throw new Error('API limit');
+        
         let repos = await response.json();
 
-        // URUTKAN BERDASARKAN STAR TERBANYAK
+        // Urutkan berdasarkan Star
         repos.sort((a, b) => b.stargazers_count - a.stargazers_count);
-
-        // AMBIL MAKSIMAL 3 SAJA
+        
         const topThree = repos.slice(0, 3);
-
         container.innerHTML = '';
+
         topThree.forEach(repo => {
             container.innerHTML += `
                 <a href="${repo.html_url}" target="_blank" class="project-card">
@@ -51,6 +55,6 @@ async function loadTopProjects() {
             `;
         });
     } catch (e) {
-        container.innerHTML = '<p>Gagal memuat proyek.</p>';
+        container.innerHTML = '<p>Gagal memuat proyek. Cek koneksi atau limit API GitHub.</p>';
     }
 }
