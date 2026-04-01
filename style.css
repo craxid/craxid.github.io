@@ -91,12 +91,12 @@ body {
 .project-card h3 { margin: 0 0 8px; color: var(--accent); }
 
 footer {
-    /* Margin atas bawah, kiri kanan otomatis biar di tengah */
+    /* Margin atas bawah, kiri kanan otomatis biar elemen footer di tengah */
     margin: 60px auto 30px;
     
-    /* Gunakan Grid: Cara paling ampuh buat bikin konten di tengah */
+    /* Gunakan Grid: Cara paling ampuh buat bikin konten di tengah horizontal & vertikal */
     display: grid;
-    place-items: center; /* Boom! Langsung di tengah horizontal & vertikal */
+    place-items: center; /* Boom! Langsung lurus di tengah horizontal & vertikal */
     
     color: var(--text-sub);
     font-size: 0.85rem;
@@ -109,8 +109,8 @@ footer {
     width: 100%;
 }
 
-/* Hilangkan margin default dari tag <p> */
-.footer-content p {
+/* Hilangkan margin default dari tag <p> agar tidak merusak centering */
+.footer-wrapper p {
     margin: 0;
 }
 
