@@ -90,4 +90,12 @@ body {
 .project-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-strong); }
 .project-card h3 { margin: 0 0 8px; color: var(--accent); }
 
-footer { margin: 60px 0 30px; color: var(--text-sub); font-size: 0.85rem; opacity: 0.8; }
+footer { 
+    margin: 60px 0 30px; 
+    color: var(--text-sub); 
+    font-size: 0.85rem; 
+    opacity: 0.8; 
+    text-align: center; /* Tambahkan ini agar teks hak cipta benar-benar di tengah */
+    width: 100%;        /* Memastikan footer mengambil ruang penuh untuk centering */
+}
+
