@@ -55,7 +55,7 @@ async function autoRenderBlog() {
     const container = document.getElementById('blog-list-container');
     try {
         // Fetch daftar file di folder /content/
-        const res = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/content`);
+        const res = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/posts`);
         const files = await res.json();
 
         // Ambil hanya file .md
