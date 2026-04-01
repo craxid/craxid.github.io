@@ -31,10 +31,10 @@ async function loadTopProjects() {
         const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`);
         let repos = await response.json();
 
-        // URUTKAN BERDASARKAN STAR TERBANYAK
+        // Urutkan berdasarkan Star terbanyak
         repos.sort((a, b) => b.stargazers_count - a.stargazers_count);
 
-        // AMBIL MAKSIMAL 3 SAJA
+        // Ambil maksimal 3 proyek
         const topThree = repos.slice(0, 3);
 
         container.innerHTML = '';
@@ -51,6 +51,6 @@ async function loadTopProjects() {
             `;
         });
     } catch (e) {
-        container.innerHTML = '<p>Gagal memuat proyek.</p>';
+        container.innerHTML = '<p>Gagal memuat proyek GitHub.</p>';
     }
 }
