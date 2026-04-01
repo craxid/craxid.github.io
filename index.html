@@ -3,101 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dede Kurniawan | Portfolio</title>
-    
-    <meta name="description" content="Portfolio Dede Kurniawan - Newbie Programmer yang fokus pada pengembangan sistem web modern.">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-
+    <title>Dede Kurniawan</title>
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-
-    <style>
-        :root {
-            --bg-color: #ffffff; --surface: #f1f5f0; --text-main: #1a1c1a;
-            --text-sub: #424942; --accent: #2d6a4f; --card-bg: #ffffff;
-            --border: #e0e5df; --wa-green: #25d366;
-            --shadow-soft: 0 8px 25px rgba(0,0,0,0.05);
-            --shadow-strong: 0 12px 35px rgba(45, 106, 79, 0.15);
-        }
-        [data-theme="dark"] {
-            --bg-color: #000000; --surface: #141a16; --text-main: #e1e3e0;
-            --text-sub: #8f938e; --accent: #74c69d; --card-bg: #000000;
-            --border: #2d332e;
-            --shadow-soft: 0 8px 30px rgba(255,255,255,0.02);
-            --shadow-strong: 0 12px 40px rgba(116, 198, 157, 0.1);
-        }
-        body {
-            margin: 0; padding: 0; font-family: 'Google Sans', -apple-system, sans-serif;
-            background-color: var(--bg-color); color: var(--text-main);
-            transition: background-color 0.3s ease; display: flex; flex-direction: column; align-items: center;
-        }
-        .container { width: 90%; max-width: 800px; padding: 40px 0; text-align: center; }
-        .theme-btn {
-            position: fixed; top: 20px; right: 20px; width: 45px; height: 45px;
-            border-radius: 12px; border: 1px solid var(--border); background: var(--surface);
-            color: var(--text-main); cursor: pointer; z-index: 999; display: flex; align-items: center; justify-content: center;
-        }
-        .profile-img {
-            width: 150px; height: 150px; border-radius: 50%; object-fit: cover;
-            border: 5px solid var(--accent); box-shadow: var(--shadow-strong); margin-bottom: 20px;
-        }
-        .name { font-size: 2.2rem; font-weight: 700; margin: 0; }
-        .role { font-size: 1.1rem; color: var(--accent); margin: 5px 0 20px; font-weight: 500; }
-        .social-links { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
-        .social-links a {
-            width: 45px; height: 45px; background: var(--surface); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; color: var(--text-main);
-            text-decoration: none; border: 1px solid var(--border); transition: 0.3s;
-        }
-        .social-links a:hover { background: var(--accent); color: #fff; }
-        .bio { font-size: 1rem; color: var(--text-sub); margin-bottom: 30px; max-width: 550px; margin-inline: auto; }
-        .whatsapp-btn {
-            display: inline-flex; align-items: center; gap: 8px; background: var(--wa-green);
-            color: white; padding: 14px 28px; border-radius: 50px; text-decoration: none;
-            font-weight: 600; box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2); margin-bottom: 50px;
-        }
-        .tech-stack { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 50px; }
-        .tech-tag {
-            background: var(--surface); padding: 10px 18px; border-radius: 15px;
-            border: 1px solid var(--border); font-size: 0.9rem; font-weight: 500;
-        }
-        .section-title { text-align: left; font-size: 1.4rem; margin-bottom: 20px; }
-        .projects-grid { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
-            gap: 20px; width: 100%; min-height: 200px;
-        }
-        .project-card {
-            background: var(--card-bg); border: 1px solid var(--border); padding: 20px;
-            border-radius: 20px; text-align: left; text-decoration: none; color: inherit;
-            box-shadow: var(--shadow-soft); transition: 0.3s;
-        }
-        .project-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-strong); }
-        footer { margin: 40px 0 20px; color: var(--text-sub); font-size: 0.85rem; }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>                                                                           
-    <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">
+<body>
+
+    <button id="theme-toggle" class="theme-btn">
         <i class="fas fa-moon"></i>
     </button>
 
     <div class="container">
         <header>
-            <img src="/icons/icon.webp" alt="Dede Kurniawan" class="profile-img" width="150" height="150" fetchpriority="high">
+            <img src="/icons/icon.webp" alt="Dede Kurniawan" class="profile-img">
 
             <h1 class="name">Dede Kurniawan</h1>
             <div class="role">Newbie Programmer</div>
 
-            <nav class="social-links">
-                <a href="https://facebook.com/dede2015k" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://instagram.com/dede_klender" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://github.com/craxid" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            </nav>
+            <div class="social-links">
+                <a href="https://www.facebook.com/dede2015k" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com/dede_klender" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com/craxid" target="_blank"><i class="fab fa-github"></i></a>
+            </div>
 
             <p class="bio">
                 Membangun solusi digital yang skalabel dengan kode yang bersih dan arsitektur yang efisien.
+                Berfokus pada pengembangan sistem web modern yang mengutamakan performa.
             </p>
 
             <a href="/bot" class="whatsapp-btn" target="_blank">
@@ -106,17 +38,20 @@
         </header>
 
         <section class="tech-stack">
-            <div class="tech-tag">PHP</div>
-            <div class="tech-tag">JavaScript</div>
-            <div class="tech-tag">Laravel</div>
-            <div class="tech-tag">Node.js</div>
-            <div class="tech-tag">MySQL</div>
+            <div class="tech-tag"><i class="fab fa-php"></i> PHP</div>
+            <div class="tech-tag"><i class="fab fa-js"></i> JavaScript</div>
+            <div class="tech-tag"><i class="fab fa-laravel"></i> Laravel</div>
+            <div class="tech-tag"><i class="fab fa-node-js"></i> Node.js</div>
+            <div class="tech-tag"><i class="fab fa-react"></i> React.js</div>
+            <div class="tech-tag"><i class="fas fa-database"></i> MySQL</div>
+            <div class="tech-tag"><i class="fab fa-git-alt"></i> Git</div>
+            <div class="tech-tag"><i class="fas fa-code"></i> Tailwind</div>
         </section>
 
         <main>
             <h2 class="section-title">Top Projects</h2>
             <div class="projects-grid" id="project-container">
-                <p>Memuat proyek...</p>
+                <p class="loading-text">Memuat proyek terbaik...</p>
             </div>
         </main>
     </div>
@@ -125,6 +60,6 @@
         &copy; <span id="year"></span> Dede Kurniawan
     </footer>
 
-    <script src="script.js" defer></script>
+    <script src="script.js"></script>
 </body>
 </html>
