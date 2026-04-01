@@ -90,4 +90,35 @@ body {
 .project-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-strong); }
 .project-card h3 { margin: 0 0 8px; color: var(--accent); }
 
-footer { margin: 60px 0 30px; color: var(--text-sub); font-size: 0.85rem; opacity: 0.8; }
+footer {
+    /* Margin atas bawah, kiri kanan otomatis biar di tengah */
+    margin: 60px auto 30px;
+    
+    /* Gunakan Grid: Cara paling ampuh buat bikin konten di tengah */
+    display: grid;
+    place-items: center; /* Boom! Langsung di tengah horizontal & vertikal */
+    
+    color: var(--text-sub);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    opacity: 0.8;
+    text-align: center; /* Jaga-jaga buat teks yang panjang */
+    
+    /* Batas lebar maksimal agar tidak melar di desktop */
+    max-width: 600px;
+    width: 100%;
+}
+
+/* Hilangkan margin default dari tag <p> */
+.footer-content p {
+    margin: 0;
+}
+
+/* Jarak baris kedua agar tidak terlalu rapat */
+.credit {
+    font-size: 0.75rem; /* Lebih kecil agar elegan */
+    color: var(--accent); /* Warna Hijau Emerald */
+    margin-top: 4px !important;
+    font-weight: 500;
+}
+
