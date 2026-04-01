@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading... | Dede Kurniawan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <button id="theme-toggle" class="theme-btn"><i class="fas fa-moon"></i></button>
+
+    <div class="container">
+        <nav style="text-align:left; margin-bottom:30px;">
+            <a href="blog.html" style="color:var(--accent); text-decoration:none; font-weight:600;">← Kembali</a>
+        </nav>
+
+        <main id="post-body" class="project-card" style="text-align:left; line-height:1.8;">
+            <p>Memuat tulisan...</p>
+        </main>
+
+        <footer>&copy; <span id="year"></span> Dede Kurniawan</footer>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        async function loadPost() {
+            const params = new URLSearchParams(window.location.search);
+            const file = params.get('file');
+            const target = document.getElementById('post-body');
+
+            if(!file) {
+                target.innerHTML = "<h1>File tidak ditemukan.</h1>";
+                return;
+            }
+
+            try {
+                const response = await fetch(`content/${file}.md`);
+                if(!response.ok) throw new Error();
+                const text = await response.text();
+                target.innerHTML = marked.parse(text);
+                
+                // Set title browser sesuai nama file
+                document.title = file.replace(/-/g, ' ').toUpperCase() + " | Blog";
+            } catch (e) {
+                target.innerHTML = "<h1>Gagal memuat artikel.</h1>";
+            }
+        }
+        loadPost();
+    </script>
+</body>
+</html>

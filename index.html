@@ -4,34 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dede Kurniawan | Portfolio</title>
-    <meta name="description" content="Portfolio Fullstack Software Engineer oleh Dede Kurniawan.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <button id="theme-toggle" class="theme-btn" aria-label="Ganti Tema">
-        <i class="fas fa-moon"></i>
-    </button>
+    <button id="theme-toggle" class="theme-btn"><i class="fas fa-moon"></i></button>
 
     <div class="container">
         <header>
-            <img src="https://github.com/craxid.png" alt="Foto Dede Kurniawan" class="profile-img">
+            <img src="https://github.com/craxid.png" alt="Foto Dede" class="profile-img">
             <h1 class="name">Dede Kurniawan</h1>
             <div class="role">Fullstack Software Engineer</div>
+            
+            <nav style="margin: 20px 0;">
+                <a href="blog.html" class="tech-tag" style="display:inline-flex; text-decoration:none; color:var(--accent); font-weight:600;">
+                    <i class="fas fa-blog"></i> Lihat Blog Saya
+                </a>
+            </nav>
 
             <div class="social-links">
-                <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://github.com/craxid" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com/craxid"><i class="fab fa-github"></i></a>
             </div>
 
-            <p class="bio">
-                Membangun solusi digital yang skalabel dengan kode yang bersih dan arsitektur yang efisien.
-                Berfokus pada pengembangan sistem web modern.
-            </p>
+            <p class="bio">Membangun solusi digital yang skalabel dengan kode bersih.</p>
 
-            <a href="https://chat.whatsapp.com/xxx" class="whatsapp-btn" target="_blank">
+            <a href="https://chat.whatsapp.com/xxx" class="whatsapp-btn">
                 <i class="fab fa-whatsapp"></i> Gabung Grup WhatsApp Bot
             </a>
         </header>
@@ -41,24 +40,17 @@
             <div class="tech-tag"><i class="fab fa-js"></i> JavaScript</div>
             <div class="tech-tag"><i class="fab fa-laravel"></i> Laravel</div>
             <div class="tech-tag"><i class="fab fa-node-js"></i> Node.js</div>
-            <div class="tech-tag"><i class="fab fa-react"></i> React.js</div>
-            <div class="tech-tag"><i class="fas fa-database"></i> MySQL</div>
-            <div class="tech-tag"><i class="fab fa-git-alt"></i> Git</div>
-            <div class="tech-tag"><i class="fas fa-code"></i> Tailwind</div>
         </section>
 
         <main>
             <h2 class="section-title">Top Projects</h2>
             <div class="projects-grid" id="project-container">
-                <p class="loading-text">Memuat proyek...</p>
+                <p>Memuat proyek...</p>
             </div>
         </main>
 
-        <footer>
-            &copy; <span id="year"></span> Dede Kurniawan
-        </footer>
+        <footer>&copy; <span id="year"></span> Dede Kurniawan</footer>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
