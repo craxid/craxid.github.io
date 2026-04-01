@@ -2,33 +2,45 @@ const GITHUB_USERNAME = 'craxid';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Set Tahun Otomatis
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const yearEl = document.getElementById('year');
+    if(yearEl) yearEl.textContent = new Date().getFullYear();
 
     // Dark Mode Logic
     const themeBtn = document.getElementById('theme-toggle');
     const themeIcon = themeBtn.querySelector('i');
-    const updateIcon = (t) => themeIcon.className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     
+    const updateIcon = (t) => {
+        themeIcon.className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    };
+
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
-    updateIcon(savedTheme);
+    updateIcon(savedTheme);                                                      
 
     themeBtn.addEventListener('click', () => {
-        const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'light' ? 'dark' : 'light';
+        
         document.documentElement.setAttribute('data-theme', next);
         localStorage.setItem('theme', next);
         updateIcon(next);
-    });
+    });                                                                          
 
     loadTopProjects();
 });
 
 async function loadTopProjects() {
     const container = document.getElementById('project-container');
+    if(!container) return;
+
     try {
         const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=50`);
         const repos = await res.json();
-        const topThree = repos.sort((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 3);
+        
+        // Ambil 3 repo dengan star terbanyak
+        const topThree = repos
+            .sort((a, b) => b.stargazers_count - a.stargazers_count)
+            .slice(0, 3);                                                               
 
         container.innerHTML = topThree.map(repo => `
             <a href="${repo.html_url}" target="_blank" class="project-card">
@@ -41,6 +53,7 @@ async function loadTopProjects() {
             </a>
         `).join('');
     } catch (e) {
-        container.innerHTML = '<p>Gagal memuat data.</p>';
+        container.innerHTML = '<p>Gagal memuat data proyek GitHub.</p>';
+        console.error("Error fetching repos:", e);
     }
 }
