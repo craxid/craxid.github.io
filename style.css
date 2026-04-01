@@ -73,6 +73,7 @@ body {
     box-shadow: 0 10px 20px rgba(37, 211, 102, 0.15);
 }
 
+
 .tech-stack { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 60px; }
 .tech-tag {
     display: flex; align-items: center; gap: 8px;
