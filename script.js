@@ -1,59 +1,85 @@
 const GITHUB_USERNAME = 'craxid';
+const REPO_NAME = 'craxid.github.io'; // Sesuaikan dengan nama repo kamu
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Set Tahun Otomatis
-    const yearEl = document.getElementById('year');
-    if(yearEl) yearEl.textContent = new Date().getFullYear();
+    // 1. Tahun Footer
+    const yr = document.getElementById('year');
+    if(yr) yr.textContent = new Date().getFullYear();
 
-    // Dark Mode Logic
-    const themeBtn = document.getElementById('theme-toggle');
-    const themeIcon = themeBtn.querySelector('i');
-    
-    const updateIcon = (t) => {
-        themeIcon.className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    // 2. Dark Mode Logic
+    const btn = document.getElementById('theme-toggle');
+    const applyTheme = (t) => {
+        document.documentElement.setAttribute('data-theme', t);
+        if(btn.querySelector('i')) {
+            btn.querySelector('i').className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
     };
+    const saved = localStorage.getItem('theme') || 'light';
+    applyTheme(saved);
 
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    updateIcon(savedTheme);                                                      
-
-    themeBtn.addEventListener('click', () => {
-        const current = document.documentElement.getAttribute('data-theme');
-        const next = current === 'light' ? 'dark' : 'light';
-        
-        document.documentElement.setAttribute('data-theme', next);
+    btn.addEventListener('click', () => {
+        const now = document.documentElement.getAttribute('data-theme');
+        const next = now === 'light' ? 'dark' : 'light';
         localStorage.setItem('theme', next);
-        updateIcon(next);
-    });                                                                          
+        applyTheme(next);
+    });
 
-    loadTopProjects();
+    // 3. Router Logika (Cek halaman mana yang aktif)
+    if(document.getElementById('project-container')) {
+        loadRepos(); // Jika di index.html
+    }
+    
+    if(document.getElementById('blog-list-container')) {
+        autoRenderBlog(); // Jika di blog.html
+    }
 });
 
-async function loadTopProjects() {
+// Load Repo GitHub untuk Portofolio
+async function loadRepos() {
     const container = document.getElementById('project-container');
-    if(!container) return;
-
     try {
-        const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=50`);
-        const repos = await res.json();
-        
-        // Ambil 3 repo dengan star terbanyak
-        const topThree = repos
-            .sort((a, b) => b.stargazers_count - a.stargazers_count)
-            .slice(0, 3);                                                               
-
-        container.innerHTML = topThree.map(repo => `
-            <a href="${repo.html_url}" target="_blank" class="project-card">
-                <h3>${repo.name}</h3>
-                <p>${repo.description || 'Proyek pengembangan sistem web modern.'}</p>
-                <div style="margin-top:15px; font-size:0.85rem; display:flex; gap:12px;">
-                    <span><i class="fas fa-star" style="color:#ffb300"></i> ${repo.stargazers_count}</span>
-                    <span><i class="fas fa-code-branch"></i> ${repo.forks_count}</span>
-                </div>
+        const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=3`);
+        const data = await res.json();
+        container.innerHTML = data.map(r => `
+            <a href="${r.html_url}" class="project-card" target="_blank" style="text-decoration:none; color:inherit;">
+                <h3 style="color:var(--accent)">${r.name}</h3>
+                <p>${r.description || 'Project Fullstack Engineer'}</p>
+                <div style="font-size:0.8rem; margin-top:10px;">⭐ ${r.stargazers_count} | 🍴 ${r.forks_count}</div>
             </a>
         `).join('');
+    } catch (e) { container.innerHTML = "Gagal memuat proyek."; }
+}
+
+// OTOMATIS: Ambil daftar file .md dari GitHub
+async function autoRenderBlog() {
+    const container = document.getElementById('blog-list-container');
+    try {
+        // Fetch daftar file di folder /content/
+        const res = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/content`);
+        const files = await res.json();
+
+        // Ambil hanya file .md
+        const mdFiles = files.filter(f => f.name.endsWith('.md'));
+
+        if(mdFiles.length === 0) {
+            container.innerHTML = "<p>Belum ada tulisan di folder content/.</p>";
+            return;
+        }
+
+        container.innerHTML = mdFiles.map(file => {
+            const slug = file.name.replace('.md', '');
+            const displayTitle = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            
+            return `
+                <article class="project-card">
+                    <span style="font-size:0.75rem; color:var(--accent); font-weight:600;">ARTIKEL</span>
+                    <h3>${displayTitle}</h3>
+                    <p>Pembahasan mengenai ${displayTitle}. Klik untuk membaca selengkapnya.</p>
+                    <a href="post.html?file=${slug}" style="text-decoration:none; font-weight:600; color:var(--accent);">Baca Selengkapnya →</a>
+                </article>
+            `;
+        }).join('');
     } catch (e) {
-        container.innerHTML = '<p>Gagal memuat data proyek GitHub.</p>';
-        console.error("Error fetching repos:", e);
+        container.innerHTML = "<p>Gagal mengambil daftar artikel. Pastikan folder 'content' ada di repo kamu.</p>";
     }
 }

@@ -19,17 +19,18 @@
     --accent: #74c69d;
     --card-bg: #000000;
     --border: #2d332e;
+    --shadow-soft: 0 4px 15px rgba(0,0,0,0.2);
+    --shadow-strong: 0 8px 25px rgba(116, 198, 157, 0.05);
 }
 
 body {
     margin: 0; padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-main);
     transition: background-color 0.3s ease;
+    display: flex; flex-direction: column; align-items: center;
     line-height: 1.6;
-    display: flex;
-    justify-content: center;
 }
 
 .container { 
@@ -45,6 +46,7 @@ body {
     border-radius: 14px; border: 1px solid var(--border);
     background: var(--surface); color: var(--text-main);
     cursor: pointer; z-index: 999;
+    box-shadow: var(--shadow-soft);
 }
 
 .profile-img {
@@ -65,20 +67,16 @@ body {
     color: var(--text-main); text-decoration: none;
     border: 1px solid var(--border); transition: 0.2s ease;
 }
+.social-links a:hover { transform: translateY(-3px); background: var(--accent); color: #fff; }
 
-/* PERBAIKAN: Spasi Tombol WA */
+/* FIX: Jarak Tombol WA */
 .whatsapp-btn {
-    display: inline-flex; 
-    align-items: center; 
-    gap: 10px;
-    background: var(--wa-green); 
-    color: #fff;
-    padding: 16px 32px; 
-    border-radius: 100px;
-    text-decoration: none; 
-    font-weight: 600;
-    margin: 40px 0; /* Memberi jarak atas dan bawah */
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--wa-green); color: #fff;
+    padding: 16px 32px; border-radius: 100px;
+    text-decoration: none; font-weight: 600;
     box-shadow: 0 10px 20px rgba(37, 211, 102, 0.15);
+    margin: 40px 0; /* Memberi ruang agar tidak rapat */
 }
 
 .tech-stack { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 60px; }
@@ -88,34 +86,56 @@ body {
     border-radius: 14px; border: 1px solid var(--border); font-size: 0.9rem;
 }
 
-.projects-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-    gap: 20px; 
-    width: 100%; 
-    margin-top: 30px;
-}
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; }
 
 .project-card {
-    background: var(--card-bg); 
-    border: 1px solid var(--border);
-    padding: 24px; 
-    border-radius: 24px; 
-    text-align: left;
-    text-decoration: none; 
-    color: inherit; 
-    box-shadow: var(--shadow-soft);
+    background: var(--card-bg); border: 1px solid var(--border);
+    padding: 24px; border-radius: 24px; text-align: left;
+    text-decoration: none; color: inherit; box-shadow: var(--shadow-soft);
     transition: transform 0.2s ease;
 }
-.project-card:hover { transform: translateY(-5px); }
+.project-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-strong); }
+.project-card h3 { margin: 0 0 8px; color: var(--accent); }
 
-/* PERBAIKAN: Footer Tengah */
+/* --- STYLING KHUSUS HALAMAN BACA (POST.HTML) --- */
+#post-body {
+    line-height: 1.8;
+}
+#post-body h1, #post-body h2, #post-body h3 {
+    color: var(--accent);
+    margin-top: 30px;
+}
+#post-body p {
+    margin-bottom: 15px;
+    color: var(--text-main);
+}
+#post-body code {
+    font-family: 'Courier New', Courier, monospace;
+    background: var(--surface);
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+#post-body pre {
+    background: #1e211f; /* Warna gelap untuk blok kode */
+    color: #e1e3e0;
+    padding: 20px;
+    border-radius: 16px;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+#post-body ul, #post-body ol {
+    padding-left: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* --- FIX: FOOTER TENGAH --- */
 footer { 
-    margin-top: 80px; 
-    padding-bottom: 40px;
+    margin: 80px 0 30px; 
     color: var(--text-sub); 
     font-size: 0.85rem; 
-    opacity: 0.8;
+    opacity: 0.8; 
     width: 100%;
     text-align: center;
 }
