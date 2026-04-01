@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Dede Kurniawan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="name">My Blog</h1>
+            <p class="bio">Catatan belajar dan berbagi pengalaman tech.</p>
+            <a href="index.html" style="color: var(--accent); text-decoration: none;">&larr; Balik ke Portfolio</a>
+        </header>
+
+        <main class="projects-grid" id="blog-container" style="margin-top: 40px;">
+            <p>Memuat artikel...</p>
+        </main>
+    </div>
+
+    <script>
+        // Script simpel buat narik daftar file (bisa manual atau via API GitHub)
+        // Untuk awal, kita buat manual di array biar kenceng (Performa 100)
+        const posts = [
+            { title: "Halo Dunia", date: "2024-03-20", slug: "halo-dunia" },
+            { title: "Belajar Laravel untuk Pemula", date: "2024-03-21", slug: "belajar-laravel" }
+        ];
+
+        const container = document.getElementById('blog-container');
+        container.innerHTML = posts.map(post => `
+            <a href="post.html?s=${post.slug}" class="project-card">
+                <h3>${post.title}</h3>
+                <p style="font-size: 0.8rem;">Dipublikasikan pada ${post.date}</p>
+            </a>
+        `).join('');
+    </script>
+</body>
+</html>
