@@ -1,2 +1,8 @@
 komit.sh
 .git
+node_modules
+package.json
+package-lock.json
+sitemap.js
+firebase.json
+
