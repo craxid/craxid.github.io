@@ -1,17 +1,17 @@
 :root {
     /* Tema Terang - Emerald Soft */
     --bg-color: #ffffff;
-    --surface: #f1f5f0;
+    --surface: #f1f5f0; 
     --text-main: #1a1c1a;
     --text-sub: #424942;
     --accent: #2d6a4f; /* Emerald Green */
     --card-bg: #ffffff;
     --border: #e0e5df;
     --wa-green: #25d366;
-
+    
     /* Bayangan Elevasi */
     --shadow-soft: 0 8px 25px rgba(0,0,0,0.05);
-    --shadow-strong: 0 12px 35px rgba(45, 106, 79, 0.15);
+    --shadow-strong: 0 12px 35px rgba(45, 106, 79, 0.15); 
 }
 
 [data-theme="dark"] {
@@ -24,7 +24,7 @@
     --card-bg: #000000;
     --border: #2d332e;
     --shadow-soft: 0 8px 30px rgba(255,255,255,0.02);
-    --shadow-strong: 0 12px 40px rgba(116, 198, 157, 0.1);
+    --shadow-strong: 0 12px 40px rgba(116, 198, 157, 0.1); 
 }
 
 body {
@@ -56,8 +56,8 @@ body {
     width: 150px; height: 150px;
     border-radius: 50%; object-fit: cover;
     /* Stroke Hijau Emerald agar tidak terlihat datar */
-    border: 5px solid var(--accent);
-    box-shadow: var(--shadow-strong);
+    border: 5px solid var(--accent); 
+    box-shadow: var(--shadow-strong); 
     margin-bottom: 24px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
