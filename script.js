@@ -6,10 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeBtn = document.getElementById('theme-toggle');
     const themeIcon = themeBtn.querySelector('i');
 
-    const updateIcon = (theme) => {                                                      themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    const updateIcon = (theme) => {
+        themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     };
 
-    const savedTheme = localStorage.getItem('theme') || 'light';                     document.documentElement.setAttribute('data-theme', savedTheme);
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
     updateIcon(savedTheme);
 
     themeBtn.addEventListener('click', () => {
@@ -19,16 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('theme', next);
         updateIcon(next);
     });
-                                                                                     loadTopProjects();
+
+    loadTopProjects();
 });
 
 async function loadTopProjects() {
     const container = document.getElementById('project-container');
     try {
-        const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`);                                                               let repos = await response.json();
+        const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`);
+        let repos = await response.json();
 
         // URUTKAN BERDASARKAN STAR TERBANYAK
-        repos.sort((a, b) => b.stargazers_count - a.stargazers_count);           
+        repos.sort((a, b) => b.stargazers_count - a.stargazers_count);
+
         // AMBIL MAKSIMAL 3 SAJA
         const topThree = repos.slice(0, 3);
 
@@ -48,3 +53,4 @@ async function loadTopProjects() {
     } catch (e) {
         container.innerHTML = '<p>Gagal memuat proyek.</p>';
     }
+}
