@@ -1,22 +1,23 @@
-/**{
-  "name": "Dede Kurniawan",
+{
   "short_name": "Dede K.",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#f3f4f6",
-  "theme_color": "#1f2937",
-  "description": "Portofolio Dede K.",
+  "name": "Dede K. Portfolio",
   "icons": [
     {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-},
+      "src": "/icons/icon.webp",
+      "type": "image/webp",
+      "sizes": "192x192"
+    },
     {
-      "src": "icons/icon-512.png",
+      "src": "/icons/icon.webp",
+      "type": "image/webp",
       "sizes": "512x512",
-      "type": "image/png"
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/index.html",
+  "background_color": "#000000",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#2d6a4f",
+  "description": "Portofolio Gwej"
 }
-  ]
-}
-**/
