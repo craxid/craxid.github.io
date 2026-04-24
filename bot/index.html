@@ -8,11 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
     <style>
-        /* Perbaikan khusus halaman linktree-style ini */
         .container {
             padding: 40px 20px;
             max-width: 480px;
-            margin-top: 30px; /* Jarak agar tidak terlalu rapat ke atas */
+            margin-top: 30px;
         }
         
         .links-wrapper {
@@ -29,7 +28,7 @@
             justify-content: center;
             gap: 12px;
             padding: 16px;
-            border-radius: 100px; /* Bentuk Pill */
+            border-radius: 100px;
             text-decoration: none;
             font-weight: 600;
             color: white;
@@ -44,36 +43,46 @@
             filter: brightness(1.1);
         }
 
-        /* Override khusus untuk warna tombol */
         .bg-fb { background-color: #1877f2; }
         .bg-x { background-color: #000000; }
         .bg-ig { background-color: #e4405f; }
         
-        /* [COREKSI UTAMA START] Badge verifikasi agar pas di foto profil */
+        /* Posisi Centang Biru di Tengah Bawah */
         .profile-wrapper {
             position: relative;
-            display: inline-block; /* Agar lebar kontainer sama dengan foto */
-            margin-bottom: 20px;
-            width: 150px; /* Set lebar yang sama dengan .profile-img di style.css */
-            height: 150px; /* Set tinggi yang sama dengan .profile-img di style.css */
+            display: inline-block;
+            margin-bottom: 30px; /* Tambah margin agar teks h1 tidak tertabrak badge */
+            width: 150px;
+            height: 150px;
         }
         
         .profile-img {
-            margin-bottom: 0; /* Override margin bawah dari .profile-img utama */
+            margin-bottom: 0;
         }
 
         .verified-badge {
             position: absolute;
-            bottom: 5px; /* Sesuaikan jarak dari bawah agar menempel pas */
-            right: 5px; /* Sesuaikan jarak dari kanan agar menempel pas */
+            bottom: -15px; /* Keluar sedikit dari lingkaran foto */
+            left: 50%;
+            transform: translateX(-50%); /* Teknik centering horizontal */
             color: #1d9bf0;
-            background: var(--bg-color); /* Latar belakang agar kontras */
+            background: var(--bg-color);
             border-radius: 50%;
-            font-size: 1.8rem;
+            font-size: 2rem;
             line-height: 1;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Sedikit bayangan agar pop */
+            padding: 2px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        /* [COREKSI UTAMA END] */
+
+        /* Style Footer Link */
+        .footer-link {
+            color: inherit;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer-link:hover {
+            color: var(--accent);
+        }
     </style>
 </head>
 <body>
@@ -118,7 +127,7 @@
     </div>
 
     <footer>
-        &copy; <span id="year"></span> Dede Kurniawan
+        Copyright &copy; <span id="year"></span> | <a href="/" class="footer-link">CraXID Project</a>
     </footer>
 
     <script src="../script.js"></script>
