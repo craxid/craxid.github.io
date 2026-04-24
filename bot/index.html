@@ -3,10 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CraXID Bot | Status & Info</title>
+    <title>CraXID Bot | Link Bio</title>
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../style.css"> </head>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Perbaikan khusus untuk halaman linktree-style ini */
+        .container {
+            padding: 40px 20px; /* Kurangi padding atas agar tidak terlalu turun */
+            max-width: 480px; /* Batasi lebar agar terlihat seperti Linktree */
+        }
+        
+        .links-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .bot-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px;
+            border-radius: 100px; /* Bentuk Pill */
+            text-decoration: none;
+            font-weight: 600;
+            color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+            border: none;
+        }
+
+        .bot-link:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.1);
+        }
+
+        /* Override khusus untuk warna tombol */
+        .bg-fb { background-color: #1877f2; }
+        .bg-x { background-color: #000000; }
+        .bg-ig { background-color: #e4405f; }
+        
+        /* Badge verifikasi agar pas di foto profil */
+        .profile-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .verified-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: #1d9bf0;
+            background: var(--bg-color);
+            border-radius: 50%;
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+    </style>
+</head>
 <body>
 
     <button id="theme-toggle" class="theme-btn">
@@ -15,9 +74,9 @@
 
     <div class="container">
         <header>
-            <div style="position: relative; display: inline-block;">
+            <div class="profile-wrapper">
                 <img src="/icons/icon.webp" alt="CraXID Bot" class="profile-img">
-                <i class="fas fa-check-circle" style="position: absolute; bottom: 35px; right: 10px; color: #1d9bf0; background: white; border-radius: 50%; font-size: 1.5rem;"></i>
+                <i class="fas fa-check-circle verified-badge"></i>
             </div>
 
             <h1 class="name">CraXID Bot</h1>
@@ -29,29 +88,27 @@
             </p>
         </header>
 
-        <main style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 400px; margin: 0 auto;">
-            
-            <a href="https://wa.me/nomor_bot" class="whatsapp-btn" style="margin-bottom: 10px; width: 100%; justify-content: center;">
+        <div class="links-wrapper">
+            <a href="https://wa.me/nomor_bot" class="bot-link" style="background-color: var(--wa-green);">
                 <i class="fab fa-whatsapp"></i> WhatsApp (BOT)
             </a>
 
-            <a href="https://www.facebook.com/dede2015k" class="project-card" style="display: flex; align-items: center; gap: 15px; padding: 15px 25px; border-radius: 100px; background: #1877f2; color: white; border: none;">
-                <i class="fab fa-facebook-f"></i> <span>Facebook (Admin)</span>
+            <a href="https://www.facebook.com/dede2015k" class="bot-link bg-fb">
+                <i class="fab fa-facebook-f"></i> Facebook (Admin)
             </a>
 
-            <a href="https://github.com/craxid" class="project-card" style="display: flex; align-items: center; gap: 15px; padding: 15px 25px; border-radius: 100px; background: #000000; color: white; border: none;">
-                <i class="fab fa-x-twitter"></i> <span>X/Twitter (Admin)</span>
+            <a href="https://github.com/craxid" class="bot-link bg-x">
+                <i class="fab fa-x-twitter"></i> X/Twitter (Admin)
             </a>
 
-            <a href="https://instagram.com/dede_klender" class="project-card" style="display: flex; align-items: center; gap: 15px; padding: 15px 25px; border-radius: 100px; background: #e4405f; color: white; border: none;">
-                <i class="fab fa-instagram"></i> <span>Instagram (Admin)</span>
+            <a href="https://instagram.com/dede_klender" class="bot-link bg-ig">
+                <i class="fab fa-instagram"></i> Instagram (Admin)
             </a>
-
-        </main>
+        </div>
     </div>
 
     <footer>
-        &copy; <span id="year"></span> Dede Kurniawan • CraXID
+        &copy; <span id="year"></span> Dede Kurniawan
     </footer>
 
     <script src="../script.js"></script>
