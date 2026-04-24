@@ -1,10 +1,10 @@
 const CACHE_NAME = 'dede-k-porto-v1';
 const assets = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/script.js',
-  '/icons/icon.webp'
+  './',
+  'index.html',
+  'style.css',
+  'script.js',
+  'icons/icon.webp'
 ];
 
 // Install Service Worker
