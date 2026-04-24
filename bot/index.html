@@ -8,19 +8,44 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
     <style>
-        /* Perbaikan khusus halaman linktree-style ini */
+        /* Perbaikan tataletak khusus halaman link bio */
         .container {
             padding: 40px 20px;
             max-width: 480px;
-            margin-top: 30px;
+            margin-top: 20px;
         }
-        
+
+        /* Centering Foto & Memperdekat Jarak Teks */
+        .profile-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 10px; /* Center secara horizontal & margin bawah kecil */
+            width: 150px;
+            height: 150px;
+        }
+
+        .profile-img {
+            margin-bottom: 0 !important; /* Timpa margin dari style.css utama */
+            display: block;
+        }
+
+        .name {
+            margin-top: 5px; 
+            font-size: 2.2rem;
+        }
+
+        .role {
+            margin-bottom: 20px;
+        }
+
+        /* Wrapper Tombol */
         .links-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
             width: 100%;
-            margin-top: 30px;
+            margin-top: 25px;
         }
 
         .bot-link {
@@ -29,10 +54,10 @@
             justify-content: center;
             gap: 12px;
             padding: 16px;
-            border-radius: 100px; /* Bentuk Pill */
+            border-radius: 100px;
             text-decoration: none;
             font-weight: 600;
-            color: white;
+            color: white !important;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             width: 100%;
             box-sizing: border-box;
@@ -44,18 +69,12 @@
             filter: brightness(1.1);
         }
 
-        /* Override khusus untuk warna tombol */
+        /* Warna Tombol Kustom */
         .bg-fb { background-color: #1877f2; }
         .bg-x { background-color: #000000; }
         .bg-ig { background-color: #e4405f; }
-        
-        /* Gaya Profil: Centang biru dihapus, wrapper dibuat sederhana */
-        .profile-wrapper {
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-        
-        /* Gaya Link di Footer */
+
+        /* Footer Link */
         .footer-link {
             color: inherit;
             text-decoration: none;
