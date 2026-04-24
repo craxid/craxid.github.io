@@ -1,11 +1,26 @@
-const CACHE_NAME = 'v1';
+const CACHE_NAME = 'dede-k-porto-v1';
+const assets = [
+  '/',
+  '/index.html',
+  '/style.css',
+  '/script.js',
+  '/icons/icon.webp'
+];
 
-// Kita tes tanpa cache file dulu agar SW pasti jalan
-self.addEventListener('install', (e) => {
-    console.log('SW Installed');
+// Install Service Worker
+self.addEventListener('install', evt => {
+  evt.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      cache.addAll(assets);
+    })
+  );
 });
 
-self.addEventListener('fetch', (e) => {
-    // Biarkan request lewat tanpa cache dulu buat testing
-    e.respondWith(fetch(e.request));
+// Fetch Assets
+self.addEventListener('fetch', evt => {
+  evt.respondWith(
+    caches.match(evt.request).then(rec => {
+      return rec || fetch(evt.request);
+    })
+  );
 });
