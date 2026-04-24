@@ -1,67 +1,59 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CraXID Bot</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
-    <link rel="stylesheet" href="/bot/style.css">
-    <!-- Favicon (opsional) -->
-    <link rel="icon" href="https://github.com/craxid.png" type="image/x-icon">
-</head>
+    <title>CraXID Bot | Status & Info</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css"> </head>
 <body>
 
-    <!-- Container untuk Status Bar (Jam di kiri, Baterai di kanan) --
-    <div class="status-bar">
-        <!-- Elemen untuk menampilkan waktu (Akan diisi oleh JavaScript) --
-        <span id="current-time" class="status-text"></span>
-        <!-- Elemen untuk Menampilkan Status Baterai --
-        <div id="battery-status">
-            <div class="battery-outline">
-                <div class="battery-fill"></div>
-                <!-- Elemen untuk Icon Petir (Charging) - Posisinya di dalam outline --
-                <i class="fas fa-bolt lightning-icon"></i>
-            </div>
-            <span class="battery-text"></span>
-        </div>
-    </div>-->
+    <button id="theme-toggle" class="theme-btn">
+        <i class="fas fa-moon"></i>
+    </button>
 
-    <!-- Wrapper untuk konten utama (memperbaiki centering) -->
-    <div class="main-wrapper">
-        <div class="container">
-            <!-- Wrapper untuk Gambar Profil dan Badge -->
-            <div class="profile-image-wrapper">
-                <img src="https://github.com/craxid.png" alt="Gambar Profil" class="profile-image">
-                <i class="fas fa-shield-alt profile-badge"></i> <!-- Shield badge -->
+    <div class="container">
+        <header>
+            <div style="position: relative; display: inline-block;">
+                <img src="/icons/icon.webp" alt="CraXID Bot" class="profile-img">
+                <i class="fas fa-check-circle" style="position: absolute; bottom: 35px; right: 10px; color: #1d9bf0; background: white; border-radius: 50%; font-size: 1.5rem;"></i>
             </div>
 
-            <h1>CraXID Bot <i class="fas fa-check-circle verified-icon"></i></h1> <!-- Nama dengan Centang biru -->
-            <p>Di sini kamu bisa mendapatkan info tentang nomor bot yang aktif.</p>
-            <div class="links">
-                <a href="https://s.id/22VmC" class="link-button whatsapp-button" target="_blank">
-                    <i class="fab fa-whatsapp"></i> WhatsApp (BOT)</a>
-                
-                <a href="https://facebook.com/dede2015k" class="link-button facebook-button" target="_blank">
-                    <i class="fab fa-facebook-f"></i> Facebook (Admin)
-                </a>
-                
-                <a href="https://x.com/dede_klender" class="link-button twitter-button" target="_blank">
-                    <i class="fab fa-x-twitter"></i> X/Twitter (Admin)
-                </a>
+            <h1 class="name">CraXID Bot</h1>
+            <div class="role">Layanan WhatsApp Bot Aktif</div>
 
-                <a href="https://instagram.com/dede_klender" class="link-button instagram-button" target="_blank">
-                    <i class="fab fa-instagram"></i> Instagram (Admin)
-                </a>
-            </div>
-        </div>
+            <p class="bio">
+                Pusat informasi resmi untuk layanan CraXID Bot. 
+                Dapatkan akses ke bot dan hubungi admin melalui tautan di bawah ini.
+            </p>
+        </header>
 
-        <footer>
-            <p>Made with ♥️ by <a href="/">CraXID Project</a></p>
-            <p>Copyright &copy; <span id="currentYear"></span></p>
-        </footer>
+        <main style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 400px; margin: 0 auto;">
+            
+            <a href="https://wa.me/nomor_bot" class="whatsapp-btn" style="margin-bottom: 10px; width: 100%; justify-content: center;">
+                <i class="fab fa-whatsapp"></i> WhatsApp (BOT)
+            </a>
+
+            <a href="https://www.facebook.com/dede2015k" class="project-card" style="display: flex; align-items: center; gap: 15px; padding: 15px 25px; border-radius: 100px; background: #1877f2; color: white; border: none;">
+                <i class="fab fa-facebook-f"></i> <span>Facebook (Admin)</span>
+            </a>
+
+            <a href="https://github.com/craxid" class="project-card" style="display: flex; align-items: center; gap: 15px; padding: 15px 25px; border-radius: 100px; background: #000000; color: white; border: none;">
+                <i class="fab fa-x-twitter"></i> <span>X/Twitter (Admin)</span>
+            </a>
+
+            <a href="https://instagram.com/dede_klender" class="project-card" style="display: flex; align-items: center; gap: 15px; padding: 15px 25px; border-radius: 100px; background: #e4405f; color: white; border: none;">
+                <i class="fab fa-instagram"></i> <span>Instagram (Admin)</span>
+            </a>
+
+        </main>
     </div>
 
-    <script src="/bot/script.js"></script>
+    <footer>
+        &copy; <span id="year"></span> Dede Kurniawan • CraXID
+    </footer>
 
+    <script src="../script.js"></script>
 </body>
 </html>
