@@ -112,7 +112,7 @@ body {
 .project-card:hover { transform: translateY(-10px); background: var(--surface); box-shadow: var(--shadow-strong); }
 .project-card h3 { margin: 0 0 10px; color: var(--accent); }
 
-/*footer { margin: 60px 0 30px; color: var(--text-sub); font-size: 0.9rem; }*/
+footer { margin: 60px 0 30px; color: var(--text-sub); font-size: 0.9rem; }
 
         /* Footer Link */
         .footer-link {
