@@ -4,51 +4,53 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('year').textContent = new Date().getFullYear();
 
     const themeBtn = document.getElementById('theme-toggle');
-    const html = document.documentElement;
+    const themeIcon = themeBtn.querySelector('i');
+
+    const updateIcon = (theme) => {
+        themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    };
 
     const savedTheme = localStorage.getItem('theme') || 'light';
-    html.setAttribute('data-theme', savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateIcon(savedTheme);
 
     themeBtn.addEventListener('click', () => {
-        const current = html.getAttribute('data-theme');
+        const current = document.documentElement.getAttribute('data-theme');
         const next = current === 'light' ? 'dark' : 'light';
-        html.setAttribute('data-theme', next);
+        document.documentElement.setAttribute('data-theme', next);
         localStorage.setItem('theme', next);
+        updateIcon(next);
     });
 
-    loadGitHubProjects();
+    loadTopProjects();
 });
 
-async function loadGitHubProjects() {
+async function loadTopProjects() {
     const container = document.getElementById('project-container');
     try {
-        const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=10`);
-        const repos = await response.json();
+        const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`);
+        let repos = await response.json();
 
-        // Sort by Stars and take top 3
-        const topRepos = repos
-            .sort((a, b) => b.stargazers_count - a.stargazers_count)
-            .slice(0, 3);
+        // URUTKAN BERDASARKAN STAR TERBANYAK
+        repos.sort((a, b) => b.stargazers_count - a.stargazers_count);
+
+        // AMBIL MAKSIMAL 3 SAJA
+        const topThree = repos.slice(0, 3);
 
         container.innerHTML = '';
-        topRepos.forEach(repo => {
+        topThree.forEach(repo => {
             container.innerHTML += `
                 <a href="${repo.html_url}" target="_blank" class="project-card">
                     <h3>${repo.name}</h3>
                     <p>${repo.description || 'Proyek pengembangan sistem yang dibangun dengan dedikasi tinggi.'}</p>
-                    <div class="project-stats">
-                        <div class="stats-left">
-                            <span><i class="fas fa-star" style="color:#ffb300"></i> ${repo.stargazers_count}</span>
-                            <span><i class="fas fa-code-branch"></i> ${repo.forks_count}</span>
-                        </div>
-                        <div class="stats-right">
-                            <span class="repo-language">${repo.language || 'Code'}</span>
-                        </div>
+                    <div style="margin-top: 20px; font-weight: 700; font-size: 0.9rem; display: flex; gap: 15px; opacity: 0.8;">
+                        <span><i class="fas fa-star" style="color:#ffb300"></i> ${repo.stargazers_count}</span>
+                        <span><i class="fas fa-code-branch"></i> ${repo.forks_count}</span>
                     </div>
                 </a>
             `;
         });
     } catch (e) {
-        container.innerHTML = '<p>Gagal memuat proyek GitHub.</p>';
+        container.innerHTML = '<p>Gagal memuat proyek.</p>';
     }
 }
