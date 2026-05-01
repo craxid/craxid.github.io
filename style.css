@@ -1,139 +1,130 @@
 :root {
-    /* Tema Terang - Crystal Emerald */
     --bg-color: #f0f4f2;
-    --surface: #f8faf9;
     --text-main: #1a1c1a;
-    --text-sub: #424942;
     --accent: #2d6a4f;
-    --border: #e0e5df;
-    --glass-bg: rgba(255, 255, 255, 0.2); 
-    --glass-border: rgba(255, 255, 255, 0.6); 
+    --glass-bg: rgba(255, 255, 255, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.7);
 }
 
 [data-theme="dark"] {
-    /* Tema Gelap - Midnight OLED */
     --bg-color: #000000;
-    --surface: #121212;
     --text-main: #e1e3e0;
-    --text-sub: #8f938e;
     --accent: #74c69d;
-    --border: #222222;
-    --glass-bg: rgba(255, 255, 255, 0.03); 
-    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 body {
     margin: 0;
-    font-family: 'Google Sans', sans-serif;
+    font-family: 'Google Sans', Arial, sans-serif;
     color: var(--text-main);
-    transition: background 0.5s ease;
-    min-height: 100vh;
+    background-color: var(--bg-color);
+    overflow-x: hidden;
 }
 
-/* --- MASTER BACKGROUND (PS3/PSP STYLE) --- */
+/* --- ANIMASI BACKGROUND (PS3/PSP STYLE) --- */
 .bg-master {
     position: fixed;
     top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: -1;
-    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; /* Di belakang konten */
     background-color: var(--bg-color);
+    overflow: hidden;
+    pointer-events: none;
 }
 
-/* Efek Gelombang Halus */
 .wave-layer {
     position: absolute;
-    width: 300%; height: 300%;
-    top: -100%; left: -100%;
+    width: 350%; height: 350%;
+    top: -125%; left: -125%;
     background: radial-gradient(circle at 50% 50%, transparent 20%, var(--accent) 100%);
-    opacity: 0.08; /* Tipis di mode terang */
-    filter: blur(60px);
-    animation: waveMotion 25s infinite alternate ease-in-out;
+    opacity: 0.12;
+    filter: blur(70px);
+    animation: waveMotion 20s infinite alternate ease-in-out;
 }
 
 @keyframes waveMotion {
     0% { transform: rotate(0deg) scale(1) translate(0, 0); }
-    50% { transform: rotate(15deg) scale(1.1) translate(2%, 5%); }
-    100% { transform: rotate(-10deg) scale(1.2) translate(-2%, -5%); }
+    100% { transform: rotate(15deg) scale(1.2) translate(3%, 3%); }
 }
 
-/* --- SHOOTING STARS (DARK MODE ONLY) --- */
-.star-layer { opacity: 0; transition: opacity 0.5s; }
+/* --- BINTANG JATUH (MODE GELAP) --- */
+.star-layer { opacity: 0; }
 [data-theme="dark"] .star-layer { opacity: 1; }
 
-[data-theme="dark"] .star-layer::before,
-[data-theme="dark"] .star-layer::after {
+.star-layer::before, .star-layer::after {
     content: "";
     position: absolute;
     width: 2px; height: 2px;
     background: #fff;
     border-radius: 50%;
-    box-shadow: 0 0 15px 2px #fff;
+    box-shadow: 0 0 10px 2px #fff;
+    z-index: -1;
 }
 
-/* Bintang Jatuh 1 */
-[data-theme="dark"] .star-layer::before {
-    top: -5%; right: 10%;
-    animation: shooting 7s infinite ease-in;
-    animation-delay: 1s;
+.star-layer::before {
+    top: -10%; right: 10%;
+    animation: shooting 8s infinite ease-in;
 }
 
-/* Bintang Jatuh 2 */
-[data-theme="dark"] .star-layer::after {
-    top: -5%; right: 40%;
-    animation: shooting 10s infinite ease-in;
+.star-layer::after {
+    top: -10%; right: 40%;
+    animation: shooting 12s infinite ease-in;
     animation-delay: 4s;
 }
 
 @keyframes shooting {
     0% { transform: translateX(0) translateY(0) rotate(-45deg) scale(0); opacity: 0; }
     10% { opacity: 1; transform: scale(1); }
-    20% { transform: translateX(-500px) translateY(500px) rotate(-45deg) scale(0); opacity: 0; }
+    30% { transform: translateX(-600px) translateY(600px) rotate(-45deg) scale(0); opacity: 0; }
     100% { opacity: 0; }
 }
 
-/* Tambahan Kontras Gelombang di Mode Gelap */
-[data-theme="dark"] .wave-layer {
-    opacity: 0.15;
-    background: radial-gradient(circle at 50% 50%, transparent 10%, var(--accent) 100%);
+/* --- KONTEN LAYER (AGAR TIDAK BLANK) --- */
+.main-content {
+    position: relative;
+    z-index: 10; /* Di atas background */
+    width: 100%;
 }
 
-/* --- GLASS COMPONENTS --- */
 .container {
-    position: relative;
-    z-index: 1;
     max-width: 800px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 60px 20px;
     text-align: center;
 }
 
-.project-card, .bot-link, .tech-tag, .theme-btn {
+/* Glassmorphism Cards */
+.project-card, .tech-tag, .theme-btn {
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     background: var(--glass-bg);
     border: 1px solid var(--glass-border) !important;
-    border-radius: 18px;
-    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: 0.3s;
 }
 
-.project-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent) !important;
+.whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #25d366 !important; /* Hijau WA Solid */
+    color: white !important;
+    padding: 15px 30px;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
 }
 
-/* Profile Image */
 .profile-img {
     width: 130px; height: 130px; border-radius: 50%;
-    border: 3px solid var(--accent);
-    margin-bottom: 15px;
+    border: 4px solid var(--accent);
+    margin-bottom: 20px;
 }
 
-/* WhatsApp Button */
-.whatsapp-btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: #25d366 !important; color: white !important;
-    padding: 14px 28px; border-radius: 100px;
-    text-decoration: none; font-weight: bold;
-    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.15);
-}
+.name { font-size: 2.2rem; margin: 0; font-weight: 800; }
+.role { color: var(--accent); font-weight: 600; margin-top: 5px; }
