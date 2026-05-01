@@ -21,7 +21,6 @@
             margin: 0 auto 20px;
         }
 
-        /* Wrapper Tombol agar searah dengan tema Glass */
         .links-wrapper {
             display: flex;
             flex-direction: column;
@@ -30,51 +29,80 @@
             margin-top: 30px;
         }
 
+        /* Gaya Dasar Tombol Kaca */
         .bot-link {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
             padding: 16px;
-            border-radius: 16px; /* Kotak rounded agar senada dengan Project Card */
+            border-radius: 16px;
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             width: 100%;
             box-sizing: border-box;
-            
-            /* Efek Glass yang kita ambil dari style.css */
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border) !important;
-            color: var(--text-main) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
         }
 
         .bot-link:hover {
             transform: translateY(-3px);
-            background: var(--accent);
             color: white !important;
-            border-color: var(--accent) !important;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
-        /* Khusus Link WhatsApp agar tetap ada aksen hijau tapi tetap Glass */
-        .link-wa {
-            background: rgba(37, 211, 102, 0.1);
-            border-color: rgba(37, 211, 102, 0.3) !important;
-            color: #25d366 !important;
-        }
-        
-        .link-wa:hover {
-            background: #25d366 !important;
-            color: white !important;
-        }
-
-        /* Ikon styling */
         .bot-link i {
             font-size: 1.2rem;
-            width: 20px;
+            width: 25px;
             text-align: center;
+        }
+
+        /* --- WARNA IDENTITAS APLIKASI (GLASS VERSION) --- */
+        
+        /* WhatsApp Green */
+        .link-wa { 
+            background: rgba(37, 211, 102, 0.1); 
+            color: #25d366 !important; 
+            border-color: rgba(37, 211, 102, 0.3) !important;
+        }
+        .link-wa:hover { background: #25d366 !important; }
+
+        /* Facebook Blue */
+        .link-fb { 
+            background: rgba(24, 119, 242, 0.1); 
+            color: #1877f2 !important; 
+            border-color: rgba(24, 119, 242, 0.3) !important;
+        }
+        .link-fb:hover { background: #1877f2 !important; }
+
+        /* Instagram Pink/Purple */
+        .link-ig { 
+            background: rgba(228, 64, 95, 0.1); 
+            color: #e4405f !important; 
+            border-color: rgba(228, 64, 95, 0.3) !important;
+        }
+        .link-ig:hover { background: #e4405f !important; }
+
+        /* GitHub / X (Neutral Glass) */
+        .link-git { 
+            background: rgba(0, 0, 0, 0.05); 
+            color: var(--text-main) !important; 
+            border-color: var(--border) !important;
+        }
+        .link-git:hover { 
+            background: #24292e !important; 
+            color: white !important; 
+            border-color: #24292e !important;
+        }
+
+        /* Dark Mode Adjustment */
+        [data-theme="dark"] .link-git {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        [data-theme="dark"] .bot-link:not(:hover) {
+            border-color: rgba(255, 255, 255, 0.1) !important;
         }
     </style>
 </head>
@@ -104,15 +132,15 @@
                 <i class="fab fa-whatsapp"></i> WhatsApp Bot
             </a>
 
-            <a href="https://www.facebook.com/dede2015k" class="bot-link">
+            <a href="https://www.facebook.com/dede2015k" class="bot-link link-fb">
                 <i class="fab fa-facebook-f"></i> Admin Facebook
             </a>
 
-            <a href="https://instagram.com/dede_klender" class="bot-link">
+            <a href="https://instagram.com/dede_klender" class="bot-link link-ig">
                 <i class="fab fa-instagram"></i> Admin Instagram
             </a>
 
-            <a href="https://github.com/craxid" class="bot-link">
+            <a href="https://github.com/craxid" class="bot-link link-git">
                 <i class="fab fa-github"></i> GitHub Source
             </a>
         </div>
