@@ -30,11 +30,8 @@ async function loadTopProjects() {
     try {
         const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`);
         let repos = await response.json();
-
-        // URUTKAN BERDASARKAN STAR TERBANYAK
+        
         repos.sort((a, b) => b.stargazers_count - a.stargazers_count);
-
-        // AMBIL MAKSIMAL 3 SAJA
         const topThree = repos.slice(0, 3);
 
         container.innerHTML = '';
@@ -42,8 +39,8 @@ async function loadTopProjects() {
             container.innerHTML += `
                 <a href="${repo.html_url}" target="_blank" class="project-card">
                     <h3>${repo.name}</h3>
-                    <p>${repo.description || 'Proyek pengembangan sistem yang dibangun dengan dedikasi tinggi.'}</p>
-                    <div style="margin-top: 20px; font-weight: 700; font-size: 0.9rem; display: flex; gap: 15px; opacity: 0.8;">
+                    <p style="font-size: 0.9rem; opacity: 0.8;">${repo.description || 'Proyek pengembangan sistem yang dibangun dengan dedikasi tinggi.'}</p>
+                    <div style="margin-top: 20px; font-weight: 700; font-size: 0.85rem; display: flex; gap: 15px;">
                         <span><i class="fas fa-star" style="color:#ffb300"></i> ${repo.stargazers_count}</span>
                         <span><i class="fas fa-code-branch"></i> ${repo.forks_count}</span>
                     </div>
