@@ -11,18 +11,20 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#2d6a4f">
     <link rel="apple-touch-icon" href="/icons/icon.webp">
+
 </head>
 <body>
 
-    <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">
+    <button id="theme-toggle" class="theme-btn">
         <i class="fas fa-moon"></i>
     </button>
 
     <div class="container">
         <header>
             <img src="/icons/icon.webp" alt="Dede Kurniawan" class="profile-img">
+
             <h1 class="name">Dede Kurniawan</h1>
-            <div class="role">Fullstack Software Engineer</div>
+            <div class="role">Malas Ngoding</div>
 
             <div class="social-links">
                 <a href="https://www.facebook.com/dede2015k" target="_blank"><i class="fab fa-facebook-f"></i></a>
@@ -61,5 +63,16 @@
     </footer>
 
     <script src="script.js"></script>
+    
+    <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('SW Registered!'))
+        .catch(err => console.log('SW Registration Failed', err));
+    });
+  }
+</script>
+
 </body>
 </html>
