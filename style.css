@@ -1,121 +1,94 @@
 :root {
-    /* Tema Terang - Emerald Glass */
-    --bg-color: #f4f7f5;
-    --surface: rgba(255, 255, 255, 0.6);
+    --bg-color: #ffffff;
+    --surface: #f8faf9;
     --text-main: #1a1c1a;
     --text-sub: #424942;
     --accent: #2d6a4f;
-    --card-bg: rgba(255, 255, 255, 0.4);
-    --border: rgba(255, 255, 255, 0.5);
-    --wa-green: #25d366;
-    --glass-blur: blur(15px);
+    --card-bg: #ffffff;
+    --border: #e0e5df;
     
-    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.05);
-    --shadow-strong: 0 12px 40px rgba(45, 106, 79, 0.15);
+    /* Variabel Glass Khusus Tombol */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.8);
+    --glass-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
 [data-theme="dark"] {
-    /* Tema Gelap - AMOLED Glass */
     --bg-color: #000000;
-    --surface: rgba(20, 26, 22, 0.7);
+    --surface: #121212;
     --text-main: #e1e3e0;
     --text-sub: #8f938e;
     --accent: #74c69d;
-    --card-bg: rgba(30, 35, 32, 0.5);
-    --border: rgba(255, 255, 255, 0.1);
-    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.4);
-    --shadow-strong: 0 12px 40px rgba(116, 198, 157, 0.1);
+    --card-bg: #111111;
+    --border: #222222;
+    
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.15);
 }
 
 body {
-    margin: 0; padding: 0;
-    font-family: 'Google Sans', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    transition: background 0.4s ease;
+    margin: 0; font-family: 'Google Sans', sans-serif;
+    background-color: var(--bg-color); color: var(--text-main);
     display: flex; flex-direction: column; align-items: center;
-    overflow-x: hidden;
+    transition: 0.3s ease;
 }
 
-/* Background Ornament agar Glass terlihat */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at 15% 15%, rgba(45, 106, 79, 0.08) 0%, transparent 35%),
-                radial-gradient(circle at 85% 85%, rgba(116, 198, 157, 0.08) 0%, transparent 35%);
-    z-index: -1;
-}
+.container { width: 90%; max-width: 800px; padding: 60px 0; text-align: center; }
 
-.container { width: 90%; max-width: 850px; padding: 60px 0; text-align: center; }
-
-/* Glass Elements */
-.theme-btn, .tech-tag, .project-card, .social-links a {
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-soft);
+/* --- EFEK KACA PADA TOMBOL --- */
+.theme-btn, .social-links a, .tech-tag, .whatsapp-btn {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: var(--glass-shadow);
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Theme Toggle */
 .theme-btn {
     position: fixed; top: 20px; right: 20px;
-    width: 50px; height: 50px;
-    border-radius: 16px; background: var(--surface);
-    color: var(--text-main); cursor: pointer; z-index: 100;
-    display: flex; align-items: center; justify-content: center;
-    transition: 0.3s;
+    width: 45px; height: 45px; border-radius: 12px;
+    cursor: pointer; z-index: 1000; color: var(--text-main);
 }
-.theme-btn:hover { transform: rotate(15deg) scale(1.1); }
 
-/* Profile Section */
+/* Profile */
 .profile-img {
-    width: 150px; height: 150px; border-radius: 50%;
-    border: 5px solid var(--accent);
-    box-shadow: var(--shadow-strong); margin-bottom: 25px;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 140px; height: 140px; border-radius: 50%;
+    border: 4px solid var(--accent); margin-bottom: 20px;
 }
-.profile-img:hover { transform: scale(1.1); }
 
-.name { font-size: 2.8rem; font-weight: 700; margin: 0; }
-.role { font-size: 1.3rem; color: var(--accent); margin-bottom: 25px; font-weight: 500; }
-
-.social-links { display: flex; justify-content: center; gap: 15px; margin-bottom: 35px; }
+/* Social Links Glass */
+.social-links { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
 .social-links a {
-    width: 50px; height: 50px; background: var(--surface);
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    color: var(--text-main); text-decoration: none; transition: 0.3s;
+    width: 45px; height: 45px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-main); text-decoration: none;
 }
-.social-links a:hover { background: var(--accent); color: #fff; transform: translateY(-5px); }
+.social-links a:hover { background: var(--accent); color: white; transform: translateY(-3px); }
 
-.bio { color: var(--text-sub); margin-bottom: 40px; max-width: 550px; margin-inline: auto; }
-
+/* WhatsApp Button - Kaca Hijau */
 .whatsapp-btn {
-    background: var(--wa-green); color: #fff;
-    padding: 18px 35px; border-radius: 50px;
-    text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 10px;
-    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3); transition: 0.3s;
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(37, 211, 102, 0.15); color: #25d366 !important;
+    padding: 14px 28px; border-radius: 100px;
+    text-decoration: none; font-weight: 700; margin-bottom: 50px;
 }
-.whatsapp-btn:hover { transform: scale(1.05); box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4); }
+.whatsapp-btn:hover { background: #25d366; color: white !important; }
 
 /* Tech Stack */
-.tech-stack { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 50px 0; }
-.tech-tag {
-    background: var(--surface); padding: 12px 22px; border-radius: 15px;
-    font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 8px;
-}
-.tech-tag i { color: var(--accent); font-size: 1.1rem; }
+.tech-stack { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 50px; }
+.tech-tag { padding: 10px 18px; border-radius: 14px; font-weight: 500; font-size: 0.9rem; }
 
-/* Projects */
-.section-title { text-align: left; margin-bottom: 30px; font-size: 1.8rem; border-left: 5px solid var(--accent); padding-left: 15px; }
-.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+/* --- PROJECT CARD (GAYA LAMA/SOLID) --- */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
 .project-card {
-    background: var(--card-bg); padding: 30px; border-radius: 25px;
-    text-align: left; text-decoration: none; color: inherit; transition: 0.4s ease;
+    background: var(--card-bg); border: 1px solid var(--border);
+    padding: 24px; border-radius: 20px; text-align: left;
+    text-decoration: none; color: inherit; transition: 0.3s;
 }
-.project-card:hover { transform: translateY(-10px); background: var(--surface); border-color: var(--accent) !important; }
-.project-card h3 { margin: 0 0 12px; color: var(--accent); font-size: 1.4rem; }
-.project-card p { font-size: 0.95rem; color: var(--text-sub); margin-bottom: 20px; }
+.project-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+.project-card h3 { margin: 0 0 10px; color: var(--accent); }
 
-footer { padding: 50px 0; color: var(--text-sub); font-size: 0.9rem; }
-.footer-link { text-decoration: none; color: var(--accent); font-weight: 700; }
+footer { padding: 40px 0; color: var(--text-sub); font-size: 0.8rem; }
+.footer-link { text-decoration: none; color: var(--accent); font-weight: 600; }
