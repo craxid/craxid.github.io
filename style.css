@@ -102,19 +102,34 @@ body::before {
 
 .bio { color: var(--text-sub); margin-bottom: 40px; max-width: 500px; margin-inline: auto; }
 
-/* WhatsApp Button (Transparent Emerald) */
+/* WhatsApp Button - Perbaikan Hijau Solid */
 .whatsapp-btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: rgba(37, 211, 102, 0.08); /* Sangat bening hijau */
-    color: #25d366 !important;
-    padding: 14px 28px; border-radius: 100px;
-    text-decoration: none; font-weight: 700; margin-bottom: 60px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #25d366 !important; /* Hijau Solid WhatsApp */
+    color: #ffffff !important;      /* Teks Putih */
+    padding: 16px 32px;
+    border-radius: 100px;
+    text-decoration: none !important;
+    font-weight: 700;
+    margin-bottom: 60px;
+    
+    /* Efek Pantulan Kaca Tipis di Atas Warna Solid */
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+    
+    /* Supaya tetap ada kesan glassmorphism dikit */
+    backdrop-filter: blur(5px); 
+    transition: 0.3s;
 }
+
 .whatsapp-btn:hover {
-    background: #25d366;
-    color: white !important;
     transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+    filter: brightness(1.1); /* Sedikit lebih terang saat ditekan */
 }
+
 
 /* Tech Stack Crystal Tags */
 .tech-stack { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 60px; }
