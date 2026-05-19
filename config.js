@@ -38,7 +38,7 @@ const CONFIG = {
   repositoryName: "craxid-project",
 
   siteUrl: "https://craxid.github.io/",
-  profileImage: "https://github.com/craxid.png",
+  profileImage: "/icons/icon.webp",
 
   description:
     "",
