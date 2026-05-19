@@ -674,3 +674,102 @@ footer {
     margin-top: 46px;
   }
 }
+
+/** 404.html **/
+
+.global-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 34px;
+}
+
+.global-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+
+  min-width: 220px;
+  padding: 16px 30px;
+
+  border-radius: 999px;
+
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 16px;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+.global-btn:hover {
+  transform: translateY(-2px);
+}
+
+.primary-btn {
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 82%, white),
+      color-mix(in srgb, var(--accent) 92%, black)
+    );
+
+  border: 1px solid
+    color-mix(in srgb, var(--accent) 24%, white);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 10px 24px
+      color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.primary-btn i {
+  color: white;
+}
+
+.secondary-btn {
+  color: var(--text);
+}
+
+.error-page {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.error-content {
+  width: 100%;
+}
+
+.error-page footer {
+  margin-top: 52px;
+}
+
+@media (max-width: 520px) {
+  .global-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .global-btn {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .error-page {
+    justify-content: flex-start;
+  }
+
+  .error-page footer {
+    margin-top: 46px;
+  }
+}

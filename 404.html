@@ -34,9 +34,13 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="page">
-    <section class="content" aria-label="404 Page">
-      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"></button>
+  <main class="page error-page">
+    <section class="content error-content" aria-label="404 Page">
+      <button
+        id="themeToggle"
+        class="theme-toggle"
+        aria-label="Toggle theme"
+      ></button>
 
       <h1 class="error-code">404</h1>
 
@@ -44,13 +48,13 @@
         Halaman yang kamu cari tidak ditemukan atau sudah dipindahkan.
       </p>
 
-      <div class="page-actions">
-        <a href="/" class="secondary-btn">
+      <div class="global-actions">
+        <a href="/" class="global-btn primary-btn">
           <i class="fa-solid fa-house"></i>
           <span>Kembali ke Home</span>
         </a>
 
-        <a href="/bot/" class="secondary-btn">
+        <a href="/bot/" class="global-btn secondary-btn liquid-glass">
           <i class="fa-solid fa-robot"></i>
           <span>Halaman Bot</span>
         </a>
@@ -58,7 +62,9 @@
     </section>
 
     <footer>
-      © <span id="year"></span> <span id="footerName"></span>. All rights reserved.
+      © <span id="year"></span>
+      <span id="footerName"></span>.
+      All rights reserved.
     </footer>
   </main>
 
