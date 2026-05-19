@@ -183,19 +183,22 @@ body.dark .liquid-glass {
     linear-gradient(
       110deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.04) 28%,
-      rgba(255, 255, 255, 0.18) 50%,
-      rgba(255, 255, 255, 0.04) 72%,
+      rgba(255, 255, 255, 0.035) 28%,
+      rgba(255, 255, 255, 0.16) 50%,
+      rgba(255, 255, 255, 0.035) 72%,
       transparent 100%
     );
 
-  opacity: 0.35;
+  opacity: 0.32;
 
   transform:
     translate3d(-160%, 0, 0)
     skewX(-18deg);
 
   pointer-events: none;
+
+  animation:
+    glassFlowPingPong 9s ease-in-out infinite alternate;
 
   will-change: transform;
 }
@@ -234,16 +237,8 @@ body.dark .liquid-glass {
 }
 
 /* =========================
-   LIGHT INFINITE BUTTON FLOW
+   GLOBAL LIQUID FLOW
 ========================= */
-
-.whatsapp-btn::after,
-.secondary-btn::after,
-.global-btn::after,
-.theme-toggle::after {
-  animation:
-    glassFlowPingPong 3.8s ease-in-out infinite alternate;
-}
 
 @keyframes glassFlowPingPong {
   0% {
