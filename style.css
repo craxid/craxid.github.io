@@ -171,40 +171,33 @@ body.dark .liquid-glass {
   content: "";
 
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+
+  width: 45%;
+  height: 100%;
 
   z-index: 0;
 
   background:
-    radial-gradient(
-      ellipse at 20% 50%,
-      rgba(255, 255, 255, 0.16) 0%,
-      rgba(255, 255, 255, 0.08) 18%,
-      transparent 38%
-    ),
-    radial-gradient(
-      ellipse at 50% 50%,
-      rgba(255, 255, 255, 0.13) 0%,
-      rgba(255, 255, 255, 0.06) 20%,
-      transparent 42%
-    ),
-    radial-gradient(
-      ellipse at 80% 50%,
-      rgba(255, 255, 255, 0.14) 0%,
-      rgba(255, 255, 255, 0.07) 18%,
-      transparent 40%
+    linear-gradient(
+      110deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.04) 28%,
+      rgba(255, 255, 255, 0.18) 50%,
+      rgba(255, 255, 255, 0.04) 72%,
+      transparent 100%
     );
 
-  background-size: 160% 100%;
-  background-position: 0% 50%;
+  opacity: 0.35;
 
-  opacity: 0.38;
-
-  transform: translate3d(-18%, 0, 0);
+  transform:
+    translate3d(-160%, 0, 0)
+    skewX(-18deg);
 
   pointer-events: none;
 
-  will-change: transform, opacity;
+  will-change: transform;
 }
 
 .liquid-glass > * {
@@ -241,43 +234,28 @@ body.dark .liquid-glass {
 }
 
 /* =========================
-   LIGHT INFINITE BUTTON WAVE
+   LIGHT INFINITE BUTTON FLOW
 ========================= */
 
 .whatsapp-btn::after,
 .secondary-btn::after,
 .global-btn::after,
 .theme-toggle::after {
-  animation: glassWave 5.2s ease-in-out infinite alternate;
+  animation:
+    glassFlowPingPong 3.8s ease-in-out infinite alternate;
 }
 
-@keyframes glassWave {
+@keyframes glassFlowPingPong {
   0% {
     transform:
-      translate3d(-18%, 0, 0)
-      scaleX(1);
-    opacity: 0.26;
-  }
-
-  35% {
-    transform:
-      translate3d(4%, -1%, 0)
-      scaleX(1.08);
-    opacity: 0.42;
-  }
-
-  70% {
-    transform:
-      translate3d(18%, 1%, 0)
-      scaleX(0.96);
-    opacity: 0.34;
+      translate3d(-160%, 0, 0)
+      skewX(-18deg);
   }
 
   100% {
     transform:
-      translate3d(28%, 0, 0)
-      scaleX(1.04);
-    opacity: 0.44;
+      translate3d(320%, 0, 0)
+      skewX(-18deg);
   }
 }
 
