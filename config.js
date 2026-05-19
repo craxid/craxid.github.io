@@ -41,7 +41,7 @@ const CONFIG = {
   profileImage: "https://github.com/craxid.png",
 
   description:
-    "Portofolio modern berisi project, eksperimen, dan karya digital berbasis web, bot, dan teknologi kreatif.",
+    "",
 
   seoDescription:
     "CraXID Project adalah portofolio modern berisi project web, bot, automation, dan teknologi kreatif.",
