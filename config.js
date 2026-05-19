@@ -33,7 +33,7 @@
 **/
 
 const CONFIG = {
-  accentColor: "#7C5CFF",
+  accentColor: "#2d6a4f",
   webName: "CraXID Project",
   repositoryName: "craxid-project",
 
