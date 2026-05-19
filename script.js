@@ -3,68 +3,56 @@ const body = document.body;
 
 root.style.setProperty("--accent", CONFIG.accentColor);
 
-document.title = `${CONFIG.webName} - Portfolio Developer`;
+function setContent(selector, value, prop = "textContent") {
+  const element = document.querySelector(selector);
 
-document.querySelector('meta[name="description"]').content =
-  CONFIG.seoDescription;
+  if (element) {
+    element[prop] = value;
+  }
+}
 
-document.querySelector('meta[name="keywords"]').content =
-  CONFIG.keywords;
+function setAttr(selector, attr, value) {
+  const element = document.querySelector(selector);
 
-document.querySelector('meta[name="author"]').content =
-  CONFIG.webName;
+  if (element) {
+    element.setAttribute(attr, value);
+  }
+}
 
-document.querySelector('meta[name="theme-color"]').content =
-  CONFIG.accentColor;
+const currentPath = window.location.pathname;
 
-document.querySelector('link[rel="canonical"]').href =
-  CONFIG.siteUrl;
+if (currentPath.includes("/bot")) {
+  document.title = `Bot - ${CONFIG.webName}`;
+} else if (currentPath.includes("404")) {
+  document.title = `404 - ${CONFIG.webName}`;
+} else {
+  document.title = `${CONFIG.webName} - Portfolio Developer`;
+}
 
-document.querySelector('link[rel="icon"]').href =
-  CONFIG.profileImage;
+setContent('meta[name="description"]', CONFIG.seoDescription, "content");
+setContent('meta[name="keywords"]', CONFIG.keywords, "content");
+setContent('meta[name="author"]', CONFIG.webName, "content");
+setContent('meta[name="theme-color"]', CONFIG.accentColor, "content");
 
-document.querySelector('meta[property="og:title"]').content =
-  CONFIG.webName;
+setAttr('link[rel="canonical"]', "href", CONFIG.siteUrl);
+setAttr('link[rel="icon"]', "href", CONFIG.profileImage);
 
-document.querySelector('meta[property="og:description"]').content =
-  CONFIG.seoDescription;
+setContent('meta[property="og:title"]', CONFIG.webName, "content");
+setContent('meta[property="og:description"]', CONFIG.seoDescription, "content");
+setContent('meta[property="og:image"]', CONFIG.profileImage, "content");
+setContent('meta[property="og:url"]', CONFIG.siteUrl, "content");
 
-document.querySelector('meta[property="og:image"]').content =
-  CONFIG.profileImage;
+setContent('meta[name="twitter:title"]', CONFIG.webName, "content");
+setContent('meta[name="twitter:description"]', CONFIG.seoDescription, "content");
+setContent('meta[name="twitter:image"]', CONFIG.profileImage, "content");
 
-document.querySelector('meta[property="og:url"]').content =
-  CONFIG.siteUrl;
-
-document.querySelector('meta[name="twitter:title"]').content =
-  CONFIG.webName;
-
-document.querySelector('meta[name="twitter:description"]').content =
-  CONFIG.seoDescription;
-
-document.querySelector('meta[name="twitter:image"]').content =
-  CONFIG.profileImage;
-
-document.getElementById("profileImage").src =
-  CONFIG.profileImage;
-
-document.getElementById("webName").textContent =
-  CONFIG.webName;
-
-document.getElementById("description").textContent =
-  CONFIG.description;
-
-document.getElementById("whatsappBtn").href =
-  CONFIG.whatsappUrl;
-
-document.getElementById("year").textContent =
-  new Date().getFullYear();
-
-document.getElementById("footerName").textContent =
-  CONFIG.webName;
-
-/* =========================
-   ANTI COPY
-========================= */
+setAttr("#profileImage", "src", CONFIG.profileImage);
+setContent("#webName", CONFIG.webName);
+setContent("#description", CONFIG.description);
+setAttr("#whatsappBtn", "href", CONFIG.whatsappUrl);
+setAttr("#botGroupBtn", "href", CONFIG.botGroupUrl);
+setContent("#year", new Date().getFullYear());
+setContent("#footerName", CONFIG.webName);
 
 document.addEventListener("contextmenu", (e) => {
   e.preventDefault();
@@ -72,33 +60,38 @@ document.addEventListener("contextmenu", (e) => {
 
 document.addEventListener("keydown", (e) => {
   if (
-    (e.ctrlKey &&
-      ["c", "u", "s", "a"].includes(
-        e.key.toLowerCase()
-      )) ||
+    (e.ctrlKey && ["c", "u", "s", "a"].includes(e.key.toLowerCase())) ||
     e.key === "F12"
   ) {
     e.preventDefault();
   }
 });
 
-/* =========================
-   WHATSAPP BUTTON
-========================= */
+const whatsappBtn = document.getElementById("whatsappBtn");
 
-const whatsappBtn =
-  document.getElementById("whatsappBtn");
+if (whatsappBtn) {
+  whatsappBtn.classList.add("liquid-glass");
 
-whatsappBtn.classList.add("liquid-glass");
+  whatsappBtn.innerHTML = `
+    <i class="fa-brands fa-whatsapp"></i>
+    <span>Gabung WhatsApp</span>
+  `;
+}
 
-whatsappBtn.innerHTML = `
-  <i class="fa-brands fa-whatsapp"></i>
-  <span>Gabung WhatsApp</span>
-`;
+const botGroupBtn = document.getElementById("botGroupBtn");
 
-/* =========================
-   SCHEMA SEO
-========================= */
+if (botGroupBtn) {
+  botGroupBtn.classList.add("liquid-glass");
+
+  botGroupBtn.innerHTML = `
+    <i class="fa-solid fa-robot"></i>
+    <span>Gabung Grup Bot</span>
+  `;
+}
+
+document.querySelectorAll(".secondary-btn").forEach((button) => {
+  button.classList.add("liquid-glass");
+});
 
 const schema = document.createElement("script");
 
@@ -110,57 +103,38 @@ schema.textContent = JSON.stringify({
   name: CONFIG.webName,
   url: CONFIG.siteUrl,
   image: CONFIG.profileImage,
-  sameAs: [
-    `https://github.com/${CONFIG.githubUsername}`
-  ],
+  sameAs: [`https://github.com/${CONFIG.githubUsername}`],
   jobTitle: "Web & Bot Developer",
 });
 
 document.body.appendChild(schema);
 
-/* =========================
-   THEME
-========================= */
+const themeToggle = document.getElementById("themeToggle");
 
-const themeToggle =
-  document.getElementById("themeToggle");
+const moonIcon = `<i class="fa-solid fa-moon"></i>`;
+const sunIcon = `<i class="fa-solid fa-sun"></i>`;
 
-themeToggle.classList.add("liquid-glass");
+if (themeToggle) {
+  themeToggle.classList.add("liquid-glass");
+  themeToggle.innerHTML = moonIcon;
 
-const moonIcon =
-  `<i class="fa-solid fa-moon"></i>`;
+  const savedTheme = localStorage.getItem("theme");
 
-const sunIcon =
-  `<i class="fa-solid fa-sun"></i>`;
+  if (savedTheme === "dark") {
+    body.classList.add("dark");
+    themeToggle.innerHTML = sunIcon;
+  }
 
-themeToggle.innerHTML = moonIcon;
+  themeToggle.addEventListener("click", () => {
+    body.classList.toggle("dark");
 
-const savedTheme =
-  localStorage.getItem("theme");
+    const isDark = body.classList.contains("dark");
 
-if (savedTheme === "dark") {
-  body.classList.add("dark");
-  themeToggle.innerHTML = sunIcon;
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+
+    themeToggle.innerHTML = isDark ? sunIcon : moonIcon;
+  });
 }
-
-themeToggle.addEventListener("click", () => {
-  body.classList.toggle("dark");
-
-  const isDark =
-    body.classList.contains("dark");
-
-  localStorage.setItem(
-    "theme",
-    isDark ? "dark" : "light"
-  );
-
-  themeToggle.innerHTML =
-    isDark ? sunIcon : moonIcon;
-});
-
-/* =========================
-   TECH STACK ICONS
-========================= */
 
 const icons = {
   JavaScript: "fa-brands fa-js",
@@ -175,27 +149,19 @@ const icons = {
   Vercel: "fa-solid fa-triangle-exclamation",
 };
 
-/* =========================
-   RENDER TECH STACK
-========================= */
-
 function renderTechStack() {
-  const container =
-    document.getElementById("techStack");
+  const container = document.getElementById("techStack");
 
-  const shuffled =
-    [...CONFIG.techStacks].sort(
-      () => Math.random() - 0.5
-    );
+  if (!container) {
+    return;
+  }
 
-  const selected =
-    shuffled.slice(0, 7);
+  const shuffled = [...CONFIG.techStacks].sort(() => Math.random() - 0.5);
+  const selected = shuffled.slice(0, 7);
 
   container.innerHTML = selected
     .map((tech) => {
-      const icon =
-        icons[tech] ||
-        "fa-solid fa-code";
+      const icon = icons[tech] || "fa-solid fa-code";
 
       return `
         <span class="liquid-glass">
@@ -207,13 +173,12 @@ function renderTechStack() {
     .join("");
 }
 
-/* =========================
-   LOAD GITHUB PROJECTS
-========================= */
-
 async function loadProjects() {
-  const container =
-    document.getElementById("projects");
+  const container = document.getElementById("projects");
+
+  if (!container) {
+    return;
+  }
 
   try {
     container.innerHTML = `
@@ -227,9 +192,7 @@ async function loadProjects() {
     );
 
     if (!response.ok) {
-      throw new Error(
-        "Gagal mengambil data GitHub."
-      );
+      throw new Error("Gagal mengambil data GitHub.");
     }
 
     const repos = await response.json();
@@ -237,13 +200,8 @@ async function loadProjects() {
     const sortedRepos = repos
       .filter((repo) => !repo.fork)
       .sort((a, b) => {
-        const scoreA =
-          a.stargazers_count +
-          a.forks_count;
-
-        const scoreB =
-          b.stargazers_count +
-          b.forks_count;
+        const scoreA = a.stargazers_count + a.forks_count;
+        const scoreB = b.stargazers_count + b.forks_count;
 
         return scoreB - scoreA;
       })
@@ -271,10 +229,7 @@ async function loadProjects() {
             </a>
 
             <p>
-              ${
-                repo.description ||
-                "Tidak ada deskripsi repository."
-              }
+              ${repo.description || "Tidak ada deskripsi repository."}
             </p>
 
             <div class="project-meta">
@@ -290,10 +245,7 @@ async function loadProjects() {
 
               <span>
                 <i class="fa-solid fa-code"></i>
-                ${
-                  repo.language ||
-                  "Unknown"
-                }
+                ${repo.language || "Unknown"}
               </span>
             </div>
           </article>
@@ -308,10 +260,6 @@ async function loadProjects() {
     `;
   }
 }
-
-/* =========================
-   INIT
-========================= */
 
 renderTechStack();
 loadProjects();

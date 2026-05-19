@@ -31,7 +31,6 @@ html {
 body {
   margin: 0;
   font-family: Inter, Arial, sans-serif;
-
   background:
     radial-gradient(
       circle at top left,
@@ -44,14 +43,21 @@ body {
       transparent 32%
     ),
     var(--bg);
-
   color: var(--text);
-
   min-height: 100vh;
-
   transition:
     background 0.3s ease,
     color 0.3s ease;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 .page {
@@ -65,30 +71,21 @@ body {
   text-align: center;
 }
 
-/* =========================
-   LIQUID GLASS
-========================= */
-
 .liquid-glass {
   position: relative;
   overflow: hidden;
-
   background:
     linear-gradient(
       135deg,
       rgba(255, 255, 255, 0.14),
       var(--glass-bg)
     );
-
   border: 1px solid var(--glass-border);
-
   backdrop-filter: blur(8px) saturate(120%);
   -webkit-backdrop-filter: blur(8px) saturate(120%);
-
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
     0 6px 16px var(--glass-shadow);
-
   transition:
     transform 0.25s ease,
     background 0.3s ease,
@@ -102,42 +99,33 @@ body {
 
 .liquid-glass::before {
   content: "";
-
   position: absolute;
   inset: -60%;
-
   background:
     radial-gradient(
       circle at 30% 30%,
       rgba(255, 255, 255, 0.16),
       transparent 28%
     ),
-
     radial-gradient(
       circle at 70% 60%,
       rgba(255, 255, 255, 0.08),
       transparent 30%
     ),
-
     linear-gradient(
       145deg,
       rgba(255, 255, 255, 0.1),
       transparent 48%
     );
-
   opacity: 0.28;
-
   pointer-events: none;
-
   animation: liquidMove 8s ease-in-out infinite alternate;
 }
 
 .liquid-glass::after {
   content: "";
-
   position: absolute;
   inset: 0;
-
   background:
     linear-gradient(
       115deg,
@@ -147,11 +135,8 @@ body {
       rgba(255, 255, 255, 0.08) 58%,
       transparent 100%
     );
-
   transform: translateX(-120%);
-
   pointer-events: none;
-
   animation: glassShine 7s ease-in-out infinite;
 }
 
@@ -162,24 +147,15 @@ body {
 
 @keyframes liquidMove {
   0% {
-    transform:
-      translate3d(-6%, -4%, 0)
-      rotate(0deg)
-      scale(1);
+    transform: translate3d(-6%, -4%, 0) rotate(0deg) scale(1);
   }
 
   50% {
-    transform:
-      translate3d(5%, 6%, 0)
-      rotate(8deg)
-      scale(1.08);
+    transform: translate3d(5%, 6%, 0) rotate(8deg) scale(1.08);
   }
 
   100% {
-    transform:
-      translate3d(8%, -5%, 0)
-      rotate(-6deg)
-      scale(1.04);
+    transform: translate3d(8%, -5%, 0) rotate(-6deg) scale(1.04);
   }
 }
 
@@ -207,44 +183,26 @@ body {
   }
 }
 
-/* =========================
-   THEME BUTTON
-========================= */
-
 .theme-toggle {
   position: fixed;
-
   top: 20px;
   right: 20px;
-
   width: 52px;
   height: 52px;
-
   border: 0;
   border-radius: 50%;
-
   cursor: pointer;
-
   color: var(--accent);
-
   font-size: 18px;
-
   z-index: 999;
 }
-
-/* =========================
-   PROFILE
-========================= */
 
 .profile-img {
   width: 132px;
   height: 132px;
-
   border-radius: 50%;
   object-fit: cover;
-
   border: 4px solid var(--accent);
-
   box-shadow:
     0 0 22px color-mix(
       in srgb,
@@ -255,37 +213,37 @@ body {
 
 h1 {
   margin: 18px 0 8px;
-
   font-size: clamp(32px, 6vw, 56px);
-
   letter-spacing: -1.5px;
-
   line-height: 1.1;
 }
 
-.description {
+.description,
+.page-subtitle {
   max-width: 650px;
-
   margin: 0 auto 26px;
-
   color: var(--muted);
-
   line-height: 1.8;
-
   font-size: clamp(16px, 2.6vw, 20px);
 }
 
-/* =========================
-   TECH STACK
-========================= */
+.page-title {
+  margin-top: 18px;
+}
+
+.error-code {
+  margin: 0 0 18px;
+  font-size: clamp(86px, 20vw, 180px);
+  line-height: 0.9;
+  color: var(--accent);
+  letter-spacing: -8px;
+}
 
 .tech-stack {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-
   gap: 12px;
-
   margin-bottom: 34px;
 }
 
@@ -293,50 +251,48 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 9px;
-
   padding: 12px 18px;
-
   border-radius: 999px;
-
   font-size: 15px;
 }
 
-.tech-stack i {
+.tech-stack i,
+.project-meta i {
   color: var(--accent);
 }
 
-/* =========================
-   WHATSAPP BUTTON
-========================= */
+.page-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
 
-.whatsapp-btn {
+.whatsapp-btn,
+.secondary-btn {
   display: inline-flex;
   justify-content: center;
   align-items: center;
   gap: 11px;
-
   padding: 16px 30px;
-
   border-radius: 999px;
-
-  color: white;
   text-decoration: none;
-
   font-weight: 800;
-
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
+}
 
+.whatsapp-btn {
+  color: white;
   background:
     linear-gradient(
       135deg,
       color-mix(in srgb, var(--accent), white 12%),
       var(--accent)
     );
-
   border: 1px solid rgba(255, 255, 255, 0.22);
-
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
     0 12px 26px
@@ -347,17 +303,18 @@ h1 {
       );
 }
 
-.whatsapp-btn:hover {
+.secondary-btn {
+  color: var(--text);
+}
+
+.whatsapp-btn:hover,
+.secondary-btn:hover {
   transform: translateY(-2px);
 }
 
 .whatsapp-btn i {
   color: white;
 }
-
-/* =========================
-   PROJECTS
-========================= */
 
 .projects-section {
   margin-top: 52px;
@@ -366,11 +323,8 @@ h1 {
 
 .projects-section h2 {
   text-align: center;
-
   margin-bottom: 22px;
-
   font-size: clamp(30px, 5vw, 44px);
-
   line-height: 1.15;
 }
 
@@ -386,12 +340,9 @@ h1 {
 
 .project-card a {
   color: var(--text);
-
   font-size: 22px;
   font-weight: 800;
-
   text-decoration: none;
-
   transition: color 0.2s ease;
 }
 
@@ -401,22 +352,16 @@ h1 {
 
 .project-card p {
   color: var(--muted);
-
   line-height: 1.7;
-
   margin: 14px 0;
 }
 
 .project-meta {
   display: flex;
   flex-wrap: wrap;
-
   gap: 16px;
-
   color: var(--muted);
-
   font-size: 14px;
-
   margin-top: 14px;
 }
 
@@ -426,27 +371,20 @@ h1 {
   gap: 6px;
 }
 
-.project-meta i {
-  color: var(--accent);
+.whatsapp-btn:focus-visible,
+.secondary-btn:focus-visible,
+.theme-toggle:focus-visible,
+.project-card a:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent), white 30%);
+  outline-offset: 4px;
 }
-
-/* =========================
-   FOOTER
-========================= */
 
 footer {
   text-align: center;
-
   margin-top: 34px;
-
   color: var(--muted);
-
   font-size: 14px;
 }
-
-/* =========================
-   RESPONSIVE
-========================= */
 
 @media (max-width: 520px) {
   .page {
@@ -461,7 +399,6 @@ footer {
   .theme-toggle {
     top: 14px;
     right: 14px;
-
     width: 48px;
     height: 48px;
   }
@@ -475,7 +412,13 @@ footer {
     font-size: 14px;
   }
 
-  .whatsapp-btn {
+  .page-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .whatsapp-btn,
+  .secondary-btn {
     width: 100%;
     max-width: 360px;
   }
@@ -487,16 +430,4 @@ footer {
   .project-card a {
     font-size: 20px;
   }
-}
-
-body {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-img {
-  -webkit-user-drag: none;
-  user-select: none;
 }

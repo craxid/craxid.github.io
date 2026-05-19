@@ -1,152 +1,74 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CraXID Bot | Status & Links</title>
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../style.css">
-    
-    <style>
-        .container {
-            padding: 40px 20px;
-            max-width: 450px;
-            margin-top: 20px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        .profile-wrapper {
-            display: flex;
-            justify-content: center;
-            margin: 0 auto 20px;
-        }
+  <title>Bot - CraXID Project</title>
 
-        .links-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            width: 100%;
-            margin-top: 30px;
-        }
+  <meta name="description" content="Gabung ke grup bot CraXID Project untuk mendapatkan informasi, update, dan akses bot." />
+  <meta name="keywords" content="CraXID bot, grup bot, whatsapp bot, bot developer" />
+  <meta name="author" content="CraXID Project" />
+  <meta name="theme-color" content="#7C5CFF" />
 
-        /* Gaya Dasar Tombol Kaca */
-        .bot-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 16px;
-            border-radius: 16px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 100%;
-            box-sizing: border-box;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        }
+  <link rel="canonical" href="/bot/" />
+  <link rel="icon" href="https://github.com/craxid.png" />
 
-        .bot-link:hover {
-            transform: translateY(-3px);
-            color: white !important;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bot - CraXID Project" />
+  <meta property="og:description" content="Gabung ke grup bot CraXID Project." />
+  <meta property="og:image" content="https://github.com/craxid.png" />
+  <meta property="og:url" content="/bot/" />
 
-        .bot-link i {
-            font-size: 1.2rem;
-            width: 25px;
-            text-align: center;
-        }
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bot - CraXID Project" />
+  <meta name="twitter:description" content="Gabung ke grup bot CraXID Project." />
+  <meta name="twitter:image" content="https://github.com/craxid.png" />
 
-        /* --- WARNA IDENTITAS APLIKASI (GLASS VERSION) --- */
-        
-        /* WhatsApp Green */
-        .link-wa { 
-            background: rgba(37, 211, 102, 0.1); 
-            color: #25d366 !important; 
-            border-color: rgba(37, 211, 102, 0.3) !important;
-        }
-        .link-wa:hover { background: #25d366 !important; }
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
-        /* Facebook Blue */
-        .link-fb { 
-            background: rgba(24, 119, 242, 0.1); 
-            color: #1877f2 !important; 
-            border-color: rgba(24, 119, 242, 0.3) !important;
-        }
-        .link-fb:hover { background: #1877f2 !important; }
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
 
-        /* Instagram Pink/Purple */
-        .link-ig { 
-            background: rgba(228, 64, 95, 0.1); 
-            color: #e4405f !important; 
-            border-color: rgba(228, 64, 95, 0.3) !important;
-        }
-        .link-ig:hover { background: #e4405f !important; }
-
-        /* GitHub / X (Neutral Glass) */
-        .link-git { 
-            background: rgba(0, 0, 0, 0.05); 
-            color: var(--text-main) !important; 
-            border-color: var(--border) !important;
-        }
-        .link-git:hover { 
-            background: #24292e !important; 
-            color: white !important; 
-            border-color: #24292e !important;
-        }
-
-        /* Dark Mode Adjustment */
-        [data-theme="dark"] .link-git {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        [data-theme="dark"] .bot-link:not(:hover) {
-            border-color: rgba(255, 255, 255, 0.1) !important;
-        }
-    </style>
+  <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
+  <main class="page">
+    <section class="content" aria-label="Bot Page">
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"></button>
 
-    <button id="theme-toggle" class="theme-btn">
-        <i class="fas fa-moon"></i>
-    </button>
+      <img
+        id="profileImage"
+        class="profile-img"
+        alt="CraXID Profile"
+        loading="lazy"
+      />
 
-    <div class="container">
-        <header>
-            <div class="profile-wrapper">
-                <img src="/icons/icon.webp" alt="CraXID Bot" class="profile-img">
-            </div>
+      <h1 class="page-title">CraXID Bot</h1>
 
-            <h1 class="name">CraXID Bot</h1>
-            <div class="role"></div>
+      <p class="page-subtitle">
+        Gabung ke grup bot untuk mendapatkan update, akses fitur, informasi command,
+        dan diskusi seputar bot CraXID.
+      </p>
 
-            <p class="bio">Bot WhatsApp gratis untuk berbagai kebutuhan. 
-                Pilih layanan di bawah untuk mulai berinteraksi.</p>
-        </header>
+      <div class="page-actions">
+        <a id="botGroupBtn" class="whatsapp-btn" target="_blank" rel="noopener"></a>
 
-        <div class="links-wrapper">
-            <a href="https://s.id/22VmC" class="bot-link link-wa">
-                <i class="fab fa-whatsapp"></i> WhatsApp Bot
-            </a>
-
-            <a href="https://www.facebook.com/dede2015k" class="bot-link link-fb">
-                <i class="fab fa-facebook-f"></i> Facebook
-            </a>
-
-            <a href="https://instagram.com/dede_klender" class="bot-link link-ig">
-                <i class="fab fa-instagram"></i> Instagram
-            </a>
-
-            <!--<a href="https://github.com/craxid" class="bot-link link-git">
-                <i class="fab fa-github"></i> GitHub Source</a>-->
-        </div>
-    </div>
+        <a href="../" class="secondary-btn">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Kembali ke Home</span>
+        </a>
+      </div>
+    </section>
 
     <footer>
-        Copyright &copy; <span id="year"></span> | <a href="/" class="footer-link">CraXID Project</a>
+      © <span id="year"></span> <span id="footerName"></span>. All rights reserved.
     </footer>
+  </main>
 
-    <script src="../script.js"></script>
+  <script src="../config.js"></script>
+  <script src="../script.js"></script>
 </body>
 </html>

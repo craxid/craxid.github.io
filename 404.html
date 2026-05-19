@@ -1,66 +1,68 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Halaman Tidak Ditemukan | Dede Kurniawan</title>
-    <meta name="description" content="Ups! Halaman yang Anda cari tidak ditemukan.">
-    
-    <link rel="stylesheet" href="/style.css">
-    <style>
-        body {
-            height: 100vh;
-            justify-content: center;
-            margin: 0;
-        }
-        .error-container {
-            text-align: center;
-            padding: 20px;
-        }
-        .error-code {
-            font-size: 8rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin: 0;
-            line-height: 1;
-        }
-        .error-msg {
-            font-size: 1.5rem;
-            color: var(--text-main);
-            margin: 10px 0 30px;
-        }
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--accent);
-            color: white !important;
-            padding: 14px 28px;
-            border-radius: 100px;
-            text-decoration: none;
-            font-weight: 600;
-            box-shadow: var(--shadow-soft);
-            transition: transform 0.2s ease;
-        }
-        .back-btn:hover {
-            transform: translateY(-3px);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>404 - Halaman Tidak Ditemukan</title>
+
+  <meta name="description" content="Halaman yang kamu cari tidak ditemukan." />
+  <meta name="robots" content="noindex, follow" />
+  <meta name="theme-color" content="#7C5CFF" />
+
+  <link rel="canonical" href="/404.html" />
+  <link rel="icon" href="https://github.com/craxid.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="404 - CraXID Project" />
+  <meta property="og:description" content="Halaman yang kamu cari tidak ditemukan." />
+  <meta property="og:image" content="https://github.com/craxid.png" />
+  <meta property="og:url" content="/404.html" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="404 - CraXID Project" />
+  <meta name="twitter:description" content="Halaman yang kamu cari tidak ditemukan." />
+  <meta name="twitter:image" content="https://github.com/craxid.png" />
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <main class="page">
+    <section class="content" aria-label="404 Page">
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"></button>
 
-    <div class="error-container">
-        <h1 class="error-code">404</h1>
-        <p class="error-msg">Waduh! Halaman yang kamu cari nggak ada nih.</p>
-        
-        <a href="/" class="back-btn">
-            <i class="fas fa-arrow-left"></i> Balik ke Beranda
+      <h1 class="error-code">404</h1>
+
+      <p class="page-subtitle">
+        Halaman yang kamu cari tidak ditemukan atau sudah dipindahkan.
+      </p>
+
+      <div class="page-actions">
+        <a href="/" class="secondary-btn">
+          <i class="fa-solid fa-house"></i>
+          <span>Kembali ke Home</span>
         </a>
-    </div>
 
-    <script>
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-    </script>
+        <a href="/bot/" class="secondary-btn">
+          <i class="fa-solid fa-robot"></i>
+          <span>Halaman Bot</span>
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> <span id="footerName"></span>. All rights reserved.
+    </footer>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
