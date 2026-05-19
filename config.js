@@ -51,8 +51,8 @@ const CONFIG = {
 
   githubUsername: "craxid",
 
-  whatsappUrl: "https://chat.whatsapp.com/ISI_LINK_GRUP_KAMU",
-  botGroupUrl: "https://chat.whatsapp.com/ISI_LINK_GRUP_BOT_KAMU",
+  whatsappUrl: "/bot/",
+  botGroupUrl: "/bot/",
 
   maxProjects: 3,
 
