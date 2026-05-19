@@ -44,7 +44,17 @@ body {
       transparent 34%
     ),
 
-    radial-gradient(
+radial-gradient(
+  circle at bottom right,
+  color-mix(
+    in srgb,
+    var(--accent) 24%,
+    transparent
+  ),
+  transparent 36%
+),
+
+   /** radial-gradient(
       circle at bottom right,
       color-mix(
         in srgb,
@@ -53,7 +63,7 @@ body {
       ),
       transparent 36%
     ),
-
+**/
     var(--bg);
 
   color: var(--text);
