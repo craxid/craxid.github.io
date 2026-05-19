@@ -8,7 +8,7 @@
   --grid-line: rgba(17, 24, 39, 0.055);
 
   --glass-bg: rgba(255, 255, 255, 0.16);
-  --glass-strong: rgba(255, 255, 255, 0.28);
+  --glass-strong: rgba(255, 255, 255, 0.24);
   --glass-shadow: rgba(17, 24, 39, 0.08);
 }
 
@@ -19,9 +19,9 @@ body.dark {
 
   --grid-line: rgba(255, 255, 255, 0.055);
 
-  --glass-bg: rgba(255, 255, 255, 0.065);
-  --glass-strong: rgba(255, 255, 255, 0.12);
-  --glass-shadow: rgba(0, 0, 0, 0.32);
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-strong: rgba(255, 255, 255, 0.1);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
 }
 
 * {
@@ -40,13 +40,13 @@ body {
   background:
     radial-gradient(
       circle at top left,
-      color-mix(in srgb, var(--accent) 30%, transparent),
+      color-mix(in srgb, var(--accent) 28%, transparent),
       transparent 34%
     ),
     radial-gradient(
       circle at bottom right,
-      color-mix(in srgb, var(--accent) 18%, transparent),
-      transparent 38%
+      color-mix(in srgb, var(--accent) 14%, transparent),
+      transparent 40%
     ),
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
@@ -90,7 +90,7 @@ img {
 }
 
 /* =========================
-   APPLE-LIKE LIQUID GLASS
+   LIGHT LIQUID GLASS
 ========================= */
 
 .liquid-glass {
@@ -103,83 +103,67 @@ img {
   background:
     linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.24),
-      rgba(255, 255, 255, 0.085) 38%,
-      color-mix(in srgb, var(--accent) 9%, transparent) 100%
+      var(--glass-strong),
+      var(--glass-bg) 48%,
+      color-mix(in srgb, var(--accent) 7%, transparent)
     );
 
-  backdrop-filter: blur(9px) saturate(145%) contrast(1.03);
-  -webkit-backdrop-filter: blur(9px) saturate(145%) contrast(1.03);
+  backdrop-filter: blur(4px) saturate(115%);
+  -webkit-backdrop-filter: blur(4px) saturate(115%);
 
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.38),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.1),
-    inset 8px 12px 20px rgba(255, 255, 255, 0.045),
-    inset -8px -12px 22px rgba(0, 0, 0, 0.06),
-    0 10px 24px rgba(0, 0, 0, 0.08),
-    0 0 20px color-mix(in srgb, var(--accent) 14%, transparent);
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.04),
+    0 8px 18px var(--glass-shadow),
+    0 0 12px color-mix(in srgb, var(--accent) 10%, transparent);
 
-  transform: translate3d(0, 0, 0);
-  will-change: transform, filter, box-shadow;
+  transform: translate3d(0, 0, 0) scale(1);
 
   transition:
-    transform 0.35s cubic-bezier(0.2, 0.85, 0.2, 1),
-    box-shadow 0.35s ease,
-    filter 0.35s ease,
-    background 0.35s ease;
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 260ms ease,
+    filter 260ms ease,
+    background 260ms ease;
 }
 
 body.dark .liquid-glass {
   background:
     linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.1),
-      rgba(255, 255, 255, 0.045) 42%,
-      color-mix(in srgb, var(--accent) 10%, transparent) 100%
+      rgba(255, 255, 255, 0.095),
+      rgba(255, 255, 255, 0.04) 48%,
+      color-mix(in srgb, var(--accent) 8%, transparent)
     );
 
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.18),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.05),
-    inset 8px 12px 20px rgba(255, 255, 255, 0.025),
-    inset -8px -12px 22px rgba(0, 0, 0, 0.22),
-    0 12px 28px rgba(0, 0, 0, 0.3),
-    0 0 22px color-mix(in srgb, var(--accent) 16%, transparent);
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 8px 18px var(--glass-shadow),
+    0 0 12px color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .liquid-glass::before {
   content: "";
-
   position: absolute;
-  inset: -70%;
-  z-index: -1;
+  inset: 0;
+  z-index: 0;
 
   background:
     radial-gradient(
-      circle at 26% 22%,
-      rgba(255, 255, 255, 0.46),
-      transparent 18%
+      circle at 24% 18%,
+      rgba(255, 255, 255, 0.22),
+      transparent 28%
     ),
-    radial-gradient(
-      circle at 76% 62%,
-      color-mix(in srgb, var(--accent) 24%, transparent),
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 48% 88%,
-      rgba(255, 255, 255, 0.14),
-      transparent 26%
+    linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.04) 45%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.04) 55%,
+      transparent 100%
     );
 
-  opacity: 0.3;
-  filter: blur(5px);
-
-  transform:
-    translate3d(-4%, -3%, 0)
-    rotate(0deg)
-    scale(1);
-
-  animation: liquidDrift 10s ease-in-out infinite alternate;
+  opacity: 0.22;
   pointer-events: none;
 }
 
@@ -187,24 +171,33 @@ body.dark .liquid-glass {
   content: "";
 
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+
+  width: 45%;
+  height: 100%;
+
   z-index: 0;
 
   background:
     linear-gradient(
-      120deg,
+      110deg,
       transparent 0%,
-      transparent 30%,
-      rgba(255, 255, 255, 0.11) 44%,
-      rgba(255, 255, 255, 0.28) 50%,
-      rgba(255, 255, 255, 0.08) 57%,
-      transparent 72%,
+      rgba(255, 255, 255, 0.04) 28%,
+      rgba(255, 255, 255, 0.18) 50%,
+      rgba(255, 255, 255, 0.04) 72%,
       transparent 100%
     );
 
-  opacity: 0;
-  transform: translateX(-140%) skewX(-18deg);
+  opacity: 0.35;
+
+  transform:
+    translate3d(-160%, 0, 0)
+    skewX(-18deg);
+
   pointer-events: none;
+
+  will-change: transform;
 }
 
 .liquid-glass > * {
@@ -215,143 +208,68 @@ body.dark .liquid-glass {
 .liquid-glass:hover,
 .liquid-glass:focus-visible {
   transform:
-    translateY(-4px)
-    scale(1.018);
+    translateY(-2px)
+    scale(1.01);
 
-  filter: saturate(1.12) brightness(1.02);
+  filter: saturate(1.06);
 
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.42),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.13),
-    inset 10px 14px 24px rgba(255, 255, 255, 0.06),
-    inset -10px -16px 26px rgba(0, 0, 0, 0.08),
-    0 14px 32px rgba(0, 0, 0, 0.12),
-    0 0 28px color-mix(in srgb, var(--accent) 20%, transparent);
-}
-
-.liquid-glass:hover::before,
-.liquid-glass:focus-visible::before {
-  opacity: 0.46;
-  filter: blur(7px);
-
-  animation:
-    liquidDrift 5s ease-in-out infinite alternate,
-    liquidBreath 1.8s ease-in-out infinite;
-}
-
-.liquid-glass:hover::after,
-.liquid-glass:focus-visible::after {
-  animation: liquidSweep 1.1s ease forwards;
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.04),
+    0 10px 22px var(--glass-shadow),
+    0 0 16px color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .liquid-glass:active {
   transform:
     translateY(1px)
-    scale(0.975);
+    scale(0.97);
 
-  filter: saturate(1.16) brightness(1.04);
+  filter: saturate(1.1) brightness(1.02);
 
   box-shadow:
-    inset 0 3px 10px rgba(0, 0, 0, 0.15),
-    inset 0 1px 1px rgba(255, 255, 255, 0.28),
-    0 7px 16px rgba(0, 0, 0, 0.1),
-    0 0 18px color-mix(in srgb, var(--accent) 16%, transparent);
+    inset 0 3px 10px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 5px 12px var(--glass-shadow);
 }
 
-.liquid-glass:active::before {
-  animation: liquidPress 0.58s ease forwards;
+/* =========================
+   LIGHT INFINITE BUTTON FLOW
+========================= */
+
+.whatsapp-btn::after,
+.secondary-btn::after,
+.global-btn::after,
+.theme-toggle::after {
+  animation:
+    glassFlowPingPong 3.8s ease-in-out infinite alternate;
 }
 
-@keyframes liquidDrift {
+@keyframes glassFlowPingPong {
   0% {
     transform:
-      translate3d(-7%, -5%, 0)
-      rotate(0deg)
-      scale(1);
-  }
-
-  45% {
-    transform:
-      translate3d(5%, 7%, 0)
-      rotate(10deg)
-      scale(1.1);
+      translate3d(-160%, 0, 0)
+      skewX(-18deg);
   }
 
   100% {
     transform:
-      translate3d(8%, -6%, 0)
-      rotate(-8deg)
-      scale(1.04);
-  }
-}
-
-@keyframes liquidBreath {
-  0%,
-  100% {
-    opacity: 0.42;
-    filter: blur(6px);
-  }
-
-  50% {
-    opacity: 0.58;
-    filter: blur(8px);
-  }
-}
-
-@keyframes liquidSweep {
-  0% {
-    opacity: 0;
-    transform: translateX(-140%) skewX(-18deg);
-  }
-
-  32% {
-    opacity: 0.62;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateX(140%) skewX(-18deg);
-  }
-}
-
-@keyframes liquidPress {
-  0% {
-    opacity: 0.56;
-
-    transform:
-      translate3d(0, 0, 0)
-      rotate(0deg)
-      scale(1.04);
-  }
-
-  45% {
-    opacity: 0.72;
-
-    transform:
-      translate3d(3%, -2%, 0)
-      rotate(8deg)
-      scale(1.16);
-  }
-
-  100% {
-    opacity: 0.3;
-
-    transform:
-      translate3d(8%, -5%, 0)
-      rotate(-6deg)
-      scale(1.07);
+      translate3d(320%, 0, 0)
+      skewX(-18deg);
   }
 }
 
 @media (hover: none) {
+  .liquid-glass:hover {
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
   .liquid-glass:active {
     transform:
       translateY(1px)
       scale(0.97);
-  }
-
-  .liquid-glass:active::after {
-    animation: liquidSweep 0.9s ease forwards;
   }
 }
 
@@ -403,10 +321,10 @@ body.dark .liquid-glass {
   border: 4px solid var(--accent);
 
   box-shadow:
-    0 0 22px
+    0 0 20px
       color-mix(
         in srgb,
-        var(--accent) 45%,
+        var(--accent) 38%,
         transparent
       );
 }
@@ -512,8 +430,9 @@ h1 {
   font-weight: 800;
 
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 260ms ease,
+    filter 260ms ease;
 }
 
 .whatsapp-btn,
@@ -528,10 +447,10 @@ h1 {
     );
 
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.28),
+    inset 0 1px 1px rgba(255, 255, 255, 0.24),
     inset 0 -1px 1px rgba(0, 0, 0, 0.08),
-    0 12px 26px color-mix(in srgb, var(--accent) 45%, transparent),
-    0 0 26px color-mix(in srgb, var(--accent) 16%, transparent);
+    0 10px 22px color-mix(in srgb, var(--accent) 36%, transparent),
+    0 0 18px color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .secondary-btn {
@@ -541,7 +460,17 @@ h1 {
 .whatsapp-btn:hover,
 .secondary-btn:hover,
 .global-btn:hover {
-  transform: translateY(-2px) scale(1.01);
+  transform:
+    translateY(-2px)
+    scale(1.01);
+}
+
+.whatsapp-btn:active,
+.secondary-btn:active,
+.global-btn:active {
+  transform:
+    translateY(1px)
+    scale(0.97);
 }
 
 .whatsapp-btn i,
