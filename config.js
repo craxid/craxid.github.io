@@ -52,7 +52,7 @@ const CONFIG = {
   githubUsername: "craxid",
 
   whatsappUrl: "/bot/",
-  botGroupUrl: "/bot/",
+  botGroupUrl: "https://s.id/22VmC",
 
   maxProjects: 3,
 
