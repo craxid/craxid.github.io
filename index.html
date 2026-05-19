@@ -1,78 +1,81 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dede Kurniawan</title>
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#2d6a4f">
-    <link rel="apple-touch-icon" href="/icons/icon.webp">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>CraXID Project - Portfolio Developer</title>
+
+  <meta
+    name="description"
+    content="CraXID Project adalah portofolio modern berisi project web, bot, automation, dan teknologi kreatif."
+  />
+
+  <meta
+    name="keywords"
+    content="CraXID, portfolio, developer, bot whatsapp, web developer, github portfolio"
+  />
+
+  <meta name="author" content="CraXID" />
+  <meta name="theme-color" content="#7C5CFF" />
+
+  <link rel="canonical" href="https://domainkamu.com/" />
+  <link rel="icon" href="https://github.com/craxid.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="CraXID Project" />
+  <meta
+    property="og:description"
+    content="Portfolio modern developer web dan bot dengan desain liquid glass."
+  />
+  <meta property="og:image" content="https://github.com/craxid.png" />
+  <meta property="og:url" content="https://domainkamu.com/" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CraXID Project" />
+  <meta name="twitter:description" content="Portfolio modern developer web dan bot." />
+  <meta name="twitter:image" content="https://github.com/craxid.png" />
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <main class="page">
+    <section class="content" aria-label="Portfolio Profile">
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"></button>
 
-    <button id="theme-toggle" class="theme-btn">
-        <i class="fas fa-moon"></i>
-    </button>
+      <img
+        id="profileImage"
+        class="profile-img"
+        alt="CraXID Profile"
+        loading="lazy"
+      />
 
-    <div class="container">
-        <header>
-            <img src="/icons/icon.webp" alt="Dede Kurniawan" class="profile-img">
+      <h1 id="webName"></h1>
+      <p id="description" class="description"></p>
 
-            <h1 class="name">Dede Kurniawan</h1>
-            <div class="role">Malas Ngoding</div>
+      <div id="techStack" class="tech-stack" aria-label="Tech Stack"></div>
 
-            <div class="social-links">
-                <a href="https://www.facebook.com/dede2015k" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://instagram.com/dede_klender" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://github.com/craxid" target="_blank"><i class="fab fa-github"></i></a>
-            </div>
+      <a id="whatsappBtn" class="whatsapp-btn" target="_blank" rel="noopener"></a>
 
-            <p class="bio">Gak tau mau diisi apa</p>
-
-            <a href="/bot" class="whatsapp-btn" target="_blank">
-                <i class="fab fa-whatsapp"></i> Gabung Grup WhatsApp Bot
-            </a>
-        </header>
-
-        <section class="tech-stack">
-            <div class="tech-tag"><i class="fab fa-php"></i> PHP</div>
-            <div class="tech-tag"><i class="fab fa-js"></i> JavaScript</div>
-            <div class="tech-tag"><i class="fab fa-laravel"></i> Laravel</div>
-            <div class="tech-tag"><i class="fab fa-node-js"></i> Node.js</div>
-            <div class="tech-tag"><i class="fab fa-react"></i> React.js</div>
-            <div class="tech-tag"><i class="fas fa-database"></i> MySQL</div>
-            <div class="tech-tag"><i class="fab fa-git-alt"></i> Git</div>
-            <div class="tech-tag"><i class="fas fa-code"></i> Tailwind</div>
-        </section>
-
-        <main>
-            <h2 class="section-title">Top Projects</h2>
-            <div class="projects-grid" id="project-container">
-                <p class="loading-text">Memuat proyek terbaik...</p>
-            </div>
-        </main>
-    </div>
+      <section class="projects-section" aria-label="Top GitHub Projects">
+        <h2>Top GitHub Projects</h2>
+        <div id="projects" class="projects"></div>
+      </section>
+    </section>
 
     <footer>
-        Copyright &copy; <span id="year"></span> | <a href="/" class="footer-link">CraXID Project</a>
+      © <span id="year"></span> <span id="footerName"></span>. All rights reserved.
     </footer>
+  </main>
 
-    <script src="script.js"></script>
-    
-    <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('SW Registered!'))
-        .catch(err => console.log('SW Registration Failed', err));
-    });
-  }
-</script>
-
+  <script src="config.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
