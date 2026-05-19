@@ -1,0 +1,26 @@
+{
+  "name": "CraXID Project",
+  "short_name": "CraXID",
+  "description": "Portfolio modern CraXID Project berbasis web, bot, dan teknologi kreatif.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#eef2ff",
+  "theme_color": "#7c5cff",
+  "categories": ["portfolio", "developer", "technology"],
+  "icons": [
+    {
+      "src": "https://github.com/craxid.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://github.com/craxid.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
