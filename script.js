@@ -180,7 +180,7 @@ if (whatsappBtn) {
 
   whatsappBtn.innerHTML = `
     <i class="fa-brands fa-whatsapp"></i>
-    <span>Gabung WhatsApp</span>
+    <span>WhatsApp Bot</span>
   `;
 }
 
