@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Uploader - CraXID Project</title>
+
+  <meta name="description" content="GDrive Uploader CraXID Project. Upload file sementara (Auto-delete 24 Jam)." />
+  <meta name="keywords" content="CraXID uploader, google drive uploader, file hosting sementara, bot whatsapp" />
+  <meta name="author" content="CraXID Project" />
+  <meta name="theme-color" content="#7C5CFF" />
+
+  <link rel="canonical" href="/upload/" />
+  <link rel="icon" href="https://github.com/craxid.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Uploader - CraXID Project" />
+  <meta property="og:description" content="Upload file sementara secara anonim (Auto-delete 24 Jam)." />
+  <meta property="og:image" content="https://github.com/craxid.png" />
+  <meta property="og:url" content="/upload/" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Uploader - CraXID Project" />
+  <meta name="twitter:description" content="Upload file sementara secara anonim." />
+  <meta name="twitter:image" content="https://github.com/craxid.png" />
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="manifest" href="../manifest.webmanifest" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="CraXID" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="https://github.com/craxid.png" />
+
+  <style>
+    /* Menyesuaikan Uploader dengan CSS Base Bot Page Anda */
+    .file-input-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 520px; /* Menyamakan dengan width max tombol bot-actions */
+      margin: 0 auto 15px;
+    }
+
+    .file-input-wrapper input[type="file"] {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .file-input-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 35px 20px;
+      border: 2px dashed color-mix(in srgb, var(--accent) 50%, transparent);
+      border-radius: 999px; /* Supaya serasi dengan style rounded full bot-btn */
+      color: var(--muted);
+      transition: all 0.3s ease;
+      min-height: 140px;
+      word-break: break-word;
+    }
+
+    .file-input-wrapper:hover .file-input-label,
+    .file-input-wrapper input[type="file"]:focus + .file-input-label {
+      background: var(--glass-strong);
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .icon-upload {
+      font-size: 32px;
+      color: var(--accent);
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .file-input-wrapper:hover .icon-upload {
+      transform: translateY(-4px);
+    }
+
+    .upload-action-btn {
+      width: 100%;
+      max-width: 520px;
+      border: none;
+      cursor: pointer;
+    }
+
+    #status {
+      margin-top: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      width: 100%;
+      max-width: 520px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="page bot-page">
+    <section class="content bot-content" aria-label="Uploader Page">
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"></button>
+
+      <img
+        id="profileImage"
+        class="profile-img"
+        alt="CraXID Profile"
+        loading="lazy"
+      />
+
+      <h1 class="page-title">GDrive Uploader</h1>
+
+      <p class="page-subtitle">
+        Pilih atau seret file ke area di bawah ini. File akan diunggah ke Google Drive dan dihapus otomatis dalam 24 jam.
+      </p>
+
+      <div class="bot-actions">
+        <div class="file-input-wrapper">
+          <input type="file" id="file" required>
+          <div class="file-input-label liquid-glass" id="fileLabel">
+            <i class="fa-solid fa-cloud-arrow-up icon-upload"></i>
+            <span style="font-weight: 500;">Ketuk untuk memilih file</span>
+          </div>
+        </div>
+
+        <button id="uploadBtn" class="primary-btn liquid-glass upload-action-btn" onclick="processUpload()">
+          <i class="fa-solid fa-upload"></i>
+          <span>Upload ke Drive</span>
+        </button>
+
+        <div id="status"></div>
+
+        <a href="../" class="back-link" style="margin-top: 10px;">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Kembali ke Home</span>
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> <span id="footerName"></span>. All rights reserved.
+    </footer>
+  </main>
+
+  <script src="../config.js"></script>
+  <script src="../script.js"></script>
+
+  <script>
+    const fileInput = document.getElementById('file');
+    const fileLabel = document.getElementById('fileLabel');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const statusDiv = document.getElementById('status');
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        fileLabel.innerHTML = `<i class="fa-solid fa-file-circle-check icon-upload"></i><span style="font-weight: 600; color: var(--text);">${fileName}</span>`;
+        fileLabel.style.borderColor = 'var(--accent)';
+        fileLabel.style.background = 'var(--glass-strong)';
+      } else {
+        fileLabel.innerHTML = `<i class="fa-solid fa-cloud-arrow-up icon-upload"></i><span style="font-weight: 500;">Ketuk untuk memilih file</span>`;
+        fileLabel.style.borderColor = 'color-mix(in srgb, var(--accent) 50%, transparent)';
+        fileLabel.style.background = 'transparent';
+      }
+    });
+
+    async function processUpload() {
+      if (fileInput.files.length === 0) {
+        statusDiv.innerHTML = '<span style="color: #ff5252;"><i class="fa-solid fa-triangle-exclamation"></i> Pilih file terlebih dahulu!</span>';
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      uploadBtn.disabled = true;
+      uploadBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>Mengunggah...</span>';
+      statusDiv.innerHTML = '<span style="color: var(--muted);">Menyiapkan data file...</span>';
+
+      reader.onload = async function(e) {
+        const base64Data = e.target.result;
+        const fileName = file.name;
+
+        const payload = JSON.stringify({ base64Data, fileName });
+
+        try {
+          // URL Google Apps Script Anda
+          const gasUrl = 'https://script.google.com/macros/s/AKfycbw3XENLYI_ZYGCDcCBXtugMYLeNl4z3lr6J2XNTsM7R3vw11fjyhmaId-OwSlTLb-pi/exec';
+
+          const response = await fetch(gasUrl, {
+            method: 'POST',
+            body: payload,
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+          });
+
+          const result = await response.json();
+          uploadBtn.disabled = false;
+
+          if (result.status === 'success') {
+            uploadBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i><span>Upload File Lain</span>';
+            statusDiv.innerHTML = `
+              <div style="color: var(--accent); margin-bottom: 12px; font-weight: 600;">
+                <i class="fa-solid fa-circle-check"></i> Berhasil Diunggah!
+              </div>
+              <a href="${result.directUrl}" class="primary-btn liquid-glass upload-action-btn" target="_blank" style="text-decoration: none;">
+                <i class="fa-solid fa-download"></i><span>Unduh File (Direct)</span>
+              </a>
+            `;
+            fileInput.value = '';
+          } else {
+            throw new Error(result.message);
+          }
+        } catch (error) {
+          uploadBtn.disabled = false;
+          uploadBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i><span>Coba Lagi</span>';
+          statusDiv.innerHTML = `<span style="color: #ff5252;"><i class="fa-solid fa-circle-xmark"></i> Gagal: ${error.message}</span>`;
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>
