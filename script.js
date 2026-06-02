@@ -479,7 +479,7 @@ if (uploaderInput && uploaderLabel && uploaderBtn && uploaderStatus) {
             <div style="color: var(--accent); margin-bottom: 12px; font-weight: 600;">
               <i class="fa-solid fa-circle-check"></i> Berhasil Diunggah!
             </div>
-            <a href="${result.directUrl}" class="global-btn primary-btn liquid-glass upload-action-btn" target="_blank" style="text-decoration: none;">
+            <a href="${result.url}" class="global-btn primary-btn liquid-glass upload-action-btn" target="_blank" style="text-decoration: none;">
               <i class="fa-solid fa-download"></i><span>Unduh File (Direct)</span>
             </a>
           `;
