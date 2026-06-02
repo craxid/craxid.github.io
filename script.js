@@ -413,3 +413,87 @@ if ("serviceWorker" in navigator) {
       });
   });
 }
+
+/* =========================
+   GDRIVE UPLOADER LOGIC
+========================= */
+const uploaderInput = document.getElementById('file');
+const uploaderLabel = document.getElementById('fileLabel');
+const uploaderBtn = document.getElementById('uploadBtn');
+const uploaderStatus = document.getElementById('status');
+
+// Cek apakah user sedang berada di halaman uploader
+if (uploaderInput && uploaderLabel && uploaderBtn && uploaderStatus) {
+  
+  // 1. Animasi saat file dipilih
+  uploaderInput.addEventListener('change', () => {
+    if (uploaderInput.files.length > 0) {
+      const fileName = uploaderInput.files[0].name;
+      uploaderLabel.innerHTML = `<i class="fa-solid fa-file-circle-check icon-upload"></i><span style="font-weight: 600; color: var(--text);">${fileName}</span>`;
+      uploaderLabel.style.borderColor = 'var(--accent)';
+      uploaderLabel.style.background = 'var(--glass-strong)';
+    } else {
+      uploaderLabel.innerHTML = `<i class="fa-solid fa-cloud-arrow-up icon-upload"></i><span style="font-weight: 500;">Ketuk untuk memilih file</span>`;
+      uploaderLabel.style.borderColor = 'color-mix(in srgb, var(--accent) 50%, transparent)';
+      uploaderLabel.style.background = 'transparent';
+    }
+  });
+
+  // 2. Eksekusi API GAS saat tombol diklik
+  uploaderBtn.addEventListener('click', async () => {
+    if (uploaderInput.files.length === 0) {
+      uploaderStatus.innerHTML = '<span style="color: #ff5252;"><i class="fa-solid fa-triangle-exclamation"></i> Pilih file terlebih dahulu!</span>';
+      return;
+    }
+
+    const file = uploaderInput.files[0];
+    const reader = new FileReader();
+
+    uploaderBtn.disabled = true;
+    uploaderBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>Mengunggah...</span>';
+    uploaderStatus.innerHTML = '<span style="color: var(--muted);">Menyiapkan data file...</span>';
+
+    reader.onload = async function(e) {
+      const base64Data = e.target.result;
+      const fileName = file.name;
+      const payload = JSON.stringify({ base64Data, fileName });
+
+      try {
+        // Pastikan ini adalah URL GAS Anda yang terbaru
+        const gasUrl = 'https://script.google.com/macros/s/AKfycbw3XENLYI_ZYGCDcCBXtugMYLeNl4z3lr6J2XNTsM7R3vw11fjyhmaId-OwSlTLb-pi/exec';
+
+        const response = await fetch(gasUrl, {
+          method: 'POST',
+          body: payload,
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+        });
+
+        const result = await response.json();
+        uploaderBtn.disabled = false;
+
+        if (result.status === 'success') {
+          uploaderBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i><span>Upload File Lain</span>';
+          
+          // Ini dia bagian directUrl yang dicari, lengkap dengan class tombol membulat (global-btn)
+          uploaderStatus.innerHTML = `
+            <div style="color: var(--accent); margin-bottom: 12px; font-weight: 600;">
+              <i class="fa-solid fa-circle-check"></i> Berhasil Diunggah!
+            </div>
+            <a href="${result.directUrl}" class="global-btn primary-btn liquid-glass upload-action-btn" target="_blank" style="text-decoration: none;">
+              <i class="fa-solid fa-download"></i><span>Unduh File (Direct)</span>
+            </a>
+          `;
+          uploaderInput.value = '';
+        } else {
+          throw new Error(result.message);
+        }
+      } catch (error) {
+        uploaderBtn.disabled = false;
+        uploaderBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i><span>Coba Lagi</span>';
+        uploaderStatus.innerHTML = `<span style="color: #ff5252;"><i class="fa-solid fa-circle-xmark"></i> Gagal: ${error.message}</span>`;
+      }
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
