@@ -257,6 +257,83 @@ if (themeToggle) {
 }
 
 /* =========================
+   DARK STARFIELD
+========================= */
+
+const starfield = document.getElementById("starfield");
+
+if (starfield) {
+  const context = starfield.getContext("2d");
+  const stars = [];
+  let animationFrame;
+  let lastTime = 0;
+  let width = 0;
+  let height = 0;
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function resizeStarfield() {
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    starfield.width = width * pixelRatio;
+    starfield.height = height * pixelRatio;
+    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+    const count = Math.min(180, Math.max(70, Math.floor((width * height) / 9000)));
+    stars.length = 0;
+
+    for (let index = 0; index < count; index += 1) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.4 + 0.25,
+        speedX: (Math.random() - 0.5) * 13,
+        speedY: (Math.random() - 0.5) * 13,
+        opacity: Math.random() * 0.65 + 0.25,
+      });
+    }
+  }
+
+  function drawStarfield(time = 0) {
+    const delta = Math.min((time - lastTime) / 1000, 0.05) || 0;
+    lastTime = time;
+    context.clearRect(0, 0, width, height);
+
+    stars.forEach((star) => {
+      if (!prefersReducedMotion.matches) {
+        star.x = (star.x + star.speedX * delta + width) % width;
+        star.y = (star.y + star.speedY * delta + height) % height;
+      }
+
+      context.beginPath();
+      context.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+      context.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      context.fill();
+    });
+
+    if (!prefersReducedMotion.matches && body.classList.contains("dark")) {
+      animationFrame = window.requestAnimationFrame(drawStarfield);
+    }
+  }
+
+  function updateStarfield() {
+    window.cancelAnimationFrame(animationFrame);
+    context.clearRect(0, 0, width, height);
+
+    if (body.classList.contains("dark")) {
+      drawStarfield();
+    }
+  }
+
+  resizeStarfield();
+  updateStarfield();
+  window.addEventListener("resize", resizeStarfield);
+  window.addEventListener("resize", updateStarfield);
+  themeToggle?.addEventListener("click", updateStarfield);
+  prefersReducedMotion.addEventListener?.("change", updateStarfield);
+}
+
+/* =========================
    TECH STACK ICONS
 ========================= */
 
