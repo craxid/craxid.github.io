@@ -63,6 +63,7 @@ const CONFIG = {
     "Bot Development",
     "Node.js",
     "React",
-    "HTML",
+    "PHP",
+    "Laravel"
   ],
 };

@@ -271,6 +271,8 @@ const icons = {
   React: "fa-brands fa-react",
   HTML: "fa-brands fa-html5",
   Vercel: "fa-solid fa-triangle-exclamation",
+  PHP: "fa-brands fa-php",
+  Laravel: "fa-brands fa-laravel",
 };
 
 /* =========================
