@@ -13,6 +13,8 @@
 }
 
 body.dark {
+  --accent: #52b788;
+
   --bg: #000000;
   --text: #ffffff;
   --muted: #a1a1aa;
