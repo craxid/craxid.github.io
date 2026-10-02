@@ -131,6 +131,17 @@ body.dark .liquid-glass {
     0 0 12px color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
+/* Tombol utama tetap hijau di dark mode (kalahkan .liquid-glass) */
+body.dark .whatsapp-btn,
+body.dark .primary-btn {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 84%, white),
+      color-mix(in srgb, var(--accent) 92%, black)
+    );
+}
+
 .liquid-glass::before {
   content: "";
   position: absolute;
