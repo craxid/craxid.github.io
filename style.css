@@ -10,6 +10,9 @@
   --glass-bg: rgba(255, 255, 255, 0.16);
   --glass-strong: rgba(255, 255, 255, 0.24);
   --glass-shadow: rgba(17, 24, 39, 0.08);
+
+  --code-bg: rgba(45, 106, 79, 0.08);
+  --code-text: #1b4332;
 }
 
 body.dark {
@@ -24,6 +27,9 @@ body.dark {
   --glass-bg: rgba(255, 255, 255, 0.06);
   --glass-strong: rgba(255, 255, 255, 0.1);
   --glass-shadow: rgba(0, 0, 0, 0.3);
+
+  --code-bg: rgba(0, 0, 0, 0.35);
+  --code-text: #d4f5e3;
 }
 
 * {
@@ -857,8 +863,9 @@ footer {
   overflow: auto;
   padding: 16px;
   border-radius: 14px;
-  background: rgba(0, 0, 0, 0.35);
-  color: #d4f5e3;
+  box-sizing: border-box;
+  background: var(--code-bg);
+  color: var(--code-text);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 12px;
   line-height: 1.6;
