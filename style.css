@@ -74,7 +74,7 @@ img {
   margin: auto;
   padding: 44px 18px;
   
-  /* Flexbox agar footer selalu terdorong ke bawah */
+  /* Flexbox kolom agar urutan konten -> footer rapi */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -83,7 +83,6 @@ img {
 .content {
   position: relative;
   text-align: center;
-  flex: 1; /* Membuat area konten mengisi sisa ruang layar */
 }
 
 /* =========================
@@ -538,7 +537,7 @@ h1 {
 ========================= */
 footer {
   text-align: center;
-  margin-top: auto; /* Memaksa footer untuk turun ke bawah */
+  margin-top: 48px; /* Jarak tetap dari konten, konsisten di semua halaman */
   padding: 30px 0 10px; /* Memberi ruang napas yang cukup */
   color: var(--muted);
   font-size: 14px;
