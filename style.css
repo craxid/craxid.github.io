@@ -672,7 +672,8 @@ footer {
 }
 
 /* Tambahan styling untuk pesan status JS */
-#status {
+#status,
+#propStatus {
   margin-top: 15px;
   font-size: 14px;
   line-height: 1.6;
@@ -683,11 +684,70 @@ footer {
   border-radius: 12px;
   font-weight: 500;
   transition: all 0.3s ease;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Sembunyikan saat kosong agar tidak makan ruang vertikal */
-#status:empty {
+#status:empty,
+#propStatus:empty {
   display: none;
+}
+
+/* =========================
+   FORM
+   Dipakai di halaman /props/
+========================= */
+
+.prop-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.form-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  background: var(--glass-bg);
+  color: var(--text);
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.prop-form .global-btn {
+  margin-top: 8px;
+}
+
+.prop-form .back-link {
+  align-self: center;
 }
 
 .status-success {

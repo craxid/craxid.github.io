@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Build.prop Generator - CraXID Project</title>
+
+  <meta name="description" content="Build.prop Generator CraXID Project. Buat modul Magisk build.prop custom untuk perangkat Android." />
+  <meta name="keywords" content="CraXID build.prop, build.prop generator, magisk module, android custom props" />
+  <meta name="author" content="CraXID Project" />
+  <meta name="theme-color" content="#2d6a4f" />
+
+  <link rel="canonical" href="/props/" />
+  <link rel="icon" href="https://github.com/craxid.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Build.prop Generator - CraXID Project" />
+  <meta property="og:description" content="Generate modul Magisk build.prop custom untuk Android." />
+  <meta property="og:image" content="https://github.com/craxid.png" />
+  <meta property="og:url" content="/props/" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Build.prop Generator - CraXID Project" />
+  <meta name="twitter:description" content="Generate modul Magisk build.prop custom untuk Android." />
+  <meta name="twitter:image" content="https://github.com/craxid.png" />
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="manifest" href="../manifest.webmanifest" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="CraXID" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="https://github.com/craxid.png" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+</head>
+<body>
+  <main class="page bot-page">
+    <section class="content bot-content" aria-label="Build.prop Generator">
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"></button>
+
+      <img id="profileImage" class="profile-img" alt="CraXID Profile" loading="lazy" />
+
+      <h1 class="page-title">Build.prop Generator</h1>
+
+      <p class="page-subtitle">
+        Isi detail perangkat di bawah ini untuk generate modul Magisk berisi build.prop custom.
+      </p>
+
+      <form id="propForm" class="prop-form">
+        <div class="form-group">
+          <label for="namaBrand">Nama Brand</label>
+          <input type="text" id="namaBrand" class="form-input" autocomplete="off" required />
+        </div>
+
+        <div class="form-group">
+          <label for="namaKode">Nama Kode (contoh: mido)</label>
+          <input type="text" id="namaKode" class="form-input" autocomplete="off" required />
+        </div>
+
+        <div class="form-group">
+          <label for="pembuat">Pembuat</label>
+          <input type="text" id="pembuat" class="form-input" autocomplete="off" required />
+        </div>
+
+        <div class="form-group">
+          <label for="model">Model</label>
+          <input type="text" id="model" class="form-input" autocomplete="off" required />
+        </div>
+
+        <div class="form-group">
+          <label for="versiAndroid">Versi Android (contoh: 12)</label>
+          <input type="number" id="versiAndroid" class="form-input" min="1" required />
+        </div>
+
+        <div class="form-group">
+          <label for="versiSDK">Versi SDK (contoh: 31)</label>
+          <input type="number" id="versiSDK" class="form-input" min="1" required />
+        </div>
+
+        <button type="submit" class="global-btn primary-btn liquid-glass">
+          <i class="fa-solid fa-file-zipper"></i>
+          <span>Generate build.prop ZIP</span>
+        </button>
+
+        <div id="propStatus"></div>
+
+        <a href="../" class="back-link">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Kembali ke Home</span>
+        </a>
+      </form>
+    </section>
+
+    <footer>
+      © <span id="year"></span> <span id="footerName"></span>. All rights reserved.
+    </footer>
+  </main>
+
+  <script src="../config.js"></script>
+  <script src="../script.js"></script>
+</body>
+</html>
