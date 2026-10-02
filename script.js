@@ -262,17 +262,34 @@ if (themeToggle) {
 
 const icons = {
   JavaScript: "fa-brands fa-js",
+  TypeScript: "fa-solid fa-code",
+  Python: "fa-brands fa-python",
+  Java: "fa-brands fa-java",
+  PHP: "fa-brands fa-php",
+  Ruby: "fa-solid fa-gem",
+  Go: "fa-solid fa-code",
+  Rust: "fa-solid fa-gears",
+  "C#": "fa-solid fa-code",
+  "C++": "fa-solid fa-code",
+  C: "fa-solid fa-code",
+  Kotlin: "fa-solid fa-code",
+  Swift: "fa-brands fa-swift",
+  Dart: "fa-solid fa-code",
+  Lua: "fa-solid fa-moon",
+  Shell: "fa-solid fa-terminal",
+  Dockerfile: "fa-brands fa-docker",
+  HTML: "fa-brands fa-html5",
   CSS: "fa-brands fa-css3-alt",
+  Vue: "fa-brands fa-vuejs",
+  React: "fa-brands fa-react",
+  Angular: "fa-brands fa-angular",
+  "Node.js": "fa-brands fa-node-js",
+  Laravel: "fa-brands fa-laravel",
   "REST API": "fa-solid fa-cloud",
   GitHub: "fa-brands fa-github",
-  "Node.js": "fa-brands fa-node-js",
   "Bot Development": "fa-solid fa-robot",
   Render: "fa-solid fa-cube",
-  React: "fa-brands fa-react",
-  HTML: "fa-brands fa-html5",
   Vercel: "fa-solid fa-triangle-exclamation",
-  PHP: "fa-brands fa-php",
-  Laravel: "fa-brands fa-laravel",
 };
 
 /* =========================
@@ -378,7 +395,7 @@ async function loadProjects() {
               </span>
 
               <span>
-                <i class="fa-solid fa-code"></i>
+                <i class="${icons[repo.language] || "fa-solid fa-code"}"></i>
                 ${repo.language || "Unknown"}
               </span>
             </div>
