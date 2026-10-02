@@ -761,3 +761,113 @@ footer {
   color: #ef4444;
   border: 1px solid rgba(239, 68, 68, 0.2);
 }
+
+/* Tombol aksi form /props/ (pratinjau + generate) */
+.prop-form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.prop-form-actions .global-btn {
+  flex: 1;
+  margin-top: 0;
+  padding: 14px 18px;
+  font-size: 15px;
+}
+
+/* Panel pratinjau hasil generate */
+.prop-preview {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 18px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.prop-preview[hidden] {
+  display: none;
+}
+
+.prop-preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.prop-preview-head h3 {
+  margin: 0;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+}
+
+.prop-preview-close {
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 10px;
+  opacity: 0.7;
+}
+
+.prop-preview-close:hover {
+  opacity: 1;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.prop-preview-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.prop-preview-tab {
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0.65;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+.prop-preview-tab.active {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  border-color: var(--accent);
+  opacity: 1;
+}
+
+.prop-preview-content {
+  margin: 0;
+  max-height: 380px;
+  overflow: auto;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #d4f5e3;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre;
+  text-align: left;
+}
+
+@media (max-width: 480px) {
+  .prop-form-actions {
+    flex-direction: column;
+  }
+}

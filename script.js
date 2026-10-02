@@ -730,51 +730,46 @@ const propStatus = document.getElementById("propStatus");
 
 // Cek apakah user sedang berada di halaman generator
 if (propForm) {
-  if (typeof JSZip === "undefined") {
-    if (propStatus) {
-      propStatus.textContent = "Gagal memuat library JSZip.";
-    }
-  } else {
-    propForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
+  // Kumpulkan data form + tanggal dinamis mengikuti waktu generate
+  const collectPropData = () => {
+    // Format UTC ala `date`: "Fri Sep  1 12:20:23 UTC 2023"
+    const now = new Date();
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const monthNames = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ];
+    const pad2 = (n) => String(n).padStart(2, "0");
+    const buildDate =
+      `${dayNames[now.getUTCDay()]} ${monthNames[now.getUTCMonth()]} ` +
+      `${String(now.getUTCDate()).padStart(2, " ")} ` +
+      `${pad2(now.getUTCHours())}:${pad2(now.getUTCMinutes())}:${pad2(now.getUTCSeconds())} ` +
+      `UTC ${now.getUTCFullYear()}`;
 
-      // Tanggal dinamis mengikuti waktu generate (format UTC ala `date`)
-      const now = new Date();
-      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-      const monthNames = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-      ];
-      const pad2 = (n) => String(n).padStart(2, "0");
-      const buildDate =
-        `${dayNames[now.getUTCDay()]} ${monthNames[now.getUTCMonth()]} ` +
-        `${String(now.getUTCDate()).padStart(2, " ")} ` +
-        `${pad2(now.getUTCHours())}:${pad2(now.getUTCMinutes())}:${pad2(now.getUTCSeconds())} ` +
-        `UTC ${now.getUTCFullYear()}`;
-      const buildDateUtc = String(Math.floor(now.getTime() / 1000));
-      const securityPatch = `${now.getUTCFullYear()}-${pad2(now.getUTCMonth() + 1)}-01`;
+    return {
+      namaBrand: document.getElementById("namaBrand").value.trim(),
+      namaKode: document.getElementById("namaKode").value.trim(),
+      pembuat: document.getElementById("pembuat").value.trim(),
+      model: document.getElementById("model").value.trim(),
+      versiAndroid: document.getElementById("versiAndroid").value.trim(),
+      versiSDK: document.getElementById("versiSDK").value.trim(),
+      buildDate,
+      buildDateUtc: String(Math.floor(now.getTime() / 1000)),
+      securityPatch: `${now.getUTCFullYear()}-${pad2(now.getUTCMonth() + 1)}-01`,
+    };
+  };
 
-      const data = {
-        namaBrand: document.getElementById("namaBrand").value.trim(),
-        namaKode: document.getElementById("namaKode").value.trim(),
-        pembuat: document.getElementById("pembuat").value.trim(),
-        model: document.getElementById("model").value.trim(),
-        versiAndroid: document.getElementById("versiAndroid").value.trim(),
-        versiSDK: document.getElementById("versiSDK").value.trim(),
-        buildDate,
-        buildDateUtc,
-        securityPatch,
-      };
+  // Bangun isi file-file modul dari data form
+  const buildPropFiles = (data) => {
+    let systemProp = buildPropTemplate;
+    Object.keys(data).forEach((key) => {
+      systemProp = systemProp.replace(
+        new RegExp(`\\{${key}\\}`, "g"),
+        data[key]
+      );
+    });
 
-      let systemProp = buildPropTemplate;
-      Object.keys(data).forEach((key) => {
-        systemProp = systemProp.replace(
-          new RegExp(`\\{${key}\\}`, "g"),
-          data[key]
-        );
-      });
-
-      const moduleProp = `
+    const moduleProp = `
 id=build.prop ${data.namaKode}
 name=Custom build.prop ${data.namaKode} by CraXID Project
 version=1.0.0
@@ -784,9 +779,23 @@ description=Auto-generated Magisk/APatch/KernelSU/SukiSU module to override buil
 minMagisk=2318
 `.trim();
 
-      const serviceSh = `#!/system/bin/sh
+    const serviceSh = `#!/system/bin/sh
 # Magisk will auto-apply system.prop
 `.trim();
+
+    return { systemProp, moduleProp, serviceSh };
+  };
+
+  if (typeof JSZip === "undefined") {
+    if (propStatus) {
+      propStatus.textContent = "Gagal memuat library JSZip.";
+    }
+  } else {
+    propForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const data = collectPropData();
+      const files = buildPropFiles(data);
 
       try {
         if (propStatus) {
@@ -794,9 +803,9 @@ minMagisk=2318
         }
 
         const zip = new JSZip();
-        zip.file("system.prop", systemProp);
-        zip.file("module.prop", moduleProp);
-        zip.file("service.sh", serviceSh);
+        zip.file("system.prop", files.systemProp);
+        zip.file("module.prop", files.moduleProp);
+        zip.file("service.sh", files.serviceSh);
 
         const blob = await zip.generateAsync({ type: "blob" });
         const url = URL.createObjectURL(blob);
@@ -817,6 +826,50 @@ minMagisk=2318
           propStatus.textContent = "Gagal membuat ZIP: " + error.message;
         }
       }
+    });
+
+    // ===== Pratinjau hasil generate =====
+    const propPreviewBtn = document.getElementById("propPreviewBtn");
+    const propPreview = document.getElementById("propPreview");
+    const propPreviewContent = document.getElementById("propPreviewContent");
+    const propPreviewClose = document.getElementById("propPreviewClose");
+    const propPreviewTabs = document.querySelectorAll(".prop-preview-tab");
+    let previewFiles = null;
+
+    const showPreviewFile = (which) => {
+      if (!previewFiles || !propPreviewContent) return;
+      propPreviewContent.textContent =
+        which === "module" ? previewFiles.moduleProp : previewFiles.systemProp;
+    };
+
+    if (propPreviewBtn && propPreview && propPreviewContent) {
+      propPreviewBtn.addEventListener("click", () => {
+        // Validasi form dulu, sama seperti saat submit
+        if (!propForm.reportValidity()) return;
+
+        previewFiles = buildPropFiles(collectPropData());
+
+        propPreviewTabs.forEach((tab) =>
+          tab.classList.toggle("active", tab.dataset.file === "system")
+        );
+        showPreviewFile("system");
+        propPreview.hidden = false;
+        propPreview.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+    }
+
+    if (propPreviewClose && propPreview) {
+      propPreviewClose.addEventListener("click", () => {
+        propPreview.hidden = true;
+      });
+    }
+
+    propPreviewTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        propPreviewTabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        showPreviewFile(tab.dataset.file);
+      });
     });
   }
 }

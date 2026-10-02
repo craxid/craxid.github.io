@@ -82,10 +82,31 @@
           <input type="number" id="versiSDK" class="form-input" min="1" required />
         </div>
 
-        <button type="submit" class="global-btn primary-btn liquid-glass">
-          <i class="fa-solid fa-file-zipper"></i>
-          <span>Generate build.prop ZIP</span>
-        </button>
+        <div class="prop-form-actions">
+          <button type="button" id="propPreviewBtn" class="global-btn secondary-btn liquid-glass">
+            <i class="fa-solid fa-eye"></i>
+            <span>Pratinjau</span>
+          </button>
+
+          <button type="submit" class="global-btn primary-btn liquid-glass">
+            <i class="fa-solid fa-file-zipper"></i>
+            <span>Generate build.prop ZIP</span>
+          </button>
+        </div>
+
+        <div id="propPreview" class="prop-preview" hidden>
+          <div class="prop-preview-head">
+            <h3><i class="fa-solid fa-eye"></i> Pratinjau</h3>
+            <button type="button" id="propPreviewClose" class="prop-preview-close" aria-label="Tutup pratinjau">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="prop-preview-tabs" role="tablist">
+            <button type="button" class="prop-preview-tab active" data-file="system">system.prop</button>
+            <button type="button" class="prop-preview-tab" data-file="module">module.prop</button>
+          </div>
+          <pre id="propPreviewContent" class="prop-preview-content"></pre>
+        </div>
 
         <div id="propStatus"></div>
 
