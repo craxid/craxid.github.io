@@ -1,4 +1,4 @@
-const CACHE_NAME = "craxid-project-v1";
+const CACHE_NAME = "craxid-project-v2";
 
 const STATIC_ASSETS = [
   "/",
@@ -44,19 +44,29 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  const url = new URL(request.url);
+
+  // API GitHub: selalu ambil fresh, jangan pernah baca/tulis cache.
+  // Respons gagal (mis. rate limit) yang ter-cache bikin daftar
+  // project "nempel" rusak walau koneksi sudah pulih.
+  const isLiveApi = url.hostname === "api.github.com";
+
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
-      if (cachedResponse) {
+      if (cachedResponse && !isLiveApi) {
         return cachedResponse;
       }
 
       return fetch(request)
         .then((networkResponse) => {
-          const responseClone = networkResponse.clone();
+          // Hanya cache respons yang sukses, dan bukan API live
+          if (networkResponse.ok && !isLiveApi) {
+            const responseClone = networkResponse.clone();
 
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(request, responseClone);
-          });
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
 
           return networkResponse;
         })
