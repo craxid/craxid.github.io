@@ -493,6 +493,7 @@ h1 {
   font-weight: 700;
   font-size: 17px;
   line-height: 1;
+  margin-top: 20px;
 }
 
 .back-link:hover {
@@ -682,6 +683,11 @@ footer {
   border-radius: 12px;
   font-weight: 500;
   transition: all 0.3s ease;
+}
+
+/* Sembunyikan saat kosong agar tidak makan ruang vertikal */
+#status:empty {
+  display: none;
 }
 
 .status-success {
