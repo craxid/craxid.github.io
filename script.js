@@ -534,8 +534,8 @@ ro.product.product.device={namaKode}
 ro.product.product.manufacturer={pembuat}
 ro.product.product.model={model}
 ro.product.product.name={namaKode}
-ro.product.build.date=Fri Sep  1 12:20:23 UTC 2023
-ro.product.build.date.utc=1693570823
+ro.product.build.date={buildDate}
+ro.product.build.date.utc={buildDateUtc}
 ro.product.build.fingerprint={namaBrand}/{namaKode}/{namaKode}:{versiAndroid}/TQ3A.230901.001/10750268:user/release-keys
 ro.product.build.id=TQ3A.230901.001
 ro.product.build.tags=release-keys
@@ -574,8 +574,8 @@ ro.product.vendor.device={namaKode}
 ro.product.vendor.manufacturer={pembuat}
 ro.product.vendor.model={model}
 ro.product.vendor.name={namaKode}
-ro.vendor.build.date=Fri Sep  1 12:20:23 UTC 2023
-ro.vendor.build.date.utc=1693570823
+ro.vendor.build.date={buildDate}
+ro.vendor.build.date.utc={buildDateUtc}
 ro.vendor.build.fingerprint={namaBrand}/{namaKode}/{namaKode}:{versiAndroid}/TQ3A.230901.001/10750268:user/release-keys
 ro.vendor.build.id=TQ3A.230901.001
 ro.vendor.build.tags=release-keys
@@ -587,12 +587,12 @@ ro.vendor.build.version.sdk={versiSDK}
 # end common build properties
 
 # begin ADDITIONAL_VENDOR_PROPERTIES
-ro.vendor.build.security_patch=2023-09-01
+ro.vendor.build.security_patch={securityPatch}
 # end ADDITIONAL_VENDOR_PROPERTIES
 
 # begin BOOTIMAGE_build_prop to_system_propERTIES
-ro.bootimage.build.date=Fri Sep  1 12:20:23 UTC 2023
-ro.bootimage.build.date.utc=1693570823
+ro.bootimage.build.date={buildDate}
+ro.bootimage.build.date.utc={buildDateUtc}
 ro.bootimage.build.fingerprint={namaBrand}/{namaKode}/{namaKode}:{versiAndroid}/TQ3A.230901.001/10750268:user/release-keys
 # end BOOTIMAGE_build_prop to_system_propERTIES
 
@@ -619,8 +619,8 @@ ro.product.odm.device={namaKode}
 ro.product.odm.manufacturer={pembuat}
 ro.product.odm.model={model}
 ro.product.odm.name={namaKode}
-ro.odm.build.date=Fri Sep  1 12:20:23 UTC 2023
-ro.odm.build.date.utc=1693570823
+ro.odm.build.date={buildDate}
+ro.odm.build.date.utc={buildDateUtc}
 ro.odm.build.fingerprint={namaBrand}/{namaKode}/{namaKode}:{versiAndroid}/TQ3A.230901.001/10750268:user/release-keys
 ro.odm.build.id=TQ3A.230901.001
 ro.odm.build.tags=release-keys
@@ -649,8 +649,8 @@ ro.product.system.device={namaKode}
 ro.product.system.manufacturer={pembuat}
 ro.product.system.model={model}
 ro.product.system.name={namaKode}
-ro.system.build.date=Fri Sep  1 12:20:23 UTC 2023
-ro.system.build.date.utc=1693570823
+ro.system.build.date={buildDate}
+ro.system.build.date.utc={buildDateUtc}
 ro.system.build.fingerprint={namaBrand}/{namaKode}/{namaKode}:{versiAndroid}/TQ3A.230901.001/10750268:user/release-keys
 ro.system.build.id=TQ3A.230901.001
 ro.system.build.tags=release-keys
@@ -668,9 +668,9 @@ ro.build.version.incremental=10750268
 ro.build.version.sdk={versiSDK}
 ro.build.version.release={versiAndroid}
 ro.build.version.release_or_codename={versiAndroid}
-ro.build.version.security_patch=2023-09-01
-ro.build.date=Fri Sep  1 12:20:23 UTC 2023
-ro.build.date.utc=1693570823
+ro.build.version.security_patch={securityPatch}
+ro.build.date={buildDate}
+ro.build.date.utc={buildDateUtc}
 ro.build.type=user
 ro.build.user=android-build
 ro.build.host=Maki.TQ3A.230901.001
@@ -707,8 +707,8 @@ ro.product.system_ext.device={namaKode}
 ro.product.system_ext.manufacturer={pembuat}
 ro.product.system_ext.model={model}
 ro.product.system_ext.name={namaKode}
-ro.system_ext.build.date=Fri Sep  1 12:20:23 UTC 2023
-ro.system_ext.build.date.utc=1693570823
+ro.system_ext.build.date={buildDate}
+ro.system_ext.build.date.utc={buildDateUtc}
 ro.system_ext.build.fingerprint={namaBrand}/{namaKode}/{namaKode}:{versiAndroid}/TQ3A.230901.001/10750268:user/release-keys
 ro.system_ext.build.id=TQ3A.230901.001
 ro.system_ext.build.tags=release-keys
@@ -738,6 +738,22 @@ if (propForm) {
     propForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
+      // Tanggal dinamis mengikuti waktu generate (format UTC ala `date`)
+      const now = new Date();
+      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const monthNames = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+      ];
+      const pad2 = (n) => String(n).padStart(2, "0");
+      const buildDate =
+        `${dayNames[now.getUTCDay()]} ${monthNames[now.getUTCMonth()]} ` +
+        `${String(now.getUTCDate()).padStart(2, " ")} ` +
+        `${pad2(now.getUTCHours())}:${pad2(now.getUTCMinutes())}:${pad2(now.getUTCSeconds())} ` +
+        `UTC ${now.getUTCFullYear()}`;
+      const buildDateUtc = String(Math.floor(now.getTime() / 1000));
+      const securityPatch = `${now.getUTCFullYear()}-${pad2(now.getUTCMonth() + 1)}-01`;
+
       const data = {
         namaBrand: document.getElementById("namaBrand").value.trim(),
         namaKode: document.getElementById("namaKode").value.trim(),
@@ -745,6 +761,9 @@ if (propForm) {
         model: document.getElementById("model").value.trim(),
         versiAndroid: document.getElementById("versiAndroid").value.trim(),
         versiSDK: document.getElementById("versiSDK").value.trim(),
+        buildDate,
+        buildDateUtc,
+        securityPatch,
       };
 
       let systemProp = buildPropTemplate;
