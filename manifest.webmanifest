@@ -7,7 +7,7 @@
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#eef2ff",
-  "theme_color": "#7c5cff",
+  "theme_color": "#2d6a4f",
   "categories": ["portfolio", "developer", "technology"],
   "icons": [
     {
