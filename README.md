@@ -1,1 +1,61 @@
-IyBDcmFYSUQgUHJvamVjdCDigJQgV2Vic2l0ZSBQcmliYWRpCgpXZWJzaXRlIHByaWJhZGkgQ3JhWElEIHlhbmcgZGktaG9zdCB2aWEgR2l0SHViIFBhZ2VzLiBJc2lueWEgYnVrYW4gY3VtYSBoYWxhbWFuIGxpbmstaW4tYmlvIOKAlCBhZGEganVnYSB0b29sIEFuZHJvaWQgeWFuZyBiaXNhIGRpcGFrYWkgbGFuZ3N1bmcgZGFyaSBicm93c2VyLgoK8J+MkCAqKkxpdmU6KiogaHR0cHM6Ly9jcmF4aWQuZ2l0aHViLmlvCgojIyBIYWxhbWFuCgotICoqYC9gIOKAlCBIYWxhbWFuIHV0YW1hIChsaW5rLWluLWJpbyk6KiogZm90byBwcm9maWwsIG5hbWEgKyBiYWRnZSB2ZXJpZmllZCwgc3RhdHVzIGN1c3RvbSwgdG9tYm9sIHRhdXRhbiBtZWRpYSBzb3NpYWwgKEdpdEh1YiwgV2hhdHNBcHAsIFlvdVR1YmUsIFgsIEluc3RhZ3JhbSwgRmFjZWJvb2spLCBzdGF0dXMgYmFyIHJlYWwtdGltZSAodGFuZ2dhbCwgamFtLCBiYXRlcmFpKSwgZGFyayBtb2RlLCBkYW4gaW5zdGFsIHNlYmFnYWkgUFdBLgotICoqYC9wcm9wc2Ag4oCUIEdlbmVyYXRvciBidWlsZC5wcm9wICYgTW9kdWwgTWFnaXNrOioqIGJpa2luIGBzeXN0ZW0ucHJvcGAgLyBgbW9kdWxlLnByb3BgIGRhcmkgZm9ybSwgcHJhdGluamF1IGhhc2lsbnlhIHNlYmVsdW0gZ2VuZXJhdGUsIGxhbHUgdW5kdWggc2ViYWdhaSBaSVAgc2lhcCBmbGFzaC4gVGFuZ2dhbCBidWlsZCAoYnVpbGREYXRlLCBidWlsZERhdGVVdGMsIHNlY3VyaXR5UGF0Y2gpIG1lbmdpa3V0aSB3YWt0dSBzYWF0IGdlbmVyYXRlLgotICoqYDQwNC5odG1sYCDigJQgSGFsYW1hbiBlcnJvciBjdXN0b20qKiB5YW5nIGtvbnNpc3RlbiBkZW5nYW4gdGVtYSBzaXR1cy4KCiMjIEZpdHVyCgotIERhcmsgbW9kZSBvdG9tYXRpcyArIHRvZ2dsZSBtYW51YWwKLSBBa3NlbiBoaWphdSBraGFzIChgIzJkNmE0ZmApIHlhbmcga29uc2lzdGVuIGRpIENTUywgbWV0YSwgZGFuIG1hbmlmZXN0Ci0gU2VydmljZSB3b3JrZXI6IG5hdmlnYXNpIG5ldHdvcmstZmlyc3QsIGFzZXQgc3RhbGUtd2hpbGUtcmV2YWxpZGF0ZSwgdGlkYWsgY2FjaGUgcmVzcG9ucyBnYWdhbAotIFN0YXR1cyBiYXIgcmVhbC10aW1lIGRlbmdhbiBpbmZvIGJhdGVyYWkgKGppa2EgZGlkdWt1bmcgYnJvd3NlcikKLSBJa29uIGJhaGFzYSBrYXJ0dSBwcm9qZWN0IG1lbmdpa3V0aSBiYWhhc2EgcmVwbyBHaXRIdWIgc2VjYXJhIGRpbmFtaXMKCiMjIFRla25vbG9naQoKLSAqKkhUTUw1IC8gQ1NTMyAvIEphdmFTY3JpcHQqKiBtdXJuaSAodGFucGEgZnJhbWV3b3JrKQotICoqUFdBOioqIGBtYW5pZmVzdC5qc29uYCArIGBzdy5qc2AgKHNlcnZpY2Ugd29ya2VyKQotICoqRGVwbG95OioqIEdpdEh1YiBQYWdlcyAmIEZpcmViYXNlIEhvc3RpbmcgKHdvcmtmbG93IG90b21hdGlzIGRpIGAuZ2l0aHViL2ApCgojIyBDYXJhIHBha2FpIC8gamFsYW5pbiBsb2thbAoKUmVwbyBpbmkgc2l0dXMgc3RhdGlzLCB0aWRhayBidXR1aCBidWlsZCBzdGVwOgoKMS4gQ2xvbmUgcmVwbzogYGdpdCBjbG9uZSBodHRwczovL2dpdGh1Yi5jb20vY3JheGlkL2NyYXhpZC5naXRodWIuaW8uZ2l0YAoyLiBCdWthIGBpbmRleC5odG1sYCBkaSBicm93c2VyLCBhdGF1IGphbGFua2FuIHNlcnZlciBsb2thbDoKICAgYGBgYmFzaAogICBucHggc2VydmUgLgogICAjIGF0YXUKICAgcHl0aG9uMyAtbSBodHRwLnNlcnZlciA4MDAwCiAgIGBgYAoKIyMgU3RydWt0dXIgc2luZ2thdAoKYGBgCuKUnOKUgOKUgCBpbmRleC5odG1sICAgICAgIyBoYWxhbWFuIHV0YW1hCuKUnOKUgOKUgCBwcm9wcy8gICAgICAgICAgIyBoYWxhbWFuIGdlbmVyYXRvciBidWlsZC5wcm9wICYgTWFnaXNrCuKUnOKUgOKUgCBjb25maWcuanMgICAgICAgIyBrb25maWd1cmFzaSBzaXR1cyAocHJvZmlsLCB0YXV0YW4sIGRzYi4pCuKUnOKUgOKUgCBzY3JpcHQuanMgICAgICAgIyBsb2dpa2EgdXRhbWEgKyBnZW5lcmF0b3IgcHJvcHMK4pSc4pSA4pSAIHN0eWxlLmNzcyAgICAgICAjIHNlbHVydWggc3R5bGluZyAodGVybWFzdWsgZGFyayBtb2RlKQrilJzilIDilIAgc3cuanMgICAgICAgICAgICMgc2VydmljZSB3b3JrZXIK4pSc4pSA4pSAIG1hbmlmZXN0Lmpzb24gICAjIG1hbmlmZXN0IFBXQQrilJzilIDilIAgNDA0Lmh0bWwgICAgICAgICMgaGFsYW1hbiBlcnJvcgrilJTilIDilIAgUVJJUy5wbmcgICAgICAgICMga29kZSBRUklTIGRvbmFzaQpgYGAKCiMjIERvbmFzaQoKS2FsYXUgcHJvamVjdCBpbmkgYmVyZ3VuYSBkYW4ga2FtdSBtYXUgbWVuZHVrdW5nLCBiaXNhIHNjYW4gUVJJUyBkaSBiYXdhaDoKCiFbS29kZSBRUklTIERvbmFzaV0oUVJJUy5wbmcpCgojIyBMaXNlbnNpCgpNSVQgTGljZW5zZSDigJQgYmViYXMgcGFrYWksIHViYWgsIGRhbiBiYWdpa2FuLgo=
+# CraXID Project — Website Pribadi
+
+Website pribadi CraXID yang di-host via GitHub Pages. Isinya bukan cuma halaman link-in-bio — ada juga tool Android yang bisa dipakai langsung dari browser.
+
+🌐 **Live:** https://craxid.github.io
+
+## Halaman
+
+- **`/` — Halaman utama (link-in-bio):** foto profil, nama + badge verified, status custom, tombol tautan media sosial (GitHub, WhatsApp, YouTube, X, Instagram, Facebook), status bar real-time (tanggal, jam, baterai), dark mode, dan instal sebagai PWA.
+- **`/props` — Generator build.prop & Modul Magisk:** bikin `system.prop` / `module.prop` dari form, pratinjau hasilnya sebelum generate, lalu unduh sebagai ZIP siap flash. Tanggal build (buildDate, buildDateUtc, securityPatch) mengikuti waktu saat generate.
+- **`404.html` — Halaman error custom** yang konsisten dengan tema situs.
+
+## Fitur
+
+- Dark mode otomatis + toggle manual
+- Aksen hijau khas (`#2d6a4f`) yang konsisten di CSS, meta, dan manifest
+- Service worker: navigasi network-first, aset stale-while-revalidate, tidak cache respons gagal
+- Status bar real-time dengan info baterai (jika didukung browser)
+- Ikon bahasa kartu project mengikuti bahasa repo GitHub secara dinamis
+
+## Teknologi
+
+- **HTML5 / CSS3 / JavaScript** murni (tanpa framework)
+- **PWA:** `manifest.json` + `sw.js` (service worker)
+- **Deploy:** GitHub Pages & Firebase Hosting (workflow otomatis di `.github/`)
+
+## Cara pakai / jalanin lokal
+
+Repo ini situs statis, tidak butuh build step:
+
+1. Clone repo: `git clone https://github.com/craxid/craxid.github.io.git`
+2. Buka `index.html` di browser, atau jalankan server lokal:
+   ```bash
+   npx serve .
+   # atau
+   python3 -m http.server 8000
+   ```
+
+## Struktur singkat
+
+```
+├── index.html      # halaman utama
+├── props/          # halaman generator build.prop & Magisk
+├── config.js       # konfigurasi situs (profil, tautan, dsb.)
+├── script.js       # logika utama + generator props
+├── style.css       # seluruh styling (termasuk dark mode)
+├── sw.js           # service worker
+├── manifest.json   # manifest PWA
+├── 404.html        # halaman error
+└── QRIS.png        # kode QRIS donasi
+```
+
+## Donasi
+
+Kalau project ini berguna dan kamu mau mendukung, bisa scan QRIS di bawah:
+
+![Kode QRIS Donasi](QRIS.png)
+
+## Lisensi
+
+MIT License — bebas pakai, ubah, dan bagikan.
