@@ -413,11 +413,107 @@ async function loadProjects() {
 }
 
 /* =========================
+   BLOG LIST
+========================= */
+
+function formatBlogDate(dateString) {
+  const date = new Date(dateString + "T00:00:00");
+
+  if (Number.isNaN(date.getTime())) {
+    return dateString;
+  }
+
+  return date.toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+async function loadBlogList() {
+  const container = document.getElementById("blog-list");
+
+  if (!container) {
+    return;
+  }
+
+  try {
+    container.innerHTML = `
+      <p class="description">
+        Memuat daftar tulisan...
+      </p>
+    `;
+
+    const response = await fetch("/content/index.json");
+
+    if (!response.ok) {
+      throw new Error("Gagal mengambil daftar tulisan.");
+    }
+
+    const posts = await response.json();
+
+    const sortedPosts = [...posts].sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
+
+    if (!sortedPosts.length) {
+      container.innerHTML = `
+        <p class="description">
+          Belum ada tulisan.
+        </p>
+      `;
+      return;
+    }
+
+    container.innerHTML = sortedPosts
+      .map(
+        (post) => `
+          <article class="project-card liquid-glass">
+            <a href="/post.html?file=${encodeURIComponent(post.slug)}">
+              ${post.title}
+            </a>
+
+            <p>
+              ${post.description || ""}
+            </p>
+
+            <div class="project-meta">
+              <span>
+                <i class="fa-solid fa-calendar-days"></i>
+                ${formatBlogDate(post.date)}
+              </span>
+
+              ${(post.tags || [])
+                .map(
+                  (tag) => `
+                    <span>
+                      <i class="fa-solid fa-tag"></i>
+                      ${tag}
+                    </span>
+                  `
+                )
+                .join("")}
+            </div>
+          </article>
+        `
+      )
+      .join("");
+  } catch (error) {
+    container.innerHTML = `
+      <p class="description">
+        Daftar tulisan gagal dimuat.
+      </p>
+    `;
+  }
+}
+
+/* =========================
    INIT
 ========================= */
 
 renderTechStack();
 loadProjects();
+loadBlogList();
 
 /* =========================
    PWA SERVICE WORKER

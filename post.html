@@ -13,7 +13,7 @@
 
     <div class="container">
         <nav style="text-align:left; margin-bottom:30px;">
-            <a href="blog.html" style="color:var(--accent); text-decoration:none; font-weight:600;">← Kembali ke Blog</a>
+            <a href="blog/" style="color:var(--accent); text-decoration:none; font-weight:600;">← Kembali ke Blog</a>
         </nav>
 
         <main id="post-body" class="project-card" style="text-align:left; line-height:1.8;">
@@ -25,12 +25,74 @@
 
     <script src="script.js"></script>
     <script>
+        function parseFrontMatter(text) {
+            const meta = {};
+            let body = text;
+
+            const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+
+            if (match) {
+                body = text.slice(match[0].length);
+
+                match[1].split(/\r?\n/).forEach((line) => {
+                    const separator = line.indexOf(":");
+
+                    if (separator === -1) {
+                        return;
+                    }
+
+                    const key = line.slice(0, separator).trim();
+                    let value = line.slice(separator + 1).trim();
+
+                    if (value.startsWith("[") && value.endsWith("]")) {
+                        value = value
+                            .slice(1, -1)
+                            .split(",")
+                            .map((item) => item.trim())
+                            .filter(Boolean);
+                    }
+
+                    if (key) {
+                        meta[key] = value;
+                    }
+                });
+            }
+
+            return { meta, body };
+        }
+
+        function formatPostDate(dateString) {
+            if (!dateString) {
+                return "";
+            }
+
+            const date = new Date(dateString + "T00:00:00");
+
+            if (Number.isNaN(date.getTime())) {
+                return dateString;
+            }
+
+            return date.toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+            });
+        }
+
+        function escapeHtml(text) {
+            return String(text)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;");
+        }
+
         async function loadPost() {
             const params = new URLSearchParams(window.location.search);
             const file = params.get('file');
             const target = document.getElementById('post-body');
 
-            if(!file) {
+            if(!file || !/^[a-z0-9-]+$/i.test(file)) {
                 target.innerHTML = "<h1>Artikel tidak ditemukan.</h1>";
                 return;
             }
@@ -39,8 +101,25 @@
                 const response = await fetch(`content/${file}.md`);
                 if(!response.ok) throw new Error();
                 const text = await response.text();
-                target.innerHTML = marked.parse(text);
-                document.title = file.replace(/-/g, ' ').toUpperCase() + " | Blog";
+                const { meta, body } = parseFrontMatter(text);
+
+                const title = meta.title || file.replace(/-/g, ' ');
+                const date = formatPostDate(meta.date);
+                const tags = Array.isArray(meta.tags) ? meta.tags : [];
+
+                const metaHtml = (date || tags.length) ? `
+                    <div class="post-meta">
+                        ${date ? `<span><i class="fa-solid fa-calendar-days"></i> ${escapeHtml(date)}</span>` : ""}
+                        ${tags.map((tag) => `<span class="post-tag"><i class="fa-solid fa-tag"></i> ${escapeHtml(tag)}</span>`).join("")}
+                    </div>
+                ` : "";
+
+                target.innerHTML = `
+                    <h1 class="post-title">${escapeHtml(title)}</h1>
+                    ${metaHtml}
+                    <div class="post-content">${marked.parse(body)}</div>
+                `;
+                document.title = `${title} | Blog`;
             } catch (e) {
                 target.innerHTML = "<h1>Gagal memuat artikel.</h1>";
             }
