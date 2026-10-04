@@ -4,6 +4,10 @@ const CONFIG = {
 
   authorName: "Dede Kurniawan",
 
+  // Token publik Cloudflare Web Analytics (aman dipasang di sini — token ini
+  // memang dirancang untuk dilihat publik). Kosongkan jika belum ada.
+  cfBeaconToken: "",
+
   siteUrl: "https://craxid.github.io/",
   profileImage: "/icons/icon.webp",
 

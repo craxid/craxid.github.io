@@ -4,6 +4,22 @@ const body = document.body;
 root.style.setProperty("--accent", CONFIG.accentColor);
 
 /* =========================
+   CLOUDFLARE WEB ANALYTICS
+   Beacon disuntik dari sini agar cukup pasang sekali untuk semua halaman.
+   Token beacon bersifat publik (dirancang untuk dilihat semua orang).
+========================= */
+if (typeof CONFIG !== "undefined" && CONFIG.cfBeaconToken) {
+  const cfBeacon = document.createElement("script");
+  cfBeacon.defer = true;
+  cfBeacon.src = "https://static.cloudflareinsights.com/beacon.min.js";
+  cfBeacon.setAttribute(
+    "data-cf-beacon",
+    JSON.stringify({ token: CONFIG.cfBeaconToken })
+  );
+  document.head.appendChild(cfBeacon);
+}
+
+/* =========================
    HELPERS
 ========================= */
 

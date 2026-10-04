@@ -15,6 +15,8 @@ const STATIC_ASSETS = [
   "/contact/index.html",
   "/privacy/",
   "/privacy/index.html",
+  "/panel/",
+  "/panel/index.html",
   "/404.html",
   "/config.js",
   "/style.css",
