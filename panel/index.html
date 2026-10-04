@@ -170,6 +170,24 @@
         animation: none;
       }
     }
+    /* Tooltip nilai saat batang disentuh (jalan di HP & desktop) */
+    .chart-tip {
+      position: fixed;
+      z-index: 10000;
+      transform: translate(-50%, calc(-100% - 10px));
+      background: var(--text);
+      color: var(--bg);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 13px;
+      border-radius: 999px;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+    }
+    #trafficChart .bar.sel {
+      opacity: 1;
+    }
     .setup-details {
       margin-top: 14px;
       font-size: 13px;
@@ -268,13 +286,27 @@
       </div>
       <div id="cfContent" hidden>
         <div class="stat-grid" id="cfStats"></div>
-        <h3 style="font-size:15px;margin:0 0 10px;">14 hari terakhir</h3>
+        <h3 id="chartHeading" style="font-size:15px;margin:0 0 10px;">30 hari terakhir</h3>
         <div class="panel-card liquid-glass" style="padding:16px;">
-          <div class="chart-toggle" role="tablist" aria-label="Mode grafik">
-            <button type="button" class="chart-toggle-btn active" data-mode="requests">Requests</button>
-            <button type="button" class="chart-toggle-btn" data-mode="uniques">Pengunjung unik</button>
+          <div class="chart-toggle" role="tablist" aria-label="Rentang waktu">
+            <button type="button" class="chart-toggle-btn range-btn" data-range="1">1 hari</button>
+            <button type="button" class="chart-toggle-btn range-btn" data-range="7">7 hari</button>
+            <button type="button" class="chart-toggle-btn range-btn active" data-range="30">30 hari</button>
+            <button type="button" class="chart-toggle-btn range-btn" data-range="custom">Kustom</button>
           </div>
-          <svg id="trafficChart" viewBox="0 0 640 240" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Grafik trafik 14 hari terakhir"></svg>
+          <div id="customRange" hidden style="margin-bottom:12px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <input type="date" id="dateFrom" class="form-input" style="flex:1;min-width:130px;margin:0;" aria-label="Dari tanggal" />
+              <input type="date" id="dateTo" class="form-input" style="flex:1;min-width:130px;margin:0;" aria-label="Sampai tanggal" />
+              <button type="button" id="applyRange" class="global-btn primary-btn" style="padding:10px 20px;">Terapkan</button>
+            </div>
+            <p id="rangeError" class="pin-error" hidden style="margin:8px 0 0;"></p>
+          </div>
+          <div class="chart-toggle" role="tablist" aria-label="Mode grafik">
+            <button type="button" class="chart-toggle-btn mode-btn active" data-mode="requests">Requests</button>
+            <button type="button" class="chart-toggle-btn mode-btn" data-mode="uniques">Pengunjung unik</button>
+          </div>
+          <svg id="trafficChart" viewBox="0 0 640 240" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Grafik trafik"></svg>
         </div>
         <button type="button" id="cfReset" class="global-btn secondary-btn liquid-glass" style="width:100%;">
           <i class="fa-solid fa-rotate"></i><span>Hapus Worker tersimpan</span>
@@ -298,6 +330,10 @@
       </a>
     </div>
   </main>
+
+  <!-- Tooltip grafik: ditaruh di body (bukan dalam kartu) agar position:fixed
+       tidak terjebak transform/overflow kartu liquid-glass -->
+  <div id="chartTip" class="chart-tip" hidden></div>
 
   <script src="/config.js"></script>
   <script src="/script.js"></script>
@@ -439,13 +475,14 @@
       cfError.hidden = true;
       cfSetup.querySelector("#cfSave span").textContent = "Memuat…";
       try {
-        const start = new Date(Date.now() - 29 * 864e5).toISOString().slice(0, 10);
+        // Ambil 90 hari sekaligus; filter 1/7/30/kustom dilakukan di browser
+        const start = new Date(Date.now() - 89 * 864e5).toISOString().slice(0, 10);
         const data = await cfViaWorker(
           workerUrl,
           `query Traffic($zoneTag: String!, $start: Date!) {
             viewer {
               zones(filter: { zoneTag: $zoneTag }) {
-                httpRequests1dGroups(limit: 30, orderBy: [date_ASC], filter: { date_geq: $start }) {
+                httpRequests1dGroups(limit: 100, orderBy: [date_ASC], filter: { date_geq: $start }) {
                   dimensions { date }
                   sum { requests }
                   uniq { uniques }
@@ -459,21 +496,8 @@
           (((data.viewer || {}).zones || [])[0] || {}).httpRequests1dGroups || [];
         if (!groups.length) throw new Error("Tidak ada data. Pastikan Web Analytics / proxy Cloudflare aktif untuk zona ini.");
 
-        const totalReq = groups.reduce((a, g) => a + (g.sum.requests || 0), 0);
-        const totalUniq = groups.reduce((a, g) => a + (g.uniq.uniques || 0), 0);
-
-        document.getElementById("cfStats").innerHTML = [
-          [totalReq.toLocaleString("id-ID"), "Requests (30 hari)"],
-          [totalUniq.toLocaleString("id-ID"), "Pengunjung unik (30 hari)"],
-          [(totalReq / groups.length).toFixed(0), "Rata-rata / hari"],
-        ]
-          .map(
-            ([num, lbl]) =>
-              `<div class="stat-box panel-card liquid-glass" style="margin:0;"><div class="num">${num}</div><div class="lbl">${lbl}</div></div>`
-          )
-          .join("");
-
         trafficGroups = groups;
+        renderSummary();
         renderChart();
 
         cfSetup.hidden = true;
@@ -487,17 +511,136 @@
     }
 
     /* ============ GRAFIK TRAFIK (SVG, tanpa library) ============ */
-    let trafficGroups = [];
-    let chartMode = "requests";
+    let trafficGroups = []; // 90 hari terakhir
+    let chartMode = "requests"; // requests | uniques
+    let chartRange = 30; // 1 | 7 | 30 | "custom"
+    let customFrom = null;
+    let customTo = null;
 
-    document.querySelectorAll(".chart-toggle-btn").forEach((btn) => {
+    // Pilihan mode (Requests / Pengunjung unik)
+    document.querySelectorAll(".mode-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
-        document.querySelectorAll(".chart-toggle-btn").forEach((b) => b.classList.remove("active"));
+        document.querySelectorAll(".mode-btn").forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
         chartMode = btn.dataset.mode;
+        hideTip();
         renderChart();
       });
     });
+
+    // Pilihan rentang waktu
+    document.querySelectorAll(".range-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".range-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById("rangeError").hidden = true;
+        const r = btn.dataset.range;
+        document.getElementById("customRange").hidden = r !== "custom";
+        if (r !== "custom") {
+          chartRange = parseInt(r, 10);
+          hideTip();
+          renderSummary();
+          renderChart();
+        }
+      });
+    });
+
+    // Batas input tanggal kustom: maksimal 90 hari ke belakang, tidak masa depan
+    (function initDateInputs() {
+      const today = new Date().toISOString().slice(0, 10);
+      const min = new Date(Date.now() - 89 * 864e5).toISOString().slice(0, 10);
+      ["dateFrom", "dateTo"].forEach((id) => {
+        const el = document.getElementById(id);
+        el.max = today;
+        el.min = min;
+      });
+      document.getElementById("dateTo").value = today;
+      document.getElementById("dateFrom").value = new Date(Date.now() - 6 * 864e5).toISOString().slice(0, 10);
+    })();
+
+    document.getElementById("applyRange").addEventListener("click", () => {
+      const from = document.getElementById("dateFrom").value;
+      const to = document.getElementById("dateTo").value;
+      const errEl = document.getElementById("rangeError");
+      const today = new Date().toISOString().slice(0, 10);
+      const fail = (msg) => {
+        errEl.textContent = msg;
+        errEl.hidden = false;
+      };
+      if (!from || !to) return fail("Isi kedua tanggal dulu.");
+      if (from > to) return fail("Tanggal awal tidak boleh setelah tanggal akhir.");
+      if (to > today) return fail("Tanggal akhir tidak boleh melebihi hari ini.");
+      if ((new Date(to) - new Date(from)) / 864e5 > 89) return fail("Rentang maksimal 90 hari.");
+      errEl.hidden = true;
+      chartRange = "custom";
+      customFrom = from;
+      customTo = to;
+      hideTip();
+      renderSummary();
+      renderChart();
+    });
+
+    function rangeGroups() {
+      if (chartRange === "custom" && customFrom && customTo) {
+        return trafficGroups.filter(
+          (g) => g.dimensions.date >= customFrom && g.dimensions.date <= customTo
+        );
+      }
+      return trafficGroups.slice(-chartRange);
+    }
+
+    function rangeLabel(n) {
+      if (chartRange === "custom") return "Periode kustom";
+      return n + " hari";
+    }
+
+    function renderSummary() {
+      const data = rangeGroups();
+      const n = data.length || 1;
+      const totalReq = data.reduce((a, g) => a + (g.sum.requests || 0), 0);
+      const totalUniq = data.reduce((a, g) => a + (g.uniq.uniques || 0), 0);
+      const lbl = rangeLabel(n);
+      document.getElementById("cfStats").innerHTML = [
+        [totalReq.toLocaleString("id-ID"), "Requests (" + lbl + ")"],
+        [totalUniq.toLocaleString("id-ID"), "Pengunjung unik (" + lbl + ")"],
+        [(totalReq / n).toFixed(0), "Rata-rata / hari"],
+      ]
+        .map(
+          ([num, l]) =>
+            `<div class="stat-box panel-card liquid-glass" style="margin:0;"><div class="num">${num}</div><div class="lbl">${l}</div></div>`
+        )
+        .join("");
+      document.getElementById("chartHeading").textContent =
+        chartRange === "custom"
+          ? shortDate(customFrom) + " – " + shortDate(customTo)
+          : n + " hari terakhir";
+    }
+
+    // Tooltip nilai: muncul saat batang disentuh (jalan di HP & desktop)
+    const chartTip = document.getElementById("chartTip");
+    let tipTimer = null;
+    function hideTip() {
+      chartTip.hidden = true;
+      clearTimeout(tipTimer);
+      document.querySelectorAll("#trafficChart .bar.sel").forEach((b) => b.classList.remove("sel"));
+    }
+    document.getElementById("trafficChart").addEventListener("click", (e) => {
+      const bar = e.target.closest(".bar");
+      if (!bar) {
+        hideTip();
+        return;
+      }
+      document.querySelectorAll("#trafficChart .bar.sel").forEach((b) => b.classList.remove("sel"));
+      bar.classList.add("sel");
+      chartTip.textContent = bar.dataset.tip;
+      const r = bar.getBoundingClientRect();
+      chartTip.style.left = r.left + r.width / 2 + "px";
+      chartTip.style.top = r.top + "px";
+      chartTip.hidden = false;
+      clearTimeout(tipTimer);
+      tipTimer = setTimeout(hideTip, 3000);
+    });
+    window.addEventListener("scroll", hideTip, { passive: true });
 
     function shortDate(iso) {
       return new Date(iso + "T00:00:00").toLocaleDateString("id-ID", {
@@ -509,7 +652,11 @@
     function renderChart() {
       const svg = document.getElementById("trafficChart");
       if (!svg || !trafficGroups.length) return;
-      const data = trafficGroups.slice(-14);
+      const data = rangeGroups();
+      if (!data.length) {
+        svg.innerHTML = `<text x="320" y="120" class="xlab" text-anchor="middle">Tidak ada data pada rentang ini</text>`;
+        return;
+      }
       const W = 640, H = 240, padL = 46, padR = 10, padT = 14, padB = 30;
       const vals = data.map((g) =>
         chartMode === "requests" ? g.sum.requests || 0 : g.uniq.uniques || 0
@@ -518,6 +665,7 @@
       const cw = W - padL - padR;
       const ch = H - padT - padB;
       const bw = cw / data.length;
+      const labelStep = Math.max(1, Math.ceil(data.length / 8));
       let s = "";
 
       [0, 0.5, 1].forEach((f) => {
@@ -530,16 +678,18 @@
         const v = vals[i];
         const h = Math.max(3, (v / max) * ch);
         const x = padL + i * bw + bw * 0.18;
-        const w = bw * 0.64;
+        const w = Math.max(4, bw * 0.64);
         const y = padT + ch - h;
         const d = shortDate(g.dimensions.date);
-        s += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="5" class="bar" style="animation-delay:${i * 40}ms"><title>${d}: ${v.toLocaleString("id-ID")}</title></rect>`;
-        if (i % 2 === 0) {
+        const tip = d + ": " + v.toLocaleString("id-ID");
+        s += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="5" class="bar" data-tip="${tip}" style="animation-delay:${Math.min(i, 14) * 40}ms"><title>${tip}</title></rect>`;
+        if (i % labelStep === 0) {
           s += `<text x="${(x + w / 2).toFixed(1)}" y="${H - 10}" class="xlab" text-anchor="middle">${d}</text>`;
         }
       });
 
       svg.innerHTML = s;
+      hideTip();
     }
 
     // Lewat Worker milik sendiri (token disimpan sebagai Secret di Worker,
