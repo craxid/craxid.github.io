@@ -827,15 +827,21 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Worker GA: " + res.status);
         gaGroups = data.rows || [];
-        if (!gaGroups.length) {
-          throw new Error("Tidak ada data. Pastikan service account sudah ditambahkan sebagai Viewer di properti GA4.");
-        }
         gaSetup.hidden = true;
         gaContent.hidden = false;
-        renderGA();
+        // Pill realtime jalan terpisah — tidak tergantung data harian
         loadGALive(workerUrl);
         clearInterval(gaLiveTimer);
         gaLiveTimer = setInterval(() => loadGALive(workerUrl), 60000);
+        if (!gaGroups.length) {
+          // Koneksi & izin OK, tapi Google belum memproses data harian
+          // (wajar untuk properti baru — biasanya terisi dalam beberapa jam)
+          document.getElementById("gaStats").innerHTML = "";
+          document.getElementById("gaChartHeading").textContent = "Menunggu data harian…";
+          document.getElementById("gaChart").innerHTML = `<text x="320" y="120" class="xlab" text-anchor="middle">Belum ada data harian — cek lagi beberapa jam lagi</text>`;
+          return;
+        }
+        renderGA();
       } catch (err) {
         gaError.textContent = "Gagal: " + err.message;
         gaError.hidden = false;
