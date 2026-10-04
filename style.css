@@ -1340,3 +1340,19 @@ footer {
   gap: 24px;
   margin-top: 8px;
 }
+
+/* =========================
+   DESKTOP (≥1024px)
+   Hanya aktif di layar lebar — tampilan HP tidak berubah.
+   Halaman artikel & About/Kontak/Privasi/404 sengaja tetap sempit.
+========================= */
+@media (min-width: 1024px) {
+  /* Home: kartu project 2 kolom */
+  #projects.projects {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* Blog: daftar artikel 2 kolom */
+  #blog-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

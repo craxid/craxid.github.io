@@ -271,6 +271,19 @@
     @media (prefers-reduced-motion: reduce) {
       .live-dot { animation: none; }
     }
+    /* Desktop: lebarkan dashboard, susun Trafik & GA berdampingan.
+       HP tidak berubah — semua di bawah ini hanya aktif di layar lebar. */
+    @media (min-width: 1024px) {
+      .panel-wrap {
+        max-width: 1100px;
+      }
+      .dash-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+    }
   </style>
 </head>
 <body>
@@ -312,7 +325,9 @@
         <ul class="commit-list" id="ghCommits"></ul>
       </div>
 
-      <h2 class="dash-section-title"><i class="fa-solid fa-chart-line"></i> Trafik</h2>
+      <div class="dash-cols">
+        <section class="dash-col" aria-label="Trafik Cloudflare">
+          <h2 class="dash-section-title"><i class="fa-solid fa-chart-line"></i> Trafik</h2>
       <div id="cfSetup" class="panel-card liquid-glass">
         <h1 style="font-size:18px;"><i class="fa-solid fa-cloud"></i> Cloudflare</h1>
         <p class="desc">
@@ -362,8 +377,9 @@
           <i class="fa-solid fa-rotate"></i><span>Hapus Worker tersimpan</span>
         </button>
       </div>
-
-      <h2 class="dash-section-title"><i class="fa-brands fa-google"></i> Google Analytics</h2>
+        </section>
+        <section class="dash-col" aria-label="Google Analytics">
+          <h2 class="dash-section-title"><i class="fa-brands fa-google"></i> Google Analytics</h2>
       <div id="gaSetup" class="panel-card liquid-glass">
         <h1 style="font-size:18px;"><i class="fa-brands fa-google"></i> Google Analytics</h1>
         <p class="desc">
@@ -406,6 +422,8 @@
         <button type="button" id="gaReset" class="global-btn secondary-btn liquid-glass" style="width:100%;">
           <i class="fa-solid fa-rotate"></i><span>Hapus Worker GA tersimpan</span>
         </button>
+      </div>
+        </section>
       </div>
 
       <div class="dash-actions">
