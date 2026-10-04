@@ -222,6 +222,31 @@
       padding: 20px;
       text-align: center;
     }
+    .ga-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      border: 1px solid color-mix(in srgb, #22c55e 45%, transparent);
+      background: color-mix(in srgb, #22c55e 10%, transparent);
+    }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: livePulse 1.6s ease-in-out infinite;
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.8); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .live-dot { animation: none; }
+    }
   </style>
 </head>
 <body>
@@ -338,6 +363,7 @@
         </details>
       </div>
       <div id="gaContent" hidden>
+        <p id="gaLive" class="ga-live" hidden><span class="live-dot"></span><span><b id="gaLiveNum">0</b> online saat ini</span></p>
         <div class="stat-grid" id="gaStats"></div>
         <h3 id="gaChartHeading" style="font-size:15px;margin:0 0 10px;">30 hari terakhir</h3>
         <div class="panel-card liquid-glass" style="padding:16px;">
@@ -807,6 +833,9 @@
         gaSetup.hidden = true;
         gaContent.hidden = false;
         renderGA();
+        loadGALive(workerUrl);
+        clearInterval(gaLiveTimer);
+        gaLiveTimer = setInterval(() => loadGALive(workerUrl), 60000);
       } catch (err) {
         gaError.textContent = "Gagal: " + err.message;
         gaError.hidden = false;
@@ -837,6 +866,20 @@
 
     function gaRangeGroups() {
       return gaGroups.slice(-gaRange);
+    }
+
+    let gaLiveTimer = null;
+    async function loadGALive(workerUrl) {
+      try {
+        const res = await fetch(workerUrl + "?realtime=1");
+        const data = await res.json();
+        // Worker lama (belum di-update) tidak mengembalikan activeUsers → biarkan tersembunyi
+        if (!res.ok || typeof data.activeUsers !== "number") return;
+        document.getElementById("gaLiveNum").textContent = data.activeUsers.toLocaleString("id-ID");
+        document.getElementById("gaLive").hidden = false;
+      } catch (e) {
+        /* diam saja — jangan ganggu grafik utama */
+      }
     }
 
     function renderGA() {
