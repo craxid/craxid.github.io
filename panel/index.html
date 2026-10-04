@@ -107,29 +107,68 @@
       font-size: 12px;
       opacity: 0.6;
     }
-    .traffic-table {
+    /* Grafik batang SVG — tanpa library, ringan, ikut tema */
+    #trafficChart {
       width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-      margin-bottom: 20px;
+      height: auto;
+      display: block;
     }
-    .traffic-table th,
-    .traffic-table td {
-      padding: 10px 12px;
-      text-align: left;
-      border-bottom: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+    #trafficChart .grid {
+      stroke: color-mix(in srgb, var(--accent) 18%, transparent);
+      stroke-width: 1;
     }
-    .traffic-table th {
-      font-size: 12px;
-      opacity: 0.7;
+    #trafficChart .ylab,
+    #trafficChart .xlab {
+      fill: var(--text);
+      opacity: 0.55;
+      font-size: 11px;
+    }
+    #trafficChart .bar {
+      fill: var(--accent);
+      opacity: 0.85;
+      transform-box: fill-box;
+      transform-origin: bottom;
+      animation: bar-rise 0.5s var(--pop-ease) backwards;
+    }
+    #trafficChart .bar:hover {
+      opacity: 1;
+    }
+    @keyframes bar-rise {
+      from { transform: scaleY(0); }
+      to { transform: scaleY(1); }
+    }
+    .chart-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .chart-toggle-btn {
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+      background: transparent;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
       font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      opacity: 0.65;
+      transform: scale(1);
+      transition: opacity 0.25s ease, background 0.25s ease, border-color 0.25s ease,
+        transform var(--pop-duration) var(--pop-ease),
+        box-shadow 0.3s ease;
     }
-    .traffic-table td.num {
-      text-align: right;
-      font-variant-numeric: tabular-nums;
+    .chart-toggle-btn.active {
+      background: color-mix(in srgb, var(--accent) 18%, transparent);
+      border-color: var(--accent);
+      opacity: 1;
+      transform: scale(1.06);
+      box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--accent) 65%, transparent);
     }
-    .traffic-table th.num {
-      text-align: right;
+    @media (prefers-reduced-motion: reduce) {
+      #trafficChart .bar {
+        animation: none;
+      }
     }
     .setup-details {
       margin-top: 14px;
@@ -230,13 +269,12 @@
       <div id="cfContent" hidden>
         <div class="stat-grid" id="cfStats"></div>
         <h3 style="font-size:15px;margin:0 0 10px;">14 hari terakhir</h3>
-        <div class="panel-card liquid-glass" style="padding:8px 16px;overflow-x:auto;">
-          <table class="traffic-table">
-            <thead>
-              <tr><th>Tanggal</th><th class="num">Requests</th><th class="num">Pengunjung unik</th></tr>
-            </thead>
-            <tbody id="cfTable"></tbody>
-          </table>
+        <div class="panel-card liquid-glass" style="padding:16px;">
+          <div class="chart-toggle" role="tablist" aria-label="Mode grafik">
+            <button type="button" class="chart-toggle-btn active" data-mode="requests">Requests</button>
+            <button type="button" class="chart-toggle-btn" data-mode="uniques">Pengunjung unik</button>
+          </div>
+          <svg id="trafficChart" viewBox="0 0 640 240" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Grafik trafik 14 hari terakhir"></svg>
         </div>
         <button type="button" id="cfReset" class="global-btn secondary-btn liquid-glass" style="width:100%;">
           <i class="fa-solid fa-rotate"></i><span>Hapus Worker tersimpan</span>
@@ -435,17 +473,8 @@
           )
           .join("");
 
-        document.getElementById("cfTable").innerHTML = groups
-          .slice(-14)
-          .reverse()
-          .map((g) => {
-            const d = new Date(g.dimensions.date + "T00:00:00").toLocaleDateString("id-ID", {
-              day: "numeric",
-              month: "short",
-            });
-            return `<tr><td>${d}</td><td class="num">${(g.sum.requests || 0).toLocaleString("id-ID")}</td><td class="num">${(g.uniq.uniques || 0).toLocaleString("id-ID")}</td></tr>`;
-          })
-          .join("");
+        trafficGroups = groups;
+        renderChart();
 
         cfSetup.hidden = true;
         cfContent.hidden = false;
@@ -457,10 +486,65 @@
       }
     }
 
+    /* ============ GRAFIK TRAFIK (SVG, tanpa library) ============ */
+    let trafficGroups = [];
+    let chartMode = "requests";
+
+    document.querySelectorAll(".chart-toggle-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".chart-toggle-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        chartMode = btn.dataset.mode;
+        renderChart();
+      });
+    });
+
+    function shortDate(iso) {
+      return new Date(iso + "T00:00:00").toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "short",
+      });
+    }
+
+    function renderChart() {
+      const svg = document.getElementById("trafficChart");
+      if (!svg || !trafficGroups.length) return;
+      const data = trafficGroups.slice(-14);
+      const W = 640, H = 240, padL = 46, padR = 10, padT = 14, padB = 30;
+      const vals = data.map((g) =>
+        chartMode === "requests" ? g.sum.requests || 0 : g.uniq.uniques || 0
+      );
+      const max = Math.max(...vals, 1);
+      const cw = W - padL - padR;
+      const ch = H - padT - padB;
+      const bw = cw / data.length;
+      let s = "";
+
+      [0, 0.5, 1].forEach((f) => {
+        const y = padT + ch * (1 - f);
+        s += `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W - padR}" y2="${y.toFixed(1)}" class="grid"/>`;
+        s += `<text x="${padL - 8}" y="${(y + 4).toFixed(1)}" class="ylab" text-anchor="end">${Math.round(max * f).toLocaleString("id-ID")}</text>`;
+      });
+
+      data.forEach((g, i) => {
+        const v = vals[i];
+        const h = Math.max(3, (v / max) * ch);
+        const x = padL + i * bw + bw * 0.18;
+        const w = bw * 0.64;
+        const y = padT + ch - h;
+        const d = shortDate(g.dimensions.date);
+        s += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="5" class="bar" style="animation-delay:${i * 40}ms"><title>${d}: ${v.toLocaleString("id-ID")}</title></rect>`;
+        if (i % 2 === 0) {
+          s += `<text x="${(x + w / 2).toFixed(1)}" y="${H - 10}" class="xlab" text-anchor="middle">${d}</text>`;
+        }
+      });
+
+      svg.innerHTML = s;
+    }
+
     // Lewat Worker milik sendiri (token disimpan sebagai Secret di Worker,
     // browser tidak pernah melihatnya). Worker menyuntik zoneTag dari env.
-    async function cfViaWorker(workerUrl, query, variables) {
-      const res = await fetch(workerUrl.replace(/\/+$/, "") + "/api/cf", {
+    async function cfViaWorker(workerUrl, query, variables) {      const res = await fetch(workerUrl.replace(/\/+$/, "") + "/api/cf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query, variables }),
