@@ -6,4 +6,4 @@ Allow: /
 Allow: /bot
 Allow: /blog
 Allow: /props
-Sitemap: https://crax.my.id/sitemap.xml
+Sitemap: https://hxa.my.id/sitemap.xml

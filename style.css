@@ -1080,3 +1080,34 @@ footer {
   outline: 3px solid color-mix(in srgb, var(--accent), white 30%);
   outline-offset: 2px;
 }
+
+/* =========================
+   FOOTER LINKS
+========================= */
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-links a + a::before {
+  content: "·";
+  margin-right: 18px;
+  color: var(--text);
+  opacity: 0.4;
+}
