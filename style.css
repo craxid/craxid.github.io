@@ -971,11 +971,24 @@ footer {
 }
 
 /* Profil penulis ala Medium di setiap artikel */
+.post-author-card {
+  padding: 14px 16px;
+  border-radius: 20px;
+  margin-bottom: 18px;
+}
+
+/* Kartu penulis bukan tombol: matikan efek pop saat hover/tekan */
+.post-author-card.liquid-glass:hover,
+.post-author-card.liquid-glass:focus-visible,
+.post-author-card.liquid-glass:active {
+  transform: none;
+  filter: none;
+}
+
 .post-author {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 18px;
 }
 
 .post-author-avatar {

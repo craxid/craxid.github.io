@@ -115,11 +115,13 @@
                 const readMins = Math.max(1, Math.ceil(body.split(/\s+/).filter(Boolean).length / 200));
 
                 const authorHtml = `
-                    <div class="post-author">
-                        <img class="post-author-avatar" src="${authorAvatar}" alt="${escapeHtml(authorName)}" loading="lazy">
-                        <div>
-                            <div class="post-author-name">${escapeHtml(authorName)} <i class="fa-solid fa-circle-check post-verified" aria-label="Terverifikasi"></i></div>
-                            <div class="post-author-sub">${date ? escapeHtml(date) + " · " : ""}${readMins} mnt baca</div>
+                    <div class="post-author-card liquid-glass">
+                        <div class="post-author">
+                            <img class="post-author-avatar" src="${authorAvatar}" alt="${escapeHtml(authorName)}" loading="lazy">
+                            <div>
+                                <div class="post-author-name">${escapeHtml(authorName)} <i class="fa-solid fa-circle-check post-verified" aria-label="Terverifikasi"></i></div>
+                                <div class="post-author-sub">${date ? escapeHtml(date) + " · " : ""}${readMins} mnt baca</div>
+                            </div>
                         </div>
                     </div>
                 `;
