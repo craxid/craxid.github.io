@@ -108,29 +108,35 @@
       opacity: 0.6;
     }
     /* Grafik batang SVG — tanpa library, ringan, ikut tema */
-    #trafficChart {
+    #trafficChart,
+    #gaChart {
       width: 100%;
       height: auto;
       display: block;
     }
-    #trafficChart .grid {
+    #trafficChart .grid,
+    #gaChart .grid {
       stroke: color-mix(in srgb, var(--accent) 18%, transparent);
       stroke-width: 1;
     }
     #trafficChart .ylab,
-    #trafficChart .xlab {
+    #trafficChart .xlab,
+    #gaChart .ylab,
+    #gaChart .xlab {
       fill: var(--text);
       opacity: 0.55;
       font-size: 11px;
     }
-    #trafficChart .bar {
+    #trafficChart .bar,
+    #gaChart .bar {
       fill: var(--accent);
       opacity: 0.85;
       transform-box: fill-box;
       transform-origin: bottom;
       animation: bar-rise 0.5s var(--pop-ease) backwards;
     }
-    #trafficChart .bar:hover {
+    #trafficChart .bar:hover,
+    #gaChart .bar:hover {
       opacity: 1;
     }
     @keyframes bar-rise {
@@ -166,7 +172,8 @@
       box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--accent) 65%, transparent);
     }
     @media (prefers-reduced-motion: reduce) {
-      #trafficChart .bar {
+      #trafficChart .bar,
+      #gaChart .bar {
         animation: none;
       }
     }
@@ -185,7 +192,8 @@
       white-space: nowrap;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
     }
-    #trafficChart .bar.sel {
+    #trafficChart .bar.sel,
+    #gaChart .bar.sel {
       opacity: 1;
     }
     .setup-details {
