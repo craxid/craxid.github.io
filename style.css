@@ -856,13 +856,62 @@ footer {
   border-radius: 999px;
   cursor: pointer;
   opacity: 0.65;
-  transition: opacity 0.2s ease, background 0.2s ease;
+  transform: scale(1);
+  will-change: transform;
+  transition: opacity 0.25s ease, background 0.25s ease, border-color 0.25s ease,
+    transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease;
+}
+
+.prop-preview-tab:hover {
+  opacity: 0.9;
+}
+
+.prop-preview-tab:active {
+  transform: scale(0.94);
 }
 
 .prop-preview-tab.active {
   background: color-mix(in srgb, var(--accent) 18%, transparent);
   border-color: var(--accent);
   opacity: 1;
+  transform: scale(1.08);
+  box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--accent) 65%, transparent);
+}
+
+/* Animasi menyembul keluar (pop-out) saat membuka tab pratinjau */
+@keyframes prop-pop-out {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.prop-preview.open {
+  animation: prop-pop-out 0.42s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.prop-preview-content.pop {
+  animation: prop-pop-out 0.32s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prop-preview-tab,
+  .prop-preview-tab:hover,
+  .prop-preview-tab:active,
+  .prop-preview-tab.active {
+    transition: none;
+    transform: none;
+    box-shadow: none;
+  }
+  .prop-preview.open,
+  .prop-preview-content.pop {
+    animation: none;
+  }
 }
 
 .prop-preview-content {

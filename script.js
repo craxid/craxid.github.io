@@ -932,10 +932,18 @@ minMagisk=2318
     const propPreviewTabs = document.querySelectorAll(".prop-preview-tab");
     let previewFiles = null;
 
+    const popElement = (el, className) => {
+      if (!el) return;
+      el.classList.remove(className);
+      void el.offsetWidth; // paksa reflow agar animasi bisa diulang
+      el.classList.add(className);
+    };
+
     const showPreviewFile = (which) => {
       if (!previewFiles || !propPreviewContent) return;
       propPreviewContent.textContent =
         which === "module" ? previewFiles.moduleProp : previewFiles.systemProp;
+      popElement(propPreviewContent, "pop");
     };
 
     if (propPreviewBtn && propPreview && propPreviewContent) {
@@ -950,6 +958,7 @@ minMagisk=2318
         );
         showPreviewFile("system");
         propPreview.hidden = false;
+        popElement(propPreview, "open");
         propPreview.scrollIntoView({ behavior: "smooth", block: "nearest" });
       });
     }
