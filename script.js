@@ -485,7 +485,7 @@ async function loadBlogList() {
       .map(
         (post) => `
           <article class="project-card liquid-glass">
-            <a href="/post.html?file=${encodeURIComponent(post.slug)}">
+            <a href="/blog/${encodeURIComponent(post.slug)}/">
               ${post.title}
             </a>
 
