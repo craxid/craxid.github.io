@@ -314,12 +314,59 @@
         </button>
       </div>
 
+      <h2 class="dash-section-title"><i class="fa-brands fa-google"></i> Google Analytics</h2>
+      <div id="gaSetup" class="panel-card liquid-glass">
+        <h1 style="font-size:18px;"><i class="fa-brands fa-google"></i> Google Analytics</h1>
+        <p class="desc">
+          Data diambil lewat Worker GA milikmu sendiri — service account
+          tersimpan aman di Worker sebagai Secret, tidak pernah lewat browser.
+        </p>
+        <input type="url" id="gaWorker" class="form-input" placeholder="https://namamu-ga.xxx.workers.dev" autocomplete="off" aria-label="Worker GA URL" />
+        <button type="button" id="gaSave" class="global-btn primary-btn">
+          <i class="fa-solid fa-download"></i><span>Simpan &amp; Muat Data</span>
+        </button>
+        <p id="gaError" class="pin-error" hidden></p>
+        <details class="setup-details">
+          <summary>Cara menyiapkan Worker GA (sekali saja)</summary>
+          <ol>
+            <li>Buat service account + aktifkan Google Analytics Data API (ikuti panduan yang saya kirim di chat).</li>
+            <li>Buka <code>dash.cloudflare.com</code> → <code>Workers &amp; Pages</code> → <code>Create Worker</code> baru → <code>Deploy</code>.</li>
+            <li>Klik <code>Edit code</code>, hapus isi bawaannya, tempel kode <code>ga-worker.js</code> dari saya, lalu <code>Save and deploy</code>.</li>
+            <li>Buka <code>Settings</code> → <code>Variables</code>: tambah <code>Secret</code> bernama <code>GA_SERVICE_ACCOUNT_JSON</code> (isi seluruh file JSON key), dan <code>Secret</code> bernama <code>GA_PROPERTY_ID</code> (ID properti GA4, angka).</li>
+            <li>Salin URL <code>*.workers.dev</code> milik worker itu, tempel di kolom atas.</li>
+          </ol>
+        </details>
+      </div>
+      <div id="gaContent" hidden>
+        <div class="stat-grid" id="gaStats"></div>
+        <h3 id="gaChartHeading" style="font-size:15px;margin:0 0 10px;">30 hari terakhir</h3>
+        <div class="panel-card liquid-glass" style="padding:16px;">
+          <div class="chart-toggle" role="tablist" aria-label="Rentang waktu GA">
+            <button type="button" class="chart-toggle-btn ga-range-btn" data-range="7">7 hari</button>
+            <button type="button" class="chart-toggle-btn ga-range-btn active" data-range="30">30 hari</button>
+            <button type="button" class="chart-toggle-btn ga-range-btn" data-range="90">90 hari</button>
+          </div>
+          <div class="chart-toggle" role="tablist" aria-label="Mode grafik GA">
+            <button type="button" class="chart-toggle-btn ga-mode-btn active" data-mode="users">Pengguna</button>
+            <button type="button" class="chart-toggle-btn ga-mode-btn" data-mode="sessions">Sesi</button>
+            <button type="button" class="chart-toggle-btn ga-mode-btn" data-mode="pageviews">Tampilan halaman</button>
+          </div>
+          <svg id="gaChart" viewBox="0 0 640 240" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Grafik Google Analytics"></svg>
+        </div>
+        <button type="button" id="gaReset" class="global-btn secondary-btn liquid-glass" style="width:100%;">
+          <i class="fa-solid fa-rotate"></i><span>Hapus Worker GA tersimpan</span>
+        </button>
+      </div>
+
       <div class="dash-actions">
         <a class="global-btn secondary-btn liquid-glass" href="https://github.com/craxid/craxid.github.io" target="_blank" rel="noopener">
           <i class="fa-brands fa-github"></i><span>Repo</span>
         </a>
         <a class="global-btn secondary-btn liquid-glass" href="https://dash.cloudflare.com" target="_blank" rel="noopener">
           <i class="fa-solid fa-cloud"></i><span>Cloudflare</span>
+        </a>
+        <a class="global-btn secondary-btn liquid-glass" href="https://analytics.google.com" target="_blank" rel="noopener">
+          <i class="fa-brands fa-google"></i><span>Analytics</span>
         </a>
         <button type="button" id="lockBtn" class="global-btn secondary-btn liquid-glass">
           <i class="fa-solid fa-lock"></i><span>Kunci</span>
@@ -374,6 +421,7 @@
       dash.hidden = false;
       loadGitHub();
       initCloudflare();
+      initGA();
     }
 
     document.getElementById("pinBtn").addEventListener("click", () => tryUnlock(pinInput.value));
@@ -623,24 +671,29 @@
     function hideTip() {
       chartTip.hidden = true;
       clearTimeout(tipTimer);
-      document.querySelectorAll("#trafficChart .bar.sel").forEach((b) => b.classList.remove("sel"));
+      document.querySelectorAll(".bar.sel").forEach((b) => b.classList.remove("sel"));
     }
-    document.getElementById("trafficChart").addEventListener("click", (e) => {
-      const bar = e.target.closest(".bar");
-      if (!bar) {
-        hideTip();
-        return;
-      }
-      document.querySelectorAll("#trafficChart .bar.sel").forEach((b) => b.classList.remove("sel"));
-      bar.classList.add("sel");
-      chartTip.textContent = bar.dataset.tip;
-      const r = bar.getBoundingClientRect();
-      chartTip.style.left = r.left + r.width / 2 + "px";
-      chartTip.style.top = r.top + "px";
-      chartTip.hidden = false;
-      clearTimeout(tipTimer);
-      tipTimer = setTimeout(hideTip, 3000);
-    });
+    function enableBarTooltips(svg) {
+      if (!svg) return;
+      svg.addEventListener("click", (e) => {
+        const bar = e.target.closest(".bar");
+        if (!bar) {
+          hideTip();
+          return;
+        }
+        document.querySelectorAll(".bar.sel").forEach((b) => b.classList.remove("sel"));
+        bar.classList.add("sel");
+        chartTip.textContent = bar.dataset.tip;
+        const r = bar.getBoundingClientRect();
+        chartTip.style.left = r.left + r.width / 2 + "px";
+        chartTip.style.top = r.top + "px";
+        chartTip.hidden = false;
+        clearTimeout(tipTimer);
+        tipTimer = setTimeout(hideTip, 3000);
+      });
+    }
+    enableBarTooltips(document.getElementById("trafficChart"));
+    enableBarTooltips(document.getElementById("gaChart"));
     window.addEventListener("scroll", hideTip, { passive: true });
 
     function shortDate(iso) {
@@ -706,6 +759,142 @@
         throw new Error(data.errors.map((e) => e.message).join("; "));
       }
       return data.data;
+    }
+
+    /* ============ GOOGLE ANALYTICS (via Worker GA) ============ */
+    const gaSetup = document.getElementById("gaSetup");
+    const gaContent = document.getElementById("gaContent");
+    const gaError = document.getElementById("gaError");
+    let gaGroups = []; // [{date, users, sessions, pageviews}] — 90 hari terakhir
+    let gaMode = "users"; // users | sessions | pageviews
+    let gaRange = 30; // 7 | 30 | 90
+
+    function initGA() {
+      const workerUrl = localStorage.getItem("ga_worker_url");
+      if (workerUrl) {
+        document.getElementById("gaWorker").value = workerUrl;
+        loadGA(workerUrl);
+      }
+    }
+
+    document.getElementById("gaSave").addEventListener("click", () => {
+      const workerUrl = document.getElementById("gaWorker").value.trim().replace(/\/+$/, "");
+      if (!workerUrl) {
+        gaError.textContent = "Isi URL Worker GA dulu.";
+        gaError.hidden = false;
+        return;
+      }
+      localStorage.setItem("ga_worker_url", workerUrl);
+      loadGA(workerUrl);
+    });
+
+    document.getElementById("gaReset").addEventListener("click", () => {
+      localStorage.removeItem("ga_worker_url");
+      location.reload();
+    });
+
+    async function loadGA(workerUrl) {
+      gaError.hidden = true;
+      gaSetup.querySelector("#gaSave span").textContent = "Memuat…";
+      try {
+        const res = await fetch(workerUrl + "?days=90");
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Worker GA: " + res.status);
+        gaGroups = data.rows || [];
+        if (!gaGroups.length) {
+          throw new Error("Tidak ada data. Pastikan service account sudah ditambahkan sebagai Viewer di properti GA4.");
+        }
+        gaSetup.hidden = true;
+        gaContent.hidden = false;
+        renderGA();
+      } catch (err) {
+        gaError.textContent = "Gagal: " + err.message;
+        gaError.hidden = false;
+      } finally {
+        gaSetup.querySelector("#gaSave span").textContent = "Simpan & Muat Data";
+      }
+    }
+
+    document.querySelectorAll(".ga-range-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".ga-range-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        gaRange = parseInt(btn.dataset.range, 10);
+        hideTip();
+        renderGA();
+      });
+    });
+
+    document.querySelectorAll(".ga-mode-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".ga-mode-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        gaMode = btn.dataset.mode;
+        hideTip();
+        renderGAChart();
+      });
+    });
+
+    function gaRangeGroups() {
+      return gaGroups.slice(-gaRange);
+    }
+
+    function renderGA() {
+      const data = gaRangeGroups();
+      const n = data.length || 1;
+      const tU = data.reduce((a, g) => a + (g.users || 0), 0);
+      const tS = data.reduce((a, g) => a + (g.sessions || 0), 0);
+      const tP = data.reduce((a, g) => a + (g.pageviews || 0), 0);
+      const lbl = n + " hari";
+      document.getElementById("gaStats").innerHTML = [
+        [tU.toLocaleString("id-ID"), "Pengguna (" + lbl + ")"],
+        [tS.toLocaleString("id-ID"), "Sesi (" + lbl + ")"],
+        [tP.toLocaleString("id-ID"), "Tampilan halaman (" + lbl + ")"],
+      ]
+        .map(
+          ([num, l]) =>
+            `<div class="stat-box panel-card liquid-glass" style="margin:0;"><div class="num">${num}</div><div class="lbl">${l}</div></div>`
+        )
+        .join("");
+      document.getElementById("gaChartHeading").textContent = n + " hari terakhir";
+      renderGAChart();
+    }
+
+    function renderGAChart() {
+      const svg = document.getElementById("gaChart");
+      if (!svg || !gaGroups.length) return;
+      const data = gaRangeGroups();
+      const W = 640, H = 240, padL = 46, padR = 10, padT = 14, padB = 30;
+      const vals = data.map((g) => g[gaMode] || 0);
+      const max = Math.max(...vals, 1);
+      const cw = W - padL - padR;
+      const ch = H - padT - padB;
+      const bw = cw / data.length;
+      const labelStep = Math.max(1, Math.ceil(data.length / 8));
+      let s = "";
+
+      [0, 0.5, 1].forEach((f) => {
+        const y = padT + ch * (1 - f);
+        s += `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W - padR}" y2="${y.toFixed(1)}" class="grid"/>`;
+        s += `<text x="${padL - 8}" y="${(y + 4).toFixed(1)}" class="ylab" text-anchor="end">${Math.round(max * f).toLocaleString("id-ID")}</text>`;
+      });
+
+      data.forEach((g, i) => {
+        const v = vals[i];
+        const h = Math.max(3, (v / max) * ch);
+        const x = padL + i * bw + bw * 0.18;
+        const w = Math.max(4, bw * 0.64);
+        const y = padT + ch - h;
+        const d = shortDate(g.date);
+        const tip = d + ": " + v.toLocaleString("id-ID");
+        s += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="5" class="bar" data-tip="${tip}" style="animation-delay:${Math.min(i, 14) * 40}ms"><title>${tip}</title></rect>`;
+        if (i % labelStep === 0) {
+          s += `<text x="${(x + w / 2).toFixed(1)}" y="${H - 10}" class="xlab" text-anchor="middle">${d}</text>`;
+        }
+      });
+
+      svg.innerHTML = s;
+      hideTip();
     }
 
     // Auto-unlock ditaruh PALING AKHIR agar semua konstanta & fungsi
