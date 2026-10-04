@@ -980,8 +980,8 @@ minMagisk=2318
 }
 
 /* =========================
-   SPARKS — percikan hijau saat tombol ditekan
-   Ringan: ~12 partikel per tekanan, animasi transform+opacity (GPU),
+   SPARKS — percikan hijau di setiap sentuhan
+   Ringan: ~12 partikel per sentuhan, animasi transform+opacity (GPU),
    partikel dibersihkan otomatis, hormati prefers-reduced-motion.
 ========================= */
 (function initSparks() {
@@ -1019,17 +1019,16 @@ minMagisk=2318
     }
   }
 
-  const SPARK_SELECTOR = "button, a.global-btn, a.dock-back, a.back-link";
-
+  // Setiap sentuhan di mana saja memicu percikan (bukan cuma tombol)
   document.addEventListener("pointerdown", (e) => {
-    if (!e.target.closest(SPARK_SELECTOR)) return;
+    if (e.button !== undefined && e.button !== 0) return; // abaikan klik kanan/tengah
     burst(e.clientX, e.clientY);
   });
 
-  // Akses keyboard (Enter/Space): percikan dari tengah tombol
+  // Akses keyboard (Enter/Space): percikan dari tengah elemen yang difokus
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Enter" && e.key !== " ") return;
-    const el = e.target.closest ? e.target.closest(SPARK_SELECTOR) : null;
+    const el = e.target.closest ? e.target.closest("button, a") : null;
     if (!el) return;
     const r = el.getBoundingClientRect();
     burst(r.left + r.width / 2, r.top + r.height / 2);
