@@ -9,21 +9,21 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"></button>
-
-    <div class="container">
+    <div class="container post-page">
         <main id="post-body" class="project-card" style="text-align:left; line-height:1.8;">
             <p>Memuat konten...</p>
         </main>
 
-        <a href="blog/" class="back-link">
-            <i class="fa-solid fa-arrow-left"></i>
-            <span>Kembali ke Blog</span>
-        </a>
-
         <footer>
             © <span id="year"></span> <span id="footerName"></span>. All rights reserved.
         </footer>
+    </div>
+
+    <div class="post-dock liquid-glass">
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"></button>
+        <a href="blog/" class="dock-back" aria-label="Kembali ke Blog">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
     </div>
 
     <script src="config.js"></script>

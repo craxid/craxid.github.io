@@ -1027,3 +1027,56 @@ footer {
 .post-content th {
   background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
+
+/* =========================
+   POST DOCK (halaman artikel)
+   Toggle tema + tombol kembali mengapung di bawah
+========================= */
+
+.post-page {
+  padding-bottom: 110px;
+}
+
+.post-dock {
+  position: fixed;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 999px;
+  z-index: 999;
+}
+
+.post-dock .theme-toggle {
+  position: static;
+  top: auto;
+  right: auto;
+  width: 48px;
+  height: 48px;
+  z-index: auto;
+}
+
+.dock-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: var(--accent);
+  font-size: 18px;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.dock-back:hover {
+  transform: scale(1.08);
+}
+
+.dock-back:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent), white 30%);
+  outline-offset: 2px;
+}
