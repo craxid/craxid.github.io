@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <button id="theme-toggle" class="theme-btn"><i class="fas fa-moon"></i></button>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"></button>
 
     <div class="container">
         <nav style="text-align:left; margin-bottom:30px;">
@@ -20,9 +20,12 @@
             <p>Memuat konten...</p>
         </main>
 
-        <footer>&copy; <span id="year"></span> Dede Kurniawan</footer>
+        <footer>
+            © <span id="year"></span> <span id="footerName"></span>. All rights reserved.
+        </footer>
     </div>
 
+    <script src="config.js"></script>
     <script src="script.js"></script>
     <script>
         function parseFrontMatter(text) {
