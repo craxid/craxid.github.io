@@ -6,7 +6,7 @@ const CONFIG = {
   profileImage: "/icons/icon.webp",
 
   description:
-    "Portofolio modern berisi project, eksperimen, dan karya digital berbasis web, bot, dan teknologi kreatif.",
+    "Saya Dede K. Seorang... gak tau njir mau diisi apaan :v",
 
   seoDescription:
     "CraXID Project adalah portofolio modern berisi project web, bot, automation, dan teknologi kreatif.",
