@@ -209,22 +209,21 @@
       <div id="cfSetup" class="panel-card liquid-glass">
         <h1 style="font-size:18px;"><i class="fa-solid fa-cloud"></i> Cloudflare</h1>
         <p class="desc">
-          Tempel token API &amp; Zone ID sekali — tersimpan di browser ini saja,
-          tidak pernah masuk ke kode situs.
+          Data diambil lewat Worker milikmu sendiri — token API tersimpan aman
+          di Worker sebagai Secret, tidak pernah lewat browser.
         </p>
-        <input type="password" id="cfToken" class="form-input" placeholder="API Token" autocomplete="off" aria-label="API Token" />
-        <input type="text" id="cfZone" class="form-input" placeholder="Zone ID (hxa.my.id)" autocomplete="off" aria-label="Zone ID" />
+        <input type="url" id="cfWorker" class="form-input" placeholder="https://namamu.xxx.workers.dev" autocomplete="off" aria-label="Worker URL" />
         <button type="button" id="cfSave" class="global-btn primary-btn">
           <i class="fa-solid fa-download"></i><span>Simpan &amp; Muat Data</span>
         </button>
         <p id="cfError" class="pin-error" hidden></p>
         <details class="setup-details">
-          <summary>Cara mendapatkan token &amp; Zone ID</summary>
+          <summary>Cara menyiapkan Worker (sekali saja)</summary>
           <ol>
-            <li>Buka <code>dash.cloudflare.com</code> → profil → <code>API Tokens</code> → <code>Create Token</code>.</li>
-            <li>Pilih template <code>Read analytics</code> atau custom dengan izin <code>Zone → Analytics → Read</code> untuk zona <code>hxa.my.id</code>.</li>
-            <li>Salin tokennya, tempel di kolom atas.</li>
-            <li>Zone ID: buka domain <code>hxa.my.id</code> di dashboard Cloudflare, lihat kolom kanan bawah halaman Overview.</li>
+            <li>Buka <code>dash.cloudflare.com</code> → <code>Workers &amp; Pages</code> → <code>Create Worker</code> → <code>Deploy</code>.</li>
+            <li>Klik <code>Edit code</code>, hapus isi bawaannya, tempel kode worker dari saya, lalu <code>Save and deploy</code>.</li>
+            <li>Buka <code>Settings</code> → <code>Variables</code>: tambah <code>Secret</code> bernama <code>CF_API_TOKEN</code> (isi token API-mu), dan <code>Variable</code> bernama <code>CF_ZONE_ID</code> (isi Zone ID hxa.my.id).</li>
+            <li>Salin URL <code>*.workers.dev</code> milik worker itu, tempel di kolom atas.</li>
           </ol>
         </details>
       </div>
@@ -240,7 +239,7 @@
           </table>
         </div>
         <button type="button" id="cfReset" class="global-btn secondary-btn liquid-glass" style="width:100%;">
-          <i class="fa-solid fa-rotate"></i><span>Hapus token tersimpan</span>
+          <i class="fa-solid fa-rotate"></i><span>Hapus Worker tersimpan</span>
         </button>
       </div>
 
@@ -378,41 +377,36 @@
     const cfError = document.getElementById("cfError");
 
     function initCloudflare() {
-      const token = localStorage.getItem("cf_api_token");
-      const zone = localStorage.getItem("cf_zone_id");
-      if (token && zone) {
-        document.getElementById("cfToken").value = token;
-        document.getElementById("cfZone").value = zone;
-        loadTraffic(token, zone);
+      const workerUrl = localStorage.getItem("cf_worker_url");
+      if (workerUrl) {
+        document.getElementById("cfWorker").value = workerUrl;
+        loadTraffic(workerUrl);
       }
     }
 
     document.getElementById("cfSave").addEventListener("click", () => {
-      const token = document.getElementById("cfToken").value.trim();
-      const zone = document.getElementById("cfZone").value.trim();
-      if (!token || !zone) {
-        cfError.textContent = "Isi token dan Zone ID dulu.";
+      const workerUrl = document.getElementById("cfWorker").value.trim().replace(/\/+$/, "");
+      if (!workerUrl) {
+        cfError.textContent = "Isi URL Worker dulu.";
         cfError.hidden = false;
         return;
       }
-      localStorage.setItem("cf_api_token", token);
-      localStorage.setItem("cf_zone_id", zone);
-      loadTraffic(token, zone);
+      localStorage.setItem("cf_worker_url", workerUrl);
+      loadTraffic(workerUrl);
     });
 
     document.getElementById("cfReset").addEventListener("click", () => {
-      localStorage.removeItem("cf_api_token");
-      localStorage.removeItem("cf_zone_id");
+      localStorage.removeItem("cf_worker_url");
       location.reload();
     });
 
-    async function loadTraffic(token, zoneTag) {
+    async function loadTraffic(workerUrl) {
       cfError.hidden = true;
       cfSetup.querySelector("#cfSave span").textContent = "Memuat…";
       try {
         const start = new Date(Date.now() - 29 * 864e5).toISOString().slice(0, 10);
-        const data = await cfGraphQL(
-          token,
+        const data = await cfViaWorker(
+          workerUrl,
           `query Traffic($zoneTag: String!, $start: Date!) {
             viewer {
               zones(filter: { zoneTag: $zoneTag }) {
@@ -424,7 +418,7 @@
               }
             }
           }`,
-          { zoneTag, start }
+          { start }
         );
         const groups =
           (((data.viewer || {}).zones || [])[0] || {}).httpRequests1dGroups || [];
@@ -466,16 +460,16 @@
       }
     }
 
-    async function cfGraphQL(token, query, variables) {
-      const res = await fetch("https://api.cloudflare.com/client/v4/graphql", {
+    // Lewat Worker milik sendiri (token disimpan sebagai Secret di Worker,
+    // browser tidak pernah melihatnya). Worker menyuntik zoneTag dari env.
+    async function cfViaWorker(workerUrl, query, variables) {
+      const res = await fetch(workerUrl.replace(/\/+$/, "") + "/api/cf", {
         method: "POST",
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query, variables }),
       });
       const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Worker: " + res.status);
       if (data.errors && data.errors.length) {
         throw new Error(data.errors.map((e) => e.message).join("; "));
       }
