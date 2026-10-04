@@ -1,5 +1,5 @@
 ---
-title: Bikin Bot WhatsApp Sendiri dari Nol, Semua yang Saya Pelajari dari Bertahun-Tahun Iseng
+title: Bikin Bot WhatsApp
 date: 2026-10-03
 tags: [bot, whatsapp, tutorial, nodejs]
 description: Panduan lengkap bikin bot WhatsApp dari nol — dari pilih library, pairing, perintah pertama, sampai masalah nyata seperti disconnect dan banned. Berdasarkan pengalaman, bukan dokumentasi kering.

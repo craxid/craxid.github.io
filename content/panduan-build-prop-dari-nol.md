@@ -1,5 +1,5 @@
 ---
-title: Ngoprek build.prop dari Nol, Panduan yang Saya Harapkan Ada Waktu Pertama Kali Coba
+title: Ngoprek build.prop
 date: 2026-10-04
 tags: [android, build.prop, root, magisk, tutorial]
 description: Panduan lengkap ngoprek build.prop dari nol — apa itu sebenarnya, risiko jujurnya, props-props yang beneran berguna, sampai cara bikin modul Magisk sendiri. Ditulis dari pengalaman, bukan teori.

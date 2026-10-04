@@ -1,5 +1,5 @@
 ---
-title: Bikin Web Portofolio Gratis Pakai GitHub Pages, dari Nol Sampai Online dalam Sehari
+title: Web Portofolio Gratis
 date: 2026-10-02
 tags: [web, github, tutorial, portofolio]
 description: Panduan lengkap bikin web portofolio gratis pakai GitHub Pages — dari daftar GitHub, nulis HTML pertama, styling, sampai pasang domain sendiri. Semua dari pengalaman pribadi.
