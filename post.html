@@ -129,6 +129,12 @@
                 // Pakai Clipboard API sehingga lolos proteksi anti-copas situs.
                 target.querySelectorAll(".post-content pre").forEach((pre) => {
                     const codeEl = pre.querySelector("code");
+                    // Bungkus pre agar tombol salin tidak ikut kegeser
+                    // saat isi kode di-scroll horizontal
+                    const wrap = document.createElement("div");
+                    wrap.className = "code-block-wrap";
+                    pre.replaceWith(wrap);
+                    wrap.appendChild(pre);
                     const btn = document.createElement("button");
                     btn.type = "button";
                     btn.className = "code-copy-btn";
@@ -156,7 +162,7 @@
                             btn.innerHTML = '<i class="fa-solid fa-copy"></i><span>Salin</span>';
                         }, 1600);
                     });
-                    pre.appendChild(btn);
+                    wrap.appendChild(btn);
                 });
             } catch (e) {
                 target.innerHTML = "<h1>Gagal memuat artikel.</h1>";

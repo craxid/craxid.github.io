@@ -1052,7 +1052,6 @@ footer {
 }
 
 .post-content pre {
-  position: relative;
   margin: 0 0 16px;
   padding: 16px;
   overflow: auto;
@@ -1065,6 +1064,17 @@ footer {
   background: none;
   padding: 0;
   border-radius: 0;
+}
+
+/* Wrapper blok kode: tombol salin menempel di sini agar tidak ikut
+   kegeser saat isi kode di-scroll horizontal */
+.code-block-wrap {
+  position: relative;
+  margin: 0 0 16px;
+}
+
+.code-block-wrap > pre {
+  margin: 0;
 }
 
 /* Tombol salin di blok kode artikel */
