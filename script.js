@@ -978,3 +978,60 @@ minMagisk=2318
     });
   }
 }
+
+/* =========================
+   SPARKS — percikan hijau saat tombol ditekan
+   Ringan: ~12 partikel per tekanan, animasi transform+opacity (GPU),
+   partikel dibersihkan otomatis, hormati prefers-reduced-motion.
+========================= */
+(function initSparks() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const layer = document.createElement("div");
+  layer.className = "spark-layer";
+  layer.setAttribute("aria-hidden", "true");
+  document.body.appendChild(layer);
+
+  let lastBurst = 0;
+
+  function burst(x, y) {
+    const now = performance.now();
+    if (now - lastBurst < 90) return; // cegah spam partikel saat diklik cepat
+    lastBurst = now;
+
+    const count = 12;
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement("span");
+      s.className = "spark";
+      const angle = (Math.PI * 2 * i) / count + Math.random() * 0.6;
+      const dist = 36 + Math.random() * 46;
+      const size = 4 + Math.random() * 5;
+      s.style.left = x + "px";
+      s.style.top = y + "px";
+      s.style.width = size + "px";
+      s.style.height = size + "px";
+      s.style.marginLeft = -size / 2 + "px";
+      s.style.marginTop = -size / 2 + "px";
+      s.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+      s.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+      s.addEventListener("animationend", () => s.remove());
+      layer.appendChild(s);
+    }
+  }
+
+  const SPARK_SELECTOR = "button, a.global-btn, a.dock-back, a.back-link";
+
+  document.addEventListener("pointerdown", (e) => {
+    if (!e.target.closest(SPARK_SELECTOR)) return;
+    burst(e.clientX, e.clientY);
+  });
+
+  // Akses keyboard (Enter/Space): percikan dari tengah tombol
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const el = e.target.closest ? e.target.closest(SPARK_SELECTOR) : null;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    burst(r.left + r.width / 2, r.top + r.height / 2);
+  });
+})();
