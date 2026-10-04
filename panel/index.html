@@ -267,6 +267,11 @@
     // Hash SHA-256 dari PIN (PIN asli tidak disimpan di kode)
     const PIN_HASH = "6e0499b21e6199e2176bcac92f4a6dae7f23e867d13a87d9aec259b579af294f";
 
+    // Konfigurasi GitHub — ditaruh paling atas agar tidak kena
+    // temporal dead zone saat showDash() dipanggil langsung ketika reload
+    const GH_USER = "craxid";
+    const GH_REPO = "craxid.github.io";
+
     const pinGate = document.getElementById("pinGate");
     const dash = document.getElementById("dash");
     const pinInput = document.getElementById("pinInput");
@@ -305,15 +310,7 @@
       location.reload();
     });
 
-    if (sessionStorage.getItem("panel_unlocked") === "1") {
-      showDash();
-    } else {
-      pinInput.focus();
-    }
-
     /* ============ GITHUB (API publik, tanpa token) ============ */
-    const GH_USER = "craxid";
-    const GH_REPO = "craxid.github.io";
 
     async function ghGet(path) {
       const res = await fetch("https://api.github.com" + path, {
@@ -474,6 +471,14 @@
         throw new Error(data.errors.map((e) => e.message).join("; "));
       }
       return data.data;
+    }
+
+    // Auto-unlock ditaruh PALING AKHIR agar semua konstanta & fungsi
+    // sudah terinisialisasi (hindari temporal dead zone saat reload)
+    if (sessionStorage.getItem("panel_unlocked") === "1") {
+      showDash();
+    } else {
+      pinInput.focus();
     }
   </script>
 </body>
