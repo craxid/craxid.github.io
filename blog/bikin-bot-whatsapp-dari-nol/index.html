@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bikin Bot WhatsApp | Dede Kurniawan</title>
+    <meta name="description" content="Panduan lengkap bikin bot WhatsApp dari nol — dari pilih library, pairing, perintah pertama, sampai masalah nyata seperti disconnect dan banned. Berdasarkan pengalaman, bukan dokumentasi kering.">
+    <meta property="og:title" content="Bikin Bot WhatsApp">
+    <meta property="og:description" content="Panduan lengkap bikin bot WhatsApp dari nol — dari pilih library, pairing, perintah pertama, sampai masalah nyata seperti disconnect dan banned. Berdasarkan pengalaman, bukan dokumentasi kering.">
+    <meta property="og:url" content="https://hxa.my.id/blog/bikin-bot-whatsapp-dari-nol/">
+    <meta name="twitter:title" content="Bikin Bot WhatsApp">
+    <meta name="twitter:description" content="Panduan lengkap bikin bot WhatsApp dari nol — dari pilih library, pairing, perintah pertama, sampai masalah nyata seperti disconnect dan banned. Berdasarkan pengalaman, bukan dokumentasi kering.">
+    <link rel="canonical" id="canonicalLink" href="https://hxa.my.id/blog/bikin-bot-whatsapp-dari-nol/">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Dede Kurniawan">
+    <meta property="og:image" content="https://hxa.my.id/icons/icon.webp">
+    <meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="container post-page">
+        <main id="post-body" class="project-card" style="text-align:left; line-height:1.8;">
+            <p>Memuat konten...</p>
+        </main>
+
+        <footer>
+            © <span id="year"></span> <span id="footerName"></span>. All rights reserved.
+        </footer>
+    </div>
+
+    <div class="post-dock liquid-glass">
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"></button>
+        <a href="/blog/" class="dock-back" aria-label="Kembali ke Blog">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+    </div>
+
+    <script>window.POST_SLUG="bikin-bot-whatsapp-dari-nol";</script>
+    <script src="/config.js"></script>
+    <script src="/script.js"></script>
+    <script>
+        function parseFrontMatter(text) {
+            const meta = {};
+            let body = text;
+
+            const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+
+            if (match) {
+                body = text.slice(match[0].length);
+
+                match[1].split(/\r?\n/).forEach((line) => {
+                    const separator = line.indexOf(":");
+
+                    if (separator === -1) {
+                        return;
+                    }
+
+                    const key = line.slice(0, separator).trim();
+                    let value = line.slice(separator + 1).trim();
+
+                    if (value.startsWith("[") && value.endsWith("]")) {
+                        value = value
+                            .slice(1, -1)
+                            .split(",")
+                            .map((item) => item.trim())
+                            .filter(Boolean);
+                    }
+
+                    if (key) {
+                        meta[key] = value;
+                    }
+                });
+            }
+
+            return { meta, body };
+        }
+
+        function formatPostDate(dateString) {
+            if (!dateString) {
+                return "";
+            }
+
+            const date = new Date(dateString + "T00:00:00");
+
+            if (Number.isNaN(date.getTime())) {
+                return dateString;
+            }
+
+            return date.toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+            });
+        }
+
+        function escapeHtml(text) {
+            return String(text)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;");
+        }
+
+        async function loadPost() {
+            const params = new URLSearchParams(window.location.search);
+            // Slug bisa ditanam langsung (halaman /blog/<slug>/) atau via ?file=
+            const file = (typeof window.POST_SLUG === "string" && window.POST_SLUG) || params.get('file');
+            const target = document.getElementById('post-body');
+
+            if(!file || !/^[a-z0-9-]+$/i.test(file)) {
+                target.innerHTML = "<h1>Artikel tidak ditemukan.</h1>";
+                return;
+            }
+
+            try {
+                const response = await fetch(`/content/${file}.md`);
+                if(!response.ok) throw new Error();
+                const text = await response.text();
+                const { meta, body } = parseFrontMatter(text);
+
+                const title = meta.title || file.replace(/-/g, ' ');
+                const date = formatPostDate(meta.date);
+                const tags = Array.isArray(meta.tags) ? meta.tags : [];
+                const authorName = (typeof CONFIG !== "undefined" && CONFIG.authorName) || "Dede Kurniawan";
+                const authorAvatar = (typeof CONFIG !== "undefined" && CONFIG.profileImage) || "/icons/icon.webp";
+                const readMins = Math.max(1, Math.ceil(body.split(/\s+/).filter(Boolean).length / 200));
+                const cleanUrl = "https://hxa.my.id/blog/" + file + "/";
+
+                const authorHtml = `
+                    <div class="post-author-card liquid-glass">
+                        <div class="post-author">
+                            <img class="post-author-avatar" src="${authorAvatar}" alt="${escapeHtml(authorName)}" loading="lazy">
+                            <div>
+                                <div class="post-author-name">${escapeHtml(authorName)} <i class="fa-solid fa-circle-check post-verified" aria-label="Terverifikasi"></i></div>
+                                <div class="post-author-sub">${date ? escapeHtml(date) + " · " : ""}${readMins} mnt baca</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                const tagsHtml = tags.length ? `
+                    <div class="post-meta">
+                        ${tags.map((tag) => `<span class="post-tag"><i class="fa-solid fa-tag"></i> ${escapeHtml(tag)}</span>`).join("")}
+                    </div>
+                ` : "";
+
+                target.innerHTML = `
+                    <h1 class="post-title">${escapeHtml(title)}</h1>
+                    ${authorHtml}
+                    ${tagsHtml}
+                    <div class="post-content">${marked.parse(body)}</div>
+                    <div class="share-bar">
+                        <span class="share-label"><i class="fa-solid fa-share-nodes"></i>Bagikan</span>
+                        <a class="share-btn" href="https://wa.me/?text=${encodeURIComponent(title + " " + cleanUrl)}" target="_blank" rel="noopener" aria-label="Bagikan ke WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a class="share-btn" href="https://t.me/share/url?url=${encodeURIComponent(cleanUrl)}&text=${encodeURIComponent(title)}" target="_blank" rel="noopener" aria-label="Bagikan ke Telegram"><i class="fa-brands fa-telegram"></i></a>
+                        <a class="share-btn" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(cleanUrl)}&text=${encodeURIComponent(title)}" target="_blank" rel="noopener" aria-label="Bagikan ke X"><i class="fa-brands fa-x-twitter"></i></a>
+                        <button type="button" class="share-btn" id="shareCopy" aria-label="Salin tautan artikel"><i class="fa-solid fa-link"></i></button>
+                    </div>
+                `;
+                document.title = `${title} | Blog`;
+                document.getElementById("canonicalLink").href = cleanUrl;
+
+                // Salin tautan artikel (pakai URL slug yang bersih)
+                document.getElementById("shareCopy").addEventListener("click", async (e) => {
+                    const btn = e.currentTarget;
+                    try {
+                        await navigator.clipboard.writeText(cleanUrl);
+                    } catch (err) {
+                        const ta = document.createElement("textarea");
+                        ta.value = cleanUrl;
+                        ta.setAttribute("readonly", "");
+                        ta.style.position = "fixed";
+                        ta.style.opacity = "0";
+                        document.body.appendChild(ta);
+                        ta.select();
+                        try { document.execCommand("copy"); } catch (e2) {}
+                        ta.remove();
+                    }
+                    btn.classList.add("copied");
+                    const old = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    setTimeout(() => {
+                        btn.classList.remove("copied");
+                        btn.innerHTML = old;
+                    }, 1600);
+                });
+
+                // Web Share API bila tersedia (mis. tombol share bawaan HP)
+                if (navigator.share) {
+                    const bar = target.querySelector(".share-bar");
+                    const native = document.createElement("button");
+                    native.type = "button";
+                    native.className = "share-btn";
+                    native.setAttribute("aria-label", "Bagikan via aplikasi lain");
+                    native.innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket"></i>';
+                    native.addEventListener("click", () => {
+                        navigator.share({ title, text: title, url: cleanUrl }).catch(() => {});
+                    });
+                    bar.appendChild(native);
+                }
+
+                // Tombol salin di setiap blok kode.
+                // Pakai Clipboard API sehingga lolos proteksi anti-copas situs.
+                target.querySelectorAll(".post-content pre").forEach((pre) => {
+                    const codeEl = pre.querySelector("code");
+                    // Bungkus pre agar tombol salin tidak ikut kegeser
+                    // saat isi kode di-scroll horizontal
+                    const wrap = document.createElement("div");
+                    wrap.className = "code-block-wrap";
+                    pre.replaceWith(wrap);
+                    wrap.appendChild(pre);
+                    const btn = document.createElement("button");
+                    btn.type = "button";
+                    btn.className = "code-copy-btn";
+                    btn.setAttribute("aria-label", "Salin kode");
+                    btn.innerHTML = '<i class="fa-solid fa-copy"></i><span>Salin</span>';
+                    btn.addEventListener("click", async () => {
+                        const text = (codeEl || pre).textContent;
+                        try {
+                            await navigator.clipboard.writeText(text);
+                        } catch (err) {
+                            const ta = document.createElement("textarea");
+                            ta.value = text;
+                            ta.setAttribute("readonly", "");
+                            ta.style.position = "fixed";
+                            ta.style.opacity = "0";
+                            document.body.appendChild(ta);
+                            ta.select();
+                            try { document.execCommand("copy"); } catch (e) {}
+                            ta.remove();
+                        }
+                        btn.classList.add("copied");
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i><span>Disalin!</span>';
+                        setTimeout(() => {
+                            btn.classList.remove("copied");
+                            btn.innerHTML = '<i class="fa-solid fa-copy"></i><span>Salin</span>';
+                        }, 1600);
+                    });
+                    wrap.appendChild(btn);
+                });
+            } catch (e) {
+                target.innerHTML = "<h1>Gagal memuat artikel.</h1>";
+            }
+        }
+        loadPost();
+    </script>
+</body>
+</html>
