@@ -110,17 +110,30 @@
                 const title = meta.title || file.replace(/-/g, ' ');
                 const date = formatPostDate(meta.date);
                 const tags = Array.isArray(meta.tags) ? meta.tags : [];
+                const authorName = (typeof CONFIG !== "undefined" && CONFIG.authorName) || "Dede Kurniawan";
+                const authorAvatar = (typeof CONFIG !== "undefined" && CONFIG.profileImage) || "/icons/icon.webp";
+                const readMins = Math.max(1, Math.ceil(body.split(/\s+/).filter(Boolean).length / 200));
 
-                const metaHtml = (date || tags.length) ? `
+                const authorHtml = `
+                    <div class="post-author">
+                        <img class="post-author-avatar" src="${authorAvatar}" alt="${escapeHtml(authorName)}" loading="lazy">
+                        <div>
+                            <div class="post-author-name">${escapeHtml(authorName)} <i class="fa-solid fa-circle-check post-verified" aria-label="Terverifikasi"></i></div>
+                            <div class="post-author-sub">${date ? escapeHtml(date) + " · " : ""}${readMins} mnt baca</div>
+                        </div>
+                    </div>
+                `;
+
+                const tagsHtml = tags.length ? `
                     <div class="post-meta">
-                        ${date ? `<span><i class="fa-solid fa-calendar-days"></i> ${escapeHtml(date)}</span>` : ""}
                         ${tags.map((tag) => `<span class="post-tag"><i class="fa-solid fa-tag"></i> ${escapeHtml(tag)}</span>`).join("")}
                     </div>
                 ` : "";
 
                 target.innerHTML = `
                     <h1 class="post-title">${escapeHtml(title)}</h1>
-                    ${metaHtml}
+                    ${authorHtml}
+                    ${tagsHtml}
                     <div class="post-content">${marked.parse(body)}</div>
                 `;
                 document.title = `${title} | Blog`;

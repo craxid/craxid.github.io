@@ -2,6 +2,8 @@ const CONFIG = {
   accentColor: "#2d6a4f",
   webName: "CraXID Project",
 
+  authorName: "Dede Kurniawan",
+
   siteUrl: "https://craxid.github.io/",
   profileImage: "/icons/icon.webp",
 
