@@ -1052,6 +1052,7 @@ footer {
 }
 
 .post-content pre {
+  position: relative;
   margin: 0 0 16px;
   padding: 16px;
   overflow: auto;
@@ -1064,6 +1065,44 @@ footer {
   background: none;
   padding: 0;
   border-radius: 0;
+}
+
+/* Tombol salin di blok kode artikel */
+.code-copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: transform var(--pop-duration) var(--pop-ease),
+    background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.code-copy-btn:hover {
+  transform: scale(1.06);
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.code-copy-btn:active {
+  transform: scale(0.94);
+}
+
+.code-copy-btn.copied {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .post-content img {

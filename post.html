@@ -124,6 +124,40 @@
                     <div class="post-content">${marked.parse(body)}</div>
                 `;
                 document.title = `${title} | Blog`;
+
+                // Tombol salin di setiap blok kode.
+                // Pakai Clipboard API sehingga lolos proteksi anti-copas situs.
+                target.querySelectorAll(".post-content pre").forEach((pre) => {
+                    const codeEl = pre.querySelector("code");
+                    const btn = document.createElement("button");
+                    btn.type = "button";
+                    btn.className = "code-copy-btn";
+                    btn.setAttribute("aria-label", "Salin kode");
+                    btn.innerHTML = '<i class="fa-solid fa-copy"></i><span>Salin</span>';
+                    btn.addEventListener("click", async () => {
+                        const text = (codeEl || pre).textContent;
+                        try {
+                            await navigator.clipboard.writeText(text);
+                        } catch (err) {
+                            const ta = document.createElement("textarea");
+                            ta.value = text;
+                            ta.setAttribute("readonly", "");
+                            ta.style.position = "fixed";
+                            ta.style.opacity = "0";
+                            document.body.appendChild(ta);
+                            ta.select();
+                            try { document.execCommand("copy"); } catch (e) {}
+                            ta.remove();
+                        }
+                        btn.classList.add("copied");
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i><span>Disalin!</span>';
+                        setTimeout(() => {
+                            btn.classList.remove("copied");
+                            btn.innerHTML = '<i class="fa-solid fa-copy"></i><span>Salin</span>';
+                        }, 1600);
+                    });
+                    pre.appendChild(btn);
+                });
             } catch (e) {
                 target.innerHTML = "<h1>Gagal memuat artikel.</h1>";
             }
