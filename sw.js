@@ -1,4 +1,4 @@
-const CACHE_NAME = "craxid-project-v7";
+const CACHE_NAME = "craxid-project-v8";
 
 const STATIC_ASSETS = [
   "/",
@@ -8,6 +8,12 @@ const STATIC_ASSETS = [
   "/blog/",
   "/blog/index.html",
   "/post.html",
+  "/blog/cara-buat-website-shortlink/",
+  "/blog/monetisasi-youtube-short/",
+  "/blog/cara-ubah-tema-gboard/",
+  "/blog/panduan-build-prop-dari-nol/",
+  "/blog/bikin-bot-whatsapp-dari-nol/",
+  "/blog/web-portofolio-github-pages/",
   "/content/index.json",
   "/about/",
   "/about/index.html",
