@@ -21,6 +21,12 @@
   <meta property="og:url" content="https://hxa.my.id/musik/" />
   <meta property="og:image" content="/icons/icon-256.webp" />
   <meta name="twitter:card" content="summary" />
+  <link rel="manifest" href="/musik/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Musik" />
   <link rel="icon" href="/icons/icon-256.webp" />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
@@ -279,7 +285,7 @@
           <div class="api-status" id="apiStatus"></div>
           <hr class="set-sep" />
           <h3 style="margin-top:12px"><i class="fa-solid fa-cloud"></i> Audio API (background playback)</h3>
-          <p>Bawaan web ini sudah terisi otomatis (<b>tidak perlu diapa-apakan</b>) agar musik tetap bunyi saat layar mati / pindah aplikasi. Isi manual hanya kalau mau pakai function Vercel sendiri; kosongkan untuk kembali ke bawaan.</p>
+          <p>Bawaan web ini sudah terisi otomatis (<b>tidak perlu diapa-apakan</b>) agar musik tetap bunyi saat layar mati / pindah aplikasi. Isi manual hanya kalau mau pakai function Vercel sendiri; kosongkan untuk kembali ke bawaan. Jika API utama gagal, otomatis dicoba via server cadangan.</p>
           <input id="audioApi" type="text" placeholder="https://ytdl-green-zeta.vercel.app/api/yt-audio" autocomplete="off" />
           <div class="row">
             <button class="mini-btn" id="saveAudioApiBtn">Simpan</button>
@@ -638,6 +644,43 @@
       .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
       .then(function(d){ if(!d||!d.status||!d.audioUrl) throw 0; return d; });
   }
+  /* Fallback: savenow.to — dipanggil langsung dari browser (CORS *), format mp3 */
+  var SN_API_KEY='dfcb6d76f2f6a9894gjkege8a4ab232222';
+  function fetchSnMeta(videoId){
+    var initUrl='https://p.savenow.to/ajax/download.php?copyright=0&format=mp3&url='+
+      encodeURIComponent('https://www.youtube.com/watch?v='+videoId)+
+      '&api='+encodeURIComponent(SN_API_KEY);
+    var ctrl=('AbortController' in window)?new AbortController():null;
+    var timer=ctrl?setTimeout(function(){ ctrl.abort(); }, 20000):null;
+    return fetch(initUrl, ctrl?{signal:ctrl.signal}:undefined)
+      .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
+      .then(function(d){
+        if(!d||!d.success||!d.progress_url) throw 0;
+        var pid=String(d.progress_url).split('id=')[1];
+        if(!pid) throw 0;
+        var t0=Date.now();
+        function once(){
+          return fetch('https://p.savenow.to/api/progress?id='+encodeURIComponent(pid))
+            .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+            .then(function(p){
+              if(p&&p.success===1&&p.progress===1000&&p.download_url){
+                return { status:true, audioUrl:p.download_url, audioType:'audio/mpeg',
+                         codec:'mp3', title:p.title||'', thumbnail:p.thumbnail_url||'' };
+              }
+              if(Date.now()-t0>45000) throw 0;
+              return new Promise(function(res){ setTimeout(res,2000); }).then(once);
+            });
+        }
+        return once();
+      });
+  }
+  /* Coba API utama (Vercel) dulu, lalu server cadangan (savenow) */
+  function resolveAudio(videoId){
+    return fetchAudioMeta(videoId).catch(function(){
+      setSearchStatus('Mencoba server cadangan\u2026');
+      return fetchSnMeta(videoId);
+    });
+  }
   function renderFpTech(){
     var el=$('fpTech'); if(!el) return;
     if(useAudio&&audioMeta){
@@ -653,7 +696,7 @@
   function loadViaApi(t, resumePos){
     useAudio=true; audioRefetching=false; audioMeta=null; renderFpTech();
     setSearchStatus('Mengambil audio\u2026');
-    fetchAudioMeta(t.id).then(function(meta){
+    resolveAudio(t.id).then(function(meta){
       setSearchStatus('');
       audioMeta=meta; renderFpTech();
       try{
@@ -679,7 +722,7 @@
     var t=queue[qi], pos=0;
     try{ pos=audioEl.currentTime||0; }catch(e){}
     if(!t){ loadViaYT(t); return; }
-    fetchAudioMeta(t.id).then(function(meta){
+    resolveAudio(t.id).then(function(meta){
       audioRefetching=false; setSearchStatus('');
       audioMeta=meta; renderFpTech();
       audioEl.src=meta.audioUrl;
