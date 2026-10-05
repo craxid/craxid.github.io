@@ -274,27 +274,87 @@
   var audioMeta=null;
   var blobCacheUrl=null;
   function revokeBlob(){ if(blobCacheUrl){ try{ URL.revokeObjectURL(blobCacheUrl); }catch(e){} blobCacheUrl=null; } }
-  /* Unduh audio jadi blob dulu — server tidak dukung range request, tanpa ini seek kereset ke 0 */
-  function playBlob(t, meta, resumePos){
-    setSearchStatus('Mengunduh audio\u2026');
+  /* Streaming langsung (bunyi ~2 detik) + unduh blob di background untuk seek.
+     Server audio mengabaikan range request, jadi seek butuh file utuh via blob. */
+  var blobReady=false, blobPromise=null, blobTrackId=null;
+  function startAudio(t, src, pos){
+    try{
+      audioEl.src=src;
+      audioEl.volume=(parseInt($('vol').value,10)||80)/100;
+      if(pos>0){ try{ audioEl.currentTime=pos; }catch(e){} }
+      var pr=audioEl.play();
+      if(pr&&pr.catch) pr.catch(function(){ setSearchStatus('Ketuk putar untuk mulai.'); });
+    }catch(e){ loadViaYT(t); }
+  }
+  function startBlobFetch(t, meta){
+    blobTrackId=t.id;
     var ctrl=('AbortController' in window)?new AbortController():null;
-    var timer=ctrl?setTimeout(function(){ ctrl.abort(); }, 90000):null;
-    fetch(meta.audioUrl, ctrl?{signal:ctrl.signal}:undefined)
+    var timer=ctrl?setTimeout(function(){ ctrl.abort(); }, 120000):null;
+    blobPromise=fetch(meta.audioUrl, ctrl?{signal:ctrl.signal}:undefined)
       .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.blob(); })
       .then(function(blob){
-        setSearchStatus('');
+        if(blobTrackId!==t.id) return null; /* lagu sudah ganti */
         revokeBlob();
         blobCacheUrl=URL.createObjectURL(blob);
-        audioMeta=meta; renderFpTech();
-        try{
-          audioEl.src=blobCacheUrl;
-          audioEl.volume=(parseInt($('vol').value,10)||80)/100;
-          if(resumePos>0){ try{ audioEl.currentTime=resumePos; }catch(e){} }
-          var pr=audioEl.play();
-          if(pr&&pr.catch) pr.catch(function(){ setSearchStatus('Ketuk putar untuk mulai.'); });
-        }catch(e){ loadViaYT(t); }
+        blobReady=true;
+        return blobCacheUrl;
       })
-      .catch(function(){ setSearchStatus(''); loadViaYT(t); renderEngineBadge(); });
+      .catch(function(){ return null; });
+    return blobPromise;
+  }
+  function ensureBlob(){
+    if(blobReady&&blobCacheUrl) return Promise.resolve(blobCacheUrl);
+    if(blobPromise) return blobPromise;
+    var t=queue[qi];
+    if(!t) return Promise.resolve(null);
+    /* URL audio bisa kedaluwarsa -> resolve ulang sebelum unduh */
+    return resolveAudio(t.id).then(function(meta){
+      if(!meta||!meta.audioUrl) throw 0;
+      audioMeta=meta;
+      return startBlobFetch(t, meta);
+    }).catch(function(){ return null; });
+  }
+  /* Semua seek (progress bar & tombol \u00b13 dtk) lewat sini */
+  function doSeek(pos){
+    pos=Math.max(0,pos);
+    var dur=audioEl.duration||0;
+    if(dur>0&&isFinite(dur)) pos=Math.min(pos,dur);
+    if(blobReady&&blobCacheUrl){
+      try{
+        if(audioEl.src!==blobCacheUrl) audioEl.src=blobCacheUrl;
+        audioEl.currentTime=pos;
+        if(audioEl.paused){ var pr=audioEl.play(); if(pr&&pr.catch) pr.catch(function(){}); }
+      }catch(e){}
+      return;
+    }
+    setSearchStatus('Mengunduh audio\u2026');
+    ensureBlob().then(function(url){
+      setSearchStatus('');
+      if(!url) return;
+      try{
+        audioEl.src=url;
+        audioEl.currentTime=pos;
+        var pr2=audioEl.play(); if(pr2&&pr2.catch) pr2.catch(function(){});
+      }catch(e){}
+    });
+  }
+  function playBlob(t, meta, resumePos){
+    setSearchStatus('');
+    revokeBlob(); blobReady=false; blobPromise=null; blobTrackId=null;
+    audioMeta=meta; renderFpTech();
+    if(resumePos>0){
+      /* refetch setelah error: butuh posisi tepat -> tunggu blob (jalur lama) */
+      setSearchStatus('Mengunduh audio\u2026');
+      startBlobFetch(t, meta).then(function(url){
+        setSearchStatus('');
+        if(!url){ loadViaYT(t); renderEngineBadge(); return; }
+        startAudio(t, url, resumePos);
+      });
+      return;
+    }
+    /* jalur cepat: streaming langsung, blob menyusul di background */
+    startAudio(t, meta.audioUrl, 0);
+    startBlobFetch(t, meta);
   }
   function fetchAudioMeta(videoId, timeoutMs){
     var api=audioApiUrl();
@@ -713,7 +773,7 @@
       var r=this.getBoundingClientRect();
       var frac=(e.clientX-r.left)/r.width;
       try{
-        if(useAudio){ var d=audioEl.duration||0; if(d>0) audioEl.currentTime=d*frac; }
+        if(useAudio){ var d=audioEl.duration||0; if(d>0) doSeek(d*frac); }
         else player.seekTo(player.getDuration()*frac, true);
       }catch(e2){}
     });
@@ -725,7 +785,7 @@
       if(useAudio){
         var dur=audioEl.duration||0, cur=audioEl.currentTime||0, nd=cur+d;
         if(dur>0&&isFinite(dur)) nd=Math.min(nd,dur);
-        audioEl.currentTime=Math.max(0,nd);
+        doSeek(Math.max(0,nd));
       } else if(playerReady){
         player.seekTo(Math.max(0,player.getCurrentTime()+d), true);
       }
