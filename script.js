@@ -1050,3 +1050,38 @@ minMagisk=2318
     burst(r.left + r.width / 2, r.top + r.height / 2);
   });
 })();
+
+/* =========================
+   BROADCAST (pengumuman dari pemilik web)
+========================= */
+(function initBroadcast() {
+  const url = ((window.CONFIG && CONFIG.broadcastWorker) || "").replace(/\/$/, "");
+  if (!url || !document.body) return;
+  const KEY = "cxbroadcast_dismissed";
+  fetch(url, { cache: "no-store" })
+    .then((r) => { if (!r.ok) throw 0; return r.json(); })
+    .then((d) => {
+      const msg = ((d && d.message) || "").trim();
+      if (!msg) return;
+      try { if (localStorage.getItem(KEY) === String(d.updatedAt)) return; } catch {}
+      const bar = document.createElement("div");
+      bar.className = "broadcast-bar";
+      bar.setAttribute("role", "status");
+      const icon = document.createElement("i");
+      icon.className = "fa-solid fa-bullhorn";
+      icon.setAttribute("aria-hidden", "true");
+      const txt = document.createElement("span");
+      txt.textContent = msg;
+      const btn = document.createElement("button");
+      btn.className = "broadcast-close";
+      btn.setAttribute("aria-label", "Tutup pengumuman");
+      btn.textContent = "\u00d7";
+      btn.addEventListener("click", () => {
+        try { localStorage.setItem(KEY, String(d.updatedAt)); } catch {}
+        bar.remove();
+      });
+      bar.append(icon, txt, btn);
+      document.body.insertBefore(bar, document.body.firstChild);
+    })
+    .catch(() => {});
+})();
