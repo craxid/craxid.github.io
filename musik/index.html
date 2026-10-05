@@ -208,7 +208,7 @@
   var player = null, playerReady = false, pendingTrack = null, progressTimer = null;
   var likes = store('cxmusik_likes') || [];
   var playlists = store('cxmusik_playlists') || {};
-  var history = store('cxmusik_history') || [];
+  var hist = store('cxmusik_history') || [];
   var activePl = null, pickerFor = -1;
 
   var $ = function(id){ return document.getElementById(id); };
@@ -332,9 +332,9 @@
   }
 
   /* ---------- library ---------- */
-  function saveLib(){ store('cxmusik_likes',likes); store('cxmusik_playlists',playlists); store('cxmusik_history',history); }
+  function saveLib(){ store('cxmusik_likes',likes); store('cxmusik_playlists',playlists); store('cxmusik_history',hist); }
   function findTrack(id){
-    var all=results.concat(queue, history, likes.map(function(){return null;}).filter(Boolean));
+    var all=results.concat(queue, hist, likes.map(function(){return null;}).filter(Boolean));
     for(var i=0;i<all.length;i++) if(all[i]&&all[i].id===id) return all[i];
     return null;
   }
@@ -344,12 +344,12 @@
     saveLib(); renderResults(); renderLibrary();
   }
   function pushHistory(t){
-    history=history.filter(function(h){ return h.id!==t.id; });
-    history.unshift({id:t.id,title:t.title,author:t.author,dur:t.dur,thumb:t.thumb});
-    history=history.slice(0,30); saveLib();
+    hist=hist.filter(function(h){ return h.id!==t.id; });
+    hist.unshift({id:t.id,title:t.title,author:t.author,dur:t.dur,thumb:t.thumb});
+    hist=hist.slice(0,30); saveLib();
   }
   function renderLibrary(){
-    historyEl.innerHTML = history.length ? history.map(function(t,i){
+    historyEl.innerHTML = hist.length ? hist.map(function(t,i){
       return '<div class="track"><img src="'+esc(t.thumb)+'" alt="" loading="lazy"/>'+
         '<div class="track-info"><div class="track-title">'+esc(t.title)+'</div>'+
         '<div class="track-sub">'+esc(t.author)+'</div></div>'+
@@ -483,7 +483,7 @@
       activePl=name; pickerFor=-1; saveLib(); renderResults(); renderLibrary();
       return;
     }
-    if(btn.dataset.hplay!==undefined){ var h=history[parseInt(btn.dataset.hplay,10)]; if(h) playTrack(h); return; }
+    if(btn.dataset.hplay!==undefined){ var h=hist[parseInt(btn.dataset.hplay,10)]; if(h) playTrack(h); return; }
     if(btn.dataset.lplay!==undefined){ var lt=findTrack(btn.dataset.lplay); if(lt) playTrack(lt); return; }
     if(btn.dataset.lunlike!==undefined){
       var li=likes.indexOf(btn.dataset.lunlike); if(li>=0) likes.splice(li,1);
