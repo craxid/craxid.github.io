@@ -87,13 +87,13 @@
     /* Full player ala YT Music */
     .fullplayer { position: fixed; inset: 0; z-index: 950; display: flex; flex-direction: column; align-items: center;
       padding: calc(16px + env(safe-area-inset-top, 0px)) 24px calc(24px + env(safe-area-inset-bottom, 0px));
-      background: var(--bg); transform: translateY(102%); transition: transform 0.35s ease; overflow-y: auto; }
+      background: var(--bg); transform: translateY(102%); transition: transform 0.35s ease; overflow-y: auto; overflow-x: clip; }
     .fullplayer.show { transform: none; }
     .fp-top { width: 100%; max-width: 480px; display: flex; align-items: center; justify-content: space-between; }
     .fp-art { width: min(76vw, 340px); aspect-ratio: 1; object-fit: cover; border-radius: 26px; margin: 20px 0 22px;
       box-shadow: 0 18px 44px color-mix(in srgb, var(--accent) 30%, transparent); background: var(--code-bg); }
-    .fp-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; text-align: center; max-width: 480px; }
-    .fp-sub { font-size: 15px; color: var(--muted); margin-top: 6px; text-align: center; }
+    .fp-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; text-align: center; width: 100%; max-width: 480px; overflow-wrap: break-word; }
+    .fp-sub { font-size: 15px; color: var(--muted); margin-top: 6px; text-align: center; width: 100%; max-width: 480px; overflow-wrap: break-word; }
     .fp-like { margin-top: 14px; }
     .fp-progress { width: 100%; max-width: 480px; height: 8px; border-radius: 999px;
       background: rgba(127,127,127,.35); background: color-mix(in srgb, var(--text) 28%, transparent);
@@ -108,6 +108,9 @@
     .fp-actions { display: flex; gap: 10px; margin-top: 20px; }
     .fp-queue { width: 100%; max-width: 480px; margin-top: 26px; padding-bottom: 12px; }
     .fp-queue h3 { margin: 0 0 8px; font-size: 16px; text-align: left; }
+    .ap-toggle { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 999px; cursor: pointer;
+      border: 1px solid var(--accent); background: transparent; color: var(--accent); margin-left: 8px; vertical-align: middle; }
+    .ap-toggle.off { opacity: .4; }
     /* Background blur dari cover (dihitung sekali per ganti lagu, bukan tiap frame) */
     .fp-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center;
       filter: blur(60px) saturate(1.5); transform: scale(1.15); }
@@ -203,7 +206,7 @@
       <button class="fp-side" id="fpNext" aria-label="Berikutnya"><i class="fa-solid fa-forward-step"></i></button>
     </div>
     <div class="fp-queue" id="fpQueueWrap">
-      <h3>Antrean berikutnya</h3>
+      <h3>Antrean berikutnya<button class="ap-toggle" id="apToggle" aria-label="Autoplay"></button></h3>
       <div id="fpQueueList"></div>
     </div>
   </div>
@@ -435,7 +438,7 @@
     var P=YT.PlayerState;
     if(e.data===P.PLAYING){ startProgress(); setPlayIcon(true); }
     else if(e.data===P.PAUSED){ stopProgress(); setPlayIcon(false); }
-    else if(e.data===P.ENDED){ step(1); }
+    else if(e.data===P.ENDED){ autoNext(); }
   }
   function setPlayIcon(playing){
     var ic = playing ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
@@ -450,6 +453,7 @@
     if(i<0||i>=queue.length) return;
     qi=i; var t=queue[qi];
     loadTrack(t); pushHistory(t); renderLibrary(); renderQueue(); showBar(t);
+    if(autoplay&&queue.length-qi<=2) fetchRelated();
   }
   function playTrack(t){
     var i=queue.findIndex(function(x){ return x.id===t.id; });
@@ -459,6 +463,57 @@
   function step(d){
     if(!queue.length) return;
     playAt((qi+d+queue.length)%queue.length);
+  }
+  /* ----- autoplay: kalau antrean habis, ambil lagu terkait dari Piped /streams ----- */
+  var autoplay=true;
+  try{ autoplay=localStorage.getItem('cxmusik_autoplay')!=='0'; }catch(e){}
+  var fetchingRel=false;
+  function fetchRelated(){
+    if(fetchingRel) return Promise.resolve(false);
+    var seed=queue[queue.length-1]||queue[qi];
+    if(!seed||!seed.id) return Promise.resolve(false);
+    fetchingRel=true;
+    var order=PIPED.slice(), saved=null;
+    try{ saved=localStorage.getItem('cxmusik_piped'); }catch(e){}
+    if(saved&&order.indexOf(saved)>0){ order.splice(order.indexOf(saved),1); order.unshift(saved); }
+    var i=0;
+    function attempt(){
+      if(i>=order.length){ fetchingRel=false; return Promise.resolve(false); }
+      var ctrl=('AbortController' in window)?new AbortController():null;
+      var timer=ctrl?setTimeout(function(){ ctrl.abort(); },8000):null;
+      return fetch(order[i]+'/streams/'+seed.id, ctrl?{signal:ctrl.signal}:undefined)
+        .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
+        .then(function(d){
+          var have={}; queue.forEach(function(t){ have[t.id]=1; });
+          var added=0;
+          (d.relatedStreams||[]).forEach(function(v){
+            if(added>=5||!v||v.type!=='stream'||!v.title) return;
+            var m=/v=([A-Za-z0-9_-]{11})/.exec(v.url||'');
+            var id=m?m[1]:null;
+            if(!id||have[id]||id===seed.id) return;
+            have[id]=1; added++;
+            queue.push({id:id, title:v.title, author:v.uploaderName||'YouTube', dur:(v.duration>0?v.duration:0), thumb:thumb(id)});
+          });
+          fetchingRel=false;
+          if(added>0){ renderQueue(); return true; }
+          throw 0;
+        })
+        .catch(function(){ i++; return attempt(); });
+    }
+    return attempt();
+  }
+  function autoNext(){
+    if(qi+1<queue.length){ playAt(qi+1); return; }
+    if(!autoplay){ playAt(0); return; }
+    fetchRelated().then(function(ok){
+      if(ok&&qi+1<queue.length) playAt(qi+1);
+      else playAt(0);
+    });
+  }
+  function renderApToggle(){
+    var b=$('apToggle');
+    b.textContent='Autoplay '+(autoplay?'ON':'OFF');
+    b.classList.toggle('off',!autoplay);
   }
   function showBar(t){
     bar.classList.add('show');
@@ -514,6 +569,12 @@
   $('fpNext').addEventListener('click', function(){ step(1); });
   $('fpPrev').addEventListener('click', function(){ step(-1); });
   $('fpClose').addEventListener('click', closeFull);
+  $('apToggle').addEventListener('click', function(){
+    autoplay=!autoplay;
+    try{ localStorage.setItem('cxmusik_autoplay', autoplay?'1':'0'); }catch(e){}
+    renderApToggle();
+  });
+  renderApToggle();
   $('fpQueueBtn').addEventListener('click', function(){
     var w=$('fpQueueWrap');
     if(w) w.scrollIntoView({behavior:'smooth', block:'start'});
