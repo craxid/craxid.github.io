@@ -23,6 +23,7 @@ const CONFIG = {
   githubUsername: "craxid",
 
   whatsappUrl: "/bot/",
+  telegramUrl: "https://t.me/suratempo_bot",
   botGroupUrl: "https://s.id/CrXGC",
 
   // URL Worker broadcast (Cloudflare Worker + KV). Kosongkan untuk menonaktifkan

@@ -200,6 +200,19 @@ if (whatsappBtn) {
   `;
 }
 
+const telegramBtn = document.getElementById("telegramBtn");
+
+if (telegramBtn) {
+  telegramBtn.href = CONFIG.telegramUrl;
+  telegramBtn.target = "_blank";
+  telegramBtn.classList.add("liquid-glass");
+
+  telegramBtn.innerHTML = `
+    <i class="fa-brands fa-telegram"></i>
+    <span>Temp Mail Bot</span>
+  `;
+}
+
 /* =========================
    BOT GROUP BUTTON
    Dipakai di halaman /bot/
