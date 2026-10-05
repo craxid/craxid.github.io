@@ -147,6 +147,7 @@
     @keyframes fpScroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
     @media (prefers-reduced-motion: reduce) { .fp-title.marquee span { animation: none; } }
     .fp-sub { font-size: 15px; color: var(--muted); margin-top: 6px; text-align: center; width: 100%; max-width: 480px; overflow-wrap: break-word; }
+    .fp-tech { font-size: 11px; color: var(--muted); margin-top: 8px; letter-spacing: .6px; text-align: center; }
     .fp-middle { flex: 1 1 auto; min-height: 0; width: 100%; display: flex; flex-direction: column; align-items: center;
       justify-content: center; justify-content: safe center; position: relative; z-index: 1; }
     .fp-bottom { width: 100%; max-width: 480px; padding-bottom: 10px; display: flex; flex-direction: column; align-items: center; }
@@ -308,6 +309,7 @@
       <img class="fp-art" id="fpThumb" alt="" />
       <div class="fp-title" id="fpTitle">—</div>
       <div class="fp-sub" id="fpSub">—</div>
+      <div class="fp-tech" id="fpTech"></div>
       <div class="fp-actions">
         <div class="like-pill">
           <button id="fpLike" aria-label="Suka"><i class="fa-regular fa-thumbs-up"></i></button>
@@ -371,6 +373,19 @@
   function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   var _dta=document.createElement('textarea');
   function decodeHtml(s){ _dta.innerHTML=s||''; return _dta.value; }
+  function isoDur(s){ var m=/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/.exec(s||''); if(!m) return 0;
+    return (parseInt(m[1]||'0',10)*3600)+(parseInt(m[2]||'0',10)*60)+parseInt(m[3]||'0',10); }
+  function prettyCodec(c){ c=String(c||'').toLowerCase();
+    if(c.indexOf('mp4a')===0||c.indexOf('aac')>=0) return 'AAC';
+    if(c.indexOf('opus')>=0) return 'Opus';
+    if(c.indexOf('vorbis')>=0) return 'Vorbis';
+    if(c.indexOf('flac')>=0) return 'FLAC';
+    if(c==='mp3'||c.indexOf('mp3')>=0) return 'MP3';
+    if(c.indexOf('wav')>=0||c.indexOf('pcm')>=0) return 'WAV';
+    if(c.indexOf('ec-3')>=0||c.indexOf('ac-3')>=0) return 'Dolby';
+    return c?c.toUpperCase():''; }
+  function fmtKhz(hz){ hz=parseFloat(hz)||0; if(hz<=0) return '';
+    return (hz>=1000 ? String(hz/1000).replace(/\.0$/,'') : String(hz))+' kHz'; }
   function fmtT(sec){ sec=Math.max(0,Math.floor(sec||0)); var m=Math.floor(sec/60), s=sec%60; return m+':'+(s<10?'0':'')+s; }
   function thumb(id){ return 'https://i.ytimg.com/vi/'+id+'/mqdefault.jpg'; }
   function thumbBig(id){ return 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'; }
@@ -454,10 +469,24 @@
       .then(function(r){ if(!r.ok) throw new Error('key salah / kuota habis'); return r.json(); })
       .then(function(d){
         setStatus('Pencarian: YouTube Data API (key sendiri)');
-        return (d.items||[]).map(function(it){
+        var list=(d.items||[]).map(function(it){
           var id=it.id.videoId;
           return { id:id, title:decodeHtml(it.snippet.title), author:decodeHtml(it.snippet.channelTitle), dur:0, thumb:thumb(id) };
         });
+        var ids=list.map(function(t){ return t.id; }).filter(Boolean);
+        if(!ids.length) return list;
+        /* durasi tidak ikut di search.list -> ambil via videos.list (1 quota) */
+        return fetch('https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id='+ids.join(',')+'&key='+encodeURIComponent(key))
+          .then(function(r){ return r.ok?r.json():null; })
+          .then(function(vd){
+            if(vd&&vd.items){
+              var dm={};
+              vd.items.forEach(function(v){ if(v&&v.id&&v.contentDetails) dm[v.id]=isoDur(v.contentDetails.duration); });
+              list.forEach(function(t){ if(dm[t.id]!=null) t.dur=dm[t.id]; });
+            }
+            return list;
+          })
+          .catch(function(){ return list; });
       });
   }
   function doSearch(){
@@ -590,7 +619,7 @@
     loadViaYT(t);
   }
   function loadViaYT(t){
-    useAudio=false;
+    useAudio=false; audioMeta=null; renderFpTech();
     if(!playerReady){ pendingTrack=t; return; }
     try{
       player.loadVideoById(t.id);
@@ -598,21 +627,35 @@
     }catch(e){}
   }
   /* Ambil link audio dari API (Vercel), putar via <audio> agar bisa background */
-  function fetchAudioUrl(videoId, timeoutMs){
+  var audioMeta=null;
+  function fetchAudioMeta(videoId, timeoutMs){
     var api=audioApiUrl();
     var ctrl=('AbortController' in window)?new AbortController():null;
     var timer=ctrl?setTimeout(function(){ ctrl.abort(); }, timeoutMs||25000):null;
     return fetch(api+'?id='+encodeURIComponent(videoId), ctrl?{signal:ctrl.signal}:undefined)
       .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
-      .then(function(d){ if(!d||!d.status||!d.audioUrl) throw 0; return d.audioUrl; });
+      .then(function(d){ if(!d||!d.status||!d.audioUrl) throw 0; return d; });
+  }
+  function renderFpTech(){
+    var el=$('fpTech'); if(!el) return;
+    if(useAudio&&audioMeta){
+      var p=['API'];
+      var c=prettyCodec(audioMeta.codec); if(c) p.push(c);
+      var khz=fmtKhz(audioMeta.sampleRate); if(khz) p.push(khz);
+      var br=parseFloat(audioMeta.bitrate)||0; if(br>0) p.push(Math.round(br)+' kbps');
+      el.textContent=p.join(' \u2022 ');
+    } else {
+      el.textContent=useAudio?'API':'YouTube';
+    }
   }
   function loadViaApi(t, resumePos){
-    useAudio=true; audioRefetching=false;
+    useAudio=true; audioRefetching=false; audioMeta=null; renderFpTech();
     setSearchStatus('Mengambil audio\u2026');
-    fetchAudioUrl(t.id).then(function(url){
+    fetchAudioMeta(t.id).then(function(meta){
       setSearchStatus('');
+      audioMeta=meta; renderFpTech();
       try{
-        audioEl.src=url;
+        audioEl.src=meta.audioUrl;
         audioEl.volume=(parseInt($('vol').value,10)||80)/100;
         if(resumePos>0){ try{ audioEl.currentTime=resumePos; }catch(e){} }
         var pr=audioEl.play();
@@ -634,9 +677,10 @@
     var t=queue[qi], pos=0;
     try{ pos=audioEl.currentTime||0; }catch(e){}
     if(!t){ loadViaYT(t); return; }
-    fetchAudioUrl(t.id).then(function(url){
+    fetchAudioMeta(t.id).then(function(meta){
       audioRefetching=false; setSearchStatus('');
-      audioEl.src=url;
+      audioMeta=meta; renderFpTech();
+      audioEl.src=meta.audioUrl;
       try{ if(pos>0) audioEl.currentTime=pos; }catch(e){}
       var pr=audioEl.play(); if(pr&&pr.catch) pr.catch(function(){});
     }).catch(function(){ audioRefetching=false; loadViaYT(t); });
@@ -720,7 +764,7 @@
     $('fpThumb').src=thumb(t.id); $('fpBg').style.backgroundImage="url('"+thumb(t.id)+"')";
     setupMarquee($('fpTitle'), t.title); $('fpSub').textContent=t.author||'YouTube';
     $('fpDur').textContent=t.dur?fmtT(t.dur):'--:--';
-    renderFpLike(); updateMediaSession(t);
+    renderFpLike(); renderFpTech(); updateMediaSession(t);
   }
   function setupMarquee(el, text){
     el.classList.remove('marquee');
