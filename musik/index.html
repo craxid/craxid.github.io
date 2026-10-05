@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T8CHP16YEH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-T8CHP16YEH');
+</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Musik • CraXID Project</title>
+  <meta name="description" content="Pemutar musik YouTube ala YT Music — halaman percobaan." />
+  <meta name="theme-color" content="#2d6a4f" />
+  <link rel="canonical" href="/musik/" />
+  <link rel="icon" href="/icons/icon-256.webp" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" /></noscript>
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* ===== MUSIK (halaman percobaan) ===== */
+    .musik-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .musik-head h1 { margin: 0; font-size: clamp(26px, 5vw, 40px); letter-spacing: -1px; flex: 1; }
+    .back-btn { width: 46px; height: 46px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--text); font-size: 17px; flex-shrink: 0; }
+    .trial-badge { display: inline-block; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); margin-bottom: 14px; }
+    .search-bar { display: flex; gap: 10px; margin-bottom: 16px; }
+    .search-bar input { flex: 1; padding: 14px 20px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); background: var(--glass-bg); color: var(--text); font-size: 15px; font-family: inherit; outline: none; }
+    .search-bar input:focus { border-color: var(--accent); }
+    .search-bar button { width: 52px; height: 52px; border-radius: 50%; border: none; cursor: pointer; color: #fff; font-size: 17px;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 84%, white), color-mix(in srgb, var(--accent) 92%, black)); flex-shrink: 0; }
+    .mtabs { display: flex; gap: 10px; margin-bottom: 18px; }
+    .mtab { flex: 1; padding: 12px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); background: transparent; color: var(--text); font-weight: 800; font-size: 14px; cursor: pointer; font-family: inherit; }
+    .mtab.active { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); border-color: var(--accent); }
+    .track { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 18px; margin-bottom: 8px; }
+    .track:hover { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+    .track img { width: 64px; height: 64px; border-radius: 14px; object-fit: cover; flex-shrink: 0; background: var(--code-bg); }
+    .track-info { flex: 1; min-width: 0; }
+    .track-title { font-weight: 700; font-size: 15px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .track-sub { font-size: 13px; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .track-actions { display: flex; gap: 2px; flex-shrink: 0; }
+    .icon-btn { width: 40px; height: 40px; border-radius: 50%; border: none; background: transparent; color: var(--muted); font-size: 15px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+    .icon-btn:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); }
+    .icon-btn.liked { color: #e5484d; }
+    .lib-section { margin-bottom: 26px; }
+    .lib-section > h2 { font-size: 20px; margin: 0 0 12px; letter-spacing: -0.5px; }
+    .pl-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .pl-chip { padding: 10px 18px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); background: transparent; color: var(--text); font-weight: 700; font-size: 14px; cursor: pointer; font-family: inherit; }
+    .pl-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .empty-note { color: var(--muted); font-size: 14px; padding: 18px; text-align: center; border-radius: 18px; }
+    .settings-box { margin-top: 30px; padding: 18px; border-radius: 20px; }
+    .settings-box h3 { margin: 0 0 8px; font-size: 16px; }
+    .settings-box p { font-size: 13px; color: var(--muted); line-height: 1.7; margin: 0 0 10px; }
+    .settings-box input { width: 100%; padding: 12px 16px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); background: transparent; color: var(--text); font-family: inherit; font-size: 14px; margin-bottom: 8px; }
+    .settings-box .row { display: flex; gap: 8px; }
+    .mini-btn { padding: 10px 18px; border-radius: 999px; border: none; background: var(--accent); color: #fff; font-weight: 700; cursor: pointer; font-size: 13px; font-family: inherit; }
+    .mini-btn.ghost { background: transparent; color: var(--text); border: 1px solid color-mix(in srgb, var(--text) 20%, transparent); }
+    .api-status { font-size: 13px; margin-top: 6px; }
+    /* Player bar */
+    .player-bar { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 900;
+      border-radius: 22px; padding: 10px 14px; display: none; }
+    .player-bar.show { display: block; }
+    .pb-main { display: flex; align-items: center; gap: 12px; }
+    .pb-main img { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; flex-shrink: 0; background: var(--code-bg); }
+    .pb-info { flex: 1; min-width: 0; cursor: pointer; }
+    .pb-title { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pb-sub { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pb-controls { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
+    .pb-play { width: 46px; height: 46px; border-radius: 50%; border: none; cursor: pointer; color: #fff; font-size: 17px;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 84%, white), color-mix(in srgb, var(--accent) 92%, black)); }
+    .pb-progress { height: 4px; border-radius: 999px; background: color-mix(in srgb, var(--text) 12%, transparent); margin-top: 8px; cursor: pointer; position: relative; }
+    .pb-fill { height: 100%; border-radius: 999px; background: var(--accent); width: 0%; }
+    .pb-times { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .vol-wrap { display: none; align-items: center; gap: 8px; }
+    /* Queue panel */
+    .queue-panel { position: fixed; left: 12px; right: 12px; bottom: calc(150px + env(safe-area-inset-bottom, 0px)); z-index: 899;
+      border-radius: 22px; padding: 16px; max-height: 46vh; overflow-y: auto; display: none; }
+    .queue-panel.show { display: block; }
+    .queue-panel h3 { margin: 0 0 10px; font-size: 16px; }
+    .q-item { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 14px; font-size: 14px; cursor: pointer; }
+    .q-item:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+    .q-item.playing { color: var(--accent); font-weight: 700; }
+    .q-item img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+    .q-item span { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #ytplayer { position: fixed; width: 2px; height: 2px; bottom: 0; left: 0; opacity: 0.01; pointer-events: none; }
+    .pl-picker { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 10px 4px; }
+    .loading-row { text-align: center; color: var(--muted); padding: 24px; font-size: 14px; }
+    @media (min-width: 1024px) {
+      .vol-wrap { display: flex; }
+      .vol-wrap input { width: 90px; accent-color: var(--accent); }
+      .player-bar { left: auto; right: 24px; bottom: 24px; width: 420px; }
+      .queue-panel { left: auto; right: 24px; width: 420px; bottom: 190px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="ytplayer" aria-hidden="true"></div>
+  <main class="page">
+    <section class="content" style="text-align:left">
+      <div class="musik-head">
+        <a href="/" class="back-btn liquid-glass" aria-label="Kembali"><i class="fa-solid fa-arrow-left"></i></a>
+        <h1>Musik</h1>
+        <button id="themeToggle" class="back-btn liquid-glass" aria-label="Ganti tema" style="border:none;cursor:pointer"></button>
+      </div>
+      <span class="trial-badge"><i class="fa-solid fa-flask"></i> HALAMAN PERCOBAAN</span>
+
+      <div class="search-bar">
+        <input id="q" type="search" placeholder="Cari lagu / artis di YouTube…" autocomplete="off" aria-label="Cari musik" />
+        <button id="searchBtn" aria-label="Cari"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+
+      <div class="mtabs">
+        <button class="mtab active" id="tabSearchBtn">Cari</button>
+        <button class="mtab" id="tabLibBtn">Library</button>
+      </div>
+
+      <div id="tabSearch">
+        <div id="results"></div>
+      </div>
+
+      <div id="tabLib" hidden>
+        <div class="lib-section">
+          <h2>Baru diputar</h2>
+          <div id="historyList"></div>
+        </div>
+        <div class="lib-section">
+          <h2>Disukai</h2>
+          <div id="likedList"></div>
+        </div>
+        <div class="lib-section">
+          <h2>Playlist</h2>
+          <div class="pl-chips" id="plChips"></div>
+          <div style="margin-top:10px"><button class="mini-btn ghost" id="newPlBtn"><i class="fa-solid fa-plus"></i> Buat playlist</button></div>
+          <div id="plTracks" style="margin-top:12px"></div>
+        </div>
+      </div>
+
+      <div class="settings-box liquid-glass">
+        <h3><i class="fa-solid fa-gear"></i> Pengaturan pencarian</h3>
+        <p>Pencarian memakai instance publik (gratis, kadang lambat/mati). Untuk hasil yang selalu stabil, tempel <b>YouTube Data API key</b> milikmu — tersimpan di HP ini saja, tidak dikirim ke mana-mana. Cara buat: Google Cloud Console → aktifkan <i>YouTube Data API v3</i> → buat API key.</p>
+        <input id="ytKey" type="text" placeholder="YouTube Data API key (opsional)" autocomplete="off" />
+        <div class="row">
+          <button class="mini-btn" id="saveKeyBtn">Simpan</button>
+          <button class="mini-btn ghost" id="delKeyBtn">Hapus</button>
+        </div>
+        <div class="api-status" id="apiStatus"></div>
+      </div>
+    </section>
+    <footer>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="/about">Tentang</a>
+        <a href="/contact">Kontak</a>
+        <a href="/privacy">Privasi</a>
+      </nav>
+      © <span id="year"></span> <span id="footerName"></span>. All rights reserved.
+    </footer>
+  </main>
+
+  <div class="queue-panel liquid-glass" id="queuePanel">
+    <h3>Antrean</h3>
+    <div id="queueList"></div>
+  </div>
+
+  <div class="player-bar liquid-glass" id="playerBar">
+    <div class="pb-main">
+      <img id="pbThumb" alt="" />
+      <div class="pb-info" id="pbInfo" title="Lihat antrean">
+        <div class="pb-title" id="pbTitle">—</div>
+        <div class="pb-sub" id="pbSub">—</div>
+      </div>
+      <div class="pb-controls">
+        <button class="icon-btn" id="pbPrev" aria-label="Sebelumnya"><i class="fa-solid fa-backward-step"></i></button>
+        <button class="pb-play" id="pbPlay" aria-label="Putar/Jeda"><i class="fa-solid fa-play"></i></button>
+        <button class="icon-btn" id="pbNext" aria-label="Berikutnya"><i class="fa-solid fa-forward-step"></i></button>
+      </div>
+      <div class="vol-wrap">
+        <i class="fa-solid fa-volume-high" style="color:var(--muted)"></i>
+        <input type="range" id="vol" min="0" max="100" value="80" aria-label="Volume" />
+      </div>
+    </div>
+    <div class="pb-progress" id="pbProgress"><div class="pb-fill" id="pbFill"></div></div>
+    <div class="pb-times"><span id="tCur">0:00</span><span id="tDur">0:00</span></div>
+  </div>
+
+  <script>
+  /* ================= MUSIK (trial) ================= */
+  'use strict';
+  var PIPED = [
+    'https://api.piped.private.coffee',
+    'https://pipedapi.adminforge.de',
+    'https://api.piped.projectsegfau.lt',
+    'https://pipedapi.reallyaweso.me'
+  ];
+  var body = document.body;
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function fmtT(sec){ sec=Math.max(0,Math.floor(sec||0)); var m=Math.floor(sec/60), s=sec%60; return m+':'+(s<10?'0':'')+s; }
+  function thumb(id){ return 'https://i.ytimg.com/vi/'+id+'/mqdefault.jpg'; }
+  function store(k, v){ try{ if(v===undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+
+  /* ---------- state ---------- */
+  var results = [];
+  var queue = [], qi = -1;
+  var player = null, playerReady = false, pendingTrack = null, progressTimer = null;
+  var likes = store('cxmusik_likes') || [];
+  var playlists = store('cxmusik_playlists') || {};
+  var history = store('cxmusik_history') || [];
+  var activePl = null, pickerFor = -1;
+
+  var $ = function(id){ return document.getElementById(id); };
+  var resultsEl=$('results'), historyEl=$('historyList'), likedEl=$('likedList'),
+      plChipsEl=$('plChips'), plTracksEl=$('plTracks'),
+      bar=$('playerBar'), qPanel=$('queuePanel'), qList=$('queueList');
+
+  /* ---------- tema ---------- */
+  var themeToggle = $('themeToggle');
+  themeToggle.classList.add('liquid-glass');
+  if (localStorage.getItem('theme') === 'dark') { body.classList.add('dark'); themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>'; }
+  else { themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>'; }
+  themeToggle.addEventListener('click', function(){
+    body.classList.toggle('dark');
+    var d = body.classList.contains('dark');
+    localStorage.setItem('theme', d ? 'dark' : 'light');
+    themeToggle.innerHTML = d ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+  });
+  $('year').textContent = new Date().getFullYear();
+  $('footerName').textContent = 'CraXID Project';
+
+  /* ---------- percikan ---------- */
+  (function(){
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var layer = document.createElement('div'); layer.className='spark-layer'; layer.setAttribute('aria-hidden','true');
+    document.body.appendChild(layer); var last=0;
+    document.addEventListener('pointerdown', function(e){
+      if (e.button!==undefined && e.button!==0) return;
+      var now=performance.now(); if(now-last<90) return; last=now;
+      for(var i=0;i<12;i++){ var s=document.createElement('span'); s.className='spark';
+        var a=(Math.PI*2*i)/12+Math.random()*0.6, d2=36+Math.random()*46, sz=4+Math.random()*5;
+        s.style.left=e.clientX+'px'; s.style.top=e.clientY+'px'; s.style.width=sz+'px'; s.style.height=sz+'px';
+        s.style.marginLeft=-sz/2+'px'; s.style.marginTop=-sz/2+'px';
+        s.style.setProperty('--dx', Math.cos(a)*d2+'px'); s.style.setProperty('--dy', Math.sin(a)*d2+'px');
+        s.addEventListener('animationend', function(){ this.remove(); }); layer.appendChild(s); }
+    });
+  })();
+
+  /* ---------- pencarian ---------- */
+  function vidOfPiped(item){ var m=/v=([A-Za-z0-9_-]{11})/.exec(item.url||''); return m?m[1]:null; }
+  function searchPiped(q){
+    var i=0;
+    function attempt(){
+      if(i>=PIPED.length) return Promise.reject(new Error('semua instance mati'));
+      return fetch(PIPED[i]+'/search?q='+encodeURIComponent(q)+'&filter=videos')
+        .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+        .then(function(d){
+          var items=(d.items||[]).filter(function(it){ return it.type==='stream'; });
+          if(!items.length) throw 0;
+          try{ localStorage.setItem('cxmusik_piped', PIPED[i]); }catch(e){}
+          setStatus('Pencarian: instance publik ('+PIPED[i].replace('https://','')+')');
+          return items.map(function(it){
+            var id=vidOfPiped(it);
+            return { id:id, title:it.title, author:it.uploaderName||'', dur:it.duration||0, thumb:thumb(id) };
+          }).filter(function(t){ return t.id; });
+        })
+        .catch(function(){ i++; return attempt(); });
+    }
+    var saved=null; try{ saved=localStorage.getItem('cxmusik_piped'); }catch(e){}
+    if(saved && PIPED.indexOf(saved)>0){ PIPED.splice(PIPED.indexOf(saved),1); PIPED.unshift(saved); }
+    return attempt();
+  }
+  function searchYT(q, key){
+    return fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=20&q='+encodeURIComponent(q)+'&key='+encodeURIComponent(key))
+      .then(function(r){ if(!r.ok) throw new Error('key salah / kuota habis'); return r.json(); })
+      .then(function(d){
+        setStatus('Pencarian: YouTube Data API (key sendiri)');
+        return (d.items||[]).map(function(it){
+          var id=it.id.videoId;
+          return { id:id, title:it.snippet.title, author:it.snippet.channelTitle, dur:0, thumb:thumb(id) };
+        });
+      });
+  }
+  function doSearch(){
+    var q=$('q').value.trim();
+    if(!q) return;
+    resultsEl.innerHTML='<div class="loading-row"><i class="fa-solid fa-circle-notch fa-spin"></i> Mencari…</div>';
+    var key=null; try{ key=localStorage.getItem('cxmusik_ytkey')||''; }catch(e){}
+    var p = key ? searchYT(q,key).catch(function(){ return searchPiped(q); }) : searchPiped(q);
+    p.then(function(list){
+      results=list; pickerFor=-1; renderResults();
+      if(!list.length) resultsEl.innerHTML='<div class="empty-note">Tidak ketemu. Coba kata kunci lain.</div>';
+    }).catch(function(){
+      resultsEl.innerHTML='<div class="empty-note">Pencarian gagal — semua instance publik sedang mati. Coba lagi nanti atau isi YouTube Data API key di Pengaturan.</div>';
+    });
+  }
+  $('searchBtn').addEventListener('click', doSearch);
+  $('q').addEventListener('keydown', function(e){ if(e.key==='Enter') doSearch(); });
+
+  /* ---------- daftar hasil ---------- */
+  function trackRow(t, idx, ctx){
+    var liked = likes.indexOf(t.id)>=0 ? ' liked' : '';
+    return '<div class="track" data-idx="'+idx+'" data-ctx="'+ctx+'">'+
+      '<img src="'+esc(t.thumb)+'" alt="" loading="lazy"/>'+
+      '<div class="track-info"><div class="track-title">'+esc(t.title)+'</div>'+
+      '<div class="track-sub">'+esc(t.author)+(t.dur?' • '+fmtT(t.dur):'')+'</div></div>'+
+      '<div class="track-actions">'+
+      '<button class="icon-btn" data-act="play" aria-label="Putar"><i class="fa-solid fa-play"></i></button>'+
+      '<button class="icon-btn" data-act="queue" aria-label="Tambah antrean"><i class="fa-solid fa-list-ul"></i></button>'+
+      '<button class="icon-btn'+liked+'" data-act="like" aria-label="Suka"><i class="fa-solid fa-heart"></i></button>'+
+      '<button class="icon-btn" data-act="pl" aria-label="Playlist"><i class="fa-solid fa-plus"></i></button>'+
+      '</div></div>'+
+      (pickerFor===idx && ctx==='r' ? plPickerHtml() : '');
+  }
+  function plPickerHtml(){
+    var names=Object.keys(playlists);
+    var h='<div class="pl-picker">';
+    names.forEach(function(n){ h+='<button class="pl-chip" data-plpick="'+esc(n)+'">'+esc(n)+'</button>'; });
+    h+='<button class="pl-chip" data-plpick="__new">+ Baru</button></div>';
+    return h;
+  }
+  function renderResults(){
+    resultsEl.innerHTML = results.map(function(t,i){ return trackRow(t,i,'r'); }).join('') ||
+      '<div class="empty-note">Cari lagu di kolom atas untuk mulai.</div>';
+  }
+
+  /* ---------- library ---------- */
+  function saveLib(){ store('cxmusik_likes',likes); store('cxmusik_playlists',playlists); store('cxmusik_history',history); }
+  function findTrack(id){
+    var all=results.concat(queue, history, likes.map(function(){return null;}).filter(Boolean));
+    for(var i=0;i<all.length;i++) if(all[i]&&all[i].id===id) return all[i];
+    return null;
+  }
+  function likeTrack(t){
+    var i=likes.indexOf(t.id);
+    if(i>=0) likes.splice(i,1); else { likes.unshift(t.id); }
+    saveLib(); renderResults(); renderLibrary();
+  }
+  function pushHistory(t){
+    history=history.filter(function(h){ return h.id!==t.id; });
+    history.unshift({id:t.id,title:t.title,author:t.author,dur:t.dur,thumb:t.thumb});
+    history=history.slice(0,30); saveLib();
+  }
+  function renderLibrary(){
+    historyEl.innerHTML = history.length ? history.map(function(t,i){
+      return '<div class="track"><img src="'+esc(t.thumb)+'" alt="" loading="lazy"/>'+
+        '<div class="track-info"><div class="track-title">'+esc(t.title)+'</div>'+
+        '<div class="track-sub">'+esc(t.author)+'</div></div>'+
+        '<div class="track-actions"><button class="icon-btn" data-hplay="'+i+'" aria-label="Putar"><i class="fa-solid fa-play"></i></button></div></div>';
+    }).join('') : '<div class="empty-note">Belum ada riwayat.</div>';
+    likedEl.innerHTML = likes.length ? likes.map(function(id){
+      var t=findTrack(id)||{id:id,title:id,author:'',dur:0,thumb:thumb(id)};
+      return '<div class="track"><img src="'+esc(t.thumb)+'" alt="" loading="lazy"/>'+
+        '<div class="track-info"><div class="track-title">'+esc(t.title)+'</div>'+
+        '<div class="track-sub">'+esc(t.author)+'</div></div>'+
+        '<div class="track-actions"><button class="icon-btn" data-lplay="'+esc(id)+'" aria-label="Putar"><i class="fa-solid fa-play"></i></button>'+
+        '<button class="icon-btn liked" data-lunlike="'+esc(id)+'" aria-label="Hapus"><i class="fa-solid fa-heart"></i></button></div></div>';
+    }).join('') : '<div class="empty-note">Ketuk ♥ di lagu untuk menyimpan di sini.</div>';
+    var names=Object.keys(playlists);
+    plChipsEl.innerHTML = names.map(function(n){
+      return '<button class="pl-chip'+(activePl===n?' active':'')+'" data-pl="'+esc(n)+'">'+esc(n)+' ('+playlists[n].length+')</button>';
+    }).join('') || '<span style="color:var(--muted);font-size:14px">Belum ada playlist.</span>';
+    if(activePl && !playlists[activePl]) activePl=null;
+    plTracksEl.innerHTML = activePl ? playlists[activePl].map(function(t,i){
+      return '<div class="track"><img src="'+esc(t.thumb)+'" alt="" loading="lazy"/>'+
+        '<div class="track-info"><div class="track-title">'+esc(t.title)+'</div>'+
+        '<div class="track-sub">'+esc(t.author)+'</div></div>'+
+        '<div class="track-actions"><button class="icon-btn" data-pplay="'+i+'" aria-label="Putar"><i class="fa-solid fa-play"></i></button>'+
+        '<button class="icon-btn" data-prm="'+i+'" aria-label="Hapus"><i class="fa-solid fa-trash"></i></button></div></div>';
+    }).join('') : '';
+  }
+
+  /* ---------- player YouTube (tersembunyi) ---------- */
+  window.onYouTubeIframeAPIReady = function(){
+    player = new YT.Player('ytplayer', {
+      height:'2', width:'2',
+      playerVars:{ autoplay:0, controls:0, disablekb:1, fs:0, rel:0, iv_load_policy:3 },
+      events:{ onReady:function(){ playerReady=true; if(pendingTrack){ loadTrack(pendingTrack); pendingTrack=null; } },
+               onStateChange:onState, onError:function(){ step(1); } }
+    });
+  };
+  (function(){ var s=document.createElement('script'); s.src='https://www.youtube.com/iframe_api'; document.head.appendChild(s); })();
+
+  function onState(e){
+    var P=YT.PlayerState;
+    if(e.data===P.PLAYING){ startProgress(); setPlayIcon(true); }
+    else if(e.data===P.PAUSED){ stopProgress(); setPlayIcon(false); }
+    else if(e.data===P.ENDED){ step(1); }
+  }
+  function setPlayIcon(playing){
+    $('pbPlay').innerHTML = playing ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
+  }
+  function loadTrack(t){
+    if(!playerReady){ pendingTrack=t; return; }
+    player.loadVideoById(t.id);
+    player.setVolume(parseInt($('vol').value,10)||80);
+  }
+  function playAt(i){
+    if(i<0||i>=queue.length) return;
+    qi=i; var t=queue[qi];
+    loadTrack(t); pushHistory(t); renderLibrary(); renderQueue(); showBar(t);
+  }
+  function playTrack(t){
+    var i=queue.findIndex(function(x){ return x.id===t.id; });
+    if(i<0){ queue.push(t); i=queue.length-1; }
+    playAt(i);
+  }
+  function step(d){
+    if(!queue.length) return;
+    playAt((qi+d+queue.length)%queue.length);
+  }
+  function showBar(t){
+    bar.classList.add('show');
+    $('pbThumb').src=t.thumb; $('pbTitle').textContent=t.title; $('pbSub').textContent=t.author||'YouTube';
+    $('tDur').textContent=t.dur?fmtT(t.dur):'--:--';
+  }
+  function renderQueue(){
+    qList.innerHTML = queue.map(function(t,i){
+      return '<div class="q-item'+(i===qi?' playing':'')+'" data-q="'+i+'"><img src="'+esc(t.thumb)+'" alt=""/>'+
+        '<span>'+esc(t.title)+'</span>'+(i===qi?'<i class="fa-solid fa-volume-high"></i>':'')+'</div>';
+    }).join('') || '<div class="empty-note">Antrean kosong.</div>';
+  }
+  function startProgress(){
+    stopProgress();
+    progressTimer=setInterval(function(){
+      if(!player||!playerReady) return;
+      try{
+        var cur=player.getCurrentTime()||0, dur=player.getDuration()||0;
+        if(dur>0){ $('pbFill').style.width=(cur/dur*100)+'%'; $('tCur').textContent=fmtT(cur); $('tDur').textContent=fmtT(dur); }
+        else { $('tCur').textContent=fmtT(cur); }
+      }catch(e){}
+    },500);
+  }
+  function stopProgress(){ if(progressTimer){ clearInterval(progressTimer); progressTimer=null; } }
+
+  $('pbPlay').addEventListener('click', function(){
+    if(!playerReady||qi<0) return;
+    var s=player.getPlayerState();
+    if(s===YT.PlayerState.PLAYING) player.pauseVideo(); else player.playVideo();
+  });
+  $('pbNext').addEventListener('click', function(){ step(1); });
+  $('pbPrev').addEventListener('click', function(){ step(-1); });
+  $('pbInfo').addEventListener('click', function(){ qPanel.classList.toggle('show'); renderQueue(); });
+  $('vol').addEventListener('input', function(){ if(playerReady) player.setVolume(parseInt(this.value,10)||0); });
+  $('pbProgress').addEventListener('click', function(e){
+    if(!playerReady||qi<0) return;
+    var r=this.getBoundingClientRect();
+    var frac=(e.clientX-r.left)/r.width;
+    try{ player.seekTo(player.getDuration()*frac, true); }catch(e2){}
+  });
+  qList.addEventListener('click', function(e){
+    var el=e.target.closest('[data-q]'); if(el) playAt(parseInt(el.dataset.q,10));
+  });
+
+  /* ---------- aksi baris lagu ---------- */
+  document.addEventListener('click', function(e){
+    var btn=e.target.closest('[data-act],[data-plpick],[data-hplay],[data-lplay],[data-lunlike],[data-pl],[data-pplay],[data-prm]');
+    if(!btn) return;
+    var act=btn.dataset.act, ctx;
+    if(act){
+      var row=btn.closest('.track'); if(!row) return;
+      var idx=parseInt(row.dataset.idx,10); ctx=row.dataset.ctx;
+      var t = ctx==='r' ? results[idx] : null; if(!t) return;
+      if(act==='play'){ playTrack(t); }
+      else if(act==='queue'){ queue.push(t); renderQueue(); }
+      else if(act==='like'){ likeTrack(t); }
+      else if(act==='pl'){ pickerFor = (pickerFor===idx? -1:idx); renderResults(); }
+      return;
+    }
+    if(btn.dataset.plpick!==undefined){
+      var name=btn.dataset.plpick;
+      if(name==='__new'){ name=prompt('Nama playlist:'); if(!name) return; name=name.trim(); if(!name) return; }
+      var t2=results[pickerFor]; if(!t2) return;
+      if(!playlists[name]) playlists[name]=[];
+      if(playlists[name].every(function(x){ return x.id!==t2.id; })) playlists[name].push({id:t2.id,title:t2.title,author:t2.author,dur:t2.dur,thumb:t2.thumb});
+      activePl=name; pickerFor=-1; saveLib(); renderResults(); renderLibrary();
+      return;
+    }
+    if(btn.dataset.hplay!==undefined){ var h=history[parseInt(btn.dataset.hplay,10)]; if(h) playTrack(h); return; }
+    if(btn.dataset.lplay!==undefined){ var lt=findTrack(btn.dataset.lplay); if(lt) playTrack(lt); return; }
+    if(btn.dataset.lunlike!==undefined){
+      var li=likes.indexOf(btn.dataset.lunlike); if(li>=0) likes.splice(li,1);
+      saveLib(); renderResults(); renderLibrary(); return;
+    }
+    if(btn.dataset.pl!==undefined){ activePl = (activePl===btn.dataset.pl? null:btn.dataset.pl); renderLibrary(); return; }
+    if(btn.dataset.pplay!==undefined){ var pt=playlists[activePl][parseInt(btn.dataset.pplay,10)]; if(pt) playTrack(pt); return; }
+    if(btn.dataset.prm!==undefined){ playlists[activePl].splice(parseInt(btn.dataset.prm,10),1); saveLib(); renderLibrary(); return; }
+  });
+
+  /* ---------- tab ---------- */
+  $('tabSearchBtn').addEventListener('click', function(){
+    $('tabSearchBtn').classList.add('active'); $('tabLibBtn').classList.remove('active');
+    $('tabSearch').hidden=false; $('tabLib').hidden=true;
+  });
+  $('tabLibBtn').addEventListener('click', function(){
+    $('tabLibBtn').classList.add('active'); $('tabSearchBtn').classList.remove('active');
+    $('tabLib').hidden=false; $('tabSearch').hidden=true; renderLibrary();
+  });
+
+  /* ---------- playlist baru ---------- */
+  $('newPlBtn').addEventListener('click', function(){
+    var name=prompt('Nama playlist:'); if(!name) return; name=name.trim(); if(!name) return;
+    if(!playlists[name]) playlists[name]=[];
+    activePl=name; saveLib(); renderLibrary();
+  });
+
+  /* ---------- pengaturan key ---------- */
+  function setStatus(s){ $('apiStatus').textContent=s||''; }
+  try{ $('ytKey').value=localStorage.getItem('cxmusik_ytkey')||''; }catch(e){}
+  $('saveKeyBtn').addEventListener('click', function(){
+    var v=$('ytKey').value.trim();
+    try{ if(v) localStorage.setItem('cxmusik_ytkey',v); else localStorage.removeItem('cxmusik_ytkey'); }catch(e){}
+    setStatus(v?'Key tersimpan. Pencarian berikutnya memakai YouTube Data API.':'Key dihapus.');
+  });
+  $('delKeyBtn').addEventListener('click', function(){
+    try{ localStorage.removeItem('cxmusik_ytkey'); }catch(e){}
+    $('ytKey').value=''; setStatus('Key dihapus.');
+  });
+
+  renderResults(); renderLibrary();
+  </script>
+</body>
+</html>
