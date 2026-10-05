@@ -85,12 +85,12 @@
     .pl-picker { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 10px 4px; }
     .loading-row { text-align: center; color: var(--muted); padding: 24px; font-size: 14px; }
     /* Full player ala YT Music */
-    .fullplayer { position: fixed; inset: 0; z-index: 950; display: flex; flex-direction: column; align-items: center; justify-content: center; justify-content: safe center;
+    .fullplayer { position: fixed; inset: 0; z-index: 950; display: flex; flex-direction: column; align-items: center;
       padding: calc(16px + env(safe-area-inset-top, 0px)) 24px calc(24px + env(safe-area-inset-bottom, 0px));
       background: var(--bg); transform: translateY(102%); transition: transform 0.35s ease; overflow-y: auto; overflow-x: clip; }
     .fullplayer.show { transform: none; }
     .fp-top { width: 100%; max-width: 480px; display: flex; align-items: center; justify-content: space-between; }
-    .fp-art { width: min(76vw, 340px); aspect-ratio: 1; object-fit: cover; border-radius: 26px; margin: 20px 0 22px;
+    .fp-art { width: min(76vw, 340px); aspect-ratio: 1; object-fit: cover; border-radius: 26px; margin: 0 0 20px;
       box-shadow: 0 18px 44px color-mix(in srgb, var(--accent) 30%, transparent); background: var(--code-bg); }
     .fp-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; text-align: center; width: 100%; max-width: 480px;
       white-space: nowrap; overflow: hidden; }
@@ -99,7 +99,17 @@
     @keyframes fpScroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
     @media (prefers-reduced-motion: reduce) { .fp-title.marquee span { animation: none; } }
     .fp-sub { font-size: 15px; color: var(--muted); margin-top: 6px; text-align: center; width: 100%; max-width: 480px; overflow-wrap: break-word; }
-    .fp-like { margin-top: 14px; }
+    .fp-middle { flex: 1 1 auto; min-height: 0; width: 100%; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; justify-content: safe center; position: relative; z-index: 1; }
+    .fp-bottom { width: 100%; max-width: 480px; padding-bottom: 10px; display: flex; flex-direction: column; align-items: center; }
+    .fp-actions { margin-top: 18px; }
+    .like-pill { display: flex; align-items: center; border-radius: 999px; padding: 4px;
+      background: color-mix(in srgb, var(--text) 9%, transparent); }
+    .like-pill button { border: none; background: transparent; color: var(--text); font-size: 18px;
+      padding: 8px 22px; border-radius: 999px; cursor: pointer; }
+    .like-pill .pill-div { width: 1px; align-self: stretch; margin: 10px 0;
+      background: color-mix(in srgb, var(--text) 20%, transparent); }
+    .like-pill button.liked, .like-pill button.disliked { color: var(--accent); }
     .fp-progress { width: 100%; max-width: 480px; height: 8px; border-radius: 999px;
       background: rgba(127,127,127,.35); background: color-mix(in srgb, var(--text) 28%, transparent);
       margin-top: 20px; cursor: pointer; }
@@ -128,7 +138,7 @@
     .fp-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center;
       filter: blur(60px) saturate(1.5); transform: scale(1.15); }
     .fp-dim { position: absolute; inset: 0; z-index: 0; background: color-mix(in srgb, var(--bg) 60%, transparent); }
-    .fullplayer > *:not(.fp-bg):not(.fp-dim) { position: relative; z-index: 1; flex-shrink: 0; }
+    .fullplayer > *:not(.fp-bg):not(.fp-dim):not(.fp-middle) { position: relative; z-index: 1; flex-shrink: 0; }
     @media (min-width: 1024px) {
       .vol-wrap { display: flex; }
       .vol-wrap input { width: 90px; accent-color: var(--accent); }
@@ -207,16 +217,26 @@
       <button class="icon-btn" id="fpClose" aria-label="Tutup" style="font-size:20px"><i class="fa-solid fa-chevron-down"></i></button>
       <button class="icon-btn" id="fpQueueBtn" aria-label="Antrean" style="font-size:18px"><i class="fa-solid fa-list-ul"></i></button>
     </div>
-    <img class="fp-art" id="fpThumb" alt="" />
-    <div class="fp-title" id="fpTitle">—</div>
-    <div class="fp-sub" id="fpSub">—</div>
-    <button class="icon-btn fp-like" id="fpLike" aria-label="Suka" style="font-size:22px"><i class="fa-solid fa-heart"></i></button>
-    <div class="fp-progress" id="fpProgress"><div class="fp-fill" id="fpFill"></div></div>
-    <div class="fp-times"><span id="fpCur">0:00</span><span id="fpDur">0:00</span></div>
-    <div class="fp-controls">
-      <button class="fp-side" id="fpPrev" aria-label="Sebelumnya"><i class="fa-solid fa-backward-step"></i></button>
-      <button class="fp-play" id="fpPlay" aria-label="Putar/Jeda"><i class="fa-solid fa-play"></i></button>
-      <button class="fp-side" id="fpNext" aria-label="Berikutnya"><i class="fa-solid fa-forward-step"></i></button>
+    <div class="fp-middle">
+      <img class="fp-art" id="fpThumb" alt="" />
+      <div class="fp-title" id="fpTitle">—</div>
+      <div class="fp-sub" id="fpSub">—</div>
+      <div class="fp-actions">
+        <div class="like-pill">
+          <button id="fpLike" aria-label="Suka"><i class="fa-regular fa-thumbs-up"></i></button>
+          <span class="pill-div"></span>
+          <button id="fpDislike" aria-label="Tidak suka"><i class="fa-regular fa-thumbs-down"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="fp-bottom">
+      <div class="fp-progress" id="fpProgress"><div class="fp-fill" id="fpFill"></div></div>
+      <div class="fp-times"><span id="fpCur">0:00</span><span id="fpDur">0:00</span></div>
+      <div class="fp-controls">
+        <button class="fp-side" id="fpPrev" aria-label="Sebelumnya"><i class="fa-solid fa-backward-step"></i></button>
+        <button class="fp-play" id="fpPlay" aria-label="Putar/Jeda"><i class="fa-solid fa-play"></i></button>
+        <button class="fp-side" id="fpNext" aria-label="Berikutnya"><i class="fa-solid fa-forward-step"></i></button>
+      </div>
     </div>
   </div>
 
@@ -272,6 +292,7 @@
   var queue = [], qi = -1;
   var player = null, playerReady = false, pendingTrack = null, progressTimer = null;
   var likes = store('cxmusik_likes') || [];
+  var dislikes = store('cxmusik_dislikes') || [];
   var playlists = store('cxmusik_playlists') || {};
   var hist = store('cxmusik_history') || [];
   var activePl = null, pickerFor = -1;
@@ -397,7 +418,7 @@
   }
 
   /* ---------- library ---------- */
-  function saveLib(){ store('cxmusik_likes',likes); store('cxmusik_playlists',playlists); store('cxmusik_history',hist); }
+  function saveLib(){ store('cxmusik_likes',likes); store('cxmusik_playlists',playlists); store('cxmusik_history',hist); store('cxmusik_dislikes',dislikes); }
   function findTrack(id){
     var all=results.concat(queue, hist, likes.map(function(){return null;}).filter(Boolean));
     for(var i=0;i<all.length;i++) if(all[i]&&all[i].id===id) return all[i];
@@ -405,7 +426,7 @@
   }
   function likeTrack(t){
     var i=likes.indexOf(t.id);
-    if(i>=0) likes.splice(i,1); else { likes.unshift(t.id); }
+    if(i>=0) likes.splice(i,1); else { likes.unshift(t.id); var d=dislikes.indexOf(t.id); if(d>=0) dislikes.splice(d,1); }
     saveLib(); renderResults(); renderLibrary();
   }
   function pushHistory(t){
@@ -510,7 +531,7 @@
             if(added>=5||!v||v.type!=='stream'||!v.title) return;
             var m=/v=([A-Za-z0-9_-]{11})/.exec(v.url||'');
             var id=m?m[1]:null;
-            if(!id||have[id]||id===seed.id) return;
+            if(!id||have[id]||id===seed.id||dislikes.indexOf(id)>=0) return;
             have[id]=1; added++;
             queue.push({id:id, title:v.title, author:v.uploaderName||'YouTube', dur:(v.duration>0?v.duration:0), thumb:thumb(id)});
           });
@@ -539,7 +560,7 @@
     bar.classList.add('show');
     $('pbThumb').src=t.thumb; $('pbTitle').textContent=t.title; $('pbSub').textContent=t.author||'YouTube';
     $('tDur').textContent=t.dur?fmtT(t.dur):'--:--';
-    $('fpThumb').src=thumbBig(t.id); $('fpBg').style.backgroundImage="url('"+thumb(t.id)+"')";
+    $('fpThumb').src=thumb(t.id); $('fpBg').style.backgroundImage="url('"+thumb(t.id)+"')";
     setupMarquee($('fpTitle'), t.title); $('fpSub').textContent=t.author||'YouTube';
     $('fpDur').textContent=t.dur?fmtT(t.dur):'--:--';
     renderFpLike(); updateMediaSession(t);
@@ -561,8 +582,13 @@
     });
   }
   function renderFpLike(){
-    var t=queue[qi];
-    $('fpLike').classList.toggle('liked', !!(t && likes.indexOf(t.id)>=0));
+    var t=queue[qi]; if(!t) return;
+    var liked=likes.indexOf(t.id)>=0, dis=dislikes.indexOf(t.id)>=0;
+    var L=$('fpLike'), D=$('fpDislike');
+    L.classList.toggle('liked',liked);
+    L.querySelector('i').className=liked?'fa-solid fa-thumbs-up':'fa-regular fa-thumbs-up';
+    D.classList.toggle('disliked',dis);
+    D.querySelector('i').className=dis?'fa-solid fa-thumbs-down':'fa-regular fa-thumbs-down';
   }
   /* ----- Media Session API: notifikasi + kontrol lockscreen/background ----- */
   function setupMediaSession(){
@@ -644,6 +670,13 @@
   $('fpLike').addEventListener('click', function(){
     var t=queue[qi]; if(!t) return;
     likeTrack(t); renderFpLike();
+  });
+  $('fpDislike').addEventListener('click', function(){
+    var t=queue[qi]; if(!t) return;
+    var i=dislikes.indexOf(t.id);
+    if(i>=0) dislikes.splice(i,1);
+    else { dislikes.push(t.id); var l=likes.indexOf(t.id); if(l>=0) likes.splice(l,1); }
+    saveLib(); renderResults(); renderLibrary(); renderFpLike();
   });
   function bindSeek(el){
     el.addEventListener('click', function(e){
