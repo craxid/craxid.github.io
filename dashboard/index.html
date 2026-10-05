@@ -67,6 +67,12 @@
     .panel-card .global-btn {
       width: 100%;
     }
+    .bc-active { background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+      border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; font-size: 14px; }
+    .bc-active .bc-label { font-size: 11px; font-weight: 700; color: var(--accent);
+      text-transform: uppercase; letter-spacing: .6px; margin-bottom: 4px; }
+    textarea.form-input { min-height: 76px; resize: vertical; font-family: inherit; }
     .pin-error {
       color: #e5484d;
       font-size: 14px;
@@ -424,6 +430,47 @@
       </div>
         </section>
       </div>
+
+      <section aria-label="Broadcast" style="margin-top:24px;">
+        <h2 class="dash-section-title"><i class="fa-solid fa-bullhorn"></i> Broadcast</h2>
+        <div class="panel-card liquid-glass">
+          <h1 style="font-size:18px;"><i class="fa-solid fa-bullhorn"></i> Pesan Broadcast</h1>
+          <p class="desc">
+            Tulis pengumuman — muncul sebagai banner di semua halaman web untuk
+            semua pengunjung. Kosongkan lalu kirim untuk menghapus.
+          </p>
+          <div id="bcActive" class="bc-active" hidden>
+            <div class="bc-label">Aktif saat ini</div>
+            <div id="bcActiveText"></div>
+          </div>
+          <textarea id="bcMessage" class="form-input" rows="3" maxlength="500"
+            placeholder="Tulis pengumuman di sini&hellip;" aria-label="Isi pesan broadcast"></textarea>
+          <div style="display:flex;gap:10px;margin-top:10px;">
+            <button type="button" id="bcSend" class="global-btn primary-btn" style="flex:1;">
+              <i class="fa-solid fa-paper-plane"></i><span>Kirim Broadcast</span>
+            </button>
+            <button type="button" id="bcClear" class="global-btn secondary-btn liquid-glass" style="flex:1;">
+              <i class="fa-solid fa-trash"></i><span>Hapus</span>
+            </button>
+          </div>
+          <p id="bcStatus" class="pin-error" hidden></p>
+          <details class="setup-details">
+            <summary>Pengaturan Worker Broadcast (sekali saja)</summary>
+            <ol>
+              <li>Buka <code>dash.cloudflare.com</code> &rarr; <code>Workers &amp; Pages</code> &rarr; <code>Create Worker</code> &rarr; <code>Deploy</code>.</li>
+              <li><code>Edit code</code>, hapus isi bawaan, tempel kode <code>broadcast-worker.js</code> dari saya, <code>Save and deploy</code>.</li>
+              <li><code>Settings</code> &rarr; <code>Bindings</code>: tambah <code>KV Namespace</code> dengan Variable name <code>BROADCAST_KV</code> (buat namespace baru kalau belum ada).</li>
+              <li><code>Settings</code> &rarr; <code>Variables</code>: tambah <code>Secret</code> bernama <code>ADMIN_SECRET</code> (isi string acak).</li>
+              <li>Tempel URL worker + secret di bawah ini, lalu simpan:</li>
+            </ol>
+            <input type="url" id="bcWorkerUrl" class="form-input" placeholder="https://namamu-broadcast.xxx.workers.dev" autocomplete="off" aria-label="Worker Broadcast URL" />
+            <input type="password" id="bcSecret" class="form-input" placeholder="ADMIN_SECRET" autocomplete="off" aria-label="Admin secret" style="margin-top:8px;" />
+            <button type="button" id="bcSaveSetup" class="global-btn primary-btn" style="margin-top:8px;">
+              <i class="fa-solid fa-download"></i><span>Simpan Pengaturan</span>
+            </button>
+          </details>
+        </div>
+      </section>
 
       <div class="dash-actions">
         <a class="global-btn secondary-btn liquid-glass" href="https://github.com/craxid/craxid.github.io" target="_blank" rel="noopener">
@@ -986,6 +1033,79 @@
       svg.innerHTML = s;
       hideTip();
     }
+
+    /* =========================
+       BROADCAST (kirim pengumuman ke semua pengunjung)
+    ========================= */
+    (function initBroadcast(){
+      const urlEl = document.getElementById("bcWorkerUrl");
+      const secEl = document.getElementById("bcSecret");
+      const msgEl = document.getElementById("bcMessage");
+      const statusEl = document.getElementById("bcStatus");
+      const activeBox = document.getElementById("bcActive");
+      const activeText = document.getElementById("bcActiveText");
+      const LS_URL = "cxdash_broadcast_url", LS_SEC = "cxdash_broadcast_secret";
+      function bcStatus(msg, isErr){
+        statusEl.hidden = !msg;
+        statusEl.textContent = msg || "";
+        statusEl.style.color = isErr ? "" : "var(--accent)";
+      }
+      function bcConf(){
+        let u = "", s = "";
+        try {
+          u = (localStorage.getItem(LS_URL) || "").replace(/\/$/, "");
+          s = localStorage.getItem(LS_SEC) || "";
+        } catch {}
+        return { u, s };
+      }
+      async function bcLoad(){
+        const { u } = bcConf();
+        if (!u) return;
+        try {
+          const r = await fetch(u, { cache: "no-store" });
+          if (!r.ok) return;
+          const d = await r.json();
+          if (d.message) {
+            activeBox.hidden = false;
+            activeText.textContent = d.message;
+          } else {
+            activeBox.hidden = true;
+          }
+        } catch {}
+      }
+      async function bcSend(message){
+        const { u, s } = bcConf();
+        if (!u || !s) { bcStatus("Isi dulu URL worker + secret di Pengaturan.", true); return; }
+        bcStatus("Mengirim…", false);
+        try {
+          const r = await fetch(u, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "X-Admin-Secret": s },
+            body: JSON.stringify({ message }),
+          });
+          if (r.status === 401) { bcStatus("Secret salah.", true); return; }
+          if (!r.ok) throw 0;
+          bcStatus(message ? "Broadcast terkirim." : "Broadcast dihapus.", false);
+          msgEl.value = "";
+          bcLoad();
+        } catch { bcStatus("Gagal mengirim. Cek URL worker.", true); }
+      }
+      document.getElementById("bcSaveSetup").addEventListener("click", () => {
+        try {
+          localStorage.setItem(LS_URL, urlEl.value.trim().replace(/\/$/, ""));
+          localStorage.setItem(LS_SEC, secEl.value);
+        } catch {}
+        bcStatus("Pengaturan tersimpan.", false);
+        bcLoad();
+      });
+      document.getElementById("bcSend").addEventListener("click", () => bcSend(msgEl.value.trim()));
+      document.getElementById("bcClear").addEventListener("click", () => bcSend(""));
+      try {
+        urlEl.value = localStorage.getItem(LS_URL) || "";
+        secEl.value = localStorage.getItem(LS_SEC) || "";
+      } catch {}
+      bcLoad();
+    })();
 
     // Auto-unlock ditaruh PALING AKHIR agar semua konstanta & fungsi
     // sudah terinisialisasi (hindari temporal dead zone saat reload)

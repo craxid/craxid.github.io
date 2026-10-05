@@ -25,6 +25,10 @@ const CONFIG = {
   whatsappUrl: "/bot/",
   botGroupUrl: "https://s.id/CrXGC",
 
+  // URL Worker broadcast (Cloudflare Worker + KV). Kosongkan untuk menonaktifkan
+  // banner pengumuman. Diisi setelah worker di-deploy.
+  broadcastWorker: "",
+
   maxProjects: 3,
 
   techStacks: [
