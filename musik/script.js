@@ -658,9 +658,18 @@
   var reduceMotion = ('matchMedia' in window) && matchMedia('(prefers-reduced-motion: reduce)').matches;
   function cleanTitle(t){
     t=(t||'').replace(/\s*[\(\[].*?\)\]\s*$/,''); /* buang (Official Video) dkk di ekor */
-    t=t.replace(/\s*[\(\[].*?(official|lyric|lirik|video|audio|\bmv\b|m\/v|visualizer|live|cover|remix|\bhd\b|4k).*?[\(\)\[\]]?\s*$/i,' ');
+    t=t.replace(/\s*[\(\[].*?(official|lyric|lirik|video|audio|\bmv\b|m\/v|visualizer|live|cover|remix|\bhd\b|4k|\bpv\b).*?[\(\)\[\]]?\s*$/i,' ');
+    t=t.replace(/\s+\(?\s*(full version|official video|official audio|official mv|lyric video|music video)\s*\)?\s*$/i,''); /* suffix tanpa kurung */
     t=t.replace(/\s*[\|｜].*$/,''); /* buang " | ..." di ekor */
     return t.replace(/\s{2,}/g,' ').trim();
+  }
+  /* Pecah "Artis - Judul" dari judul video; nama artis di sini lebih akurat dari nama channel */
+  function splitArtistTitle(title){
+    var m=/^(.+?)\s+[-\u2013\u2014:]\s+(.+)$/.exec(title||'');
+    if(!m) return null;
+    var a=m[1].trim(), ti=m[2].trim();
+    if(!a||!ti||a.length>60) return null;
+    return {artist:a, title:ti};
   }
   function cleanArtist(a){
     return (a||'').replace(/\s*-\s*Topic$/i,'').replace(/\s*[\(\[].*?[\]\)]\s*/g,' ').replace(/\s{2,}/g,' ').trim()||'YouTube';
@@ -717,13 +726,27 @@
   /* Kumpulkan kandidat lirik dari semua sumber.
      forceAll=true -> paksa ambil semua (tombol "cari lirik lain"). */
   function lyricCandidates(t, forceAll){
-    var artist=cleanArtist(t.author), title=cleanTitle(t.title);
-    if(title.toLowerCase().indexOf(artist.toLowerCase())===0)
-      title=title.slice(artist.length).replace(/^[\s\-–—:]+/,'').trim();
+    var channelArtist=cleanArtist(t.author);
+    var titleC=cleanTitle(t.title);
+    var split=splitArtistTitle(titleC);
+    var titleOnly=split?split.title:titleC;
+    if(!split&&titleOnly.toLowerCase().indexOf(channelArtist.toLowerCase())===0)
+      titleOnly=titleOnly.slice(channelArtist.length).replace(/^[\s\-–—:]+/,'').trim();
+    var artists=[];
+    if(split&&split.artist) artists.push(split.artist);
+    if(channelArtist&&(!split||split.artist.toLowerCase()!==channelArtist.toLowerCase())) artists.push(channelArtist);
+    if(!artists.length) artists.push('YouTube');
+    var artist=artists[0], title=titleOnly;
     function getP(){
-      return lrclibGet(artist,title,t.dur||0)
-        .then(function(d){ return normCand(d,'lrclib'); })
-        .catch(function(){ return null; });
+      var i=0;
+      function attempt(){
+        if(i>=artists.length) return Promise.resolve(null);
+        var a=artists[i++];
+        return lrclibGet(a,title,t.dur||0)
+          .then(function(d){ var c=normCand(d,'lrclib'); return c||attempt(); })
+          .catch(function(){ return attempt(); });
+      }
+      return attempt();
     }
     function searchP(){
       return Promise.all([
@@ -762,6 +785,8 @@
       lyricsLines=null;
       body.innerHTML='<div class="lyr-plain">'+esc(res.plain||'Lirik tidak ditemukan.')+'</div>';
     }
+    var srcEl=document.getElementById('lyricsSrc');
+    if(srcEl&&res) srcEl.textContent='Lirik oleh '+res.src.toUpperCase()+(res.track?' \u2022 '+res.track+' \u2014 '+res.artist:'');
   }
   function loadLyrics(t){
     if(!t) return;
