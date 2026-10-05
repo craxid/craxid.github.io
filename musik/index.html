@@ -462,6 +462,7 @@
   function setPlayIcon(playing){
     var ic = playing ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
     $('pbPlay').innerHTML = ic; $('fpPlay').innerHTML = ic;
+    setMSPlaying(playing);
   }
   function loadTrack(t){
     if(!playerReady){ pendingTrack=t; return; }
@@ -541,7 +542,7 @@
     $('fpThumb').src=thumbBig(t.id); $('fpBg').style.backgroundImage="url('"+thumb(t.id)+"')";
     setupMarquee($('fpTitle'), t.title); $('fpSub').textContent=t.author||'YouTube';
     $('fpDur').textContent=t.dur?fmtT(t.dur):'--:--';
-    renderFpLike();
+    renderFpLike(); updateMediaSession(t);
   }
   function setupMarquee(el, text){
     el.classList.remove('marquee');
@@ -562,6 +563,32 @@
   function renderFpLike(){
     var t=queue[qi];
     $('fpLike').classList.toggle('liked', !!(t && likes.indexOf(t.id)>=0));
+  }
+  /* ----- Media Session API: notifikasi + kontrol lockscreen/background ----- */
+  function setupMediaSession(){
+    if(!('mediaSession' in navigator)) return;
+    try{
+      navigator.mediaSession.setActionHandler('play', function(){ togglePlay(); });
+      navigator.mediaSession.setActionHandler('pause', function(){ togglePlay(); });
+      navigator.mediaSession.setActionHandler('previoustrack', function(){ step(-1); });
+      navigator.mediaSession.setActionHandler('nexttrack', function(){ step(1); });
+    }catch(e){}
+  }
+  function updateMediaSession(t){
+    if(!('mediaSession' in navigator)) return;
+    try{
+      navigator.mediaSession.metadata=new MediaMetadata({
+        title:t.title||'Musik', artist:t.author||'YouTube', album:'CraXID Musik',
+        artwork:[
+          {src:thumb(t.id), sizes:'320x180', type:'image/jpeg'},
+          {src:thumbBig(t.id), sizes:'480x360', type:'image/jpeg'}
+        ]
+      });
+    }catch(e){}
+  }
+  function setMSPlaying(playing){
+    if(!('mediaSession' in navigator)) return;
+    try{ navigator.mediaSession.playbackState=playing?'playing':'paused'; }catch(e){}
   }
   function openFull(){ if(qi<0) return; $('fullPlayer').classList.add('show'); }
   function closeFull(){ $('fullPlayer').classList.remove('show'); }
@@ -610,6 +637,7 @@
     renderApToggle();
   });
   renderApToggle();
+  setupMediaSession();
   $('fpQueueBtn').addEventListener('click', function(){ $('queueModal').classList.add('show'); });
   $('queueClose').addEventListener('click', function(){ $('queueModal').classList.remove('show'); });
   $('queueModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('show'); });
