@@ -685,6 +685,7 @@
   }
   $('fpLyrics').addEventListener('click', function(){
     var t=queue[qi]; if(!t) return;
+    boing(this);
     $('lyricsModal').classList.add('show');
     loadLyrics(t);
   });

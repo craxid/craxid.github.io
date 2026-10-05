@@ -146,12 +146,6 @@
       .like-pill button:active { transform: none; }
       .like-pill button.boing i { animation: none; }
     }
-    .lyric-btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--card) 70%, transparent); color: var(--text);
-      border-radius: 999px; padding: 10px 18px; font-size: 14px; font-weight: 600; cursor: pointer;
-      transition: transform var(--pop-duration, .3s) var(--pop-ease, ease), background .2s ease; }
-    .lyric-btn:active { transform: scale(.94); }
-    .lyric-btn i { color: var(--accent); }
     .like-pill .pill-div { width: 1px; align-self: stretch; margin: 10px 0;
       background: color-mix(in srgb, var(--text) 20%, transparent); }
     .like-pill button.liked, .like-pill button.disliked { color: var(--accent); }
