@@ -146,7 +146,23 @@
     .like-pill { display: flex; align-items: center; border-radius: 999px; padding: 4px;
       background: color-mix(in srgb, var(--text) 9%, transparent); }
     .like-pill button { border: none; background: transparent; color: var(--text); font-size: 18px;
-      padding: 8px 22px; border-radius: 999px; cursor: pointer; }
+      padding: 8px 22px; border-radius: 999px; cursor: pointer;
+      transition: transform .15s ease, color .2s ease; }
+    .like-pill button:active { transform: scale(.88); }
+    .like-pill button i { display: inline-block; }
+    /* Jempol memantul + bergoyang saat diketuk */
+    @keyframes like-boing {
+      0% { transform: scale(1) rotate(0deg); }
+      30% { transform: scale(1.5) rotate(-14deg); }
+      55% { transform: scale(.9) rotate(8deg); }
+      75% { transform: scale(1.12) rotate(-4deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    .like-pill button.boing i { animation: like-boing .5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @media (prefers-reduced-motion: reduce) {
+      .like-pill button:active { transform: none; }
+      .like-pill button.boing i { animation: none; }
+    }
     .like-pill .pill-div { width: 1px; align-self: stretch; margin: 10px 0;
       background: color-mix(in srgb, var(--text) 20%, transparent); }
     .like-pill button.liked, .like-pill button.disliked { color: var(--accent); }
@@ -721,16 +737,17 @@
   $('fpQueueBtn').addEventListener('click', function(){ $('queueModal').classList.add('show'); });
   $('queueClose').addEventListener('click', function(){ $('queueModal').classList.remove('show'); });
   $('queueModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('show'); });
+  function boing(btn){ btn.classList.remove('boing'); void btn.offsetWidth; btn.classList.add('boing'); }
   $('fpLike').addEventListener('click', function(){
     var t=queue[qi]; if(!t) return;
-    likeTrack(t); renderFpLike();
+    likeTrack(t); renderFpLike(); boing(this);
   });
   $('fpDislike').addEventListener('click', function(){
     var t=queue[qi]; if(!t) return;
     var i=dislikes.indexOf(t.id);
     if(i>=0) dislikes.splice(i,1);
     else { dislikes.push(t.id); var l=likes.indexOf(t.id); if(l>=0) likes.splice(l,1); }
-    saveLib(); renderResults(); renderLibrary(); renderFpLike();
+    saveLib(); renderResults(); renderLibrary(); renderFpLike(); boing(this);
   });
   function bindSeek(el){
     el.addEventListener('click', function(e){
