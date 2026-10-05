@@ -1,4 +1,4 @@
-const CACHE_NAME = "craxid-project-v10";
+const CACHE_NAME = "craxid-project-v11";
 
 const STATIC_ASSETS = [
   "/",
@@ -28,6 +28,7 @@ const STATIC_ASSETS = [
   "/style.css",
   "/script.js",
   "/manifest.webmanifest",
+  "/icons/icon-256.webp",
   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 ];
 

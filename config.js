@@ -9,7 +9,7 @@ const CONFIG = {
   cfBeaconToken: "",
 
   siteUrl: "https://craxid.github.io/",
-  profileImage: "/icons/icon.webp",
+  profileImage: "/icons/icon-256.webp",
 
   description:
     "Saya Dede K. Seorang... gak tau njir mau diisi apaan :v",
