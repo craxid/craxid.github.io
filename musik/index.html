@@ -11,11 +11,16 @@
 </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex" />
   <title>Musik • CraXID Project</title>
-  <meta name="description" content="Pemutar musik YouTube ala YT Music — halaman percobaan." />
+  <meta name="description" content="Pemutar musik ala YT Music — cari lagu, buat playlist, dan putar di latar belakang." />
   <meta name="theme-color" content="#2d6a4f" />
   <link rel="canonical" href="/musik/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Musik • CraXID Project" />
+  <meta property="og:description" content="Pemutar musik ala YT Music — cari lagu, buat playlist, dan putar di latar belakang." />
+  <meta property="og:url" content="https://hxa.my.id/musik/" />
+  <meta property="og:image" content="/icons/icon-256.webp" />
+  <meta name="twitter:card" content="summary" />
   <link rel="icon" href="/icons/icon-256.webp" />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
@@ -23,11 +28,10 @@
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" /></noscript>
   <link rel="stylesheet" href="/style.css" />
   <style>
-    /* ===== MUSIK (halaman percobaan) ===== */
+    /* ===== MUSIK ===== */
     .musik-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
     .musik-head h1 { margin: 0; font-size: clamp(26px, 5vw, 40px); letter-spacing: -1px; flex: 1; }
     .back-btn { width: 46px; height: 46px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--text); font-size: 17px; flex-shrink: 0; text-decoration: none; }
-    .trial-badge { display: inline-block; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); margin-bottom: 14px; }
     .search-bar { display: flex; gap: 10px; margin-bottom: 16px; }
     .search-bar input { flex: 1; padding: 14px 20px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); background: var(--glass-bg); color: var(--text); font-size: 15px; font-family: inherit; outline: none; }
     .search-bar input:focus { border-color: var(--accent); }
@@ -228,8 +232,6 @@
         <button id="themeToggle" class="back-btn liquid-glass" aria-label="Ganti tema" style="border:none;cursor:pointer"></button>
         <button id="settingsBtn" class="back-btn liquid-glass" aria-label="Pengaturan pencarian" style="border:none;cursor:pointer"><i class="fa-solid fa-gear"></i></button>
       </div>
-      <span class="trial-badge"><i class="fa-solid fa-flask"></i> HALAMAN PERCOBAAN</span>
-
       <div class="search-bar">
         <input id="q" type="search" placeholder="Cari lagu / artis di YouTube…" autocomplete="off" aria-label="Cari musik" />
         <button id="searchBtn" aria-label="Cari"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -361,7 +363,7 @@
   </div>
 
   <script>
-  /* ================= MUSIK (trial) ================= */
+  /* ================= MUSIK ================= */
   'use strict';
   var PIPED = [
     'https://api.piped.private.coffee',
