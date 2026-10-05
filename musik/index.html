@@ -109,6 +109,11 @@
       box-shadow: 0 10px 26px color-mix(in srgb, var(--accent) 35%, transparent); }
     .fp-side { width: 54px; height: 54px; border-radius: 50%; border: none; background: transparent; color: var(--text); font-size: 22px; cursor: pointer; }
     .fp-actions { display: flex; gap: 10px; margin-top: 20px; }
+    /* Background blur dari cover (dihitung sekali per ganti lagu, bukan tiap frame) */
+    .fp-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center;
+      filter: blur(60px) saturate(1.5); transform: scale(1.15); }
+    .fp-dim { position: absolute; inset: 0; z-index: 0; background: color-mix(in srgb, var(--bg) 60%, transparent); }
+    .fullplayer > *:not(.fp-bg):not(.fp-dim) { position: relative; z-index: 1; }
     @media (min-width: 1024px) {
       .vol-wrap { display: flex; }
       .vol-wrap input { width: 90px; accent-color: var(--accent); }
@@ -187,6 +192,8 @@
   </div>
 
   <div class="fullplayer" id="fullPlayer">
+    <div class="fp-bg" id="fpBg"></div>
+    <div class="fp-dim"></div>
     <div class="fp-top">
       <button class="icon-btn" id="fpClose" aria-label="Tutup" style="font-size:20px"><i class="fa-solid fa-chevron-down"></i></button>
       <button class="icon-btn" id="fpQueueBtn" aria-label="Antrean" style="font-size:18px"><i class="fa-solid fa-list-ul"></i></button>
@@ -460,7 +467,8 @@
     bar.classList.add('show');
     $('pbThumb').src=t.thumb; $('pbTitle').textContent=t.title; $('pbSub').textContent=t.author||'YouTube';
     $('tDur').textContent=t.dur?fmtT(t.dur):'--:--';
-    $('fpThumb').src=thumbBig(t.id); $('fpTitle').textContent=t.title; $('fpSub').textContent=t.author||'YouTube';
+    $('fpThumb').src=thumbBig(t.id); $('fpBg').style.backgroundImage="url('"+thumb(t.id)+"')";
+    $('fpTitle').textContent=t.title; $('fpSub').textContent=t.author||'YouTube';
     $('fpDur').textContent=t.dur?fmtT(t.dur):'--:--';
     renderFpLike();
   }
