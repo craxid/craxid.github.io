@@ -76,11 +76,6 @@
     .pb-fill { height: 100%; border-radius: 999px; background: var(--accent); width: 0%; }
     .pb-times { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 4px; }
     .vol-wrap { display: none; align-items: center; gap: 8px; }
-    /* Queue panel */
-    .queue-panel { position: fixed; left: 12px; right: 12px; bottom: calc(150px + env(safe-area-inset-bottom, 0px)); z-index: 899;
-      border-radius: 22px; padding: 16px; max-height: 46vh; overflow-y: auto; display: none; }
-    .queue-panel.show { display: block; }
-    .queue-panel h3 { margin: 0 0 10px; font-size: 16px; }
     .q-item { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 14px; font-size: 14px; cursor: pointer; }
     .q-item:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
     .q-item.playing { color: var(--accent); font-weight: 700; }
@@ -109,6 +104,8 @@
       box-shadow: 0 10px 26px color-mix(in srgb, var(--accent) 35%, transparent); }
     .fp-side { width: 54px; height: 54px; border-radius: 50%; border: none; background: transparent; color: var(--text); font-size: 22px; cursor: pointer; }
     .fp-actions { display: flex; gap: 10px; margin-top: 20px; }
+    .fp-queue { width: 100%; max-width: 480px; margin-top: 26px; padding-bottom: 12px; }
+    .fp-queue h3 { margin: 0 0 8px; font-size: 16px; text-align: left; }
     /* Background blur dari cover (dihitung sekali per ganti lagu, bukan tiap frame) */
     .fp-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center;
       filter: blur(60px) saturate(1.5); transform: scale(1.15); }
@@ -118,7 +115,6 @@
       .vol-wrap { display: flex; }
       .vol-wrap input { width: 90px; accent-color: var(--accent); }
       .player-bar { left: auto; right: 24px; bottom: 24px; width: 420px; }
-      .queue-panel { left: auto; right: 24px; width: 420px; bottom: 190px; }
     }
   </style>
 </head>
@@ -186,11 +182,6 @@
     </footer>
   </main>
 
-  <div class="queue-panel liquid-glass" id="queuePanel">
-    <h3>Antrean</h3>
-    <div id="queueList"></div>
-  </div>
-
   <div class="fullplayer" id="fullPlayer">
     <div class="fp-bg" id="fpBg"></div>
     <div class="fp-dim"></div>
@@ -208,6 +199,10 @@
       <button class="fp-side" id="fpPrev" aria-label="Sebelumnya"><i class="fa-solid fa-backward-step"></i></button>
       <button class="fp-play" id="fpPlay" aria-label="Putar/Jeda"><i class="fa-solid fa-play"></i></button>
       <button class="fp-side" id="fpNext" aria-label="Berikutnya"><i class="fa-solid fa-forward-step"></i></button>
+    </div>
+    <div class="fp-queue" id="fpQueueWrap">
+      <h3>Antrean berikutnya</h3>
+      <div id="fpQueueList"></div>
     </div>
   </div>
 
@@ -260,7 +255,7 @@
   var $ = function(id){ return document.getElementById(id); };
   var resultsEl=$('results'), historyEl=$('historyList'), likedEl=$('likedList'),
       plChipsEl=$('plChips'), plTracksEl=$('plTracks'),
-      bar=$('playerBar'), qPanel=$('queuePanel'), qList=$('queueList');
+      bar=$('playerBar'), qList=$('fpQueueList');
 
   /* ---------- tema ---------- */
   var themeToggle = $('themeToggle');
@@ -515,7 +510,10 @@
   $('fpNext').addEventListener('click', function(){ step(1); });
   $('fpPrev').addEventListener('click', function(){ step(-1); });
   $('fpClose').addEventListener('click', closeFull);
-  $('fpQueueBtn').addEventListener('click', function(){ closeFull(); qPanel.classList.add('show'); renderQueue(); });
+  $('fpQueueBtn').addEventListener('click', function(){
+    var w=$('fpQueueWrap');
+    if(w) w.scrollIntoView({behavior:'smooth', block:'start'});
+  });
   $('fpLike').addEventListener('click', function(){
     var t=queue[qi]; if(!t) return;
     likeTrack(t); renderFpLike();
