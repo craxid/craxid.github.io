@@ -120,7 +120,7 @@
     .fp-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center;
       filter: blur(60px) saturate(1.5); transform: scale(1.15); }
     .fp-dim { position: absolute; inset: 0; z-index: 0; background: color-mix(in srgb, var(--bg) 60%, transparent); }
-    .fullplayer > *:not(.fp-bg):not(.fp-dim) { position: relative; z-index: 1; }
+    .fullplayer > *:not(.fp-bg):not(.fp-dim) { position: relative; z-index: 1; flex-shrink: 0; }
     @media (min-width: 1024px) {
       .vol-wrap { display: flex; }
       .vol-wrap input { width: 90px; accent-color: var(--accent); }
