@@ -94,6 +94,7 @@
     .settings-sheet p { font-size: 13px; color: var(--muted); line-height: 1.7; margin: 12px 0 10px; }
     .settings-sheet input { width: 100%; padding: 12px 16px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); background: transparent; color: var(--text); font-family: inherit; font-size: 14px; margin-bottom: 8px; }
     .settings-sheet .row { display: flex; gap: 8px; }
+    .set-sep { border: none; border-top: 1px solid color-mix(in srgb, var(--text) 12%, transparent); margin: 16px 0 4px; }
     .mini-btn { padding: 10px 18px; border-radius: 999px; border: none; background: var(--accent); color: #fff; font-weight: 700; cursor: pointer; font-size: 13px; font-family: inherit; }
     .mini-btn.ghost { background: transparent; color: var(--text); border: 1px solid color-mix(in srgb, var(--text) 20%, transparent); }
     .api-status { font-size: 13px; margin-top: 6px; }
@@ -204,6 +205,7 @@
 </head>
 <body>
   <div id="ytplayer" aria-hidden="true"></div>
+  <audio id="audioEl" preload="none" style="display:none"></audio>
   <div class="search-notif" id="searchNotif" role="alert">
     <i class="fa-solid fa-triangle-exclamation"></i>
     <div class="sn-text"><b>Pencarian standar sedang gangguan.</b><span>Semua server publik tidak merespons. Pakai YouTube Data API key agar tetap bisa mencari.</span></div>
@@ -265,6 +267,15 @@
             <button class="mini-btn ghost" id="delKeyBtn">Hapus</button>
           </div>
           <div class="api-status" id="apiStatus"></div>
+          <hr class="set-sep" />
+          <h3 style="margin-top:12px"><i class="fa-solid fa-cloud"></i> Audio API (background playback)</h3>
+          <p>Opsional. Tempel URL function Vercel <b>/api/yt-audio</b> milikmu agar musik tetap bunyi saat layar mati / pindah aplikasi. Kosongkan untuk memakai player YouTube biasa (hanya foreground).</p>
+          <input id="audioApi" type="text" placeholder="https://app-kamu.vercel.app/api/yt-audio" autocomplete="off" />
+          <div class="row">
+            <button class="mini-btn" id="saveAudioApiBtn">Simpan</button>
+            <button class="mini-btn ghost" id="delAudioApiBtn">Hapus</button>
+          </div>
+          <div class="api-status" id="audioApiStatus"></div>
         </div>
       </div>
     </section>
@@ -555,11 +566,62 @@
     $('pbPlay').innerHTML = ic; $('fpPlay').innerHTML = ic;
     setMSPlaying(playing);
   }
+  var audioEl=$('audioEl'), useAudio=false, audioRefetching=false;
   function loadTrack(t){
-    if(!playerReady){ pendingTrack=t; return; }
-    player.loadVideoById(t.id);
-    player.setVolume(parseInt($('vol').value,10)||80);
+    if(audioApiUrl()){ loadViaApi(t); return; }
+    loadViaYT(t);
   }
+  function loadViaYT(t){
+    useAudio=false;
+    if(!playerReady){ pendingTrack=t; return; }
+    try{
+      player.loadVideoById(t.id);
+      player.setVolume(parseInt($('vol').value,10)||80);
+    }catch(e){}
+  }
+  /* Ambil link audio dari API (Vercel), putar via <audio> agar bisa background */
+  function fetchAudioUrl(videoId, timeoutMs){
+    var api=audioApiUrl();
+    var ctrl=('AbortController' in window)?new AbortController():null;
+    var timer=ctrl?setTimeout(function(){ ctrl.abort(); }, timeoutMs||25000):null;
+    return fetch(api+'?id='+encodeURIComponent(videoId), ctrl?{signal:ctrl.signal}:undefined)
+      .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
+      .then(function(d){ if(!d||!d.status||!d.audioUrl) throw 0; return d.audioUrl; });
+  }
+  function loadViaApi(t, resumePos){
+    useAudio=true; audioRefetching=false;
+    setSearchStatus('Mengambil audio\u2026');
+    fetchAudioUrl(t.id).then(function(url){
+      setSearchStatus('');
+      try{
+        audioEl.src=url;
+        audioEl.volume=(parseInt($('vol').value,10)||80)/100;
+        if(resumePos>0){ try{ audioEl.currentTime=resumePos; }catch(e){} }
+        var pr=audioEl.play();
+        if(pr&&pr.catch) pr.catch(function(){ setSearchStatus('Ketuk putar untuk mulai.'); });
+      }catch(e){ loadViaYT(t); }
+    }).catch(function(){
+      setSearchStatus('');
+      loadViaYT(t); /* fallback: player YouTube (foreground saja) */
+    });
+  }
+  audioEl.addEventListener('play', function(){ startProgress(); setPlayIcon(true); });
+  audioEl.addEventListener('pause', function(){ stopProgress(); setPlayIcon(false); });
+  audioEl.addEventListener('ended', function(){ autoNext(); });
+  audioEl.addEventListener('error', function(){
+    if(!useAudio||audioRefetching) return;
+    /* link mungkin kedaluwarsa -> ambil baru, lanjut dari posisi terakhir */
+    audioRefetching=true;
+    var t=queue[qi], pos=0;
+    try{ pos=audioEl.currentTime||0; }catch(e){}
+    if(!t){ loadViaYT(t); return; }
+    fetchAudioUrl(t.id).then(function(url){
+      audioRefetching=false; setSearchStatus('');
+      audioEl.src=url;
+      try{ if(pos>0) audioEl.currentTime=pos; }catch(e){}
+      var pr=audioEl.play(); if(pr&&pr.catch) pr.catch(function(){});
+    }).catch(function(){ audioRefetching=false; loadViaYT(t); });
+  });
   function playAt(i){
     if(i<0||i>=queue.length) return;
     qi=i; var t=queue[qi];
@@ -697,9 +759,13 @@
   function startProgress(){
     stopProgress();
     progressTimer=setInterval(function(){
-      if(!player||!playerReady) return;
+      if(useAudio){
+        if(!audioEl) return;
+      } else if(!player||!playerReady) return;
       try{
-        var cur=player.getCurrentTime()||0, dur=player.getDuration()||0;
+        var cur, dur;
+        if(useAudio){ cur=audioEl.currentTime||0; dur=audioEl.duration||0; }
+        else { cur=player.getCurrentTime()||0; dur=player.getDuration()||0; }
         var meta=(queue[qi]&&queue[qi].dur)||0;
         if((!dur||dur<=0)&&meta>0) dur=meta;
         if(dur>0){
@@ -707,6 +773,10 @@
           $('pbFill').style.width=pct; $('fpFill').style.width=pct;
           $('tCur').textContent=fmtT(cur); $('tDur').textContent=fmtT(dur);
           $('fpCur').textContent=fmtT(cur); $('fpDur').textContent=fmtT(dur);
+          try{
+            if(useAudio&&'mediaSession' in navigator&&'setPositionState' in navigator.mediaSession&&isFinite(dur))
+              navigator.mediaSession.setPositionState({duration:dur, playbackRate:1, position:Math.min(cur,dur)});
+          }catch(e2){}
         }
         else { $('tCur').textContent=fmtT(cur); $('fpCur').textContent=fmtT(cur); }
       }catch(e){}
@@ -719,6 +789,10 @@
   $('pbPrev').addEventListener('click', function(){ step(-1); });
   $('pbInfo').addEventListener('click', function(){ openFull(); });
   function togglePlay(){
+    if(useAudio){
+      try{ if(audioEl.paused){ var pr=audioEl.play(); if(pr&&pr.catch) pr.catch(function(){}); } else audioEl.pause(); }catch(e){}
+      return;
+    }
     if(!playerReady||qi<0) return;
     var s=player.getPlayerState();
     if(s===YT.PlayerState.PLAYING) player.pauseVideo(); else player.playVideo();
@@ -751,14 +825,22 @@
   });
   function bindSeek(el){
     el.addEventListener('click', function(e){
-      if(!playerReady||qi<0) return;
+      if(qi<0) return;
+      if(!useAudio&&!playerReady) return;
       var r=this.getBoundingClientRect();
       var frac=(e.clientX-r.left)/r.width;
-      try{ player.seekTo(player.getDuration()*frac, true); }catch(e2){}
+      try{
+        if(useAudio){ var d=audioEl.duration||0; if(d>0) audioEl.currentTime=d*frac; }
+        else player.seekTo(player.getDuration()*frac, true);
+      }catch(e2){}
     });
   }
   bindSeek($('fpProgress'));
-  $('vol').addEventListener('input', function(){ if(playerReady) player.setVolume(parseInt(this.value,10)||0); });
+  $('vol').addEventListener('input', function(){
+    var v=parseInt(this.value,10)||0;
+    try{ audioEl.volume=v/100; }catch(e){}
+    if(playerReady){ try{ player.setVolume(v); }catch(e){} }
+  });
   bindSeek($('pbProgress'));
   qList.addEventListener('click', function(e){
     var el=e.target.closest('[data-q]'); if(el) playAt(parseInt(el.dataset.q,10));
@@ -844,6 +926,19 @@
   $('delKeyBtn').addEventListener('click', function(){
     try{ localStorage.removeItem('cxmusik_ytkey'); }catch(e){}
     $('ytKey').value=''; setStatus('Key dihapus.');
+  });
+  /* ---------- Audio API (Vercel): sumber audio untuk background playback ---------- */
+  function audioApiUrl(){ try{ return (localStorage.getItem('cxmusik_audioapi')||'').replace(/\/$/,''); }catch(e){ return ''; } }
+  function setAudioApiStatus(s){ var el=$('audioApiStatus'); if(el) el.textContent=s||''; }
+  try{ $('audioApi').value=localStorage.getItem('cxmusik_audioapi')||''; }catch(e){}
+  $('saveAudioApiBtn').addEventListener('click', function(){
+    var v=$('audioApi').value.trim().replace(/\/$/,'');
+    try{ if(v) localStorage.setItem('cxmusik_audioapi',v); else localStorage.removeItem('cxmusik_audioapi'); }catch(e){}
+    setAudioApiStatus(v?'Audio API tersimpan. Lagu berikutnya memakai audio langsung (bisa background).':'Audio API dihapus.');
+  });
+  $('delAudioApiBtn').addEventListener('click', function(){
+    try{ localStorage.removeItem('cxmusik_audioapi'); }catch(e){}
+    $('audioApi').value=''; setAudioApiStatus('Audio API dihapus.');
   });
 
   renderResults(); renderLibrary();
