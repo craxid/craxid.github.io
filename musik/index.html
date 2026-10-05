@@ -113,6 +113,7 @@
         <button id="searchBtn" aria-label="Cari"><i class="fa-solid fa-magnifying-glass"></i></button>
       </div>
 
+      <div class="api-status" id="searchStatus" style="margin:-6px 0 14px"></div>
       <div class="mtabs">
         <button class="mtab active" id="tabSearchBtn">Cari</button>
         <button class="mtab" id="tabLibBtn">Library</button>
@@ -252,8 +253,11 @@
     var i=0;
     function attempt(){
       if(i>=PIPED.length) return Promise.reject(new Error('semua instance mati'));
-      return fetch(PIPED[i]+'/search?q='+encodeURIComponent(q)+'&filter=videos')
-        .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      setSearchStatus('Menghubungi server '+(i+1)+'/'+PIPED.length+'…');
+      var ctrl = ('AbortController' in window) ? new AbortController() : null;
+      var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, 10000) : null;
+      return fetch(PIPED[i]+'/search?q='+encodeURIComponent(q)+'&filter=videos', ctrl?{signal:ctrl.signal}:undefined)
+        .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
         .then(function(d){
           var items=(d.items||[]).filter(function(it){ return it.type==='stream'; });
           if(!items.length) throw 0;
@@ -284,13 +288,16 @@
   function doSearch(){
     var q=$('q').value.trim();
     if(!q) return;
+    setSearchStatus('Mencari…');
     resultsEl.innerHTML='<div class="loading-row"><i class="fa-solid fa-circle-notch fa-spin"></i> Mencari…</div>';
     var key=null; try{ key=localStorage.getItem('cxmusik_ytkey')||''; }catch(e){}
     var p = key ? searchYT(q,key).catch(function(){ return searchPiped(q); }) : searchPiped(q);
     p.then(function(list){
+      setSearchStatus('');
       results=list; pickerFor=-1; renderResults();
       if(!list.length) resultsEl.innerHTML='<div class="empty-note">Tidak ketemu. Coba kata kunci lain.</div>';
     }).catch(function(){
+      setSearchStatus('');
       resultsEl.innerHTML='<div class="empty-note">Pencarian gagal — semua instance publik sedang mati. Coba lagi nanti atau isi YouTube Data API key di Pengaturan.</div>';
     });
   }
@@ -506,6 +513,7 @@
 
   /* ---------- pengaturan key ---------- */
   function setStatus(s){ $('apiStatus').textContent=s||''; }
+  function setSearchStatus(s){ var el=$('searchStatus'); if(el) el.textContent=s||''; }
   try{ $('ytKey').value=localStorage.getItem('cxmusik_ytkey')||''; }catch(e){}
   $('saveKeyBtn').addEventListener('click', function(){
     var v=$('ytKey').value.trim();
