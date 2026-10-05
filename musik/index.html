@@ -1088,6 +1088,7 @@
   });
   /* ---------- Audio API (Vercel): sumber audio untuk background playback ---------- */
   var DEFAULT_AUDIO_API='https://ytdl-green-zeta.vercel.app/api/yt-audio';
+  var BROADCAST_WORKER=''; /* URL Worker broadcast (Cloudflare). Kosong = nonaktif. */
   function audioApiUrl(){ try{ var v=localStorage.getItem('cxmusik_audioapi'); return ((v||'')||DEFAULT_AUDIO_API).replace(/\/$/,''); }catch(e){ return DEFAULT_AUDIO_API; } }
   function setAudioApiStatus(s){ var el=$('audioApiStatus'); if(el) el.textContent=s||''; }
   try{ $('audioApi').value=localStorage.getItem('cxmusik_audioapi')||''; }catch(e){}
@@ -1117,6 +1118,35 @@
   });
 
   renderResults(); renderLibrary();
+
+  /* Broadcast: pengumuman dari pemilik web */
+  (function initBroadcast(){
+    var url=(BROADCAST_WORKER||'').replace(/\/$/,'');
+    if(!url||!document.body) return;
+    var KEY='cxbroadcast_dismissed';
+    fetch(url,{cache:'no-store'})
+      .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(function(d){
+        var msg=((d&&d.message)||'').trim();
+        if(!msg) return;
+        try{ if(localStorage.getItem(KEY)===String(d.updatedAt)) return; }catch(e){}
+        var bar=document.createElement('div');
+        bar.className='broadcast-bar'; bar.setAttribute('role','status');
+        var icon=document.createElement('i');
+        icon.className='fa-solid fa-bullhorn'; icon.setAttribute('aria-hidden','true');
+        var txt=document.createElement('span'); txt.textContent=msg;
+        var btn=document.createElement('button');
+        btn.className='broadcast-close'; btn.setAttribute('aria-label','Tutup pengumuman');
+        btn.textContent='\u00d7';
+        btn.addEventListener('click',function(){
+          try{ localStorage.setItem(KEY,String(d.updatedAt)); }catch(e){}
+          bar.remove();
+        });
+        bar.appendChild(icon); bar.appendChild(txt); bar.appendChild(btn);
+        document.body.insertBefore(bar, document.body.firstChild);
+      })
+      .catch(function(){});
+  })();
   </script>
 </body>
 </html>
