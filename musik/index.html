@@ -275,8 +275,8 @@
           <div class="api-status" id="apiStatus"></div>
           <hr class="set-sep" />
           <h3 style="margin-top:12px"><i class="fa-solid fa-cloud"></i> Audio API (background playback)</h3>
-          <p>Opsional. Tempel URL function Vercel <b>/api/yt-audio</b> milikmu agar musik tetap bunyi saat layar mati / pindah aplikasi. Kosongkan untuk memakai player YouTube biasa (hanya foreground).</p>
-          <input id="audioApi" type="text" placeholder="https://app-kamu.vercel.app/api/yt-audio" autocomplete="off" />
+          <p>Bawaan web ini sudah terisi otomatis (<b>tidak perlu diapa-apakan</b>) agar musik tetap bunyi saat layar mati / pindah aplikasi. Isi manual hanya kalau mau pakai function Vercel sendiri; kosongkan untuk kembali ke bawaan.</p>
+          <input id="audioApi" type="text" placeholder="https://ytdl-green-zeta.vercel.app/api/yt-audio" autocomplete="off" />
           <div class="row">
             <button class="mini-btn" id="saveAudioApiBtn">Simpan</button>
             <button class="mini-btn ghost" id="testAudioApiBtn">Tes</button>
@@ -952,17 +952,18 @@
     $('ytKey').value=''; setStatus('Key dihapus.');
   });
   /* ---------- Audio API (Vercel): sumber audio untuk background playback ---------- */
-  function audioApiUrl(){ try{ return (localStorage.getItem('cxmusik_audioapi')||'').replace(/\/$/,''); }catch(e){ return ''; } }
+  var DEFAULT_AUDIO_API='https://ytdl-green-zeta.vercel.app/api/yt-audio';
+  function audioApiUrl(){ try{ var v=localStorage.getItem('cxmusik_audioapi'); return ((v||'')||DEFAULT_AUDIO_API).replace(/\/$/,''); }catch(e){ return DEFAULT_AUDIO_API; } }
   function setAudioApiStatus(s){ var el=$('audioApiStatus'); if(el) el.textContent=s||''; }
   try{ $('audioApi').value=localStorage.getItem('cxmusik_audioapi')||''; }catch(e){}
   $('saveAudioApiBtn').addEventListener('click', function(){
     var v=$('audioApi').value.trim().replace(/\/$/,'');
     try{ if(v) localStorage.setItem('cxmusik_audioapi',v); else localStorage.removeItem('cxmusik_audioapi'); }catch(e){}
-    setAudioApiStatus(v?'Audio API tersimpan. Lagu berikutnya memakai audio langsung (bisa background).':'Audio API dihapus.');
+    setAudioApiStatus(v?'Audio API kustom tersimpan.':'Kembali ke Audio API bawaan.');
   });
   $('delAudioApiBtn').addEventListener('click', function(){
     try{ localStorage.removeItem('cxmusik_audioapi'); }catch(e){}
-    $('audioApi').value=''; setAudioApiStatus('Audio API dihapus.');
+    $('audioApi').value=''; setAudioApiStatus('Kembali ke Audio API bawaan.');
   });
   $('testAudioApiBtn').addEventListener('click', function(){
     var base=($('audioApi').value.trim().replace(/\/$/,''))||audioApiUrl();
