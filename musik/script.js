@@ -451,6 +451,18 @@
     if(i<0){ queue.push(t); i=queue.length-1; }
     playAt(i);
   }
+  /* Ketuk putar di hasil pencarian: seluruh hasil masuk antrean (tanpa duplikat),
+     jadi tombol next/prev ada lagu untuk diteruskan. Lagu yang diketuk tetap diputar duluan. */
+  function playResults(idx){
+    var t=results[idx]; if(!t||!t.id) return;
+    var i=queue.findIndex(function(x){ return x.id===t.id; });
+    if(i<0){
+      var have={}; queue.forEach(function(x){ have[x.id]=1; });
+      results.forEach(function(r){ if(r&&r.id&&!have[r.id]){ have[r.id]=1; queue.push(r); } });
+      i=queue.findIndex(function(x){ return x.id===t.id; });
+    }
+    playAt(i);
+  }
   function step(d){
     if(!queue.length) return;
     playAt((qi+d+queue.length)%queue.length);
@@ -812,7 +824,7 @@
       var row=btn.closest('.track'); if(!row) return;
       var idx=parseInt(row.dataset.idx,10); ctx=row.dataset.ctx;
       var t = ctx==='r' ? results[idx] : null; if(!t) return;
-      if(act==='play'){ playTrack(t); }
+      if(act==='play'){ playResults(idx); }
       else if(act==='queue'){ queue.push(t); renderQueue(); }
       else if(act==='like'){ likeTrack(t); }
       else if(act==='pl'){ pickerFor = (pickerFor===idx? -1:idx); renderResults(); }
