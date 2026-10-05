@@ -1,4 +1,4 @@
-  /* ================= MUSIK ================= */
+  /* ===== MUSIK ===== */
   'use strict';
   var PIPED = [
     'https://api.piped.private.coffee',
@@ -26,14 +26,14 @@
   function fmtT(sec){ sec=Math.max(0,Math.floor(sec||0)); var m=Math.floor(sec/60), s=sec%60; return m+':'+(s<10?'0':'')+s; }
   function thumb(id){ return 'https://i.ytimg.com/vi/'+id+'/mqdefault.jpg'; }
   function thumbBig(id){ return 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'; }
-  function thumbMax(id){ return 'https://i.ytimg.com/vi/'+id+'/maxresdefault.jpg'; } /* 1280x720; tidak semua video punya -> fallback */
+  function thumbMax(id){ return 'https://i.ytimg.com/vi/'+id+'/maxresdefault.jpg'; } /* 1280x720; gak semua video ada yg ini, ntar fallback sendiri */
   function setImgHD(img, id){
     img.onerror=function(){ this.onerror=null; this.src=thumbBig(id); };
     img.src=thumbMax(id);
   }
   function store(k, v){ try{ if(v===undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 
-  /* ---------- state ---------- */
+  /* ----- state ----- */
   var results = [];
   var queue = [], qi = -1;
   var player = null, playerReady = false, pendingTrack = null, progressTimer = null;
@@ -48,7 +48,7 @@
       plChipsEl=$('plChips'), plTracksEl=$('plTracks'),
       bar=$('playerBar'), qList=$('fpQueueList');
 
-  /* ---------- tema ---------- */
+  /* ----- tema ----- */
   var themeToggle = $('themeToggle');
   themeToggle.classList.add('liquid-glass');
   if (localStorage.getItem('theme') === 'dark') { body.classList.add('dark'); themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>'; }
@@ -62,7 +62,7 @@
   $('year').textContent = new Date().getFullYear();
   $('footerName').textContent = 'CraXID Project';
 
-  /* ---------- percikan ---------- */
+  /* ----- percikan ----- */
   (function(){
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var layer = document.createElement('div'); layer.className='spark-layer'; layer.setAttribute('aria-hidden','true');
@@ -79,7 +79,7 @@
     });
   })();
 
-  /* ---------- pencarian ---------- */
+  /* ----- pencarian ----- */
   function vidOfPiped(item){ var m=/v=([A-Za-z0-9_-]{11})/.exec(item.url||''); return m?m[1]:null; }
   function searchPiped(q){
     var i=0;
@@ -117,7 +117,7 @@
         });
         var ids=list.map(function(t){ return t.id; }).filter(Boolean);
         if(!ids.length) return list;
-        /* durasi tidak ikut di search.list -> ambil via videos.list (1 quota) */
+        /* search.list gak bawa durasi, comot lewat videos.list (makan 1 quota) */
         return fetch('https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id='+ids.join(',')+'&key='+encodeURIComponent(key))
           .then(function(r){ return r.ok?r.json():null; })
           .then(function(vd){
@@ -152,7 +152,7 @@
   $('searchBtn').addEventListener('click', doSearch);
   $('q').addEventListener('keydown', function(e){ if(e.key==='Enter') doSearch(); });
 
-  /* ---------- daftar hasil ---------- */
+  /* ----- daftar hasil ----- */
   function trackRow(t, idx, ctx){
     var liked = likes.indexOf(t.id)>=0 ? ' liked' : '';
     return '<div class="track" data-idx="'+idx+'" data-ctx="'+ctx+'">'+
@@ -179,14 +179,14 @@
       '<div class="empty-note">Cari lagu di kolom atas untuk mulai.</div>';
     marqueeTrackTitles(resultsEl);
   }
-  /* Judul kepanjangan berjalan seperti di full player */
+  /* judul kepanjangan dibikin jalan kyk di full player */
   function marqueeTrackTitles(root){
     (root||document).querySelectorAll('.track-title:not(.marquee)').forEach(function(el){
       setupMarquee(el, el.textContent);
     });
   }
 
-  /* ---------- library ---------- */
+  /* ----- library ----- */
   function saveLib(){ store('cxmusik_likes',likes); store('cxmusik_playlists',playlists); store('cxmusik_history',hist); store('cxmusik_dislikes',dislikes); }
   function findTrack(id){
     var all=results.concat(queue, hist, likes.map(function(){return null;}).filter(Boolean));
@@ -233,7 +233,7 @@
     marqueeTrackTitles(document.getElementById('tabLib'));
   }
 
-  /* ---------- player YouTube (tersembunyi) ---------- */
+  /* ----- player YouTube (disembunyiin) ----- */
   window.onYouTubeIframeAPIReady = function(){
     player = new YT.Player('ytplayer', {
       height:'2', width:'2',
@@ -270,12 +270,12 @@
       player.setVolume(parseInt($('vol').value,10)||80);
     }catch(e){}
   }
-  /* Ambil link audio dari API (Vercel), putar via <audio> agar bisa background */
+  /* ambil link audio dari API (Vercel), putar pake <audio> biar bisa background */
   var audioMeta=null;
   var blobCacheUrl=null;
   function revokeBlob(){ if(blobCacheUrl){ try{ URL.revokeObjectURL(blobCacheUrl); }catch(e){} blobCacheUrl=null; } }
-  /* Streaming langsung (bunyi ~2 detik) + unduh blob di background untuk seek.
-     Server audio mengabaikan range request, jadi seek butuh file utuh via blob. */
+  /* langsung streaming (bunyi ~2 detik), blob diunduh diam2 di background buat seek.
+     server audionya ngabaikan range request, makanya seek butuh file utuh */
   var blobReady=false, blobPromise=null, blobTrackId=null;
   function startAudio(t, src, pos){
     try{
@@ -307,14 +307,14 @@
     if(blobPromise) return blobPromise;
     var t=queue[qi];
     if(!t) return Promise.resolve(null);
-    /* URL audio bisa kedaluwarsa -> resolve ulang sebelum unduh */
+    /* URL bisa kedaluwarsa, resolve ulang dulu sebelum unduh */
     return resolveAudio(t.id).then(function(meta){
       if(!meta||!meta.audioUrl) throw 0;
       audioMeta=meta;
       return startBlobFetch(t, meta);
     }).catch(function(){ return null; });
   }
-  /* Semua seek (progress bar & tombol \u00b13 dtk) lewat sini */
+  /* semua seek (progress bar & tombol ±3 dtk) lewat sini */
   function doSeek(pos){
     pos=Math.max(0,pos);
     var dur=audioEl.duration||0;
@@ -343,7 +343,7 @@
     revokeBlob(); blobReady=false; blobPromise=null; blobTrackId=null;
     audioMeta=meta; renderFpTech();
     if(resumePos>0){
-      /* refetch setelah error: butuh posisi tepat -> tunggu blob (jalur lama) */
+      /* refetch abis error: butuh posisi pas, tunggu blob dulu (jalur lama) */
       setSearchStatus('Mengunduh audio\u2026');
       startBlobFetch(t, meta).then(function(url){
         setSearchStatus('');
@@ -352,7 +352,7 @@
       });
       return;
     }
-    /* jalur cepat: streaming langsung, blob menyusul di background */
+    /* jalur cepat: langsung streaming, blob nyusul di background */
     startAudio(t, meta.audioUrl, 0);
     startBlobFetch(t, meta);
   }
@@ -364,7 +364,7 @@
       .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
       .then(function(d){ if(!d||!d.status||!d.audioUrl) throw 0; return d; });
   }
-  /* Fallback: savenow.to — dipanggil langsung dari browser (CORS *), format mp3 */
+  /* cadangan: savenow.to — tembak langsung dari browser (CORS *), format mp3 */
   var SN_API_KEY='dfcb6d76f2f6a9894gjkege8a4ab232222';
   function fetchSnMeta(videoId){
     var initUrl='https://p.savenow.to/ajax/download.php?copyright=0&format=mp3&url='+
@@ -394,7 +394,7 @@
         return once();
       });
   }
-  /* Coba API utama (Vercel) dulu, lalu server cadangan (savenow) */
+  /* coba API utama (Vercel) dulu, baru server cadangan (savenow) */
   function resolveAudio(videoId){
     return fetchAudioMeta(videoId).catch(function(){
       setSearchStatus('Mencoba server cadangan\u2026');
@@ -429,7 +429,7 @@
   audioEl.addEventListener('ended', function(){ autoNext(); });
   audioEl.addEventListener('error', function(){
     if(!useAudio||audioRefetching) return;
-    /* link mungkin kedaluwarsa -> ambil baru, lanjut dari posisi terakhir */
+    /* link bisa kedaluwarsa, ambil baru lanjut dari posisi terakhir */
     audioRefetching=true;
     var t=queue[qi], pos=0;
     try{ pos=audioEl.currentTime||0; }catch(e){}
@@ -451,8 +451,8 @@
     if(i<0){ queue.push(t); i=queue.length-1; }
     playAt(i);
   }
-  /* Ketuk putar di hasil pencarian: seluruh hasil masuk antrean (tanpa duplikat),
-     jadi tombol next/prev ada lagu untuk diteruskan. Lagu yang diketuk tetap diputar duluan. */
+  /* ketuk putar di hasil pencarian: semua hasil masuk antrean (no duplikat),
+     biar next/prev ada lagu buat diterusin. yg diketuk tetep diputar duluan */
   function playResults(idx){
     var t=results[idx]; if(!t||!t.id) return;
     var i=queue.findIndex(function(x){ return x.id===t.id; });
@@ -467,7 +467,7 @@
     if(!queue.length) return;
     playAt((qi+d+queue.length)%queue.length);
   }
-  /* ----- autoplay: kalau antrean habis, ambil lagu terkait dari Piped /streams ----- */
+  /* ----- autoplay: antrean mau habis, comot lagu terkait dari Piped /streams ----- */
   var autoplay=true;
   try{ autoplay=localStorage.getItem('cxmusik_autoplay')!=='0'; }catch(e){}
   var fetchingRel=false;
@@ -565,7 +565,7 @@
     D.classList.toggle('disliked',dis);
     D.querySelector('i').className=dis?'fa-solid fa-thumbs-down':'fa-regular fa-thumbs-down';
   }
-  /* ----- Media Session API: notifikasi + kontrol lockscreen/background ----- */
+  /* ----- Media Session: notif + kontrol lockscreen/background ----- */
   function setupMediaSession(){
     if(!('mediaSession' in navigator)) return;
     try{
@@ -653,7 +653,7 @@
   });
   renderApToggle();
   setupMediaSession();
-  /* ----- Lirik lagu (LRCLIB: gratis, tanpa key, ada timestamp karaoke) ----- */
+  /* ----- lirik lagu (LRCLIB: gratis, no key, ada timestamp karaoke) ----- */
   var lyricsCache={}, lyricsTrackId=null, lyricsLines=null, lyricsActiveIdx=-1;
   var reduceMotion = ('matchMedia' in window) && matchMedia('(prefers-reduced-motion: reduce)').matches;
   function cleanTitle(t){
@@ -663,7 +663,7 @@
     t=t.replace(/\s*[\|｜].*$/,''); /* buang " | ..." di ekor */
     return t.replace(/\s{2,}/g,' ').trim();
   }
-  /* Pecah "Artis - Judul" dari judul video; nama artis di sini lebih akurat dari nama channel */
+  /* pecah "Artis - Judul" dari judul video; artis dari sini lebih akurat drpd nama channel */
   function splitArtistTitle(title){
     var m=/^(.+?)\s+[-\u2013\u2014:]\s+(.+)$/.exec(title||'');
     if(!m) return null;
@@ -693,7 +693,7 @@
       .then(function(r){ if(!r.ok) throw 0; return r.json(); })
       .then(function(list){ return list||[]; });
   }
-  /* Fallback: API lirik termai.cc (bagus untuk lagu Indonesia; key publik milik user) */
+  /* cadangan lirik: API termai.cc (jagonya lagu Indonesia; key publik) */
   var TERMAI_LYRICS_KEY='Bell409';
   function termaiLyrics(artist, title){
     var q=encodeURIComponent(artist+' '+title);
@@ -704,7 +704,7 @@
         return d.data;
       });
   }
-  /* Normalisasi hasil mentah (LRCLIB / termai) jadi kandidat lirik */
+  /* rapihin hasil mentah (LRCLIB / termai) jadi kandidat lirik */
   function normCand(d, src){
     if(!d) return null;
     var synced=d.syncedLyrics||d.lyrics||'';
@@ -723,8 +723,8 @@
     });
     return out.slice(0,8);
   }
-  /* Kumpulkan kandidat lirik dari semua sumber.
-     forceAll=true -> paksa ambil semua (tombol "cari lirik lain"). */
+  /* kumpulin kandidat lirik dari semua sumber.
+     forceAll=true -> paksa ambil semua (tombol "cari lirik lain") */
   function lyricCandidates(t, forceAll){
     var channelArtist=cleanArtist(t.author);
     var titleC=cleanTitle(t.title);
@@ -824,7 +824,7 @@
       });
     });
   }
-  /* Tombol kaca pembesar: paksa tampilkan semua kandidat (kalau tebakan otomatis salah) */
+  /* tombol kaca pembesar: paksa tampilin semua kandidat (kalo tebakan otomatis salah) */
   function researchLyrics(){
     var t=queue[qi]; if(!t) return;
     lyricsTrackId=t.id; lyricsLines=null; lyricsActiveIdx=-1;
@@ -912,7 +912,7 @@
     var el=e.target.closest('[data-q]'); if(el) playAt(parseInt(el.dataset.q,10));
   });
 
-  /* ---------- aksi baris lagu ---------- */
+  /* ----- aksi baris lagu ----- */
   document.addEventListener('click', function(e){
     var btn=e.target.closest('[data-act],[data-plpick],[data-hplay],[data-lplay],[data-lunlike],[data-pl],[data-pplay],[data-prm]');
     if(!btn) return;
@@ -947,7 +947,7 @@
     if(btn.dataset.prm!==undefined){ playlists[activePl].splice(parseInt(btn.dataset.prm,10),1); saveLib(); renderLibrary(); return; }
   });
 
-  /* ---------- tab: animasi menyembul ala /props ---------- */
+  /* ----- tab: animasi menyembul ala /props ----- */
   function popEl(el, cls){ el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
   function showMTab(which){
     var toLib = which==='lib';
@@ -963,17 +963,17 @@
   $('tabSearchBtn').addEventListener('click', function(){ showMTab('search'); });
   $('tabLibBtn').addEventListener('click', function(){ showMTab('lib'); });
 
-  /* ---------- playlist baru ---------- */
+  /* ----- playlist baru ----- */
   $('newPlBtn').addEventListener('click', function(){
     var name=prompt('Nama playlist:'); if(!name) return; name=name.trim(); if(!name) return;
     if(!playlists[name]) playlists[name]=[];
     activePl=name; saveLib(); renderLibrary();
   });
 
-  /* ---------- pengaturan key ---------- */
+  /* ----- pengaturan key ----- */
   function setStatus(s){ $('apiStatus').textContent=s||''; }
   function setSearchStatus(s){ var el=$('searchStatus'); if(el) el.textContent=s||''; }
-  /* ---------- pengaturan: notifikasi saat pencarian standar gangguan ---------- */
+  /* ----- pengaturan: notifikasi kalau pencarian standar gangguan ----- */
   function openSettings(){ $('settingsModal').classList.add('show'); }
   function closeSettings(){ $('settingsModal').classList.remove('show'); }
   function showSearchNotif(){ $('searchNotif').classList.add('show'); }
@@ -993,9 +993,9 @@
     try{ localStorage.removeItem('cxmusik_ytkey'); }catch(e){}
     $('ytKey').value=''; setStatus('Key dihapus.');
   });
-  /* ---------- Audio API (Vercel): sumber audio untuk background playback ---------- */
+  /* ----- Audio API (Vercel): sumber audio buat background playback ----- */
   var DEFAULT_AUDIO_API='https://ytdl-green-zeta.vercel.app/api/yt-audio';
-  var BROADCAST_WORKER=''; /* URL Worker broadcast (Cloudflare). Kosong = nonaktif. */
+  var BROADCAST_WORKER=''; /* URL Worker broadcast. dikosongin = mati */
   function audioApiUrl(){ try{ var v=localStorage.getItem('cxmusik_audioapi'); return ((v||'')||DEFAULT_AUDIO_API).replace(/\/$/,''); }catch(e){ return DEFAULT_AUDIO_API; } }
   function setAudioApiStatus(s){ var el=$('audioApiStatus'); if(el) el.textContent=s||''; }
   try{ $('audioApi').value=localStorage.getItem('cxmusik_audioapi')||''; }catch(e){}
@@ -1026,7 +1026,7 @@
 
   renderResults(); renderLibrary();
 
-  /* Broadcast: pengumuman dari pemilik web */
+  /* broadcast: pengumuman dari pemilik web */
   (function initBroadcast(){
     var url=(BROADCAST_WORKER||'').replace(/\/$/,'');
     if(!url||!document.body) return;

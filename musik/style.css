@@ -15,7 +15,7 @@
     .mtab:active { transform: scale(.94); }
     .mtab.active { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); border-color: var(--accent);
       transform: scale(1.08); box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--accent) 65%, transparent); }
-    /* Konten tab menyembul dari dalam ke luar, ala /props */
+    /* konten tab menyembul dari dalem ke luar, ala /props */
     @keyframes mtab-pop {
       0% { opacity: 0; transform: scale(.96) translateY(8px); }
       100% { opacity: 1; transform: scale(1) translateY(0); }
@@ -43,7 +43,7 @@
     .pl-chip { padding: 10px 18px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); background: transparent; color: var(--text); font-weight: 700; font-size: 14px; cursor: pointer; font-family: inherit; }
     .pl-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
     .empty-note { color: var(--muted); font-size: 14px; padding: 18px; text-align: center; border-radius: 18px; }
-    /* Notifikasi gangguan pencarian (muncul hanya saat pencarian standar mati) */
+    /* notif gangguan pencarian (muncul cuma pas pencarian standar mati) */
     .search-notif { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 12px; right: 12px; max-width: 520px; margin: 0 auto; z-index: 940;
       display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px;
       background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
@@ -58,7 +58,7 @@
     .sn-close { background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; padding: 6px; flex-shrink: 0; }
     .search-notif .mini-btn { flex-shrink: 0; }
     @media (prefers-reduced-motion: reduce) { .search-notif { transition: opacity .2s ease, visibility .2s; transform: none; } }
-    /* Modal pengaturan pencarian (bottom sheet, pola sama seperti antrean) */
+    /* modal pengaturan pencarian (bottom sheet, polanya sama kyk antrean) */
     .settings-modal { position: fixed; inset: 0; z-index: 965; display: flex; align-items: flex-end; justify-content: center;
       background: rgba(0,0,0,.45); opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s; }
     .settings-modal.show { opacity: 1; visibility: visible; }
@@ -75,7 +75,7 @@
     .mini-btn { padding: 10px 18px; border-radius: 999px; border: none; background: var(--accent); color: #fff; font-weight: 700; cursor: pointer; font-size: 13px; font-family: inherit; }
     .mini-btn.ghost { background: transparent; color: var(--text); border: 1px solid color-mix(in srgb, var(--text) 20%, transparent); }
     .api-status { font-size: 13px; margin-top: 6px; }
-    /* Player bar */
+    /* player bar */
     .player-bar { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 900;
       border-radius: 22px; padding: 10px 14px; display: none; }
     .player-bar.show { display: block; }
@@ -103,7 +103,7 @@
     #ytplayer { position: fixed; width: 2px; height: 2px; bottom: 0; left: 0; opacity: 0.01; pointer-events: none; }
     .pl-picker { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 10px 4px; }
     .loading-row { text-align: center; color: var(--muted); padding: 24px; font-size: 14px; }
-    /* Full player ala YT Music */
+    /* full player ala YT Music */
     .fullplayer { position: fixed; inset: 0; z-index: 950; display: flex; flex-direction: column; align-items: center;
       padding: calc(16px + env(safe-area-inset-top, 0px)) 24px calc(24px + env(safe-area-inset-bottom, 0px));
       background: var(--bg); overflow-y: auto; overflow-x: clip;
@@ -133,7 +133,7 @@
       transition: transform .15s ease, color .2s ease; }
     .like-pill button:active { transform: scale(.88); }
     .like-pill button i { display: inline-block; }
-    /* Jempol memantul + bergoyang saat diketuk */
+    /* jempol mentul + goyang pas diketuk */
     @keyframes like-boing {
       0% { transform: scale(1) rotate(0deg); }
       30% { transform: scale(1.5) rotate(-14deg); }
@@ -174,7 +174,7 @@
     .pb-dot { position: absolute; right: 0; top: 50%; transform: translate(50%,-50%); width: 10px; height: 10px;
       border-radius: 50%; background: #fff; box-shadow: 0 1px 5px rgba(0,0,0,.45); pointer-events: none; }
     .fp-actions { display: flex; gap: 10px; margin-top: 20px; }
-    /* Popup antrean (bottom sheet) */
+    /* popup antrean (bottom sheet) */
     .queue-modal { position: fixed; inset: 0; z-index: 960; display: flex; align-items: flex-end; justify-content: center;
       background: rgba(0,0,0,.45); opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s; }
     .queue-modal.show { opacity: 1; visibility: visible; }
@@ -204,7 +204,7 @@
     .ap-toggle { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 999px; cursor: pointer;
       border: 1px solid var(--accent); background: transparent; color: var(--accent); margin-left: 8px; vertical-align: middle; }
     .ap-toggle.off { opacity: .4; }
-    /* Background blur dari cover (dihitung sekali per ganti lagu, bukan tiap frame) */
+    /* background blur dari cover (dihitung sekali pas ganti lagu, bukan tiap frame) */
     .fp-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center;
       filter: blur(60px) saturate(1.5); transform: scale(1.15); }
     .fp-dim { position: absolute; inset: 0; z-index: 0; background: color-mix(in srgb, var(--bg) 60%, transparent); }
