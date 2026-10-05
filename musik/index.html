@@ -138,6 +138,7 @@
           <span class="pill-div"></span>
           <button id="fpDislike" aria-label="Tidak suka"><i class="fa-regular fa-thumbs-down"></i></button>
         </div>
+        <button class="lyric-btn" id="fpLyrics" aria-label="Lirik lagu"><i class="fa-solid fa-microphone"></i><span>Lirik</span></button>
       </div>
     </div>
     <div class="fp-bottom">
@@ -160,6 +161,18 @@
         <button class="icon-btn" id="queueClose" aria-label="Tutup antrean"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div id="fpQueueList"></div>
+    </div>
+  </div>
+
+  <div class="queue-modal" id="lyricsModal">
+    <div class="queue-sheet liquid-glass">
+      <div class="queue-head">
+        <h3><i class="fa-solid fa-microphone"></i> Lirik</h3>
+        <button class="icon-btn" id="lyricsClose" aria-label="Tutup lirik"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="lyrics-sub" id="lyricsSub">—</div>
+      <div class="lyrics-body" id="lyricsBody"><div class="empty-note">Ketuk tombol Lirik untuk memuat.</div></div>
+      <div class="lyrics-src">Lirik oleh LRCLIB</div>
     </div>
   </div>
 
