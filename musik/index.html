@@ -67,11 +67,33 @@
     .pl-chip { padding: 10px 18px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); background: transparent; color: var(--text); font-weight: 700; font-size: 14px; cursor: pointer; font-family: inherit; }
     .pl-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
     .empty-note { color: var(--muted); font-size: 14px; padding: 18px; text-align: center; border-radius: 18px; }
-    .settings-box { margin-top: 30px; padding: 18px; border-radius: 20px; }
-    .settings-box h3 { margin: 0 0 8px; font-size: 16px; }
-    .settings-box p { font-size: 13px; color: var(--muted); line-height: 1.7; margin: 0 0 10px; }
-    .settings-box input { width: 100%; padding: 12px 16px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); background: transparent; color: var(--text); font-family: inherit; font-size: 14px; margin-bottom: 8px; }
-    .settings-box .row { display: flex; gap: 8px; }
+    /* Notifikasi gangguan pencarian (muncul hanya saat pencarian standar mati) */
+    .search-notif { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 12px; right: 12px; max-width: 520px; margin: 0 auto; z-index: 940;
+      display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px;
+      background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border: 1px solid color-mix(in srgb, #f0a020 45%, transparent); box-shadow: 0 14px 34px rgba(0,0,0,.35);
+      transform: translateY(-16px) scale(.96); opacity: 0; visibility: hidden;
+      transition: transform .34s cubic-bezier(0.34, 1.4, 0.64, 1), opacity .25s ease, visibility .25s; }
+    .search-notif.show { transform: none; opacity: 1; visibility: visible; }
+    .search-notif > i { color: #f0a020; font-size: 20px; flex-shrink: 0; }
+    .sn-text { flex: 1; font-size: 13px; line-height: 1.5; }
+    .sn-text b { display: block; }
+    .sn-text span { color: var(--muted); font-size: 12px; }
+    .sn-close { background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; padding: 6px; flex-shrink: 0; }
+    .search-notif .mini-btn { flex-shrink: 0; }
+    @media (prefers-reduced-motion: reduce) { .search-notif { transition: opacity .2s ease, visibility .2s; transform: none; } }
+    /* Modal pengaturan pencarian (bottom sheet, pola sama seperti antrean) */
+    .settings-modal { position: fixed; inset: 0; z-index: 965; display: flex; align-items: flex-end; justify-content: center;
+      background: rgba(0,0,0,.45); opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s; }
+    .settings-modal.show { opacity: 1; visibility: visible; }
+    .settings-sheet { width: 100%; max-width: 520px; max-height: 80vh; overflow-y: auto;
+      border-radius: 24px 24px 0 0; padding: 16px 18px calc(20px + env(safe-area-inset-bottom, 0px));
+      transform: translateY(48px); transition: transform .25s ease; }
+    .settings-modal.show .settings-sheet { transform: none; }
+    .settings-sheet h3 { margin: 0; font-size: 16px; }
+    .settings-sheet p { font-size: 13px; color: var(--muted); line-height: 1.7; margin: 12px 0 10px; }
+    .settings-sheet input { width: 100%; padding: 12px 16px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); background: transparent; color: var(--text); font-family: inherit; font-size: 14px; margin-bottom: 8px; }
+    .settings-sheet .row { display: flex; gap: 8px; }
     .mini-btn { padding: 10px 18px; border-radius: 999px; border: none; background: var(--accent); color: #fff; font-weight: 700; cursor: pointer; font-size: 13px; font-family: inherit; }
     .mini-btn.ghost { background: transparent; color: var(--text); border: 1px solid color-mix(in srgb, var(--text) 20%, transparent); }
     .api-status { font-size: 13px; margin-top: 6px; }
@@ -166,12 +188,19 @@
 </head>
 <body>
   <div id="ytplayer" aria-hidden="true"></div>
+  <div class="search-notif" id="searchNotif" role="alert">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <div class="sn-text"><b>Pencarian standar sedang gangguan.</b><span>Semua server publik tidak merespons. Pakai YouTube Data API key agar tetap bisa mencari.</span></div>
+    <button class="mini-btn" id="notifSettingBtn">Pengaturan</button>
+    <button class="sn-close" id="notifClose" aria-label="Tutup notifikasi"><i class="fa-solid fa-xmark"></i></button>
+  </div>
   <main class="page">
     <section class="content" style="text-align:left">
       <div class="musik-head">
         <a href="/" class="back-btn liquid-glass" aria-label="Kembali"><i class="fa-solid fa-chevron-left"></i></a>
         <h1>Musik</h1>
         <button id="themeToggle" class="back-btn liquid-glass" aria-label="Ganti tema" style="border:none;cursor:pointer"></button>
+        <button id="settingsBtn" class="back-btn liquid-glass" aria-label="Pengaturan pencarian" style="border:none;cursor:pointer"><i class="fa-solid fa-gear"></i></button>
       </div>
       <span class="trial-badge"><i class="fa-solid fa-flask"></i> HALAMAN PERCOBAAN</span>
 
@@ -207,15 +236,20 @@
         </div>
       </div>
 
-      <div class="settings-box liquid-glass">
-        <h3><i class="fa-solid fa-gear"></i> Pengaturan pencarian</h3>
-        <p>Pencarian memakai instance publik (gratis, kadang lambat/mati). Untuk hasil yang selalu stabil, tempel <b>YouTube Data API key</b> milikmu — tersimpan di HP ini saja, tidak dikirim ke mana-mana. Cara buat: Google Cloud Console → aktifkan <i>YouTube Data API v3</i> → buat API key.</p>
-        <input id="ytKey" type="text" placeholder="YouTube Data API key (opsional)" autocomplete="off" />
-        <div class="row">
-          <button class="mini-btn" id="saveKeyBtn">Simpan</button>
-          <button class="mini-btn ghost" id="delKeyBtn">Hapus</button>
+      <div class="settings-modal" id="settingsModal">
+        <div class="settings-sheet liquid-glass">
+          <div class="queue-head">
+            <h3><i class="fa-solid fa-gear"></i> Pengaturan pencarian</h3>
+            <button class="icon-btn" id="settingsClose" aria-label="Tutup pengaturan"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <p>Pencarian memakai instance publik (gratis, kadang lambat/mati). Untuk hasil yang selalu stabil, tempel <b>YouTube Data API key</b> milikmu — tersimpan di HP ini saja, tidak dikirim ke mana-mana. Cara buat: Google Cloud Console → aktifkan <i>YouTube Data API v3</i> → buat API key.</p>
+          <input id="ytKey" type="text" placeholder="YouTube Data API key (opsional)" autocomplete="off" />
+          <div class="row">
+            <button class="mini-btn" id="saveKeyBtn">Simpan</button>
+            <button class="mini-btn ghost" id="delKeyBtn">Hapus</button>
+          </div>
+          <div class="api-status" id="apiStatus"></div>
         </div>
-        <div class="api-status" id="apiStatus"></div>
       </div>
     </section>
     <footer>
@@ -398,11 +432,13 @@
     var p = key ? searchYT(q,key).catch(function(){ return searchPiped(q); }) : searchPiped(q);
     p.then(function(list){
       setSearchStatus('');
+      hideSearchNotif();
       results=list; pickerFor=-1; renderResults();
       if(!list.length) resultsEl.innerHTML='<div class="empty-note">Tidak ketemu. Coba kata kunci lain.</div>';
     }).catch(function(){
       setSearchStatus('');
-      resultsEl.innerHTML='<div class="empty-note">Pencarian gagal — semua instance publik sedang mati. Coba lagi nanti atau isi YouTube Data API key di Pengaturan.</div>';
+      showSearchNotif();
+      resultsEl.innerHTML='<div class="empty-note">Pencarian gagal — server publik sedang gangguan. Ketuk <b>Pengaturan</b> pada notifikasi di atas untuk memakai YouTube Data API key.</div>';
     });
   }
   $('searchBtn').addEventListener('click', doSearch);
@@ -772,6 +808,16 @@
   /* ---------- pengaturan key ---------- */
   function setStatus(s){ $('apiStatus').textContent=s||''; }
   function setSearchStatus(s){ var el=$('searchStatus'); if(el) el.textContent=s||''; }
+  /* ---------- pengaturan: notifikasi saat pencarian standar gangguan ---------- */
+  function openSettings(){ $('settingsModal').classList.add('show'); }
+  function closeSettings(){ $('settingsModal').classList.remove('show'); }
+  function showSearchNotif(){ $('searchNotif').classList.add('show'); }
+  function hideSearchNotif(){ $('searchNotif').classList.remove('show'); }
+  $('settingsBtn').addEventListener('click', openSettings);
+  $('settingsClose').addEventListener('click', closeSettings);
+  $('settingsModal').addEventListener('click', function(e){ if(e.target===$('settingsModal')) closeSettings(); });
+  $('notifClose').addEventListener('click', hideSearchNotif);
+  $('notifSettingBtn').addEventListener('click', function(){ openSettings(); });
   try{ $('ytKey').value=localStorage.getItem('cxmusik_ytkey')||''; }catch(e){}
   $('saveKeyBtn').addEventListener('click', function(){
     var v=$('ytKey').value.trim();
