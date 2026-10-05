@@ -194,7 +194,21 @@
     .fp-play { width: 62px; height: 62px; border-radius: 50%; border: none; cursor: pointer; color: #fff; font-size: 30px;
       background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 84%, white), color-mix(in srgb, var(--accent) 92%, black));
       box-shadow: 0 10px 26px color-mix(in srgb, var(--accent) 35%, transparent); }
-    .fp-side { width: 54px; height: 54px; border-radius: 50%; border: none; background: transparent; color: var(--text); font-size: 22px; cursor: pointer; }
+    .fp-side { width: 54px; height: 54px; border-radius: 50%; border: none; background: transparent; color: var(--text); font-size: 22px; cursor: pointer; flex-shrink: 0; }
+    .fp-controls { gap: 22px; }
+    .fp-controls button { flex-shrink: 0; }
+    .fp-skip { width: 48px; height: 48px; border-radius: 50%; border: none; background: transparent; color: var(--text);
+      font-size: 19px; cursor: pointer; position: relative; }
+    .fp-skip span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 800; pointer-events: none; }
+    .fp-skip:active { transform: scale(.9); }
+    @media (max-width: 420px){ .fp-controls { gap: 12px; } .fp-skip { width: 44px; height: 44px; font-size: 18px; } }
+    .fp-fill { position: relative; }
+    .fp-dot { position: absolute; right: 0; top: 50%; transform: translate(50%,-50%); width: 14px; height: 14px;
+      border-radius: 50%; background: #fff; box-shadow: 0 1px 6px rgba(0,0,0,.45); pointer-events: none; }
+    .pb-fill { position: relative; }
+    .pb-dot { position: absolute; right: 0; top: 50%; transform: translate(50%,-50%); width: 10px; height: 10px;
+      border-radius: 50%; background: #fff; box-shadow: 0 1px 5px rgba(0,0,0,.45); pointer-events: none; }
     .fp-actions { display: flex; gap: 10px; margin-top: 20px; }
     /* Popup antrean (bottom sheet) */
     .queue-modal { position: fixed; inset: 0; z-index: 960; display: flex; align-items: flex-end; justify-content: center;
@@ -327,11 +341,13 @@
       </div>
     </div>
     <div class="fp-bottom">
-      <div class="fp-progress" id="fpProgress"><div class="fp-fill" id="fpFill"></div></div>
+      <div class="fp-progress" id="fpProgress"><div class="fp-fill" id="fpFill"><span class="fp-dot"></span></div></div>
       <div class="fp-times"><span id="fpCur">0:00</span><span id="fpDur">0:00</span></div>
       <div class="fp-controls">
         <button class="fp-side" id="fpPrev" aria-label="Sebelumnya"><i class="fa-solid fa-backward-step"></i></button>
+        <button class="fp-skip" id="fpBack3" aria-label="Mundur 3 detik"><i class="fa-solid fa-rotate-left"></i><span>3</span></button>
         <button class="fp-play" id="fpPlay" aria-label="Putar/Jeda"><i class="fa-solid fa-play"></i></button>
+        <button class="fp-skip" id="fpFwd3" aria-label="Maju 3 detik"><i class="fa-solid fa-rotate-right"></i><span>3</span></button>
         <button class="fp-side" id="fpNext" aria-label="Berikutnya"><i class="fa-solid fa-forward-step"></i></button>
       </div>
     </div>
@@ -364,7 +380,7 @@
         <input type="range" id="vol" min="0" max="100" value="80" aria-label="Volume" />
       </div>
     </div>
-    <div class="pb-progress" id="pbProgress"><div class="pb-fill" id="pbFill"></div></div>
+    <div class="pb-progress" id="pbProgress"><div class="pb-fill" id="pbFill"><span class="pb-dot"></span></div></div>
     <div class="pb-times"><span id="tCur">0:00</span><span class="engine-badge yt" id="engineBadge" title="Mesin audio: API = via Vercel (bisa background), YT = YouTube (foreground saja)">YT</span><span id="tDur">0:00</span></div>
   </div>
 
@@ -965,6 +981,20 @@
     });
   }
   bindSeek($('fpProgress'));
+  function skipSec(d){
+    if(qi<0) return;
+    try{
+      if(useAudio){
+        var dur=audioEl.duration||0, cur=audioEl.currentTime||0, nd=cur+d;
+        if(dur>0&&isFinite(dur)) nd=Math.min(nd,dur);
+        audioEl.currentTime=Math.max(0,nd);
+      } else if(playerReady){
+        player.seekTo(Math.max(0,player.getCurrentTime()+d), true);
+      }
+    }catch(e){}
+  }
+  $('fpBack3').addEventListener('click', function(){ skipSec(-3); });
+  $('fpFwd3').addEventListener('click', function(){ skipSec(3); });
   $('vol').addEventListener('input', function(){
     var v=parseInt(this.value,10)||0;
     try{ audioEl.volume=v/100; }catch(e){}
