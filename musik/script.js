@@ -679,14 +679,10 @@
     if(dur>0) q+='&duration='+Math.round(dur);
     return fetch('https://lrclib.net/api/get?'+q).then(function(r){ if(!r.ok) throw 0; return r.json(); });
   }
-  function lrclibSearch(artist, title){
+  function lrclibSearchAll(artist, title){
     return fetch('https://lrclib.net/api/search?q='+encodeURIComponent(artist+' '+title))
       .then(function(r){ if(!r.ok) throw 0; return r.json(); })
-      .then(function(list){
-        list=list||[];
-        for(var i=0;i<list.length;i++){ if(list[i].plainLyrics||list[i].syncedLyrics) return list[i]; }
-        throw 0;
-      });
+      .then(function(list){ return list||[]; });
   }
   /* Fallback: API lirik termai.cc (bagus untuk lagu Indonesia; key publik milik user) */
   var TERMAI_LYRICS_KEY='Bell409';
@@ -699,22 +695,60 @@
         return d.data;
       });
   }
-  function fetchLyrics(t){
+  /* Normalisasi hasil mentah (LRCLIB / termai) jadi kandidat lirik */
+  function normCand(d, src){
+    if(!d) return null;
+    var synced=d.syncedLyrics||d.lyrics||'';
+    var plain=d.plainLyrics||d.lyrics||'';
+    var lines=parseLRC(synced);
+    if(!lines.length&&!plain) return null;
+    return {src:src, track:d.trackName||d.track_name||'', artist:d.artistName||d.artist_name||'',
+            synced:lines.length>0, lines:lines.length?lines:null, plain:plain};
+  }
+  function dedupeCands(list){
+    var seen={}, out=[];
+    list.forEach(function(c){
+      var k=(c.src+'|'+c.track+'|'+c.artist).toLowerCase(); /* dedupe per sumber: user bisa pilih antar-sumber */
+      if(!seen[k]){ seen[k]=c; out.push(c); }
+      else if(c.synced&&!seen[k].synced){ out[out.indexOf(seen[k])]=c; seen[k]=c; }
+    });
+    return out.slice(0,8);
+  }
+  /* Kumpulkan kandidat lirik dari semua sumber.
+     forceAll=true -> paksa ambil semua (tombol "cari lirik lain"). */
+  function lyricCandidates(t, forceAll){
     var artist=cleanArtist(t.author), title=cleanTitle(t.title);
     if(title.toLowerCase().indexOf(artist.toLowerCase())===0)
       title=title.slice(artist.length).replace(/^[\s\-–—:]+/,'').trim();
-    function norm(d){
-      if(!d) throw 0;
-      var synced=d.syncedLyrics||d.lyrics||'';
-      var plain=d.plainLyrics||d.lyrics||'';
-      var lines=parseLRC(synced);
-      if(!lines.length&&!plain) throw 0;
-      return {lines:lines.length?lines:null, plain:plain};
+    function getP(){
+      return lrclibGet(artist,title,t.dur||0)
+        .then(function(d){ return normCand(d,'lrclib'); })
+        .catch(function(){ return null; });
     }
-    return lrclibGet(artist,title,t.dur||0)
-      .catch(function(){ return lrclibSearch(artist,title); })
-      .catch(function(){ return termaiLyrics(artist,title); })
-      .then(norm);
+    function searchP(){
+      return Promise.all([
+        lrclibSearchAll(artist,title).catch(function(){ return []; }),
+        termaiLyrics(artist,title).then(function(d){ return [d]; }).catch(function(){ return []; })
+      ]).then(function(parts){
+        var out=[];
+        parts[0].forEach(function(r){ var c=normCand(r,'lrclib'); if(c) out.push(c); });
+        parts[1].forEach(function(r){ var c=normCand(r,'termai'); if(c) out.push(c); });
+        return out;
+      });
+    }
+    if(forceAll){
+      return Promise.all([getP(), searchP()]).then(function(pr){
+        var list=pr[0]?[pr[0]].concat(pr[1]):pr[1];
+        return {picked:null, list:dedupeCands(list)};
+      });
+    }
+    return getP().then(function(c){
+      if(c) return {picked:c, list:[]};
+      return searchP().then(function(list){
+        list=dedupeCands(list);
+        return {picked:list.length===1?list[0]:null, list:list};
+      });
+    });
   }
   function renderLyrics(res){
     var body=$('lyricsBody');
@@ -735,12 +769,49 @@
     $('lyricsSub').textContent=t.title+' \u2014 '+(t.author||'YouTube');
     if(lyricsCache[t.id]!==undefined){ renderLyrics(lyricsCache[t.id]); return; }
     $('lyricsBody').innerHTML='<div class="empty-note">Mencari lirik\u2026</div>';
-    fetchLyrics(t).then(function(res){
+    lyricCandidates(t,false).then(function(res){
       if(lyricsTrackId!==t.id) return;
-      lyricsCache[t.id]=res; renderLyrics(res);
+      if(res.picked){ lyricsCache[t.id]=res.picked; renderLyrics(res.picked); }
+      else if(res.list.length){ renderLyricPicker(res.list); }
+      else { lyricsCache[t.id]=null; renderLyrics(null); }
     }).catch(function(){
       if(lyricsTrackId!==t.id) return;
       lyricsCache[t.id]=null; renderLyrics(null);
+    });
+  }
+  var lyricPickList=[];
+  function renderLyricPicker(list){
+    lyricsLines=null; lyricsActiveIdx=-1;
+    lyricPickList=list;
+    var body=$('lyricsBody');
+    body.innerHTML='<div class="lyr-pick-head">Ditemukan '+list.length+' lirik \u2014 pilih yang cocok:</div>'+
+      list.map(function(c,i){
+        return '<button class="lyr-pick" data-pi="'+i+'">'+
+          '<div class="lyr-pick-title">'+esc(c.track||'Tanpa judul')+'</div>'+
+          '<div class="lyr-pick-sub">'+esc(c.artist||'Artis tak dikenal')+' \u2022 '+c.src+(c.synced?' \u2022 karaoke':'')+'</div>'+
+        '</button>';
+      }).join('');
+    body.querySelectorAll('.lyr-pick').forEach(function(b){
+      b.addEventListener('click', function(){
+        var c=lyricPickList[parseInt(b.dataset.pi,10)]; if(!c) return;
+        var t=queue[qi]; if(t) lyricsCache[t.id]=c;
+        renderLyrics(c);
+      });
+    });
+  }
+  /* Tombol kaca pembesar: paksa tampilkan semua kandidat (kalau tebakan otomatis salah) */
+  function researchLyrics(){
+    var t=queue[qi]; if(!t) return;
+    lyricsTrackId=t.id; lyricsLines=null; lyricsActiveIdx=-1;
+    $('lyricsSub').textContent=t.title+' \u2014 '+(t.author||'YouTube');
+    $('lyricsBody').innerHTML='<div class="empty-note">Mencari lirik\u2026</div>';
+    lyricCandidates(t,true).then(function(res){
+      if(lyricsTrackId!==t.id) return;
+      if(res.list.length){ renderLyricPicker(res.list); }
+      else { lyricsCache[t.id]=null; renderLyrics(null); }
+    }).catch(function(){
+      if(lyricsTrackId!==t.id) return;
+      renderLyrics(null);
     });
   }
   function syncLyrics(pos){
@@ -762,6 +833,7 @@
     loadLyrics(t);
   });
   $('lyricsClose').addEventListener('click', function(){ $('lyricsModal').classList.remove('show'); });
+  $('lyricsResearch').addEventListener('click', researchLyrics);
   $('lyricsModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('show'); });
   $('fpQueueBtn').addEventListener('click', function(){ $('queueModal').classList.add('show'); });
   $('queueClose').addEventListener('click', function(){ $('queueModal').classList.remove('show'); });
