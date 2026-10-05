@@ -17,7 +17,7 @@
     <link rel="canonical" id="canonicalLink" href="https://hxa.my.id/blog/">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Dede Kurniawan">
-    <meta property="og:image" content="https://hxa.my.id/icons/icon.webp">
+    <meta property="og:image" content="https://hxa.my.id/icons/icon-256.webp">
     <meta name="twitter:card" content="summary">
     <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'" />
@@ -129,7 +129,7 @@
                 const date = formatPostDate(meta.date);
                 const tags = Array.isArray(meta.tags) ? meta.tags : [];
                 const authorName = (typeof CONFIG !== "undefined" && CONFIG.authorName) || "Dede Kurniawan";
-                const authorAvatar = (typeof CONFIG !== "undefined" && CONFIG.profileImage) || "/icons/icon.webp";
+                const authorAvatar = (typeof CONFIG !== "undefined" && CONFIG.profileImage) || "/icons/icon-256.webp";
                 const readMins = Math.max(1, Math.ceil(body.split(/\s+/).filter(Boolean).length / 200));
                 const cleanUrl = "https://hxa.my.id/blog/" + file + "/";
 
