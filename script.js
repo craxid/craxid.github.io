@@ -3,11 +3,8 @@ const body = document.body;
 
 root.style.setProperty("--accent", CONFIG.accentColor);
 
-/* =========================
-   CLOUDFLARE WEB ANALYTICS
-   Beacon disuntik dari sini agar cukup pasang sekali untuk semua halaman.
-   Token beacon bersifat publik (dirancang untuk dilihat semua orang).
-========================= */
+/* cloudflare analytics: beacon disuntik dari sini, pasang sekali buat semua halaman.
+   token beacon publik, aman diliat orang */
 if (typeof CONFIG !== "undefined" && CONFIG.cfBeaconToken) {
   const cfBeacon = document.createElement("script");
   cfBeacon.defer = true;
@@ -19,9 +16,7 @@ if (typeof CONFIG !== "undefined" && CONFIG.cfBeaconToken) {
   document.head.appendChild(cfBeacon);
 }
 
-/* =========================
-   HELPERS
-========================= */
+/* helper */
 
 function setContent(selector, value, prop = "textContent") {
   const element = document.querySelector(selector);
@@ -39,9 +34,7 @@ function setAttr(selector, attr, value) {
   }
 }
 
-/* =========================
-   PAGE TITLE
-========================= */
+/* judul halaman */
 
 const currentPath = window.location.pathname;
 
@@ -53,9 +46,7 @@ if (currentPath.includes("/bot")) {
   document.title = `${CONFIG.webName} - Portfolio Developer`;
 }
 
-/* =========================
-   META SEO
-========================= */
+/* meta SEO */
 
 setContent(
   'meta[name="description"]',
@@ -135,9 +126,7 @@ setContent(
   "content"
 );
 
-/* =========================
-   GLOBAL CONTENT
-========================= */
+/* isi konten global */
 
 setAttr(
   "#profileImage",
@@ -165,9 +154,7 @@ setContent(
   CONFIG.webName
 );
 
-/* =========================
-   ANTI COPY
-========================= */
+/* anti copas */
 
 document.addEventListener("contextmenu", (e) => {
   e.preventDefault();
@@ -183,10 +170,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-/* =========================
-   WHATSAPP BUTTON
-   Dipakai di halaman utama
-========================= */
+/* tombol whatsapp (halaman utama) */
 
 const whatsappBtn = document.getElementById("whatsappBtn");
 
@@ -213,10 +197,7 @@ if (telegramBtn) {
   `;
 }
 
-/* =========================
-   BOT GROUP BUTTON
-   Dipakai di halaman /bot/
-========================= */
+/* tombol grup bot (halaman /bot/) */
 
 const botGroupBtn = document.getElementById("botGroupBtn");
 
@@ -225,17 +206,13 @@ if (botGroupBtn) {
   botGroupBtn.classList.add("liquid-glass");
 }
 
-/* =========================
-   GLOBAL SECONDARY BUTTONS
-========================= */
+/* tombol-tombol sekunder */
 
 document.querySelectorAll(".secondary-btn").forEach((button) => {
   button.classList.add("liquid-glass");
 });
 
-/* =========================
-   SCHEMA SEO
-========================= */
+/* schema SEO */
 
 const schema = document.createElement("script");
 
@@ -253,9 +230,7 @@ schema.textContent = JSON.stringify({
 
 document.body.appendChild(schema);
 
-/* =========================
-   THEME
-========================= */
+/* tema */
 
 const themeToggle = document.getElementById("themeToggle");
 
@@ -285,9 +260,7 @@ if (themeToggle) {
   });
 }
 
-/* =========================
-   TECH STACK ICONS
-========================= */
+/* ikon tech stack */
 
 const icons = {
   JavaScript: "fa-brands fa-js",
@@ -321,9 +294,7 @@ const icons = {
   Vercel: "fa-solid fa-triangle-exclamation",
 };
 
-/* =========================
-   TECH STACK
-========================= */
+/* tech stack */
 
 function renderTechStack() {
   const container = document.getElementById("techStack");
@@ -349,9 +320,7 @@ function renderTechStack() {
     .join("");
 }
 
-/* =========================
-   GITHUB PROJECTS
-========================= */
+/* project github */
 
 async function loadProjects() {
   const container = document.getElementById("projects");
@@ -441,9 +410,7 @@ async function loadProjects() {
   }
 }
 
-/* =========================
-   BLOG LIST
-========================= */
+/* daftar blog */
 
 function formatBlogDate(dateString) {
   const date = new Date(dateString + "T00:00:00");
@@ -536,17 +503,13 @@ async function loadBlogList() {
   }
 }
 
-/* =========================
-   INIT
-========================= */
+/* init */
 
 renderTechStack();
 loadProjects();
 loadBlogList();
 
-/* =========================
-   PWA SERVICE WORKER
-========================= */
+/* service worker (PWA) */
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -558,18 +521,16 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-/* =========================
-   GDRIVE UPLOADER LOGIC
-========================= */
+/* logika uploader gdrive */
 const uploaderInput = document.getElementById('file');
 const uploaderLabel = document.getElementById('fileLabel');
 const uploaderBtn = document.getElementById('uploadBtn');
 const uploaderStatus = document.getElementById('status');
 
-// Cek apakah user sedang berada di halaman uploader
+// cuma jalan di halaman uploader
 if (uploaderInput && uploaderLabel && uploaderBtn && uploaderStatus) {
   
-  // 1. Animasi saat file dipilih
+  // 1. animasi pas file dipilih
   uploaderInput.addEventListener('change', () => {
     if (uploaderInput.files.length > 0) {
       const fileName = uploaderInput.files[0].name;
@@ -583,7 +544,7 @@ if (uploaderInput && uploaderLabel && uploaderBtn && uploaderStatus) {
     }
   });
 
-  // 2. Eksekusi API GAS saat tombol diklik
+  // 2. tembak API GAS pas tombol diklik
   uploaderBtn.addEventListener('click', async () => {
     if (uploaderInput.files.length === 0) {
       uploaderStatus.innerHTML = '<span style="color: #ff5252;"><i class="fa-solid fa-triangle-exclamation"></i> Pilih file terlebih dahulu!</span>';
@@ -603,7 +564,7 @@ if (uploaderInput && uploaderLabel && uploaderBtn && uploaderStatus) {
       const payload = JSON.stringify({ base64Data, fileName });
 
       try {
-        // Pastikan ini adalah URL GAS Anda yang terbaru
+        // pastiin ini URL GAS yg terbaru
         const gasUrl = 'https://script.google.com/macros/s/AKfycbw3XENLYI_ZYGCDcCBXtugMYLeNl4z3lr6J2XNTsM7R3vw11fjyhmaId-OwSlTLb-pi/exec';
 
         const response = await fetch(gasUrl, {
@@ -618,7 +579,7 @@ if (uploaderInput && uploaderLabel && uploaderBtn && uploaderStatus) {
         if (result.status === 'success') {
           uploaderBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i><span>Upload File Lain</span>';
           
-          // Ini dia bagian directUrl yang dicari, lengkap dengan class tombol membulat (global-btn)
+          // directUrl-nya di sini, tombolnya dibikin membulat (global-btn)
           uploaderStatus.innerHTML = `
             <div style="color: var(--accent); margin-bottom: 12px; font-weight: 600;">
               <i class="fa-solid fa-circle-check"></i> Berhasil Diunggah!
@@ -642,10 +603,7 @@ if (uploaderInput && uploaderLabel && uploaderBtn && uploaderStatus) {
   });
 }
 
-/* =========================
-   BUILD.PROP GENERATOR
-   Dipakai di halaman /props/
-========================= */
+/* generator build.prop (halaman /props/) */
 
 const buildPropTemplate = `## Fringerprint - Custom Props for Android - @ CraXID Project
 
@@ -853,9 +811,9 @@ ro.system_ext.build.version.sdk={versiSDK}
 const propForm = document.getElementById("propForm");
 const propStatus = document.getElementById("propStatus");
 
-// Cek apakah user sedang berada di halaman generator
+// cuma jalan di halaman generator
 if (propForm) {
-  // Kumpulkan data form + tanggal dinamis mengikuti waktu generate
+  // kumpulin data form + tanggal ngikutin waktu generate
   const collectPropData = () => {
     // Format UTC ala `date`: "Fri Sep  1 12:20:23 UTC 2023"
     const now = new Date();
@@ -884,7 +842,7 @@ if (propForm) {
     };
   };
 
-  // Bangun isi file-file modul dari data form
+  // rakit isi file modul dari data form
   const buildPropFiles = (data) => {
     let systemProp = buildPropTemplate;
     Object.keys(data).forEach((key) => {
@@ -953,7 +911,7 @@ minMagisk=2318
       }
     });
 
-    // ===== Pratinjau hasil generate =====
+    // ----- pratinjau -----
     const propPreviewBtn = document.getElementById("propPreviewBtn");
     const propPreview = document.getElementById("propPreview");
     const propPreviewContent = document.getElementById("propPreviewContent");
@@ -977,7 +935,7 @@ minMagisk=2318
 
     if (propPreviewBtn && propPreview && propPreviewContent) {
       propPreviewBtn.addEventListener("click", () => {
-        // Validasi form dulu, sama seperti saat submit
+        // validasi dulu, sama kyk pas submit
         if (!propForm.reportValidity()) return;
 
         previewFiles = buildPropFiles(collectPropData());
@@ -1008,11 +966,7 @@ minMagisk=2318
   }
 }
 
-/* =========================
-   SPARKS — percikan hijau di setiap sentuhan
-   Ringan: ~12 partikel per sentuhan, animasi transform+opacity (GPU),
-   partikel dibersihkan otomatis, hormati prefers-reduced-motion.
-========================= */
+/* sparks: percikan hijau tiap sentuhan. ringan (~12 partikel, GPU), dibersihin otomatis */
 (function initSparks() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -1048,13 +1002,13 @@ minMagisk=2318
     }
   }
 
-  // Setiap sentuhan di mana saja memicu percikan (bukan cuma tombol)
+  // tiap sentuhan di mana aja micu percikan (bukan cuma tombol)
   document.addEventListener("pointerdown", (e) => {
     if (e.button !== undefined && e.button !== 0) return; // abaikan klik kanan/tengah
     burst(e.clientX, e.clientY);
   });
 
-  // Akses keyboard (Enter/Space): percikan dari tengah elemen yang difokus
+  // keyboard (Enter/Space): percikan dari tengah elemen yg fokus
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Enter" && e.key !== " ") return;
     const el = e.target.closest ? e.target.closest("button, a") : null;
@@ -1064,9 +1018,7 @@ minMagisk=2318
   });
 })();
 
-/* =========================
-   BROADCAST (pengumuman dari pemilik web)
-========================= */
+/* broadcast: pengumuman dari pemilik web */
 (function initBroadcast() {
   const url = ((window.CONFIG && CONFIG.broadcastWorker) || "").replace(/\/$/, "");
   if (!url || !document.body) return;

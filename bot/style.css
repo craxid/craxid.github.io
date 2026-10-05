@@ -1,4 +1,4 @@
-/* Gaya Dasar untuk Body */
+/* dasar body */
 body {
     font-family: sans-serif;
     background-color: #f0f0f0;
@@ -10,7 +10,7 @@ body {
     position: relative;
 }
 
-/* Gaya untuk Container Status Bar (Jam di kiri, Baterai di kanan) */
+/* status bar: jam kiri, baterai kanan */
 .status-bar {
     position: fixed;
     top: 0;
@@ -28,13 +28,13 @@ body {
     font-size: 12px;
 }
 
-/* Gaya untuk teks waktu di status bar */
+/* teks jam */
 .status-text {
     color: white;
     font-family: sans-serif;
 }
 
-/* Gaya untuk container status baterai (di dalam status-bar) */
+/* wadah baterai */
 #battery-status {
     display: flex;
     align-items: center;
@@ -44,7 +44,7 @@ body {
     position: relative;
 }
 
-/* Gaya untuk bingkai baterai */
+/* bingkai baterai */
 .battery-outline {
     width: 24px;
     height: 12px;
@@ -55,7 +55,7 @@ body {
     overflow: hidden;
 }
 
-/* Gaya untuk bagian kepala baterai (opsional) */
+/* kepala baterai */
 .battery-outline::after {
     content: '';
     width: 2px;
@@ -67,7 +67,7 @@ body {
     border-radius: 0 1px 1px 0;
 }
 
-/* Gaya untuk isi level baterai */
+/* isi baterai */
 .battery-fill {
     height: 100%;
     width: 0%;
@@ -76,12 +76,12 @@ body {
     transition: width 0.5s ease;
 }
 
-/* Gaya untuk teks persentase baterai */
+/* angka persen baterai */
 .battery-text {
     color: white;
 }
 
-/* Gaya warna isi baterai berdasarkan level (ditambahkan oleh JavaScript) */
+/* warna isi baterai ngikutin level, diisi dari JS */
 .battery-fill.low {
     background-color: red;
 }
@@ -92,7 +92,7 @@ body {
     background-color: #007bff;
 }
 
-/* Gaya untuk icon petir (charging indicator) */
+/* ikon petir pas ngecas */
 .lightning-icon {
     position: absolute;
     top: 50%;
@@ -105,7 +105,7 @@ body {
 }
 
 
-/* Gaya untuk Wrapper Konten Utama (membungkus container dan footer) */
+/* bungkus konten + footer */
 .main-wrapper {
     display: flex;
     flex-direction: column;
@@ -113,10 +113,10 @@ body {
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
-    margin-top: 25px; /* Beri jarak dari atas agar tidak tertutup status bar */
+    margin-top: 25px; /* kasih jarak atas biar gak ketutup status bar */
 }
 
-/* Gaya untuk Container Utama */
+/* container utama */
 .container {
     background-color: #fff;
     padding: 30px;
@@ -127,7 +127,7 @@ body {
     width: 100%;
 }
 
-/* Wrapper untuk Gambar Profil dan Badge */
+/* foto profil + badge */
 .profile-image-wrapper {
     position: relative;
     display: block;
@@ -135,7 +135,7 @@ body {
     width: fit-content;
 }
 
-/* Gaya untuk gambar profil */
+/* foto profil */
 .profile-image {
     width: 150px;
     height: 150px;
@@ -144,7 +144,7 @@ body {
     border: 3px solid #007bff;
 }
 
-/* Gaya untuk shield badge di bawah foto profil */
+/* badge di bawah foto */
 .profile-badge {
     position: absolute;
     bottom: 0;
@@ -159,7 +159,7 @@ body {
     z-index: 2;
 }
 
-/* Gaya untuk judul utama */
+/* judul */
 h1 {
     color: #333;
     margin-bottom: 10px;
@@ -169,29 +169,29 @@ h1 {
     justify-content: center;
 }
 
-/* Gaya untuk centang biru di samping nama */
+/* centang biru */
 .verified-icon {
-    color: #1877F2; /* Warna biru Facebook */
+    color: #1877F2; /* biru facebook */
     font-size: 15px;
     margin-left: 5px;
     vertical-align: middle;
 }
 
-/* Gaya untuk paragraf di bawah judul utama */
+/* deskripsi bawah judul */
 p {
     color: #555;
     margin-bottom: 20px;
 }
 
 
-/* Gaya untuk container link tombol */
+/* wadah tombol-tombol */
 .links {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-/* Gaya umum untuk semua tombol link */
+/* tombol link (umum) */
 .link-button {
     display: flex;
     align-items: center;
@@ -206,7 +206,7 @@ p {
     gap: 10px;
 }
 
-/* Gaya spesifik untuk tombol WhatsApp */
+/* tombol whatsapp */
 .whatsapp-button {
     background-color: #25D366;
 }
@@ -214,7 +214,7 @@ p {
     background-color: #1DA851;
 }
 
-/* Gaya spesifik untuk tombol Facebook */
+/* tombol facebook */
 .facebook-button {
     background-color: #1877F2;
 }
@@ -222,7 +222,7 @@ p {
     background-color: #145CB3;
 }
 
-/* Gaya spesifik untuk tombol Twitter/X */
+/* tombol X */
 .twitter-button {
     background-color: #000000;
     color: white;
@@ -232,7 +232,7 @@ p {
     color: white;
 }
 
-/* Gaya spesifik untuk tombol Instagram */
+/* tombol instagram */
 .instagram-button {
     background-color: #E1306C;
 }
@@ -240,45 +240,45 @@ p {
     background-color: #C13584;
 }
 
-/* === Gaya Spesifik untuk Tombol Sosial Media Tambahan === */
+/* === tombol sosmed tambahan === */
 
-/* Gaya spesifik untuk tombol TikTok */
+/* tombol tiktok */
 .tiktok-button {
-    background-color: #000000; /* Warna hitam TikTok */
+    background-color: #000000; /* hitam tiktok */
     color: white;
 }
 .tiktok-button:hover {
-    background-color: #333333; /* Warna hover */
+    background-color: #333333; /* hover */
 }
 
-/* Gaya spesifik untuk tombol Telegram */
+/* tombol telegram */
 .telegram-button {
-    background-color: #229ED9; /* Warna biru Telegram */
+    background-color: #229ED9; /* biru telegram */
     color: white;
 }
 .telegram-button:hover {
-    background-color: #1a8ac1; /* Warna hover */
+    background-color: #1a8ac1; /* hover */
 }
 
-/* Gaya spesifik untuk tombol LinkedIn */
+/* tombol linkedin */
 .linkedin-button {
-    background-color: #0A66C2; /* Warna biru LinkedIn */
+    background-color: #0A66C2; /* biru linkedin */
     color: white;
 }
 .linkedin-button:hover {
-    background-color: #084c91; /* Warna hover */
+    background-color: #084c91; /* hover */
 }
 
-/* Gaya spesifik untuk tombol YouTube */
+/* tombol youtube */
 .youtube-button {
-    background-color: #FF0000; /* Warna merah YouTube */
+    background-color: #FF0000; /* merah youtube */
     color: white;
 }
 .youtube-button:hover {
-    background-color: #cc0000; /* Warna hover */
+    background-color: #cc0000; /* hover */
 }
 
-/* Contoh gaya untuk sosial media lain (opsional) */
+/* contoh buat sosmed lain */
 /* Kalau Producer-san mau tambahkan tombol sosial media lain, bisa tambahkan di sini */
 /* Misalnya untuk GitHub: */
 
@@ -301,14 +301,14 @@ p {
 }
 
 
-/* === Akhir Gaya Spesifik untuk Tombol Sosial Media Tambahan === */
+/* === akhir tombol tambahan === */
 
-/* Gaya untuk icon di dalam tombol */
+/* ikon di dalem tombol */
 .link-button i {
     font-size: 18px;
 }
 
-/* Gaya untuk Footer */
+/* footer */
 footer {
     margin-top: 40px;
     text-align: center;
@@ -318,7 +318,7 @@ footer {
     width: 100%;
 }
 
-/* Gaya untuk paragraf di dalam Footer (untuk dua baris) */
+/* teks footer (dua baris) */
 footer p {
     margin: 5px 0;
     padding: 0;

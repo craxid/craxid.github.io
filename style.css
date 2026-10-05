@@ -14,7 +14,7 @@
   --code-bg: rgba(45, 106, 79, 0.08);
   --code-text: #1b4332;
 
-  /* Pola pop-out global: satu easing & durasi untuk semua elemen interaktif */
+  /* pop-out global: satu easing + durasi buat semua yg interaktif */
   --pop-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
   --pop-duration: 0.38s;
 }
@@ -62,7 +62,7 @@ body {
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
     var(--bg);
   background-size: auto, auto, 42px 42px, 42px 42px, auto;
-  background-attachment: fixed; /* efek pojok nempel ke layar, tidak ikut scroll */
+  background-attachment: fixed; /* glow pojok nempel layar, jangan ikut scroll */
   color: var(--text);
   min-height: 100vh;
   transition: background 0.3s ease, color 0.3s ease;
@@ -77,15 +77,13 @@ img {
   user-select: none;
 }
 
-/* =========================
-   GLOBAL LAYOUT (Sticky Footer Fix)
-========================= */
+/* ===== layout global ===== */
 .page {
   width: min(100%, 920px);
   margin: auto;
   padding: 44px 18px;
   
-  /* Flexbox kolom agar urutan konten -> footer rapi */
+  /* flex kolom biar urutan konten -> footer rapi */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -96,9 +94,7 @@ img {
   text-align: center;
 }
 
-/* =========================
-   LIGHT LIQUID GLASS
-========================= */
+/* ===== liquid glass ===== */
 .liquid-glass {
   position: relative;
   overflow: hidden;
@@ -141,7 +137,7 @@ body.dark .liquid-glass {
     0 0 12px color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
-/* Tombol Telegram: biru khas Telegram */
+/* tombol telegram: biru khasnya */
 .telegram-btn {
   color: white;
   background:
@@ -170,7 +166,7 @@ body.dark .telegram-btn {
     0 0 10px rgba(34, 158, 217, 0.14);
 }
 
-/* Tombol utama tetap hijau di dark mode (kalahkan .liquid-glass) */
+/* tombol utama tetep hijau di dark mode (kalahin .liquid-glass) */
 body.dark .primary-btn {
   background:
     linear-gradient(
@@ -185,7 +181,7 @@ body.dark .primary-btn {
     0 0 10px color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
-/* WhatsApp di dark mode: hijau brand, sedikit lebih pekat */
+/* WA dark mode: hijau brand, dibikin sedikit lebih pekat */
 body.dark .whatsapp-btn {
   background:
     linear-gradient(
@@ -248,7 +244,7 @@ body.dark .whatsapp-btn {
     0 5px 12px var(--glass-shadow);
 }
 
-/* Animasi gelombang liquid-glass dicabut; diganti percikan hijau saat ditekan (lihat SPARKS) */
+/* animasi gelombang liquid-glass dicabut; ganti percikan hijau pas ditekan (liat SPARKS) */
 
 @media (hover: none) {
   .liquid-glass:hover {
@@ -267,9 +263,7 @@ body.dark .whatsapp-btn {
   }
 }
 
-/* =========================
-   THEME TOGGLE
-========================= */
+/* tombol ganti tema */
 .theme-toggle {
   position: fixed;
   top: 20px;
@@ -293,9 +287,7 @@ body.dark .whatsapp-btn {
   transform: scale(0.92);
 }
 
-/* =========================
-   PROFILE
-========================= */
+/* ===== profil ===== */
 .profile-img {
   width: 132px;
   height: 132px;
@@ -333,9 +325,7 @@ h1 {
   letter-spacing: -8px;
 }
 
-/* =========================
-   TECH STACK
-========================= */
+/* tech stack */
 .tech-stack {
   display: flex;
   justify-content: center;
@@ -358,9 +348,7 @@ h1 {
   color: var(--accent);
 }
 
-/* =========================
-   ACTIONS
-========================= */
+/* ===== tombol-tombol ===== */
 .page-actions {
   display: flex;
   justify-content: center;
@@ -402,7 +390,7 @@ h1 {
     0 0 10px color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
-/* WhatsApp: hijau brand #25D366 */
+/* WA: hijau brand #25D366 */
 .whatsapp-btn {
   color: white;
   background:
@@ -441,9 +429,7 @@ h1 {
   color: white;
 }
 
-/* =========================
-   PROJECTS
-========================= */
+/* ===== project ===== */
 .projects-section {
   margin-top: 52px;
   text-align: left;
@@ -499,13 +485,10 @@ h1 {
   gap: 6px;
 }
 
-/* =========================
-   BOT & ERROR PAGE
-========================= */
+/* halaman bot & error */
 .bot-page,
 .error-page {
-  /* Hapus min-height dan justify content di sini 
-     karena sudah ditangani oleh global .page di atas */
+  /* min-height & justify-content gak usah di sini, udah diurus .page global di atas */
   display: flex;
   flex-direction: column;
 }
@@ -578,9 +561,7 @@ h1 {
   border: none;
 }
 
-/* =========================
-   ACCESSIBILITY
-========================= */
+/* aksesibilitas */
 .whatsapp-btn:focus-visible,
 .secondary-btn:focus-visible,
 .global-btn:focus-visible,
@@ -590,20 +571,16 @@ h1 {
   outline-offset: 4px;
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* ===== footer ===== */
 footer {
   text-align: center;
-  margin-top: 48px; /* Jarak tetap dari konten, konsisten di semua halaman */
-  padding: 30px 0 10px; /* Memberi ruang napas yang cukup */
+  margin-top: 48px; /* jarak tetap dari konten, konsisten semua halaman */
+  padding: 30px 0 10px; /* kasih napas dikit */
   color: var(--muted);
   font-size: 14px;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+/* ===== HP ===== */
 @media (max-width: 520px) {
   .page {
     padding: 34px 14px;
@@ -638,7 +615,7 @@ footer {
     align-items: center;
   }
 
-  /* Dua tombol bot kecil & sebaris di HP */
+  /* dua tombol bot dikecilin biar sebaris di HP */
   .whatsapp-btn,
   .telegram-btn {
     width: auto;
@@ -682,9 +659,7 @@ footer {
   }
 }
 
-/* =========================
-   UPLOADER PAGE (GDrive)
-========================= */
+/* ===== halaman uploader GDrive ===== */
 .file-input-wrapper {
   position: relative;
   width: 100%;
@@ -710,7 +685,7 @@ footer {
   justify-content: center;
   padding: 35px 20px;
   
-  /* Diubah dari 999px ke 26px agar bentuk perseginya lebih natural */
+  /* tadinya 999px, jadi 26px biar kotaknya lebih natural */
   border-radius: 26px; 
   border: 2px dashed color-mix(in srgb, var(--accent) 50%, transparent);
   color: var(--muted);
@@ -724,7 +699,7 @@ footer {
   background: var(--glass-strong);
   border-color: var(--accent);
   color: var(--text);
-  transform: scale(1.01); /* Tambahan sedikit feedback efek pop */
+  transform: scale(1.01); /* feedback pop dikit */
 }
 
 .icon-upload {
@@ -745,7 +720,7 @@ footer {
   cursor: pointer;
 }
 
-/* Tambahan styling untuk pesan status JS */
+/* pesan status dari JS */
 #status,
 #propStatus {
   margin-top: 15px;
@@ -762,16 +737,13 @@ footer {
   margin-right: auto;
 }
 
-/* Sembunyikan saat kosong agar tidak makan ruang vertikal */
+/* sembunyiin pas kosong biar gak makan tempat */
 #status:empty,
 #propStatus:empty {
   display: none;
 }
 
-/* =========================
-   FORM
-   Dipakai di halaman /props/
-========================= */
+/* ===== form (halaman /props/) ===== */
 
 .prop-form {
   display: flex;
@@ -836,7 +808,7 @@ footer {
   border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
-/* Tombol aksi form /props/ (pratinjau + generate) */
+/* tombol aksi form: pratinjau + generate */
 .prop-form-actions {
   display: flex;
   gap: 12px;
@@ -850,7 +822,7 @@ footer {
   font-size: 15px;
 }
 
-/* Panel pratinjau hasil generate */
+/* panel pratinjau */
 .prop-preview {
   width: 100%;
   border-radius: 20px;
@@ -939,7 +911,7 @@ footer {
   box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--accent) 65%, transparent);
 }
 
-/* Animasi menyembul keluar (pop-out) saat membuka tab pratinjau */
+/* animasi menyembul pas buka tab pratinjau */
 @keyframes prop-pop-out {
   0% {
     opacity: 0;
@@ -974,10 +946,8 @@ footer {
   }
 }
 
-/* =========================
-   SPARKS — percikan hijau saat tombol ditekan
-   Ringan: hanya transform & opacity (GPU), partikel dihapus otomatis via JS
-========================= */
+/* sparks: percikan hijau pas tombol ditekan. ringan, cuma transform & opacity (GPU);
+   partikel dibersihin otomatis via JS */
 .spark-layer {
   position: fixed;
   inset: 0;
@@ -1034,9 +1004,7 @@ footer {
   }
 }
 
-/* =========================
-   BLOG ARTICLE
-========================= */
+/* ===== artikel blog ===== */
 
 #post-body {
   text-align: left;
@@ -1048,14 +1016,14 @@ footer {
   line-height: 1.3;
 }
 
-/* Profil penulis ala Medium di setiap artikel */
+/* profil penulis ala Medium */
 .post-author-card {
   padding: 14px 16px;
   border-radius: 20px;
   margin-bottom: 18px;
 }
 
-/* Kartu penulis bukan tombol: matikan efek pop saat hover/tekan */
+/* kartu penulis bukan tombol: matiin efek pop */
 .post-author-card.liquid-glass:hover,
 .post-author-card.liquid-glass:focus-visible,
 .post-author-card.liquid-glass:active {
@@ -1120,7 +1088,7 @@ footer {
   font-size: 13px;
 }
 
-/* Bilah bagikan artikel */
+/* bilah bagikan */
 .share-bar {
   display: flex;
   align-items: center;
@@ -1241,8 +1209,7 @@ footer {
   border-radius: 0;
 }
 
-/* Wrapper blok kode: tombol salin menempel di sini agar tidak ikut
-   kegeser saat isi kode di-scroll horizontal */
+/* bungkus blok kode: tombol salin nempel di sini biar gak ikut kegeser pas kode di-scroll */
 .code-block-wrap {
   position: relative;
   margin: 0 0 16px;
@@ -1252,7 +1219,7 @@ footer {
   margin: 0;
 }
 
-/* Tombol salin di blok kode artikel */
+/* tombol salin di blok kode */
 .code-copy-btn {
   position: absolute;
   top: 10px;
@@ -1321,10 +1288,7 @@ footer {
   background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
-/* =========================
-   POST DOCK (halaman artikel)
-   Toggle tema + tombol kembali mengapung di bawah
-========================= */
+/* post dock (halaman artikel): toggle tema + tombol kembali ngambang di bawah */
 
 .post-page {
   padding-bottom: 110px;
@@ -1378,9 +1342,7 @@ footer {
   outline-offset: 2px;
 }
 
-/* =========================
-   FOOTER LINKS
-========================= */
+/* link footer */
 
 .footer-links {
   display: flex;
@@ -1409,9 +1371,7 @@ footer {
   opacity: 0.4;
 }
 
-/* =========================
-   BLOG LIST
-========================= */
+/* daftar blog */
 
 #blog-list {
   display: grid;
@@ -1419,23 +1379,20 @@ footer {
   margin-top: 8px;
 }
 
-/* =========================
-   DESKTOP (≥1024px)
-   Hanya aktif di layar lebar — tampilan HP tidak berubah.
-   Halaman artikel & About/Kontak/Privasi/404 sengaja tetap sempit.
-========================= */
+/* ===== desktop (>=1024px): cuma aktif di layar lebar, tampilan HP jangan diusik.
+   halaman artikel & about/kontak/privasi/404 sengaja tetep sempit ===== */
 @media (min-width: 1024px) {
-  /* Home: kartu project 2 kolom */
+  /* home: kartu project 2 kolom */
   #projects.projects {
     grid-template-columns: repeat(2, 1fr);
   }
-  /* Blog: daftar artikel 2 kolom */
+  /* blog: daftar artikel 2 kolom */
   #blog-list {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Broadcast bar (pengumuman dari pemilik web) */
+/* bar broadcast (pengumuman) */
 .broadcast-bar { display: flex; align-items: center; gap: 10px; padding: 10px 16px;
   background: color-mix(in srgb, var(--accent) 16%, var(--bg));
   border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);

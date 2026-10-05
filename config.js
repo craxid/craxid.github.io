@@ -4,8 +4,8 @@ const CONFIG = {
 
   authorName: "Dede Kurniawan",
 
-  // Token publik Cloudflare Web Analytics (aman dipasang di sini — token ini
-  // memang dirancang untuk dilihat publik). Kosongkan jika belum ada.
+  // token publik Cloudflare Web Analytics (aman taro sini, emang buat diliat publik).
+  // kosongin kalo belom ada.
   cfBeaconToken: "",
 
   siteUrl: "https://craxid.github.io/",
@@ -26,8 +26,8 @@ const CONFIG = {
   telegramUrl: "https://t.me/suratempo_bot",
   botGroupUrl: "https://s.id/CrXGC",
 
-  // URL Worker broadcast (Cloudflare Worker + KV). Kosongkan untuk menonaktifkan
-  // banner pengumuman. Diisi setelah worker di-deploy.
+  // URL Worker broadcast (Cloudflare Worker + KV). kosongin buat matiin
+  // banner pengumuman. diisi abis worker di-deploy.
   broadcastWorker: "",
 
   maxProjects: 3,

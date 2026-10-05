@@ -65,9 +65,9 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
 
-  // API GitHub: selalu ambil fresh, jangan pernah baca/tulis cache.
-  // Respons gagal (mis. rate limit) yang ter-cache bikin daftar
-  // project "nempel" rusak walau koneksi sudah pulih.
+  // API GitHub: selalu fresh, jangan baca/tulis cache.
+  // respons gagal (mis. rate limit) yg ke-cache bikin daftar
+  // project "nempel" rusak walau koneksi udah pulih.
   const isLiveApi = url.hostname === "api.github.com";
 
   if (isLiveApi) {
@@ -75,8 +75,8 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Navigasi halaman: network-first agar update HTML selalu sampai,
-  // fallback ke cache lalu 404 saat offline.
+  // navigasi: network-first biar update HTML selalu sampe,
+  // fallback ke cache, terus 404 kalo offline.
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
@@ -98,9 +98,9 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Aset lain (CSS/JS/font): stale-while-revalidate.
-  // Sajikan cache langsung biar cepat, tapi update cache di belakang
-  // agar perubahan file selalu sampai tanpa perlu bump versi manual.
+  // aset lain (CSS/JS/font): stale-while-revalidate.
+  // sajikan cache langsung biar cepet, update cache di belakang
+  // biar perubahan file selalu sampe tanpa bump versi manual.
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
       const networkFetch = fetch(request)
