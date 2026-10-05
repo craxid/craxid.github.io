@@ -34,8 +34,23 @@
     .search-bar button { width: 52px; height: 52px; border-radius: 50%; border: none; cursor: pointer; color: #fff; font-size: 17px;
       background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 84%, white), color-mix(in srgb, var(--accent) 92%, black)); flex-shrink: 0; }
     .mtabs { display: flex; gap: 10px; margin-bottom: 18px; }
-    .mtab { flex: 1; padding: 12px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); background: transparent; color: var(--text); font-weight: 800; font-size: 14px; cursor: pointer; font-family: inherit; }
-    .mtab.active { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); border-color: var(--accent); }
+    .mtab { flex: 1; padding: 12px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); background: transparent; color: var(--text); font-weight: 800; font-size: 14px; cursor: pointer; font-family: inherit;
+      transform: scale(1); will-change: transform;
+      transition: background .25s ease, border-color .25s ease, color .25s ease,
+        transform var(--pop-duration, .38s) var(--pop-ease, cubic-bezier(0.34, 1.56, 0.64, 1)), box-shadow .3s ease; }
+    .mtab:active { transform: scale(.94); }
+    .mtab.active { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); border-color: var(--accent);
+      transform: scale(1.08); box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--accent) 65%, transparent); }
+    /* Konten tab menyembul dari dalam ke luar, ala /props */
+    @keyframes mtab-pop {
+      0% { opacity: 0; transform: scale(.96) translateY(8px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    #tabSearch.pop, #tabLib.pop { animation: mtab-pop .32s cubic-bezier(0.34, 1.4, 0.64, 1); }
+    @media (prefers-reduced-motion: reduce) {
+      .mtab, .mtab:active, .mtab.active { transition: none; transform: none; box-shadow: none; }
+      #tabSearch.pop, #tabLib.pop { animation: none; }
+    }
     .track { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 18px; margin-bottom: 8px; }
     .track:hover { background: color-mix(in srgb, var(--accent) 7%, transparent); }
     .track img { width: 64px; height: 64px; border-radius: 14px; object-fit: cover; flex-shrink: 0; background: var(--code-bg); }
@@ -728,15 +743,21 @@
     if(btn.dataset.prm!==undefined){ playlists[activePl].splice(parseInt(btn.dataset.prm,10),1); saveLib(); renderLibrary(); return; }
   });
 
-  /* ---------- tab ---------- */
-  $('tabSearchBtn').addEventListener('click', function(){
-    $('tabSearchBtn').classList.add('active'); $('tabLibBtn').classList.remove('active');
-    $('tabSearch').hidden=false; $('tabLib').hidden=true;
-  });
-  $('tabLibBtn').addEventListener('click', function(){
-    $('tabLibBtn').classList.add('active'); $('tabSearchBtn').classList.remove('active');
-    $('tabLib').hidden=false; $('tabSearch').hidden=true; renderLibrary();
-  });
+  /* ---------- tab: animasi menyembul ala /props ---------- */
+  function popEl(el, cls){ el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function showMTab(which){
+    var toLib = which==='lib';
+    $('tabSearchBtn').classList.toggle('active', !toLib);
+    $('tabLibBtn').classList.toggle('active', toLib);
+    var showEl = toLib ? $('tabLib') : $('tabSearch');
+    var hideEl = toLib ? $('tabSearch') : $('tabLib');
+    hideEl.hidden = true;
+    showEl.hidden = false;
+    popEl(showEl, 'pop');
+    if(toLib) renderLibrary();
+  }
+  $('tabSearchBtn').addEventListener('click', function(){ showMTab('search'); });
+  $('tabLibBtn').addEventListener('click', function(){ showMTab('lib'); });
 
   /* ---------- playlist baru ---------- */
   $('newPlBtn').addEventListener('click', function(){
