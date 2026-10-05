@@ -112,7 +112,11 @@
       background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 84%, white), color-mix(in srgb, var(--accent) 92%, black)); }
     .pb-progress { height: 4px; border-radius: 999px; background: color-mix(in srgb, var(--text) 12%, transparent); margin-top: 8px; cursor: pointer; position: relative; }
     .pb-fill { height: 100%; border-radius: 999px; background: var(--accent); width: 0%; }
-    .pb-times { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .pb-times { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .engine-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 999px; letter-spacing: .5px;
+      background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent);
+      border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }
+    .engine-badge.yt { background: transparent; color: var(--muted); border-color: color-mix(in srgb, var(--text) 20%, transparent); }
     .vol-wrap { display: none; align-items: center; gap: 8px; }
     .q-item { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 14px; font-size: 14px; cursor: pointer; }
     .q-item:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
@@ -273,6 +277,7 @@
           <input id="audioApi" type="text" placeholder="https://app-kamu.vercel.app/api/yt-audio" autocomplete="off" />
           <div class="row">
             <button class="mini-btn" id="saveAudioApiBtn">Simpan</button>
+            <button class="mini-btn ghost" id="testAudioApiBtn">Tes</button>
             <button class="mini-btn ghost" id="delAudioApiBtn">Hapus</button>
           </div>
           <div class="api-status" id="audioApiStatus"></div>
@@ -347,7 +352,7 @@
       </div>
     </div>
     <div class="pb-progress" id="pbProgress"><div class="pb-fill" id="pbFill"></div></div>
-    <div class="pb-times"><span id="tCur">0:00</span><span id="tDur">0:00</span></div>
+    <div class="pb-times"><span id="tCur">0:00</span><span class="engine-badge yt" id="engineBadge" title="Mesin audio: API = via Vercel (bisa background), YT = YouTube (foreground saja)">YT</span><span id="tDur">0:00</span></div>
   </div>
 
   <script>
@@ -603,6 +608,7 @@
     }).catch(function(){
       setSearchStatus('');
       loadViaYT(t); /* fallback: player YouTube (foreground saja) */
+      renderEngineBadge();
     });
   }
   audioEl.addEventListener('play', function(){ startProgress(); setPlayIcon(true); });
@@ -688,7 +694,13 @@
     b.textContent='Autoplay '+(autoplay?'ON':'OFF');
     b.classList.toggle('off',!autoplay);
   }
+  function renderEngineBadge(){
+    var b=$('engineBadge'); if(!b) return;
+    b.textContent=useAudio?'API':'YT';
+    b.classList.toggle('yt',!useAudio);
+  }
   function showBar(t){
+    renderEngineBadge();
     bar.classList.add('show');
     $('pbThumb').src=t.thumb; $('pbTitle').textContent=t.title; $('pbSub').textContent=t.author||'YouTube';
     $('tDur').textContent=t.dur?fmtT(t.dur):'--:--';
@@ -939,6 +951,21 @@
   $('delAudioApiBtn').addEventListener('click', function(){
     try{ localStorage.removeItem('cxmusik_audioapi'); }catch(e){}
     $('audioApi').value=''; setAudioApiStatus('Audio API dihapus.');
+  });
+  $('testAudioApiBtn').addEventListener('click', function(){
+    var base=($('audioApi').value.trim().replace(/\/$/,''))||audioApiUrl();
+    if(!base){ setAudioApiStatus('Isi URL-nya dulu.'); return; }
+    setAudioApiStatus('Mengetes API\u2026');
+    var t0=Date.now();
+    var ctrl=('AbortController' in window)?new AbortController():null;
+    var timer=ctrl?setTimeout(function(){ ctrl.abort(); },30000):null;
+    fetch(base+'?id=dQw4w9WgXcQ', ctrl?{signal:ctrl.signal}:undefined)
+      .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
+      .then(function(d){
+        if(d&&d.status&&d.audioUrl) setAudioApiStatus('OK! Merespons dalam '+((Date.now()-t0)/1000).toFixed(1)+' dtk. Jangan lupa Simpan.');
+        else setAudioApiStatus('GAGAL: API tidak mengembalikan audioUrl ('+((d&&d.error)||'unknown')+').');
+      })
+      .catch(function(){ if(timer) clearTimeout(timer); setAudioApiStatus('GAGAL: tidak bisa menghubungi API / timeout.'); });
   });
 
   renderResults(); renderLibrary();
