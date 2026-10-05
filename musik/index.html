@@ -111,8 +111,16 @@
       box-shadow: 0 10px 26px color-mix(in srgb, var(--accent) 35%, transparent); }
     .fp-side { width: 54px; height: 54px; border-radius: 50%; border: none; background: transparent; color: var(--text); font-size: 22px; cursor: pointer; }
     .fp-actions { display: flex; gap: 10px; margin-top: 20px; }
-    .fp-queue { width: 100%; max-width: 480px; margin-top: 26px; padding-bottom: 12px; }
-    .fp-queue h3 { margin: 0 0 8px; font-size: 16px; text-align: left; }
+    /* Popup antrean (bottom sheet) */
+    .queue-modal { position: fixed; inset: 0; z-index: 960; display: flex; align-items: flex-end; justify-content: center;
+      background: rgba(0,0,0,.45); opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s; }
+    .queue-modal.show { opacity: 1; visibility: visible; }
+    .queue-sheet { width: 100%; max-width: 520px; max-height: 72vh; overflow-y: auto;
+      border-radius: 24px 24px 0 0; padding: 16px 18px calc(20px + env(safe-area-inset-bottom, 0px));
+      transform: translateY(48px); transition: transform .25s ease; }
+    .queue-modal.show .queue-sheet { transform: none; }
+    .queue-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .queue-head h3 { margin: 0; font-size: 16px; }
     .ap-toggle { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 999px; cursor: pointer;
       border: 1px solid var(--accent); background: transparent; color: var(--accent); margin-left: 8px; vertical-align: middle; }
     .ap-toggle.off { opacity: .4; }
@@ -210,8 +218,14 @@
       <button class="fp-play" id="fpPlay" aria-label="Putar/Jeda"><i class="fa-solid fa-play"></i></button>
       <button class="fp-side" id="fpNext" aria-label="Berikutnya"><i class="fa-solid fa-forward-step"></i></button>
     </div>
-    <div class="fp-queue" id="fpQueueWrap">
-      <h3>Antrean berikutnya<button class="ap-toggle" id="apToggle" aria-label="Autoplay"></button></h3>
+  </div>
+
+  <div class="queue-modal" id="queueModal">
+    <div class="queue-sheet liquid-glass">
+      <div class="queue-head">
+        <h3>Antrean berikutnya <button class="ap-toggle" id="apToggle" aria-label="Autoplay"></button></h3>
+        <button class="icon-btn" id="queueClose" aria-label="Tutup antrean"><i class="fa-solid fa-xmark"></i></button>
+      </div>
       <div id="fpQueueList"></div>
     </div>
   </div>
@@ -596,10 +610,9 @@
     renderApToggle();
   });
   renderApToggle();
-  $('fpQueueBtn').addEventListener('click', function(){
-    var w=$('fpQueueWrap');
-    if(w) w.scrollIntoView({behavior:'smooth', block:'start'});
-  });
+  $('fpQueueBtn').addEventListener('click', function(){ $('queueModal').classList.add('show'); });
+  $('queueClose').addEventListener('click', function(){ $('queueModal').classList.remove('show'); });
+  $('queueModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('show'); });
   $('fpLike').addEventListener('click', function(){
     var t=queue[qi]; if(!t) return;
     likeTrack(t); renderFpLike();
