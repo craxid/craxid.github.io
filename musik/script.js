@@ -26,6 +26,11 @@
   function fmtT(sec){ sec=Math.max(0,Math.floor(sec||0)); var m=Math.floor(sec/60), s=sec%60; return m+':'+(s<10?'0':'')+s; }
   function thumb(id){ return 'https://i.ytimg.com/vi/'+id+'/mqdefault.jpg'; }
   function thumbBig(id){ return 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'; }
+  function thumbMax(id){ return 'https://i.ytimg.com/vi/'+id+'/maxresdefault.jpg'; } /* 1280x720; tidak semua video punya -> fallback */
+  function setImgHD(img, id){
+    img.onerror=function(){ this.onerror=null; this.src=thumbBig(id); };
+    img.src=thumbMax(id);
+  }
   function store(k, v){ try{ if(v===undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 
   /* ---------- state ---------- */
@@ -451,7 +456,14 @@
     bar.classList.add('show');
     $('pbThumb').src=t.thumb; $('pbTitle').textContent=t.title; $('pbSub').textContent=t.author||'YouTube';
     $('tDur').textContent=t.dur?fmtT(t.dur):'--:--';
-    $('fpThumb').src=thumb(t.id); $('fpBg').style.backgroundImage="url('"+thumb(t.id)+"')";
+    setImgHD($('fpThumb'), t.id);
+    (function(){
+      var tid=t.id, bg=$('fpBg');
+      var im=new Image();
+      im.onload=function(){ if(queue[qi]&&queue[qi].id===tid) bg.style.backgroundImage="url('"+thumbMax(tid)+"')"; };
+      im.onerror=function(){ if(queue[qi]&&queue[qi].id===tid) bg.style.backgroundImage="url('"+thumbBig(tid)+"')"; };
+      im.src=thumbMax(tid);
+    })();
     setupMarquee($('fpTitle'), t.title); $('fpSub').textContent=t.author||'YouTube';
     $('fpDur').textContent=t.dur?fmtT(t.dur):'--:--';
     renderFpLike(); renderFpTech(); updateMediaSession(t);
@@ -497,8 +509,9 @@
       navigator.mediaSession.metadata=new MediaMetadata({
         title:t.title||'Musik', artist:t.author||'YouTube', album:'CraXID Musik',
         artwork:[
-          {src:thumb(t.id), sizes:'320x180', type:'image/jpeg'},
-          {src:thumbBig(t.id), sizes:'480x360', type:'image/jpeg'}
+          {src:thumbMax(t.id), sizes:'1280x720', type:'image/jpeg'},
+          {src:thumbBig(t.id), sizes:'480x360', type:'image/jpeg'},
+          {src:thumb(t.id), sizes:'320x180', type:'image/jpeg'}
         ]
       });
     }catch(e){}
