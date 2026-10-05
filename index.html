@@ -46,11 +46,11 @@
   <meta name="twitter:image" content="https://github.com/craxid.png" />
 
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="preload" as="image" href="/icons/icon.webp" fetchpriority="high" />
 
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-  />
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" /></noscript>
 
   <link rel="stylesheet" href="style.css" />
 
@@ -71,8 +71,11 @@
       <img
         id="profileImage"
         class="profile-img"
+        src="/icons/icon.webp"
+        width="132"
+        height="132"
         alt="CraXID Profile"
-        loading="lazy"
+        fetchpriority="high"
       />
 
       <h1 id="webName"></h1>
