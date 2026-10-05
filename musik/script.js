@@ -603,17 +603,33 @@
         throw 0;
       });
   }
+  /* Fallback: API lirik termai.cc (bagus untuk lagu Indonesia; key publik milik user) */
+  var TERMAI_LYRICS_KEY='Bell409';
+  function termaiLyrics(artist, title){
+    var q=encodeURIComponent(artist+' '+title);
+    return fetch('https://api.termai.cc/api/search/lyrics?query='+q+'&key='+TERMAI_LYRICS_KEY)
+      .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(function(d){
+        if(!d||!d.status||!d.data||!d.data.lyrics) throw 0;
+        return d.data;
+      });
+  }
   function fetchLyrics(t){
     var artist=cleanArtist(t.author), title=cleanTitle(t.title);
     if(title.toLowerCase().indexOf(artist.toLowerCase())===0)
       title=title.slice(artist.length).replace(/^[\s\-–—:]+/,'').trim();
+    function norm(d){
+      if(!d) throw 0;
+      var synced=d.syncedLyrics||d.lyrics||'';
+      var plain=d.plainLyrics||d.lyrics||'';
+      var lines=parseLRC(synced);
+      if(!lines.length&&!plain) throw 0;
+      return {lines:lines.length?lines:null, plain:plain};
+    }
     return lrclibGet(artist,title,t.dur||0)
       .catch(function(){ return lrclibSearch(artist,title); })
-      .then(function(d){
-        if(!d||(!d.plainLyrics&&!d.syncedLyrics)) throw 0;
-        var lines=parseLRC(d.syncedLyrics);
-        return {lines:lines.length?lines:null, plain:d.plainLyrics||''};
-      });
+      .catch(function(){ return termaiLyrics(artist,title); })
+      .then(norm);
   }
   function renderLyrics(res){
     var body=$('lyricsBody');
