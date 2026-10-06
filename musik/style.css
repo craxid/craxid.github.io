@@ -71,7 +71,7 @@
     body.dark .settings-sheet p { color: var(--muted); }
     .settings-sheet input { width: 100%; padding: 12px 16px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); background: transparent; color: var(--text); font-family: inherit; font-size: 14px; margin-bottom: 8px; }
     /* dropdown di sheet pengaturan, gayanya disamain kyk input biar nggak belang */
-    .settings-sheet select { padding: 10px 12px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); background: transparent; color: var(--text); font-family: inherit; font-size: 13px; }
+    .settings-sheet select { width: 100%; padding: 12px 16px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); background: transparent; color: var(--text); font-family: inherit; font-size: 14px; margin-bottom: 8px; }
     .settings-sheet .row { display: flex; gap: 8px; }
     .set-sep { border: none; border-top: 1px solid color-mix(in srgb, var(--text) 12%, transparent); margin: 16px 0 4px; }
     .mini-btn { padding: 10px 18px; border-radius: 999px; border: none; background: var(--accent); color: #fff; font-weight: 700; cursor: pointer; font-size: 13px; font-family: inherit; }
