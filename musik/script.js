@@ -419,7 +419,6 @@
     var timer=ctrl?setTimeout(function(){ ctrl.abort(); }, timeoutMs||25000):null;
     /* kirim dua-duanya: ?id= buat gaya Vercel, ?url= buat gaya resa. backend tinggal baca yang dia ngerti */
     var q='?id='+encodeURIComponent(videoId)+'&url='+encodeURIComponent('https://www.youtube.com/watch?v='+videoId);
-    var _k=audioApiKey(); if(_k) q+='&key='+encodeURIComponent(_k);
     return fetch(api+q, ctrl?{signal:ctrl.signal}:undefined)
       .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
       .then(function(d){
@@ -1075,17 +1074,12 @@
     if(/trycloudflare\.com/i.test(v)){ try{ localStorage.removeItem('cxmusik_audioapi'); }catch(e){} v=''; }
     return (v||DEFAULT_AUDIO_API).replace(/\/$/,''); }catch(e){ return DEFAULT_AUDIO_API; } }
   function setAudioApiStatus(s){ var el=$('audioApiStatus'); if(el) el.textContent=s||''; }
-  /* kunci API buat server sendiri, kesimpen di HP ini aja kyk YouTube API key */
-  function audioApiKey(){ try{ return localStorage.getItem('cxmusik_apikey')||''; }catch(e){ return ''; } }
   /* kualitas audio pilihan user, cuma kepake buat sumber LOCAL. default: otomatis */
   function audioQuality(){ try{ return localStorage.getItem('cxmusik_audioq')||'auto'; }catch(e){ return 'auto'; } }
   try{ $('audioApi').value=localStorage.getItem('cxmusik_audioapi')||''; }catch(e){}
-  try{ $('audioApiKey').value=localStorage.getItem('cxmusik_apikey')||''; }catch(e){}
   $('saveAudioApiBtn').addEventListener('click', function(){
     var v=$('audioApi').value.trim().replace(/\/$/,'');
-    var k=$('audioApiKey').value.trim();
     try{ if(v) localStorage.setItem('cxmusik_audioapi',v); else localStorage.removeItem('cxmusik_audioapi'); }catch(e){}
-    try{ if(k) localStorage.setItem('cxmusik_apikey',k); else localStorage.removeItem('cxmusik_apikey'); }catch(e){}
     setAudioApiStatus(v?'Audio API kustom tersimpan.':'Kembali ke Audio API bawaan.');
   });
   $('delAudioApiBtn').addEventListener('click', function(){
@@ -1107,7 +1101,6 @@
     var ctrl=('AbortController' in window)?new AbortController():null;
     var timer=ctrl?setTimeout(function(){ ctrl.abort(); },30000):null;
     var q='?id=dQw4w9WgXcQ&url='+encodeURIComponent('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-    var _k2=audioApiKey(); if(_k2) q+='&key='+encodeURIComponent(_k2);
     fetch(base+q, ctrl?{signal:ctrl.signal}:undefined)
       .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
       .then(function(d){
