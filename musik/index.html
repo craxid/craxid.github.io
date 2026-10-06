@@ -121,6 +121,7 @@
           <h3 style="margin-top:12px"><i class="fa-solid fa-cloud"></i> Audio API (background playback)</h3>
           <p>Sumber audio dicoba berurutan: <b>LOCAL</b> &rarr; savenow.to &rarr; Vercel &rarr; player YouTube. Kosongkan kolom untuk kembali ke bawaan.</p><p>Untuk memakai API sendiri: isi URL endpoint milikmu yang menerima <b>?url=</b> (URL video YouTube) dan merespons <b>{success, formats[]}</b>, atau gaya <b>?id=</b> dengan <b>{status, audioUrl}</b> &mdash; lalu tekan <b>Tes</b> untuk memastikan.</p>
           <input id="audioApi" type="text" placeholder="https://api.milikmu.com/api/yt-audio" autocomplete="off" />
+          <input id="audioApiKey" type="password" placeholder="Kunci API (opsional, kalau server mewajibkan)" autocomplete="off" />
           <div class="row">
             <button class="mini-btn" id="saveAudioApiBtn">Simpan</button>
             <button class="mini-btn ghost" id="testAudioApiBtn">Tes</button>
