@@ -90,6 +90,14 @@
             <h3><i class="fa-solid fa-gear"></i> Pengaturan pencarian</h3>
             <button class="icon-btn" id="settingsClose" aria-label="Tutup pengaturan"><i class="fa-solid fa-xmark"></i></button>
           </div>
+<hr class="set-sep" />
+          <h3 style="margin-top:12px"><i class="fa-solid fa-mobile-screen"></i> Jaga layar tetap hidup</h3>
+          <p>Saat aktif, layar perangkat dijaga tetap menyala selama musik diputar — berguna saat mengikuti lirik. Konsumsi baterai lebih tinggi saat fitur ini aktif.</p>
+          <div class="row">
+            <button class="mini-btn" id="wakeLockBtn">Aktifkan</button>
+          </div>
+          <div class="api-status" id="wakeLockStatus"></div>
+          <hr class="set-sep" />
           <p>Sumber pencarian bawaan memakai instance publik (gratis, ketersediaan tidak terjamin). Untuk hasil yang konsisten, gunakan <b>YouTube Data API key</b> pribadi — tersimpan lokal di perangkat ini dan tidak dikirim ke mana pun. Cara membuat: Google Cloud Console → aktifkan <i>YouTube Data API v3</i> → buat API key.</p>
           <input id="ytKey" type="text" placeholder="YouTube Data API key (opsional)" autocomplete="off" />
           <div class="row">
@@ -107,13 +115,7 @@
             <button class="mini-btn ghost" id="delAudioApiBtn">Hapus</button>
           </div>
           <div class="api-status" id="audioApiStatus"></div>
-          <hr class="set-sep" />
-          <h3 style="margin-top:12px"><i class="fa-solid fa-mobile-screen"></i> Jaga layar tetap hidup</h3>
-          <p>Saat aktif, layar perangkat dijaga tetap menyala selama musik diputar — berguna saat mengikuti lirik. Konsumsi baterai lebih tinggi saat fitur ini aktif.</p>
-          <div class="row">
-            <button class="mini-btn" id="wakeLockBtn">Aktifkan</button>
-          </div>
-          <div class="api-status" id="wakeLockStatus"></div>
+          
         </div>
       </div>
     </section>
