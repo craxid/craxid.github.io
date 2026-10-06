@@ -943,6 +943,10 @@
   $('fpDlBtn').addEventListener('click', function(){ var t=queue[qi]; if(t) downloadTrack(t.id, this); });
   $('queueClose').addEventListener('click', function(){ $('queueModal').classList.remove('show'); });
   $('queueModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('show'); });
+  /* modal donasi: buka-tutupnya nyontek pola modal lirik */
+  $('fpDonateBtn').addEventListener('click', function(){ $('donateModal').classList.add('show'); });
+  $('donateClose').addEventListener('click', function(){ $('donateModal').classList.remove('show'); });
+  $('donateModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('show'); });
   function boing(btn){ btn.classList.remove('boing'); void btn.offsetWidth; btn.classList.add('boing'); }
   $('fpLike').addEventListener('click', function(){
     var t=queue[qi]; if(!t) return;

@@ -215,6 +215,22 @@
     .lyr-plain { white-space: pre-line; font-size: 15px; line-height: 1.7; text-align: center; color: var(--text); }
     .lyrics-src { text-align: center; font-size: 11px; color: var(--muted); opacity: .7; padding-bottom: 4px; }
     .qh-btns { display: flex; align-items: center; gap: 2px; }
+    /* ikon kado goyang-goyang terus biar dilirik, bukan pajangan */
+    @keyframes gift-wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      20% { transform: rotate(-14deg); }
+      40% { transform: rotate(10deg); }
+      60% { transform: rotate(-6deg); }
+      80% { transform: rotate(4deg); }
+    }
+    .gift-wiggle { display: inline-block; color: var(--accent); animation: gift-wiggle 2.2s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce) {
+      .gift-wiggle { animation: none; }
+    }
+    /* isi modal donasi: qr nangkring di tengah, teks secukupnya */
+    .donate-body { text-align: center; padding: 6px 4px 16px; }
+    .donate-qr { width: 100%; max-width: 280px; border-radius: 16px; }
+    .donate-body p { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 12px 8px 0; }
     .lyr-pick-head { font-size: 13px; color: var(--muted); margin-bottom: 10px; text-align: center; }
     .lyr-pick { display: block; width: 100%; text-align: left; padding: 10px 14px; margin-bottom: 8px;
       border: 1px solid var(--border); border-radius: 14px; background: transparent; color: var(--text);
