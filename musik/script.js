@@ -1086,7 +1086,8 @@
   $('audioQuality').addEventListener('change', function(){
     var sel=$('audioQuality'), v=sel.value;
     try{ if(v&&v!=='auto') localStorage.setItem('cxmusik_audioq',v); else localStorage.removeItem('cxmusik_audioq'); }catch(e){}
-    setAudioApiStatus('Kualitas audio: '+sel.options[sel.selectedIndex].text+'. Berlaku mulai lagu berikutnya.');
+    var qst=$('audioQualityStatus');
+    if(qst) qst.textContent='Kualitas disimpan: '+sel.options[sel.selectedIndex].text+'. Berlaku mulai lagu berikutnya.';
   });
   $('testAudioApiBtn').addEventListener('click', function(){
     var base=($('audioApi').value.trim().replace(/\/$/,''))||audioApiUrl();
