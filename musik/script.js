@@ -381,20 +381,37 @@
   }
   /* pilih format audio paling enteng dari respons gaya resa (formats[]).
      prioritas m4a audio-only (kayak format 140); kalau nggak ada, yang penting ada url-nya */
-  function pickResaAudio(d){
+  /* pilih audio dari respons gaya resa (formats[]).
+     quality: 'auto' atau target kbps ('160' dst). kalau target dikasih,
+     ambil yang abr-nya paling dekat (diutamakan yang nggak melebihi target).
+     nggak ada info bitrate / nggak ketemu -> balik ke bawaan: m4a diutamakan */
+  function pickResaAudio(d, quality){
     var fs=(d&&d.formats)||[];
     var aud=fs.filter(function(f){ return f&&f.url&&/audio only/i.test(f.resolution||''); });
     var pool=aud.length?aud:fs.filter(function(f){ return f&&f.url; });
-    pool.sort(function(a,b){
-      var am=/m4a/i.test(a.ext||'')?0:1, bm=/m4a/i.test(b.ext||'')?0:1;
-      if(am!==bm) return am-bm;
-      return (a.filesize||1e15)-(b.filesize||1e15);
-    });
-    var f=pool[0];
+    var target=parseInt(quality,10)||0, picked=null, best=null, bestScore=1e12, i, f, abr, score;
+    if(target>0){
+      for(i=0;i<pool.length;i++){ f=pool[i]; abr=parseFloat(f.abr)||0;
+        if(abr<=0) continue;
+        score=Math.abs(abr-target)+(abr>target?1000:0);
+        if(score<bestScore){ bestScore=score; best=f; }
+      }
+      if(best) picked=best;
+    }
+    if(!picked){
+      pool.sort(function(a,b){
+        var am=/m4a/i.test(a.ext||'')?0:1, bm=/m4a/i.test(b.ext||'')?0:1;
+        if(am!==bm) return am-bm;
+        return (a.filesize||1e15)-(b.filesize||1e15);
+      });
+      picked=pool[0];
+    }
+    f=picked;
     if(!f) return null;
     return { status:true, audioUrl:f.url,
              audioType:/m4a/i.test(f.ext||'')?'audio/mp4':'audio/mpeg',
-             codec:f.ext, title:d.title||'', thumbnail:d.thumbnail||'' };
+             codec:f.acodec||f.ext, bitrate:f.abr, sampleRate:f.asr,
+             title:d.title||'', thumbnail:d.thumbnail||'' };
   }
   function fetchAudioMeta(videoId, timeoutMs, baseOverride){
     var api=(baseOverride||audioApiUrl());
@@ -405,7 +422,7 @@
     return fetch(api+q, ctrl?{signal:ctrl.signal}:undefined)
       .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
       .then(function(d){
-        if(d&&d.formats&&d.formats.length) return pickResaAudio(d); /* gaya resa */
+        if(d&&d.formats&&d.formats.length) return pickResaAudio(d, audioQuality()); /* gaya resa */
         if(d&&d.status&&d.audioUrl) return d; /* gaya Vercel */
         throw 0;
       })
@@ -1050,6 +1067,8 @@
   var BROADCAST_WORKER=''; /* URL Worker broadcast. dikosongin = mati */
   function audioApiUrl(){ try{ var v=localStorage.getItem('cxmusik_audioapi'); return ((v||'')||DEFAULT_AUDIO_API).replace(/\/$/,''); }catch(e){ return DEFAULT_AUDIO_API; } }
   function setAudioApiStatus(s){ var el=$('audioApiStatus'); if(el) el.textContent=s||''; }
+  /* kualitas audio pilihan user, cuma kepake buat sumber LOCAL. default: otomatis */
+  function audioQuality(){ try{ return localStorage.getItem('cxmusik_audioq')||'auto'; }catch(e){ return 'auto'; } }
   try{ $('audioApi').value=localStorage.getItem('cxmusik_audioapi')||''; }catch(e){}
   $('saveAudioApiBtn').addEventListener('click', function(){
     var v=$('audioApi').value.trim().replace(/\/$/,'');
@@ -1059,6 +1078,12 @@
   $('delAudioApiBtn').addEventListener('click', function(){
     try{ localStorage.removeItem('cxmusik_audioapi'); }catch(e){}
     $('audioApi').value=''; setAudioApiStatus('Kembali ke Audio API bawaan.');
+  });
+  try{ $('audioQuality').value=audioQuality(); }catch(e){}
+  $('audioQuality').addEventListener('change', function(){
+    var sel=$('audioQuality'), v=sel.value;
+    try{ if(v&&v!=='auto') localStorage.setItem('cxmusik_audioq',v); else localStorage.removeItem('cxmusik_audioq'); }catch(e){}
+    setAudioApiStatus('Kualitas audio: '+sel.options[sel.selectedIndex].text+'. Berlaku mulai lagu berikutnya.');
   });
   $('testAudioApiBtn').addEventListener('click', function(){
     var base=($('audioApi').value.trim().replace(/\/$/,''))||audioApiUrl();
@@ -1071,8 +1096,9 @@
     fetch(base+q, ctrl?{signal:ctrl.signal}:undefined)
       .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
       .then(function(d){
-        var ok=(d&&(d.status&&d.audioUrl))||(d&&d.formats&&d.formats.length&&pickResaAudio(d));
-        if(ok) setAudioApiStatus('OK! Merespons dalam '+((Date.now()-t0)/1000).toFixed(1)+' dtk. Jangan lupa Simpan.');
+        var ok=(d&&(d.status&&d.audioUrl))||(d&&d.formats&&d.formats.length&&pickResaAudio(d, audioQuality()));
+        var qinfo=(ok&&ok.abr)?(' Terbaca ~'+Math.round(ok.abr)+' kbps '+prettyCodec(ok.codec||'')+'.'):'';
+        if(ok) setAudioApiStatus('OK! Merespons dalam '+((Date.now()-t0)/1000).toFixed(1)+' dtk.'+qinfo+' Jangan lupa Simpan.');
         else setAudioApiStatus('GAGAL: API tidak mengembalikan audio ('+((d&&d.error)||(d&&d.detail)||'unknown')+').');
       })
       .catch(function(){ if(timer) clearTimeout(timer); setAudioApiStatus('GAGAL: tidak bisa menghubungi API / timeout.'); });
