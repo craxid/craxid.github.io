@@ -383,7 +383,7 @@
      prioritas m4a audio-only (kayak format 140); kalau nggak ada, yang penting ada url-nya */
   /* pilih audio dari respons gaya resa (formats[]).
      quality: 'auto' atau target kbps ('160' dst). kalau target dikasih,
-     ambil yang abr-nya paling dekat (diutamakan yang nggak melebihi target).
+     ambil yang abr-nya paling dekat ke target.
      nggak ada info bitrate / nggak ketemu -> balik ke bawaan: m4a diutamakan */
   function pickResaAudio(d, quality){
     var fs=(d&&d.formats)||[];
@@ -393,7 +393,7 @@
     if(target>0){
       for(i=0;i<pool.length;i++){ f=pool[i]; abr=parseFloat(f.abr)||0;
         if(abr<=0) continue;
-        score=Math.abs(abr-target)+(abr>target?1000:0);
+        score=Math.abs(abr-target);
         if(score<bestScore){ bestScore=score; best=f; }
       }
       if(best) picked=best;
