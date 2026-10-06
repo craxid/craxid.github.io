@@ -422,8 +422,10 @@
     return fetch(api+q, ctrl?{signal:ctrl.signal}:undefined)
       .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
       .then(function(d){
-        /* tandain sumbernya biar full player bisa nampilin namanya */
-        if(d&&d.formats&&d.formats.length){ var m=pickResaAudio(d, audioQuality()); if(m) m.engine=(api===DEFAULT_AUDIO_API)?'LOCAL':'API'; return m; } /* gaya resa */
+        /* tandain sumbernya biar full player bisa nampilin namanya.
+           sumber utama selalu disebut LOCAL (ngikutin urutan di pengaturan),
+           jadi nggak peduli URL tunnel-nya ganti-ganti */
+        if(d&&d.formats&&d.formats.length){ var m=pickResaAudio(d, audioQuality()); if(m) m.engine='LOCAL'; return m; } /* gaya resa */
         if(d&&d.status&&d.audioUrl){ d.engine=baseOverride?'Vercel':'API'; return d; } /* gaya Vercel */
         throw 0;
       })
