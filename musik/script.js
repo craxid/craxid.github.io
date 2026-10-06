@@ -1068,7 +1068,11 @@
   var DEFAULT_AUDIO_API='https://yt.hxa.my.id/api/yt-audio';
   var VERCEL_AUDIO_API='https://ytdl-green-zeta.vercel.app/api/yt-audio';
   var BROADCAST_WORKER=''; /* URL Worker broadcast. dikosongin = mati */
-  function audioApiUrl(){ try{ var v=localStorage.getItem('cxmusik_audioapi'); return ((v||'')||DEFAULT_AUDIO_API).replace(/\/$/,''); }catch(e){ return DEFAULT_AUDIO_API; } }
+  /* URL API audio. kalau yang kesimpen masih URL trycloudflare lama (tunnelnya udah ganti),
+     anggap kosong aja biar otomatis pakai bawaan yang baru */
+  function audioApiUrl(){ try{ var v=localStorage.getItem('cxmusik_audioapi')||'';
+    if(/trycloudflare\.com/i.test(v)){ try{ localStorage.removeItem('cxmusik_audioapi'); }catch(e){} v=''; }
+    return (v||DEFAULT_AUDIO_API).replace(/\/$/,''); }catch(e){ return DEFAULT_AUDIO_API; } }
   function setAudioApiStatus(s){ var el=$('audioApiStatus'); if(el) el.textContent=s||''; }
   /* kualitas audio pilihan user, cuma kepake buat sumber LOCAL. default: otomatis */
   function audioQuality(){ try{ return localStorage.getItem('cxmusik_audioq')||'auto'; }catch(e){ return 'auto'; } }
