@@ -1301,18 +1301,20 @@
     var oauthBack=/[?#].*(code=|access_token=)/.test(location.search+location.hash);
     if(!accUid()&&!oauthBack) return; /* belum login & bukan abis dari google → skip, hemat 60KB */
     var boot=function(){
+      if(oauthBack) setAccStatus('Memulihkan sesi login…'); /* di koneksi lambat butuh beberapa detik, kasih tau user */
       supa().then(function(c){ return c.auth.getUser(); }).then(function(r){
         var u=r.data&&r.data.user;
         if(u){
           try{ localStorage.setItem('cxmusik_uid',u.id); localStorage.setItem('cxmusik_uemail',u.email||''); }catch(e){}
           renderAccount();
-          if(oauthBack){ try{ history.replaceState(null,'',location.pathname); }catch(e){} }
+          if(oauthBack){ try{ history.replaceState(null,'',location.pathname); }catch(e){} setAccStatus('Login Google berhasil.'); }
           pullCloud(true);
         }else{
           try{ localStorage.removeItem('cxmusik_uid'); localStorage.removeItem('cxmusik_uemail'); }catch(e){}
           renderAccount();
+          if(oauthBack) setAccStatus('Gagal memulihkan sesi. Silakan tekan "Masuk dengan Google" sekali lagi.');
         }
-      }).catch(function(){});
+      }).catch(function(){ if(oauthBack) setAccStatus('Gagal memulihkan sesi, periksa koneksi lalu coba lagi.'); });
     };
     if('requestIdleCallback' in window) requestIdleCallback(boot,{timeout:6000});
     else setTimeout(boot,2500);
