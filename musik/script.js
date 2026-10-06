@@ -254,7 +254,30 @@
     var ic = playing ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
     $('pbPlay').innerHTML = ic; $('fpPlay').innerHTML = ic;
     setMSPlaying(playing);
+    isPlaying=playing;
+    if(playing) acquireWake(); else releaseWake();
   }
+  /* ----- Wake Lock: layar HP nggak mati sendiri selama musik bunyi.
+     browser otomatis melepas lock pas tab disembunyiin, makanya diambil lagi tiap tab balik */
+  var wakeSentinel=null, isPlaying=false;
+  function wakeLockOn(){ try{ return localStorage.getItem('cxmusik_wakelock')==='1'; }catch(e){ return false; } }
+  function setWakeLockStatus(s){ var el=$('wakeLockStatus'); if(el) el.textContent=s||''; }
+  function renderWakeBtn(){ var b=$('wakeLockBtn'); if(b) b.textContent=wakeLockOn()?'Matikan':'Aktifkan'; }
+  function acquireWake(){
+    if(!wakeLockOn()||!isPlaying||!('wakeLock' in navigator)||wakeSentinel) return;
+    try{
+      navigator.wakeLock.request('screen').then(function(s){
+        wakeSentinel=s;
+        s.addEventListener('release', function(){ wakeSentinel=null; });
+      }).catch(function(){ wakeSentinel=null; });
+    }catch(e){ wakeSentinel=null; }
+  }
+  function releaseWake(){
+    if(wakeSentinel){ try{ wakeSentinel.release(); }catch(e){} wakeSentinel=null; }
+  }
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState==='visible') acquireWake(); else releaseWake();
+  });
   var audioEl=$('audioEl'), useAudio=false, audioRefetching=false;
   function loadTrack(t){
     if(audioApiUrl()){ loadViaApi(t); return; }
@@ -1054,6 +1077,20 @@
       })
       .catch(function(){ if(timer) clearTimeout(timer); setAudioApiStatus('GAGAL: tidak bisa menghubungi API / timeout.'); });
   });
+
+  /* toggle wake lock di pengaturan */
+  (function initWakeLock(){
+    var b=$('wakeLockBtn'); if(!b) return;
+    if(!('wakeLock' in navigator)){ b.disabled=true; setWakeLockStatus('Browser/HP ini tidak mendukung Wake Lock.'); return; }
+    renderWakeBtn();
+    b.addEventListener('click', function(){
+      var on=!wakeLockOn();
+      try{ localStorage.setItem('cxmusik_wakelock', on?'1':'0'); }catch(e){}
+      renderWakeBtn();
+      if(on){ setWakeLockStatus('Aktif. Layar dijaga tetap hidup selama musik diputar.'); acquireWake(); }
+      else { setWakeLockStatus('Mati.'); releaseWake(); }
+    });
+  })();
 
   renderResults(); renderLibrary();
 
