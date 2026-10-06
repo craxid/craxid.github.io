@@ -1065,7 +1065,7 @@
   });
   /* ----- Audio API: sumber audio buat background playback.
      default = API sendiri (jalan di Termux); Vercel paling terakhir ----- */
-  var DEFAULT_AUDIO_API='https://copyrighted-prostores-vast-clinics.trycloudflare.com/api/yt-audio';
+  var DEFAULT_AUDIO_API='https://yt.hxa.my.id/api/yt-audio';
   var VERCEL_AUDIO_API='https://ytdl-green-zeta.vercel.app/api/yt-audio';
   var BROADCAST_WORKER=''; /* URL Worker broadcast. dikosongin = mati */
   function audioApiUrl(){ try{ var v=localStorage.getItem('cxmusik_audioapi'); return ((v||'')||DEFAULT_AUDIO_API).replace(/\/$/,''); }catch(e){ return DEFAULT_AUDIO_API; } }
