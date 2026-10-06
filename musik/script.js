@@ -1122,7 +1122,7 @@
     fetch(url).then(function(r){
       if(!r.ok) throw 0;
       var disp=r.headers.get('Content-Disposition')||'', fname='audio.'+fmt, m;
-      m=/filename\*=UTF-8''([^;]+)/.exec(disp)||/filename="([^"]+)"/.exec(disp);
+      m=/filename\*=utf-8''([^;]+)/i.exec(disp)||/filename="([^"]+)"/.exec(disp); /* i = biar cocok mau huruf besar/kecil */
       if(m) fname=m[1]||m[2];
       try{ fname=decodeURIComponent(fname); }catch(e){}
       return r.blob().then(function(b){ return {b:b,f:fname}; });
