@@ -418,14 +418,14 @@
         return once();
       });
   }
-  /* urutan: API sendiri (Termux) -> Vercel -> savenow.to. mentok baru player YouTube */
+  /* urutan: API sendiri (Termux) -> savenow.to -> Vercel (paling akhir). mentok baru player YouTube */
   function resolveAudio(videoId){
     return fetchAudioMeta(videoId).catch(function(){
       setSearchStatus('Mencoba server cadangan\u2026');
-      return fetchAudioMeta(videoId, 25000, VERCEL_AUDIO_API);
+      return fetchSnMeta(videoId);
     }).catch(function(){
       setSearchStatus('Mencoba server cadangan\u2026');
-      return fetchSnMeta(videoId);
+      return fetchAudioMeta(videoId, 25000, VERCEL_AUDIO_API);
     });
   }
   function renderFpTech(){
@@ -1021,7 +1021,7 @@
     $('ytKey').value=''; setStatus('Key dihapus.');
   });
   /* ----- Audio API: sumber audio buat background playback.
-     default = API sendiri (jalan di Termux), cadangan = Vercel ----- */
+     default = API sendiri (jalan di Termux); Vercel paling terakhir ----- */
   var DEFAULT_AUDIO_API='https://copyrighted-prostores-vast-clinics.trycloudflare.com/api/yt-audio';
   var VERCEL_AUDIO_API='https://ytdl-green-zeta.vercel.app/api/yt-audio';
   var BROADCAST_WORKER=''; /* URL Worker broadcast. dikosongin = mati */
