@@ -50,7 +50,7 @@
 
   /* ----- tema ----- */
   var themeToggle = $('themeToggle');
-  themeToggle.classList.add('liquid-glass');
+  /* catatan: kelas liquid-glass sengaja tidak dipakai di sini — tombol tema sekarang menyatu di dalam pill header */
   if (localStorage.getItem('theme') === 'dark') { body.classList.add('dark'); themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>'; }
   else { themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>'; }
   themeToggle.addEventListener('click', function(){
