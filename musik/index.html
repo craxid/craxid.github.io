@@ -99,7 +99,7 @@
           <div class="api-status" id="apiStatus"></div>
           <hr class="set-sep" />
           <h3 style="margin-top:12px"><i class="fa-solid fa-cloud"></i> Audio API (background playback)</h3>
-          <p>Bawaan web ini sudah terisi otomatis (<b>tidak perlu diapa-apakan</b>) agar musik tetap bunyi saat layar mati / pindah aplikasi. Isi manual hanya kalau mau pakai function Vercel sendiri; kosongkan untuk kembali ke bawaan. Jika API utama gagal, otomatis dicoba via server cadangan.</p>
+          <p>Sumber audio dicoba berurutan: <b>API sendiri (Termux)</b> &rarr; savenow.to &rarr; Vercel &rarr; player YouTube. URL bawaan menunjuk ke Cloudflare Tunnel di Termux &mdash; <b>URL ini berganti setiap tunnel di-restart</b>; kalau musik tiba-tiba tidak bisa diputar sama sekali, tempel URL tunnel yang baru di kolom bawah lalu tekan Simpan. Kosongkan kolom untuk kembali ke bawaan.</p>
           <input id="audioApi" type="text" placeholder="https://copyrighted-prostores-vast-clinics.trycloudflare.com/api/yt-audio" autocomplete="off" />
           <div class="row">
             <button class="mini-btn" id="saveAudioApiBtn">Simpan</button>
