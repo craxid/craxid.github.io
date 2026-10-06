@@ -270,7 +270,7 @@
       player.setVolume(parseInt($('vol').value,10)||80);
     }catch(e){}
   }
-  /* ambil link audio dari API (Vercel), putar pake <audio> biar bisa background */
+  /* ambil link audio dari API, putar pake <audio> biar bisa background */
   var audioMeta=null;
   var blobCacheUrl=null;
   function revokeBlob(){ if(blobCacheUrl){ try{ URL.revokeObjectURL(blobCacheUrl); }catch(e){} blobCacheUrl=null; } }
@@ -356,13 +356,37 @@
     startAudio(t, meta.audioUrl, 0);
     startBlobFetch(t, meta);
   }
-  function fetchAudioMeta(videoId, timeoutMs){
-    var api=audioApiUrl();
+  /* pilih format audio paling enteng dari respons gaya resa (formats[]).
+     prioritas m4a audio-only (kayak format 140); kalau nggak ada, yang penting ada url-nya */
+  function pickResaAudio(d){
+    var fs=(d&&d.formats)||[];
+    var aud=fs.filter(function(f){ return f&&f.url&&/audio only/i.test(f.resolution||''); });
+    var pool=aud.length?aud:fs.filter(function(f){ return f&&f.url; });
+    pool.sort(function(a,b){
+      var am=/m4a/i.test(a.ext||'')?0:1, bm=/m4a/i.test(b.ext||'')?0:1;
+      if(am!==bm) return am-bm;
+      return (a.filesize||1e15)-(b.filesize||1e15);
+    });
+    var f=pool[0];
+    if(!f) return null;
+    return { status:true, audioUrl:f.url,
+             audioType:/m4a/i.test(f.ext||'')?'audio/mp4':'audio/mpeg',
+             codec:f.ext, title:d.title||'', thumbnail:d.thumbnail||'' };
+  }
+  function fetchAudioMeta(videoId, timeoutMs, baseOverride){
+    var api=(baseOverride||audioApiUrl());
     var ctrl=('AbortController' in window)?new AbortController():null;
     var timer=ctrl?setTimeout(function(){ ctrl.abort(); }, timeoutMs||25000):null;
-    return fetch(api+'?id='+encodeURIComponent(videoId), ctrl?{signal:ctrl.signal}:undefined)
+    /* kirim dua-duanya: ?id= buat gaya Vercel, ?url= buat gaya resa. backend tinggal baca yang dia ngerti */
+    var q='?id='+encodeURIComponent(videoId)+'&url='+encodeURIComponent('https://www.youtube.com/watch?v='+videoId);
+    return fetch(api+q, ctrl?{signal:ctrl.signal}:undefined)
       .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
-      .then(function(d){ if(!d||!d.status||!d.audioUrl) throw 0; return d; });
+      .then(function(d){
+        if(d&&d.formats&&d.formats.length) return pickResaAudio(d); /* gaya resa */
+        if(d&&d.status&&d.audioUrl) return d; /* gaya Vercel */
+        throw 0;
+      })
+      .then(function(m){ if(!m||!m.audioUrl) throw 0; return m; });
   }
   /* cadangan: savenow.to — tembak langsung dari browser (CORS *), format mp3 */
   var SN_API_KEY='dfcb6d76f2f6a9894gjkege8a4ab232222';
@@ -394,9 +418,12 @@
         return once();
       });
   }
-  /* coba API utama (Vercel) dulu, baru server cadangan (savenow) */
+  /* urutan: API sendiri (Termux) -> Vercel -> savenow.to. mentok baru player YouTube */
   function resolveAudio(videoId){
     return fetchAudioMeta(videoId).catch(function(){
+      setSearchStatus('Mencoba server cadangan\u2026');
+      return fetchAudioMeta(videoId, 25000, VERCEL_AUDIO_API);
+    }).catch(function(){
       setSearchStatus('Mencoba server cadangan\u2026');
       return fetchSnMeta(videoId);
     });
@@ -993,8 +1020,10 @@
     try{ localStorage.removeItem('cxmusik_ytkey'); }catch(e){}
     $('ytKey').value=''; setStatus('Key dihapus.');
   });
-  /* ----- Audio API (Vercel): sumber audio buat background playback ----- */
-  var DEFAULT_AUDIO_API='https://ytdl-green-zeta.vercel.app/api/yt-audio';
+  /* ----- Audio API: sumber audio buat background playback.
+     default = API sendiri (jalan di Termux), cadangan = Vercel ----- */
+  var DEFAULT_AUDIO_API='https://copyrighted-prostores-vast-clinics.trycloudflare.com/api/yt-audio';
+  var VERCEL_AUDIO_API='https://ytdl-green-zeta.vercel.app/api/yt-audio';
   var BROADCAST_WORKER=''; /* URL Worker broadcast. dikosongin = mati */
   function audioApiUrl(){ try{ var v=localStorage.getItem('cxmusik_audioapi'); return ((v||'')||DEFAULT_AUDIO_API).replace(/\/$/,''); }catch(e){ return DEFAULT_AUDIO_API; } }
   function setAudioApiStatus(s){ var el=$('audioApiStatus'); if(el) el.textContent=s||''; }
@@ -1015,11 +1044,13 @@
     var t0=Date.now();
     var ctrl=('AbortController' in window)?new AbortController():null;
     var timer=ctrl?setTimeout(function(){ ctrl.abort(); },30000):null;
-    fetch(base+'?id=dQw4w9WgXcQ', ctrl?{signal:ctrl.signal}:undefined)
+    var q='?id=dQw4w9WgXcQ&url='+encodeURIComponent('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    fetch(base+q, ctrl?{signal:ctrl.signal}:undefined)
       .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
       .then(function(d){
-        if(d&&d.status&&d.audioUrl) setAudioApiStatus('OK! Merespons dalam '+((Date.now()-t0)/1000).toFixed(1)+' dtk. Jangan lupa Simpan.');
-        else setAudioApiStatus('GAGAL: API tidak mengembalikan audioUrl ('+((d&&d.error)||'unknown')+').');
+        var ok=(d&&(d.status&&d.audioUrl))||(d&&d.formats&&d.formats.length&&pickResaAudio(d));
+        if(ok) setAudioApiStatus('OK! Merespons dalam '+((Date.now()-t0)/1000).toFixed(1)+' dtk. Jangan lupa Simpan.');
+        else setAudioApiStatus('GAGAL: API tidak mengembalikan audio ('+((d&&d.error)||(d&&d.detail)||'unknown')+').');
       })
       .catch(function(){ if(timer) clearTimeout(timer); setAudioApiStatus('GAGAL: tidak bisa menghubungi API / timeout.'); });
   });
