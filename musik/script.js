@@ -371,7 +371,7 @@
   function playBlob(t, meta, resumePos){
     setSearchStatus('');
     revokeBlob(); blobReady=false; blobPromise=null; blobTrackId=null;
-    audioMeta=meta; renderFpTech();
+    audioMeta=meta; renderFpTech(); renderEngineBadge();
     if(resumePos>0){
       /* refetch abis error: butuh posisi pas, tunggu blob dulu (jalur lama) */
       setSearchStatus('Mengunduh audio\u2026');
@@ -597,7 +597,8 @@
   }
   function renderEngineBadge(){
     var b=$('engineBadge'); if(!b) return;
-    b.textContent=useAudio?'API':'YT';
+    /* tampilkan sumber aslinya (LOCAL/savenow.to/Vercel), bukan sekadar API */
+    b.textContent=!useAudio?'YT':((audioMeta&&audioMeta.engine)||'API');
     b.classList.toggle('yt',!useAudio);
   }
   function showBar(t){
@@ -1002,7 +1003,7 @@
       var row=btn.closest('.track'); if(!row) return;
       var idx=parseInt(row.dataset.idx,10); ctx=row.dataset.ctx;
       var t = ctx==='r' ? results[idx] : null; if(!t) return;
-      if(act==='play'){ playResults(idx); }
+      if(act==='play'){ playResults(idx); openFull(); }
       else if(act==='queue'){ queue.push(t); renderQueue(); }
       else if(act==='like'){ likeTrack(t); }
       else if(act==='pl'){ pickerFor = (pickerFor===idx? -1:idx); renderResults(); }
@@ -1018,16 +1019,16 @@
       activePl=name; pickerFor=-1; saveLib(); renderResults(); renderLibrary();
       return;
     }
-    if(btn.dataset.hplay!==undefined){ var h=hist[parseInt(btn.dataset.hplay,10)]; if(h) playTrack(h); return; }
+    if(btn.dataset.hplay!==undefined){ var h=hist[parseInt(btn.dataset.hplay,10)]; if(h){ playTrack(h); openFull(); } return; }
     if(btn.dataset.hdl!==undefined){ var hd=hist[parseInt(btn.dataset.hdl,10)]; if(hd) downloadTrack(hd.id, btn); return; }
-    if(btn.dataset.lplay!==undefined){ var lt=findTrack(btn.dataset.lplay); if(lt) playTrack(lt); return; }
+    if(btn.dataset.lplay!==undefined){ var lt=findTrack(btn.dataset.lplay); if(lt){ playTrack(lt); openFull(); } return; }
     if(btn.dataset.ldl!==undefined){ var ld=findTrack(btn.dataset.ldl); if(ld) downloadTrack(ld.id, btn); return; }
     if(btn.dataset.lunlike!==undefined){
       var li=likes.indexOf(btn.dataset.lunlike); if(li>=0) likes.splice(li,1);
       saveLib(); renderResults(); renderLibrary(); return;
     }
     if(btn.dataset.pl!==undefined){ activePl = (activePl===btn.dataset.pl? null:btn.dataset.pl); renderLibrary(); return; }
-    if(btn.dataset.pplay!==undefined){ var pt=playlists[activePl][parseInt(btn.dataset.pplay,10)]; if(pt) playTrack(pt); return; }
+    if(btn.dataset.pplay!==undefined){ var pt=playlists[activePl][parseInt(btn.dataset.pplay,10)]; if(pt){ playTrack(pt); openFull(); } return; }
     if(btn.dataset.pdl!==undefined){ var pd=playlists[activePl][parseInt(btn.dataset.pdl,10)]; if(pd) downloadTrack(pd.id, btn); return; }
     if(btn.dataset.prm!==undefined){ playlists[activePl].splice(parseInt(btn.dataset.prm,10),1); saveLib(); renderLibrary(); return; }
   });
