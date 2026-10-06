@@ -114,6 +114,14 @@
           </select>
           <div class="api-status" id="audioQualityStatus"></div>
           <hr class="set-sep" />
+          <h3 style="margin-top:12px"><i class="fa-solid fa-download"></i> Format unduhan</h3>
+          <p>Pilih format file saat mengunduh lagu. M4A memakai audio asli tanpa konversi (kualitas tertinggi); MP3 dikonversi ke 256 kbps agar kompatibel dengan semua pemutar.</p>
+          <select id="dlFormat">
+            <option value="m4a">M4A (kualitas asli)</option>
+            <option value="mp3">MP3 (256 kbps)</option>
+          </select>
+          <div class="api-status" id="dlFormatStatus"></div>
+          <hr class="set-sep" />
           <h3 style="margin-top:12px"><i class="fa-solid fa-key"></i> YouTube Data API key</h3>
           <p>Sumber pencarian bawaan memakai instance publik (gratis, ketersediaan tidak terjamin). Untuk hasil yang konsisten, gunakan <b>YouTube Data API key</b> pribadi — tersimpan lokal di perangkat ini dan tidak dikirim ke mana pun. Cara membuat: Google Cloud Console → aktifkan <i>YouTube Data API v3</i> → buat API key. Jika tidak memahami pengaturan ini, kosongkan saja — pencarian tetap berjalan normal.</p>
           <input id="ytKey" type="text" placeholder="YouTube Data API key (opsional)" autocomplete="off" />
@@ -181,7 +189,10 @@
     <div class="fp-dim"></div>
     <div class="fp-top">
       <button class="icon-btn" id="fpClose" aria-label="Tutup" style="font-size:20px"><i class="fa-solid fa-chevron-down"></i></button>
-      <button class="icon-btn" id="fpQueueBtn" aria-label="Antrean" style="font-size:18px"><i class="fa-solid fa-list-ul"></i></button>
+      <div class="fp-top-right">
+        <button class="icon-btn" id="fpDlBtn" aria-label="Unduh lagu" style="font-size:18px"><i class="fa-solid fa-download"></i></button>
+        <button class="icon-btn" id="fpQueueBtn" aria-label="Antrean" style="font-size:18px"><i class="fa-solid fa-list-ul"></i></button>
+      </div>
     </div>
     <div class="fp-middle">
       <img class="fp-art" id="fpThumb" alt="" />
@@ -256,6 +267,8 @@
     <div class="pb-progress" id="pbProgress"><div class="pb-fill" id="pbFill"><span class="pb-dot"></span></div></div>
     <div class="pb-times"><span id="tCur">0:00</span><span class="engine-badge yt" id="engineBadge" title="Mesin audio: API = via Vercel (bisa background), YT = YouTube (foreground saja)">YT</span><span id="tDur">0:00</span></div>
   </div>
+
+  <div class="dl-toast" id="dlToast" role="status" aria-live="polite"></div>
 
   <script src="script.js"></script>
 </body>

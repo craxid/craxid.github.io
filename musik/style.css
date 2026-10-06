@@ -102,6 +102,14 @@
     .q-item.playing { color: var(--accent); font-weight: 700; }
     .q-item img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
     .q-item span { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .q-item .q-dl { width: 34px; height: 34px; font-size: 13px; flex-shrink: 0; }
+    /* toast status unduhan */
+    .dl-toast { position: fixed; left: 50%; bottom: 96px; transform: translate(-50%, 12px); z-index: 1200;
+      background: rgba(18,18,20,.92); color: #fff; font-size: 13px; padding: 10px 18px; border-radius: 999px;
+      opacity: 0; pointer-events: none; transition: opacity .25s ease, transform .25s ease;
+      max-width: 86vw; text-align: center; }
+    .dl-toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .dl-toast.err { background: rgba(140,35,35,.94); }
     #ytplayer { position: fixed; width: 2px; height: 2px; bottom: 0; left: 0; opacity: 0.01; pointer-events: none; }
     .pl-picker { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 10px 4px; }
     .loading-row { text-align: center; color: var(--muted); padding: 24px; font-size: 14px; }
@@ -114,6 +122,7 @@
     .fullplayer.show { opacity: 1; transform: none; pointer-events: auto;
       transition: opacity .3s ease, transform .34s cubic-bezier(0.34, 1.4, 0.64, 1); }
     .fp-top { width: 100%; max-width: 480px; display: flex; align-items: center; justify-content: space-between; }
+    .fp-top-right { display: flex; align-items: center; gap: 2px; }
     .fp-art { width: min(76vw, 340px); aspect-ratio: 1; object-fit: cover; border-radius: 26px; margin: 0 0 20px;
       box-shadow: 0 18px 44px color-mix(in srgb, var(--accent) 30%, transparent); background: var(--code-bg); }
     .fp-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; text-align: center; width: 100%; max-width: 480px;
@@ -167,6 +176,12 @@
     .fp-side { width: 54px; height: 54px; border-radius: 50%; border: none; background: transparent; color: var(--text); font-size: 22px; cursor: pointer; flex-shrink: 0; }
     .fp-controls { gap: 22px; }
     .fp-controls button { flex-shrink: 0; }
+    /* efek tekan ala tombol pill — biar semua tombol full player ikut mentul */
+    .fp-top .icon-btn, .fp-play, .fp-side, .fp-skip { transition: transform .15s ease; }
+    .fp-top .icon-btn:active, .fp-play:active, .fp-side:active, .fp-skip:active { transform: scale(.88); }
+    @media (prefers-reduced-motion: reduce) {
+      .fp-top .icon-btn:active, .fp-play:active, .fp-side:active, .fp-skip:active { transform: none; }
+    }
     .fp-skip { width: 48px; height: 48px; border-radius: 50%; border: none; background: transparent; color: var(--text);
       font-size: 19px; cursor: pointer; position: relative; }
     .fp-skip span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;

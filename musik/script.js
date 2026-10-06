@@ -164,6 +164,7 @@
       '<button class="icon-btn" data-act="queue" aria-label="Tambah antrean"><i class="fa-solid fa-list-ul"></i></button>'+
       '<button class="icon-btn'+liked+'" data-act="like" aria-label="Suka"><i class="fa-solid fa-heart"></i></button>'+
       '<button class="icon-btn" data-act="pl" aria-label="Playlist"><i class="fa-solid fa-plus"></i></button>'+
+      '<button class="icon-btn" data-act="dl" aria-label="Unduh"><i class="fa-solid fa-download"></i></button>'+
       '</div></div></div>'+
       (pickerFor===idx && ctx==='r' ? plPickerHtml() : '');
   }
@@ -211,7 +212,8 @@
       return '<div class="track"><img src="'+esc(t.thumb)+'" alt="" loading="lazy"/>'+
         '<div class="track-info"><div class="track-title">'+esc(t.title)+'</div>'+
         '<div class="track-sub">'+esc(t.author)+'</div>'+
-        '<div class="track-actions"><button class="icon-btn" data-hplay="'+i+'" aria-label="Putar"><i class="fa-solid fa-play"></i></button></div></div></div>';
+        '<div class="track-actions"><button class="icon-btn" data-hplay="'+i+'" aria-label="Putar"><i class="fa-solid fa-play"></i></button>'+
+        '<button class="icon-btn" data-hdl="'+i+'" aria-label="Unduh"><i class="fa-solid fa-download"></i></button></div></div></div>';
     }).join('') : '<div class="empty-note">Belum ada riwayat.</div>';
     likedEl.innerHTML = likes.length ? likes.map(function(id){
       var t=findTrack(id)||{id:id,title:id,author:'',dur:0,thumb:thumb(id)};
@@ -219,6 +221,7 @@
         '<div class="track-info"><div class="track-title">'+esc(t.title)+'</div>'+
         '<div class="track-sub">'+esc(t.author)+'</div>'+
         '<div class="track-actions"><button class="icon-btn" data-lplay="'+esc(id)+'" aria-label="Putar"><i class="fa-solid fa-play"></i></button>'+
+        '<button class="icon-btn" data-ldl="'+esc(id)+'" aria-label="Unduh"><i class="fa-solid fa-download"></i></button>'+
         '<button class="icon-btn liked" data-lunlike="'+esc(id)+'" aria-label="Hapus"><i class="fa-solid fa-heart"></i></button></div></div></div>';
     }).join('') : '<div class="empty-note">Ketuk ♥ di lagu untuk menyimpan di sini.</div>';
     var names=Object.keys(playlists);
@@ -231,6 +234,7 @@
         '<div class="track-info"><div class="track-title">'+esc(t.title)+'</div>'+
         '<div class="track-sub">'+esc(t.author)+'</div>'+
         '<div class="track-actions"><button class="icon-btn" data-pplay="'+i+'" aria-label="Putar"><i class="fa-solid fa-play"></i></button>'+
+        '<button class="icon-btn" data-pdl="'+i+'" aria-label="Unduh"><i class="fa-solid fa-download"></i></button>'+
         '<button class="icon-btn" data-prm="'+i+'" aria-label="Hapus"><i class="fa-solid fa-trash"></i></button></div></div></div>';
     }).join('') : '';
     marqueeTrackTitles(document.getElementById('tabLib'));
@@ -670,7 +674,8 @@
   function renderQueue(){
     qList.innerHTML = queue.map(function(t,i){
       return '<div class="q-item'+(i===qi?' playing':'')+'" data-q="'+i+'"><img src="'+esc(t.thumb)+'" alt=""/>'+
-        '<span>'+esc(t.title)+'</span>'+(i===qi?'<i class="fa-solid fa-volume-high"></i>':'')+'</div>';
+        '<span>'+esc(t.title)+'</span>'+(i===qi?'<i class="fa-solid fa-volume-high"></i>':'')+
+        '<button class="icon-btn q-dl" data-qdl="'+i+'" aria-label="Unduh"><i class="fa-solid fa-download"></i></button></div>';
     }).join('') || '<div class="empty-note">Antrean kosong.</div>';
   }
   function startProgress(){
@@ -934,6 +939,7 @@
   $('lyricsResearch').addEventListener('click', researchLyrics);
   $('lyricsModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('show'); });
   $('fpQueueBtn').addEventListener('click', function(){ $('queueModal').classList.add('show'); });
+  $('fpDlBtn').addEventListener('click', function(){ var t=queue[qi]; if(t) downloadTrack(t.id, this); });
   $('queueClose').addEventListener('click', function(){ $('queueModal').classList.remove('show'); });
   $('queueModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('show'); });
   function boing(btn){ btn.classList.remove('boing'); void btn.offsetWidth; btn.classList.add('boing'); }
@@ -982,12 +988,14 @@
   });
   bindSeek($('pbProgress'));
   qList.addEventListener('click', function(e){
+    var qd=e.target.closest('[data-qdl]');
+    if(qd){ var qt=queue[parseInt(qd.dataset.qdl,10)]; if(qt) downloadTrack(qt.id, qd); return; } /* tombol unduh, jangan ikut ke-play */
     var el=e.target.closest('[data-q]'); if(el) playAt(parseInt(el.dataset.q,10));
   });
 
   /* ----- aksi baris lagu ----- */
   document.addEventListener('click', function(e){
-    var btn=e.target.closest('[data-act],[data-plpick],[data-hplay],[data-lplay],[data-lunlike],[data-pl],[data-pplay],[data-prm]');
+    var btn=e.target.closest('[data-act],[data-plpick],[data-hplay],[data-hdl],[data-lplay],[data-ldl],[data-lunlike],[data-pl],[data-pplay],[data-pdl],[data-prm]');
     if(!btn) return;
     var act=btn.dataset.act, ctx;
     if(act){
@@ -998,6 +1006,7 @@
       else if(act==='queue'){ queue.push(t); renderQueue(); }
       else if(act==='like'){ likeTrack(t); }
       else if(act==='pl'){ pickerFor = (pickerFor===idx? -1:idx); renderResults(); }
+      else if(act==='dl'){ downloadTrack(t.id, btn); }
       return;
     }
     if(btn.dataset.plpick!==undefined){
@@ -1010,13 +1019,16 @@
       return;
     }
     if(btn.dataset.hplay!==undefined){ var h=hist[parseInt(btn.dataset.hplay,10)]; if(h) playTrack(h); return; }
+    if(btn.dataset.hdl!==undefined){ var hd=hist[parseInt(btn.dataset.hdl,10)]; if(hd) downloadTrack(hd.id, btn); return; }
     if(btn.dataset.lplay!==undefined){ var lt=findTrack(btn.dataset.lplay); if(lt) playTrack(lt); return; }
+    if(btn.dataset.ldl!==undefined){ var ld=findTrack(btn.dataset.ldl); if(ld) downloadTrack(ld.id, btn); return; }
     if(btn.dataset.lunlike!==undefined){
       var li=likes.indexOf(btn.dataset.lunlike); if(li>=0) likes.splice(li,1);
       saveLib(); renderResults(); renderLibrary(); return;
     }
     if(btn.dataset.pl!==undefined){ activePl = (activePl===btn.dataset.pl? null:btn.dataset.pl); renderLibrary(); return; }
     if(btn.dataset.pplay!==undefined){ var pt=playlists[activePl][parseInt(btn.dataset.pplay,10)]; if(pt) playTrack(pt); return; }
+    if(btn.dataset.pdl!==undefined){ var pd=playlists[activePl][parseInt(btn.dataset.pdl,10)]; if(pd) downloadTrack(pd.id, btn); return; }
     if(btn.dataset.prm!==undefined){ playlists[activePl].splice(parseInt(btn.dataset.prm,10),1); saveLib(); renderLibrary(); return; }
   });
 
@@ -1084,6 +1096,45 @@
   function setAudioApiStatus(s){ var el=$('audioApiStatus'); if(el) el.textContent=s||''; }
   /* kualitas audio pilihan user, cuma kepake buat sumber LOCAL. default: otomatis */
   function audioQuality(){ try{ return localStorage.getItem('cxmusik_audioq')||'auto'; }catch(e){ return 'auto'; } }
+
+  /* ----- unduh lagu: via /api/yt-download di host API yang sama ----- */
+  function dlFormat(){ try{ var v=localStorage.getItem('cxmusik_dlfmt')||'m4a'; return v==='mp3'?'mp3':'m4a'; }catch(e){ return 'm4a'; } }
+  function dlApiBase(){ var u=audioApiUrl(), b=u.replace(/\/api\/yt-audio\/?$/,'');
+    return b===u ? DEFAULT_AUDIO_API.replace(/\/api\/yt-audio$/,'') : b; } /* nempel ke host API yg sama */
+  var dlBusy={}, dlToastTimer=null;
+  function showDlToast(msg,isErr){
+    var el=$('dlToast'); if(!el) return;
+    el.textContent=msg; el.classList.toggle('err',!!isErr); el.classList.add('show');
+    if(dlToastTimer) clearTimeout(dlToastTimer);
+    dlToastTimer=setTimeout(function(){ el.classList.remove('show'); },2600);
+  }
+  function setDlBtnBusy(btn,on){
+    if(!btn) return;
+    if(on){ btn.dataset.orig=btn.innerHTML; var ic=btn.querySelector('i'); if(ic) ic.className='fa-solid fa-spinner fa-spin'; }
+    else if(btn.dataset.orig){ btn.innerHTML=btn.dataset.orig; delete btn.dataset.orig; }
+  }
+  function downloadTrack(id,btn){
+    if(!id) return;
+    if(dlBusy[id]){ showDlToast('Lagu ini sedang diunduh…'); return; }
+    var fmt=dlFormat();
+    var url=dlApiBase()+'/api/yt-download?id='+encodeURIComponent(id)+'&format='+fmt;
+    dlBusy[id]=1; setDlBtnBusy(btn,true); showDlToast('Menyiapkan unduhan…');
+    fetch(url).then(function(r){
+      if(!r.ok) throw 0;
+      var disp=r.headers.get('Content-Disposition')||'', fname='audio.'+fmt, m;
+      m=/filename\*=UTF-8''([^;]+)/.exec(disp)||/filename="([^"]+)"/.exec(disp);
+      if(m) fname=m[1]||m[2];
+      try{ fname=decodeURIComponent(fname); }catch(e){}
+      return r.blob().then(function(b){ return {b:b,f:fname}; });
+    }).then(function(o){
+      var a=document.createElement('a');
+      a.href=URL.createObjectURL(o.b); a.download=o.f;
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },5000);
+      showDlToast('Unduhan selesai');
+    }).catch(function(){ showDlToast('Unduhan gagal — coba lagi nanti',true); })
+    .then(function(){ delete dlBusy[id]; setDlBtnBusy(btn,false); });
+  }
   try{ $('audioApi').value=localStorage.getItem('cxmusik_audioapi')||''; }catch(e){}
   $('saveAudioApiBtn').addEventListener('click', function(){
     var v=$('audioApi').value.trim().replace(/\/$/,'');
@@ -1100,6 +1151,14 @@
     try{ if(v&&v!=='auto') localStorage.setItem('cxmusik_audioq',v); else localStorage.removeItem('cxmusik_audioq'); }catch(e){}
     var qst=$('audioQualityStatus');
     if(qst) qst.textContent='Kualitas disimpan: '+sel.options[sel.selectedIndex].text+'. Berlaku mulai lagu berikutnya.';
+  });
+  /* ----- format unduhan: m4a asli atau mp3 256k ----- */
+  try{ $('dlFormat').value=dlFormat(); }catch(e){}
+  $('dlFormat').addEventListener('change', function(){
+    var sel=$('dlFormat'), v=sel.value;
+    try{ localStorage.setItem('cxmusik_dlfmt',v); }catch(e){}
+    var st=$('dlFormatStatus');
+    if(st) st.textContent='Format disimpan: '+sel.options[sel.selectedIndex].text+'.';
   });
   $('testAudioApiBtn').addEventListener('click', function(){
     var base=($('audioApi').value.trim().replace(/\/$/,''))||audioApiUrl();
