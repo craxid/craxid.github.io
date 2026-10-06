@@ -187,7 +187,10 @@
   }
 
   /* ----- library ----- */
-  function saveLib(){ store('cxmusik_likes',likes); store('cxmusik_playlists',playlists); store('cxmusik_history',hist); store('cxmusik_dislikes',dislikes); }
+  function saveLib(meta){ store('cxmusik_likes',likes); store('cxmusik_playlists',playlists); store('cxmusik_history',hist); store('cxmusik_dislikes',dislikes);
+    var now=new Date().toISOString(); /* kapan terakhir berubah, buat diadu sama versi cloud */
+    SYNC_ORDER.forEach(function(k){ syncMeta[k]=(meta&&meta[k])||now; });
+    store('cxmusik_syncmeta',syncMeta); schedulePush(); }
   function findTrack(id){
     var all=results.concat(queue, hist, likes.map(function(){return null;}).filter(Boolean));
     for(var i=0;i<all.length;i++) if(all[i]&&all[i].id===id) return all[i];
@@ -1132,6 +1135,188 @@
       navigator.serviceWorker.register('/sw.js').catch(function(){});
     });
   }
+
+  /* ----- akun & sinkronisasi (Supabase): playlist/riwayat/suka ngikut akun,
+     jadi aman walau data browser dihapus. SDK diimport dinamis, cuma diunduh pas lagi login */
+  var SUPABASE_URL='https://mnunjhwwruiahoxbcgab.supabase.co';
+  var SUPABASE_KEY='sb_publishable_84mBeXhPKNWl9vSNuJc40A_T5q68JOq'; /* publishable key, emang dirancang buat dipasang di frontend */
+  var SYNC_ORDER=['playlists','history','likes','dislikes'];
+  var syncMeta=store('cxmusik_syncmeta')||{};
+  var _supa=null, _supaP=null, _syncT=null, _pushing=false;
+  function supa(){
+    if(_supa) return Promise.resolve(_supa);
+    if(_supaP) return _supaP;
+    _supaP=import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm').then(function(m){
+      _supa=m.createClient(SUPABASE_URL,SUPABASE_KEY); return _supa;
+    }).catch(function(e){ _supaP=null; throw e; });
+    return _supaP;
+  }
+  function accUid(){ try{ return localStorage.getItem('cxmusik_uid'); }catch(e){ return null; } }
+  function setAccStatus(s){ var el=$('accountStatus'); if(el) el.textContent=s||''; }
+  function libData(){ return {playlists:playlists, history:hist, likes:likes, dislikes:dislikes}; }
+  function setOne(k,items){
+    if(k==='playlists'&&items) playlists=items;
+    else if(k==='history'&&items) hist=items;
+    else if(k==='likes'&&items) likes=items;
+    else if(k==='dislikes'&&items) dislikes=items;
+  }
+  function wrapSync(){ var o={}; SYNC_ORDER.forEach(function(k){ o[k]={at:syncMeta[k]||new Date().toISOString(), items:libData()[k]}; }); return o; }
+  function schedulePush(){
+    if(!accUid()) return;
+    clearTimeout(_syncT); _syncT=setTimeout(function(){ pushCloud(true); },2000); /* debounce biar gak nembak tiap ada perubahan kecil */
+  }
+  function pushCloud(quiet){
+    if(_pushing||!accUid()) return;
+    _pushing=true;
+    if(!quiet) setAccStatus('Menyinkronkan…');
+    supa().then(function(c){ return c.auth.getUser().then(function(r){ return {c:c,u:r.data.user}; }); })
+    .then(function(x){
+      if(!x.u){ if(!quiet) setAccStatus('Sesi berakhir, silakan masuk kembali.'); throw 0; }
+      return x.c.from('musik_sync').upsert({user_id:x.u.id, data:wrapSync(), updated_at:new Date().toISOString()});
+    })
+    .then(function(res){
+      _pushing=false;
+      if(res.error) setAccStatus('Gagal menyinkronkan: '+res.error.message);
+      else if(!quiet) setAccStatus('Sinkronisasi selesai.');
+    })
+    .catch(function(e){ _pushing=false; if(e&&!quiet) setAccStatus('Gagal menyinkronkan, periksa koneksi internet.'); });
+  }
+  function localEmpty(){ return !Object.keys(playlists).length&&!hist.length&&!likes.length&&!dislikes.length; }
+  /* login pertama di perangkat yg udah ada datanya: gabung semuanya, jangan sampe ada yg ilang */
+  function unionMerge(cloud){
+    var cpl=(cloud.playlists&&cloud.playlists.items)||{};
+    Object.keys(cpl).forEach(function(n){
+      var ct=cpl[n]||[];
+      if(!playlists[n]){ playlists[n]=ct; return; }
+      var ids={}; playlists[n].forEach(function(t){ ids[t.id]=1; });
+      ct.forEach(function(t){ if(t&&t.id&&!ids[t.id]) playlists[n].push(t); });
+    });
+    ['likes','dislikes'].forEach(function(k){
+      var cs=(cloud[k]&&cloud[k].items)||[], seen={};
+      libData()[k].forEach(function(id){ seen[id]=1; });
+      cs.forEach(function(id){ if(!seen[id]) libData()[k].push(id); });
+    });
+    var ch=(cloud.history&&cloud.history.items)||[], seenH={};
+    hist.forEach(function(t){ seenH[t.id]=1; });
+    ch.forEach(function(t){ if(t&&t.id&&!seenH[t.id]) hist.push(t); });
+    hist=hist.slice(0,30);
+  }
+  function pullCloud(quiet){
+    if(!quiet) setAccStatus('Mengambil data dari cloud…');
+    supa().then(function(c){ return c.auth.getUser().then(function(r){ return {c:c,u:r.data.user}; }); })
+    .then(function(x){
+      if(!x.u){ if(!quiet) setAccStatus('Sesi berakhir, silakan masuk kembali.'); throw 0; }
+      return x.c.from('musik_sync').select('data').eq('user_id',x.u.id).maybeSingle().then(function(res){ return {res:res}; });
+    })
+    .then(function(x){
+      var row=x.res.data, err=x.res.error;
+      if(err&&err.code!=='PGRST116'){ if(!quiet) setAccStatus('Gagal mengambil data.'); return; }
+      if(!row||!row.data){ pushCloud(quiet); return; } /* cloud masih kosong → upload yg lokal */
+      var cloud=row.data, meta={}, changed=false, first=!SYNC_ORDER.some(function(k){ return syncMeta[k]; });
+      if(localEmpty()){
+        SYNC_ORDER.forEach(function(k){ if(cloud[k]){ setOne(k,cloud[k].items); meta[k]=cloud[k].at; } });
+        changed=true;
+      }else if(first){
+        unionMerge(cloud);
+        var now=new Date().toISOString(); SYNC_ORDER.forEach(function(k){ meta[k]=now; });
+        changed=true;
+      }else{
+        SYNC_ORDER.forEach(function(k){ /* yg timestamp-nya lebih baru yg menang */
+          var ce=cloud[k], cAt=ce&&ce.at||'', lAt=syncMeta[k]||'';
+          if(cAt&&cAt>lAt){ setOne(k,ce.items); meta[k]=cAt; changed=true; }
+          else meta[k]=lAt;
+        });
+      }
+      if(changed){ saveLib(meta); renderLibrary(); if(!quiet) setAccStatus('Data dari cloud diterapkan.'); }
+      else if(!quiet) setAccStatus('Data sudah yang terbaru.');
+      schedulePush();
+    })
+    .catch(function(e){ if(e&&!quiet) setAccStatus('Gagal mengambil data, periksa koneksi internet.'); });
+  }
+  function friendlyErr(e){
+    var m=String((e&&e.message)||'');
+    if(/invalid login credentials/i.test(m)) return 'Email atau kata sandi salah.';
+    if(/email not confirmed/i.test(m)) return 'Email belum diverifikasi — periksa kotak masuk Anda.';
+    if(/user already registered/i.test(m)) return 'Email sudah terdaftar, silakan masuk.';
+    if(/password/i.test(m)&&/length|short|weak/i.test(m)) return 'Kata sandi minimal 6 karakter.';
+    return m||'Terjadi kesalahan.';
+  }
+  function onSignedIn(u){
+    if(!u) return;
+    try{ localStorage.setItem('cxmusik_uid',u.id); localStorage.setItem('cxmusik_uemail',u.email||''); }catch(e){}
+    renderAccount(); pullCloud(false);
+  }
+  function doLogin(){
+    var em=($('accEmail').value||'').trim(), pw=$('accPass').value||'';
+    if(!em||!pw){ setAccStatus('Isi email dan kata sandi terlebih dahulu.'); return; }
+    setAccStatus('Memeriksa…');
+    supa().then(function(c){ return c.auth.signInWithPassword({email:em,password:pw}); })
+    .then(function(r){
+      if(r.error){ setAccStatus('Gagal masuk: '+friendlyErr(r.error)); return; }
+      onSignedIn(r.data.user);
+    }).catch(function(){ setAccStatus('Gagal masuk, periksa koneksi internet.'); });
+  }
+  function doRegister(){
+    var em=($('accEmail').value||'').trim(), pw=$('accPass').value||'';
+    if(!em||!pw){ setAccStatus('Isi email dan kata sandi terlebih dahulu.'); return; }
+    if(pw.length<6){ setAccStatus('Kata sandi minimal 6 karakter.'); return; }
+    setAccStatus('Mendaftarkan…');
+    supa().then(function(c){ return c.auth.signUp({email:em,password:pw}); })
+    .then(function(r){
+      if(r.error){ setAccStatus('Gagal mendaftar: '+friendlyErr(r.error)); return; }
+      if(r.data.session) onSignedIn(r.data.user); /* verifikasi email mati → langsung masuk */
+      else setAccStatus('Pendaftaran berhasil. Periksa email Anda untuk verifikasi, lalu masuk.');
+    }).catch(function(){ setAccStatus('Gagal mendaftar, periksa koneksi internet.'); });
+  }
+  function doGoogle(){
+    setAccStatus('Membuka login Google…');
+    var back=location.href.split('#')[0].split('?')[0]; /* balik ke halaman ini lagi abis dari google */
+    supa().then(function(c){ return c.auth.signInWithOAuth({provider:'google',options:{redirectTo:back}}); })
+    .then(function(r){ if(r.error) setAccStatus('Gagal: '+friendlyErr(r.error)); })
+    .catch(function(){ setAccStatus('Gagal membuka login Google.'); });
+  }
+  function doLogout(){
+    setAccStatus('Keluar…');
+    supa().then(function(c){ return c.auth.signOut().catch(function(){}); })
+    .then(function(){
+      try{ localStorage.removeItem('cxmusik_uid'); localStorage.removeItem('cxmusik_uemail'); }catch(e){}
+      renderAccount(); setAccStatus('Anda telah keluar. Data di perangkat ini tetap tersimpan.');
+    });
+  }
+  function renderAccount(){
+    var uid=accUid(), out=$('accountLoggedOut'), inn=$('accountLoggedIn');
+    if(out) out.style.display=uid?'none':'';
+    if(inn) inn.style.display=uid?'':'none';
+    if(uid){ try{ $('accUserEmail').textContent=localStorage.getItem('cxmusik_uemail')||''; }catch(e){} }
+  }
+  function wireAccount(){
+    var b=function(id,fn){ var el=$(id); if(el) el.addEventListener('click',fn); };
+    b('loginBtn',doLogin); b('registerBtn',doRegister); b('googleBtn',doGoogle);
+    b('logoutBtn',doLogout); b('syncNowBtn',function(){ pullCloud(false); });
+    var p=$('accPass'); if(p) p.addEventListener('keydown',function(e){ if(e.key==='Enter') doLogin(); });
+  }
+  wireAccount(); renderAccount();
+  /* baru buka halaman: kalo lagi login, SDK dimuat di background terus sesi dipulihkan diam-diam */
+  (function initSync(){
+    var oauthBack=/[?#].*(code=|access_token=)/.test(location.search+location.hash);
+    if(!accUid()&&!oauthBack) return; /* belum login & bukan abis dari google → skip, hemat 60KB */
+    var boot=function(){
+      supa().then(function(c){ return c.auth.getUser(); }).then(function(r){
+        var u=r.data&&r.data.user;
+        if(u){
+          try{ localStorage.setItem('cxmusik_uid',u.id); localStorage.setItem('cxmusik_uemail',u.email||''); }catch(e){}
+          renderAccount();
+          if(oauthBack){ try{ history.replaceState(null,'',location.pathname); }catch(e){} }
+          pullCloud(true);
+        }else{
+          try{ localStorage.removeItem('cxmusik_uid'); localStorage.removeItem('cxmusik_uemail'); }catch(e){}
+          renderAccount();
+        }
+      }).catch(function(){});
+    };
+    if('requestIdleCallback' in window) requestIdleCallback(boot,{timeout:6000});
+    else setTimeout(boot,2500);
+  })();
 
   renderResults(); renderLibrary();
 
