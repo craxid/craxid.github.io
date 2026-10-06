@@ -1054,6 +1054,11 @@
   $('settingsBtn').addEventListener('click', openSettings);
   $('settingsClose').addEventListener('click', closeSettings);
   $('settingsModal').addEventListener('click', function(e){ if(e.target===$('settingsModal')) closeSettings(); });
+  /* ----- akun: dialog sendiri, terpisah dari setelan ----- */
+  function openAccount(){ $('accountModal').classList.add('show'); }
+  function closeAccount(){ $('accountModal').classList.remove('show'); }
+  $('accountClose').addEventListener('click', closeAccount);
+  $('accountModal').addEventListener('click', function(e){ if(e.target===$('accountModal')) closeAccount(); });
   $('notifClose').addEventListener('click', hideSearchNotif);
   $('notifSettingBtn').addEventListener('click', function(){ openSettings(); });
   try{ $('ytKey').value=localStorage.getItem('cxmusik_ytkey')||''; }catch(e){}
@@ -1288,11 +1293,13 @@
     if(out) out.style.display=uid?'none':'';
     if(inn) inn.style.display=uid?'':'none';
     if(uid){ try{ $('accUserEmail').textContent=localStorage.getItem('cxmusik_uemail')||''; }catch(e){} }
+    var ab=$('accountBtn'); if(ab) ab.classList.toggle('logged',!!uid); /* ikon ikut ijo kalo lagi login */
   }
   function wireAccount(){
     var b=function(id,fn){ var el=$(id); if(el) el.addEventListener('click',fn); };
     b('loginBtn',doLogin); b('registerBtn',doRegister); b('googleBtn',doGoogle);
     b('logoutBtn',doLogout); b('syncNowBtn',function(){ pullCloud(false); });
+    b('accountBtn', openAccount); /* tombol akun di header: buka dialog akun langsung */
     var p=$('accPass'); if(p) p.addEventListener('keydown',function(e){ if(e.key==='Enter') doLogin(); });
   }
   wireAccount(); renderAccount();

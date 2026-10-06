@@ -49,8 +49,13 @@
       <div class="musik-head">
         <a href="/" class="back-btn liquid-glass" aria-label="Kembali"><i class="fa-solid fa-chevron-left"></i></a>
         <h1>Musik</h1>
-        <button id="themeToggle" class="back-btn liquid-glass" aria-label="Ganti tema" style="border:none;cursor:pointer"></button>
-        <button id="settingsBtn" class="back-btn liquid-glass" aria-label="Pengaturan pencarian" style="border:none;cursor:pointer"><i class="fa-solid fa-gear"></i></button>
+        <div class="like-pill head-pill" role="group" aria-label="Tombol cepat">
+          <button id="themeToggle" aria-label="Ganti tema" style="border:none;cursor:pointer"></button>
+          <span class="pill-div"></span>
+          <button id="accountBtn" aria-label="Akun" style="border:none;cursor:pointer"><i class="fa-solid fa-circle-user"></i></button>
+          <span class="pill-div"></span>
+          <button id="settingsBtn" aria-label="Pengaturan" style="border:none;cursor:pointer"><i class="fa-solid fa-gear"></i></button>
+        </div>
       </div>
       <div class="search-bar">
         <input id="q" type="search" placeholder="Cari lagu / artis di YouTube…" autocomplete="off" aria-label="Cari musik" />
@@ -91,28 +96,6 @@
             <button class="icon-btn" id="settingsClose" aria-label="Tutup pengaturan"><i class="fa-solid fa-xmark"></i></button>
           </div>
 <hr class="set-sep" />
-          <h3 style="margin-top:12px"><i class="fa-solid fa-circle-user"></i> Akun</h3>
-          <p>Masuk untuk menyinkronkan daftar putar, riwayat, dan tanda suka ke semua perangkat — data tidak hilang walau data browser dihapus. Data tersimpan di akun Anda dan tidak dapat diakses pengguna lain.</p>
-          <div id="accountLoggedOut">
-            <input id="accEmail" type="email" placeholder="Email" autocomplete="email" />
-            <input id="accPass" type="password" placeholder="Kata sandi" autocomplete="current-password" />
-            <div class="row">
-              <button class="mini-btn" id="loginBtn">Masuk</button>
-              <button class="mini-btn ghost" id="registerBtn">Daftar</button>
-            </div>
-            <div class="row" style="margin-top:8px">
-              <button class="mini-btn ghost" id="googleBtn"><i class="fa-brands fa-google"></i>&nbsp;Masuk dengan Google</button>
-            </div>
-          </div>
-          <div id="accountLoggedIn" style="display:none">
-            <p style="margin:0 0 8px">Masuk sebagai <b id="accUserEmail"></b></p>
-            <div class="row">
-              <button class="mini-btn" id="syncNowBtn">Sinkronkan sekarang</button>
-              <button class="mini-btn ghost" id="logoutBtn">Keluar</button>
-            </div>
-          </div>
-          <div class="api-status" id="accountStatus"></div>
-<hr class="set-sep" />
           <h3 style="margin-top:12px"><i class="fa-solid fa-mobile-screen"></i> Jaga layar tetap hidup</h3>
           <p>Saat aktif, layar perangkat dijaga tetap menyala selama musik diputar — berguna saat mengikuti lirik. Konsumsi baterai lebih tinggi saat fitur ini aktif.</p>
           <div class="row">
@@ -150,6 +133,36 @@
           </div>
           <div class="api-status" id="audioApiStatus"></div>
           
+        </div>
+      </div>
+
+      <div class="settings-modal" id="accountModal">
+        <div class="settings-sheet liquid-glass">
+          <div class="queue-head">
+            <h3><i class="fa-solid fa-circle-user"></i> Akun</h3>
+            <button class="icon-btn" id="accountClose" aria-label="Tutup akun"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <hr class="set-sep" />
+          <p>Masuk untuk menyinkronkan daftar putar, riwayat, dan tanda suka ke semua perangkat — data tidak hilang walau data browser dihapus. Data tersimpan di akun Anda dan tidak dapat diakses pengguna lain.</p>
+          <div id="accountLoggedOut">
+            <input id="accEmail" type="email" placeholder="Email" autocomplete="email" />
+            <input id="accPass" type="password" placeholder="Kata sandi" autocomplete="current-password" />
+            <div class="row">
+              <button class="mini-btn" id="loginBtn">Masuk</button>
+              <button class="mini-btn ghost" id="registerBtn">Daftar</button>
+            </div>
+            <div class="row" style="margin-top:8px">
+              <button class="mini-btn ghost" id="googleBtn"><i class="fa-brands fa-google"></i>&nbsp;Masuk dengan Google</button>
+            </div>
+          </div>
+          <div id="accountLoggedIn" style="display:none">
+            <p style="margin:0 0 8px">Masuk sebagai <b id="accUserEmail"></b></p>
+            <div class="row">
+              <button class="mini-btn" id="syncNowBtn">Sinkronkan sekarang</button>
+              <button class="mini-btn ghost" id="logoutBtn">Keluar</button>
+            </div>
+          </div>
+          <div class="api-status" id="accountStatus"></div>
         </div>
       </div>
     </section>

@@ -151,6 +151,10 @@
     .like-pill .pill-div { width: 1px; align-self: stretch; margin: 10px 0;
       background: color-mix(in srgb, var(--text) 20%, transparent); }
     .like-pill button.liked, .like-pill button.disliked { color: var(--accent); }
+    /* pill tombol cepat di header: tema, akun, setelan — versi ramping dari like-pill */
+    .head-pill button { padding: 7px 13px; font-size: 15px; }
+    .head-pill .pill-div { margin: 8px 0; }
+    .head-pill button.logged { color: var(--accent); } /* penanda sudah login, ngikut aksen global */
     .fp-progress { width: 100%; max-width: 480px; height: 8px; border-radius: 999px;
       background: rgba(127,127,127,.35); background: color-mix(in srgb, var(--text) 28%, transparent);
       margin-top: 20px; cursor: pointer; }
