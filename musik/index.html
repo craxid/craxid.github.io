@@ -115,6 +115,17 @@
             <button class="mini-btn ghost" id="testAudioApiBtn">Tes</button>
             <button class="mini-btn ghost" id="delAudioApiBtn">Hapus</button>
           </div>
+          <div class="row" style="margin-top:10px;align-items:center;gap:10px">
+            <label for="audioQuality" style="font-size:13px;white-space:nowrap">Kualitas audio</label>
+            <select id="audioQuality" style="flex:1">
+              <option value="auto">Otomatis</option>
+              <option value="160">Tertinggi (~160 kbps)</option>
+              <option value="128">Tinggi (~128 kbps)</option>
+              <option value="70">Sedang (~70 kbps)</option>
+              <option value="50">Hemat (~50 kbps)</option>
+            </select>
+          </div>
+          <p style="font-size:12px;margin:6px 0 0">Hanya berlaku untuk sumber LOCAL. Berlaku mulai lagu berikutnya.</p>
           <div class="api-status" id="audioApiStatus"></div>
           
         </div>
