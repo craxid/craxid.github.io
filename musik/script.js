@@ -422,8 +422,9 @@
     return fetch(api+q, ctrl?{signal:ctrl.signal}:undefined)
       .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.json(); })
       .then(function(d){
-        if(d&&d.formats&&d.formats.length) return pickResaAudio(d, audioQuality()); /* gaya resa */
-        if(d&&d.status&&d.audioUrl) return d; /* gaya Vercel */
+        /* tandain sumbernya biar full player bisa nampilin namanya */
+        if(d&&d.formats&&d.formats.length){ var m=pickResaAudio(d, audioQuality()); if(m) m.engine=(api===DEFAULT_AUDIO_API)?'LOCAL':'API'; return m; } /* gaya resa */
+        if(d&&d.status&&d.audioUrl){ d.engine=baseOverride?'Vercel':'API'; return d; } /* gaya Vercel */
         throw 0;
       })
       .then(function(m){ if(!m||!m.audioUrl) throw 0; return m; });
@@ -449,7 +450,7 @@
             .then(function(p){
               if(p&&p.success===1&&p.progress===1000&&p.download_url){
                 return { status:true, audioUrl:p.download_url, audioType:'audio/mpeg',
-                         codec:'mp3', title:p.title||'', thumbnail:p.thumbnail_url||'' };
+                         codec:'mp3', engine:'savenow.to', title:p.title||'', thumbnail:p.thumbnail_url||'' };
               }
               if(Date.now()-t0>45000) throw 0;
               return new Promise(function(res){ setTimeout(res,2000); }).then(once);
@@ -471,7 +472,7 @@
   function renderFpTech(){
     var el=$('fpTech'); if(!el) return;
     if(useAudio&&audioMeta){
-      var p=['API'];
+      var p=[audioMeta.engine||'API'];
       var c=prettyCodec(audioMeta.codec); if(c) p.push(c);
       var khz=fmtKhz(audioMeta.sampleRate); if(khz) p.push(khz);
       var br=parseFloat(audioMeta.bitrate)||0; if(br>0) p.push(Math.round(br)+' kbps');
