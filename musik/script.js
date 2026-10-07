@@ -1367,16 +1367,20 @@
     }).catch(function(){ setAccStatus('Gagal mendaftar, periksa koneksi internet.'); });
   }
   function doGoogle(){
-    setAccStatus('Membuka login Google…');
+    showLoginLoader(true); /* spinner tengah layar, bukan teks lagi */
     var back=location.href.split('#')[0].split('?')[0]; /* balik ke halaman ini lagi abis dari google */
     tsToken().then(function(tok){
       var opt={redirectTo:back};
       if(tok) opt.captchaToken=tok;
       return supa().then(function(c){ return c.auth.signInWithOAuth({provider:'google',options:opt}); });
     })
-    .then(function(r){ if(r.error) setAccStatus('Gagal: '+friendlyErr(r.error)); })
-    .catch(function(){ setAccStatus('Gagal membuka login Google.'); });
+    .then(function(r){
+      if(r.error){ showLoginLoader(false); setAccStatus('Gagal: '+friendlyErr(r.error)); }
+      /* sukses → redirect ke google, loader dibiarin nyala biar mulus */
+    })
+    .catch(function(){ showLoginLoader(false); setAccStatus('Gagal membuka login Google.'); });
   }
+  function showLoginLoader(on){ var el=$('loginLoader'); if(el) el.classList.toggle('show',!!on); }
   function doLogout(){
     setAccStatus('Keluar…');
     supa().then(function(c){ return c.auth.signOut().catch(function(){}); })
