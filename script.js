@@ -176,7 +176,6 @@ const whatsappBtn = document.getElementById("whatsappBtn");
 
 if (whatsappBtn) {
   whatsappBtn.href = CONFIG.whatsappUrl;
-  whatsappBtn.classList.add("liquid-glass");
 
   whatsappBtn.innerHTML = `
     <i class="fa-brands fa-whatsapp"></i>
@@ -189,7 +188,6 @@ const telegramBtn = document.getElementById("telegramBtn");
 if (telegramBtn) {
   telegramBtn.href = CONFIG.telegramUrl;
   telegramBtn.target = "_blank";
-  telegramBtn.classList.add("liquid-glass");
 
   telegramBtn.innerHTML = `
     <i class="fa-brands fa-telegram"></i>
