@@ -307,11 +307,34 @@
   /* langsung streaming (bunyi ~2 detik), blob diunduh diam2 di background buat seek.
      server audionya ngabaikan range request, makanya seek butuh file utuh */
   var blobReady=false, blobPromise=null, blobTrackId=null;
+  /* ganti src lalu seek — wajib nunggu metadata kelar dimuat dulu.
+     currentTime yg langsung diset abis ganti src dicuekin browser,
+     ini biang tombol ±3 dtk (dan progress bar) ngaco */
+  var seekGen=0;
+  function srcThenSeek(url, pos, autoplay){
+    var gen=++seekGen, el=audioEl, done=false;
+    function go(){
+      if(done||gen!==seekGen) return; /* seek lain udah nyalip, yg lama batal */
+      done=true;
+      el.removeEventListener('loadedmetadata', go);
+      try{
+        el.currentTime=pos;
+        if(autoplay!==false&&el.paused){ var pr=el.play(); if(pr&&pr.catch) pr.catch(function(){}); }
+      }catch(e){}
+    }
+    try{
+      if(el.src!==url){
+        el.addEventListener('loadedmetadata', go);
+        el.src=url;
+        if(el.readyState>=1) go(); /* metadata ternyata udah siap */
+      } else go();
+    }catch(e){ go(); }
+  }
   function startAudio(t, src, pos){
     try{
-      audioEl.src=src;
       audioEl.volume=(parseInt($('vol').value,10)||80)/100;
-      if(pos>0){ try{ audioEl.currentTime=pos; }catch(e){} }
+      if(pos>0){ srcThenSeek(src, pos, true); return; }
+      audioEl.src=src;
       var pr=audioEl.play();
       if(pr&&pr.catch) pr.catch(function(){ setSearchStatus('Ketuk putar untuk mulai.'); });
     }catch(e){ loadViaYT(t); }
@@ -349,23 +372,12 @@
     pos=Math.max(0,pos);
     var dur=audioEl.duration||0;
     if(dur>0&&isFinite(dur)) pos=Math.min(pos,dur);
-    if(blobReady&&blobCacheUrl){
-      try{
-        if(audioEl.src!==blobCacheUrl) audioEl.src=blobCacheUrl;
-        audioEl.currentTime=pos;
-        if(audioEl.paused){ var pr=audioEl.play(); if(pr&&pr.catch) pr.catch(function(){}); }
-      }catch(e){}
-      return;
-    }
+    if(blobReady&&blobCacheUrl){ srcThenSeek(blobCacheUrl, pos, true); return; }
     setSearchStatus('Mengunduh audio\u2026');
     ensureBlob().then(function(url){
       setSearchStatus('');
       if(!url) return;
-      try{
-        audioEl.src=url;
-        audioEl.currentTime=pos;
-        var pr2=audioEl.play(); if(pr2&&pr2.catch) pr2.catch(function(){});
-      }catch(e){}
+      srcThenSeek(url, pos, true);
     });
   }
   function playBlob(t, meta, resumePos){
