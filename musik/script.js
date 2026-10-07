@@ -1045,8 +1045,12 @@
   $('settingsClose').addEventListener('click', closeSettings);
   $('settingsModal').addEventListener('click', function(e){ if(e.target===$('settingsModal')) closeSettings(); });
   /* ----- akun: dialog sendiri, terpisah dari setelan ----- */
-  function openAccount(){ $('accountModal').classList.add('show'); tsLoad(); /* angetin turnstile duluan biar pas submit udah siap */ }
-  function closeAccount(){ $('accountModal').classList.remove('show'); }
+  function openAccount(){ $('accountModal').classList.add('show'); tsLoad(); /* angetin turnstile duluan biar pas submit udah siap */
+    try{ history.replaceState(null,'','#login'); }catch(e){} /* tandain di url */
+  }
+  function closeAccount(){ $('accountModal').classList.remove('show');
+    try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} /* hash dibersihin pas dialog tutup */
+  }
   $('accountClose').addEventListener('click', closeAccount);
   $('accountModal').addEventListener('click', function(e){ if(e.target===$('accountModal')) closeAccount(); });
   $('notifClose').addEventListener('click', hideSearchNotif);
@@ -1404,6 +1408,8 @@
     var p=$('accPass'); if(p) p.addEventListener('keydown',function(e){ if(e.key==='Enter') doLogin(); });
   }
   wireAccount(); renderAccount();
+  /* deep link: url diakhiri #login → dialog akun kebuka sendiri */
+  if(location.hash==='#login') openAccount();
   /* baru buka halaman: kalo lagi login, SDK dimuat di background terus sesi dipulihkan diam-diam */
   (function initSync(){
     var oauthBack=/[?#].*(code=|access_token=)/.test(location.search+location.hash);
@@ -1415,7 +1421,7 @@
         if(u){
           try{ localStorage.setItem('cxmusik_uid',u.id); localStorage.setItem('cxmusik_uemail',u.email||''); }catch(e){}
           renderAccount();
-          if(oauthBack){ try{ history.replaceState(null,'',location.pathname); }catch(e){} setAccStatus('Login Google berhasil.'); }
+          if(oauthBack){ try{ history.replaceState(null,'',location.pathname); }catch(e){} openAccount(); setAccStatus('Login Google berhasil.'); } /* url dibersihin, dialog dibuka lagi biar user liat kalo udah masuk */
           pullCloud(true);
         }else{
           try{ localStorage.removeItem('cxmusik_uid'); localStorage.removeItem('cxmusik_uemail'); }catch(e){}
