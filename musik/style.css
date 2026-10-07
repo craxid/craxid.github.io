@@ -1,4 +1,6 @@
     /* ===== MUSIK ===== */
+    /* matiin kotak biru tap-highlight bawaan browser HP */
+    * { -webkit-tap-highlight-color: transparent; }
     .musik-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
     .musik-head h1 { margin: 0; font-size: clamp(26px, 5vw, 40px); letter-spacing: -1px; flex: 1; }
     .back-btn { width: 46px; height: 46px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--text); font-size: 17px; flex-shrink: 0; text-decoration: none; }
