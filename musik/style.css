@@ -66,6 +66,13 @@
       border-radius: 24px 24px 0 0; padding: 16px 18px calc(20px + env(safe-area-inset-bottom, 0px));
       transform: translateY(48px); transition: transform .25s ease; }
     .settings-modal.show .settings-sheet { transform: none; }
+    /* dialog akun: modal di tengah yg menyembul, bukan bottom sheet */
+    #accountModal { align-items: center; padding: 20px; }
+    #accountModal .settings-sheet { width: 100%; max-width: 420px; border-radius: 24px;
+      padding: 18px 20px 22px; transform: scale(.9); opacity: 0;
+      transition: transform .22s ease, opacity .22s ease; }
+    #accountModal.show .settings-sheet { transform: none; opacity: 1; }
+    @media (prefers-reduced-motion: reduce) { #accountModal .settings-sheet { transition: opacity .2s ease; transform: none; } }
     .settings-sheet h3 { margin: 0; font-size: 16px; }
     .settings-sheet p { font-size: 13px; color: #374151; line-height: 1.7; margin: 12px 0 10px; }
     body.dark .settings-sheet p { color: var(--muted); }
