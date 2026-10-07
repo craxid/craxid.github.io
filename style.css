@@ -19,6 +19,9 @@
   --pop-duration: 0.38s;
 }
 
+/* matiin kotak biru tap-highlight bawaan browser HP di seluruh web */
+* { -webkit-tap-highlight-color: transparent; }
+
 body.dark {
   --accent: #52b788;
 
