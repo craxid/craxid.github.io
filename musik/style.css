@@ -4,7 +4,7 @@
     .back-btn { width: 46px; height: 46px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--text); font-size: 17px; flex-shrink: 0; text-decoration: none; }
     /* search bar dibikin ramping + nempel di atas pas scroll, biar gampang cari lagu kapan aja */
     .search-bar { position: sticky; top: 0; z-index: 60; display: flex; gap: 8px; margin-bottom: 12px; padding: 10px 0;
-      background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); /* efek kaca ngikut style global */ }
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); /* cuma blur, tanpa background */ }
     .search-bar input { flex: 1; padding: 10px 16px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); background: var(--glass-bg); color: var(--text); font-size: 14px; font-family: inherit; outline: none; }
     .search-bar input:focus { border-color: var(--accent); }
     .search-bar button { width: 36px; height: 36px; border-radius: 50%; border: none; cursor: pointer; color: #fff; font-size: 14px;
