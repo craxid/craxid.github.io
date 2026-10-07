@@ -337,16 +337,16 @@
       <div id="cfSetup" class="panel-card liquid-glass">
         <h1 style="font-size:18px;"><i class="fa-solid fa-cloud"></i> Cloudflare</h1>
         <p class="desc">
-          Data diambil lewat Worker milikmu sendiri — token API tersimpan aman
+          Data diambil lewat Worker Cloudflare milikmu sendiri — token API tersimpan aman
           di Worker sebagai Secret, tidak pernah lewat browser.
         </p>
-        <input type="url" id="cfWorker" class="form-input" placeholder="https://namamu.xxx.workers.dev" autocomplete="off" aria-label="Worker URL" />
+        <input type="url" id="cfWorker" class="form-input" placeholder="https://namamu.xxx.workers.dev" autocomplete="off" aria-label="URL Worker Cloudflare" />
         <button type="button" id="cfSave" class="global-btn primary-btn">
           <i class="fa-solid fa-download"></i><span>Simpan &amp; Muat Data</span>
         </button>
         <p id="cfError" class="pin-error" hidden></p>
         <details class="setup-details">
-          <summary>Cara menyiapkan Worker (sekali saja)</summary>
+          <summary>Cara menyiapkan Worker Cloudflare (sekali saja)</summary>
           <ol>
             <li>Buka <code>dash.cloudflare.com</code> → <code>Workers &amp; Pages</code> → <code>Create Worker</code> → <code>Deploy</code>.</li>
             <li>Klik <code>Edit code</code>, hapus isi bawaannya, tempel kode worker dari saya, lalu <code>Save and deploy</code>.</li>
@@ -380,7 +380,7 @@
           <svg id="trafficChart" viewBox="0 0 640 240" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Grafik trafik"></svg>
         </div>
         <button type="button" id="cfReset" class="global-btn secondary-btn liquid-glass" style="width:100%;">
-          <i class="fa-solid fa-rotate"></i><span>Hapus Worker tersimpan</span>
+          <i class="fa-solid fa-rotate"></i><span>Hapus Worker Cloudflare tersimpan</span>
         </button>
       </div>
         </section>
@@ -621,7 +621,7 @@
     document.getElementById("cfSave").addEventListener("click", () => {
       const workerUrl = document.getElementById("cfWorker").value.trim().replace(/\/+$/, "");
       if (!workerUrl) {
-        cfError.textContent = "Isi URL Worker dulu.";
+        cfError.textContent = "Isi URL Worker Cloudflare dulu.";
         cfError.hidden = false;
         return;
       }
