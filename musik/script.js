@@ -1042,6 +1042,7 @@
   /* tab cari/library sekarang diganti tombol ngambang — ketuk buat toggle */
   var libOpen = false, libFab = $('libFab');
   function setFabIcon(){ libFab.innerHTML = '<i class="fa-solid ' + (libOpen ? 'fa-magnifying-glass' : 'fa-layer-group') + '"></i>';
+    libFab.classList.toggle('on', libOpen);
     libFab.setAttribute('aria-label', libOpen ? 'Kembali ke pencarian' : 'Buka library'); }
   function showMTab(which){
     var toLib = which==='lib';

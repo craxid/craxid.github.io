@@ -9,13 +9,13 @@
     .search-bar input:focus { border-color: var(--accent); }
     .search-bar button { width: 42px; height: 42px; border-radius: 50%; border: none; cursor: pointer; color: #fff; font-size: 15px;
       background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 84%, white), color-mix(in srgb, var(--accent) 92%, black)); flex-shrink: 0; }
-    /* tombol library ngambang — gantiin tab yg dihapus, ketuk buat toggle buka/tutup */
-    .lib-fab { position: fixed; right: 16px; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); z-index: 800;
-      width: 54px; height: 54px; border-radius: 50%; border: none; cursor: pointer; color: #fff; font-size: 19px;
-      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 84%, white), color-mix(in srgb, var(--accent) 92%, black));
-      box-shadow: 0 10px 24px -8px color-mix(in srgb, var(--accent) 70%, transparent);
-      transform: scale(1); transition: transform var(--pop-duration, .38s) var(--pop-ease, cubic-bezier(0.34, 1.56, 0.64, 1)); }
-    .lib-fab:active { transform: scale(.9); }
+    /* tombol library di kiri search bar — gantiin tab yg dihapus, ketuk buat toggle buka/tutup */
+    .search-bar .lib-btn { width: 42px; height: 42px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent);
+      background: var(--glass-bg); color: var(--text); font-size: 15px; cursor: pointer; flex-shrink: 0;
+      transform: scale(1); transition: transform var(--pop-duration, .38s) var(--pop-ease, cubic-bezier(0.34, 1.56, 0.64, 1)),
+        background .25s ease, color .25s ease, border-color .25s ease; }
+    .search-bar .lib-btn:active { transform: scale(.9); }
+    .search-bar .lib-btn.on { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); border-color: var(--accent); }
     /* konten tab menyembul dari dalem ke luar, ala /props */
     @keyframes mtab-pop {
       0% { opacity: 0; transform: scale(.96) translateY(8px); }
@@ -23,7 +23,7 @@
     }
     #tabSearch.pop, #tabLib.pop { animation: mtab-pop .32s cubic-bezier(0.34, 1.4, 0.64, 1); }
     @media (prefers-reduced-motion: reduce) {
-      .lib-fab { transition: none; transform: none; }
+      .search-bar .lib-btn { transition: none; transform: none; }
       #tabSearch.pop, #tabLib.pop { animation: none; }
     }
     .track { display: flex; align-items: flex-start; gap: 12px; padding: 10px; border-radius: 18px; margin-bottom: 8px; }
