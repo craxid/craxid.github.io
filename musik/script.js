@@ -1045,7 +1045,7 @@
   $('settingsClose').addEventListener('click', closeSettings);
   $('settingsModal').addEventListener('click', function(e){ if(e.target===$('settingsModal')) closeSettings(); });
   /* ----- akun: dialog sendiri, terpisah dari setelan ----- */
-  function openAccount(){ $('accountModal').classList.add('show'); }
+  function openAccount(){ $('accountModal').classList.add('show'); tsLoad(); /* angetin turnstile duluan biar pas submit udah siap */ }
   function closeAccount(){ $('accountModal').classList.remove('show'); }
   $('accountClose').addEventListener('click', closeAccount);
   $('accountModal').addEventListener('click', function(e){ if(e.target===$('accountModal')) closeAccount(); });
@@ -1182,6 +1182,53 @@
      jadi aman walau data browser dihapus. SDK diimport dinamis, cuma diunduh pas lagi login */
   var SUPABASE_URL='https://mnunjhwwruiahoxbcgab.supabase.co';
   var SUPABASE_KEY='sb_publishable_84mBeXhPKNWl9vSNuJc40A_T5q68JOq'; /* publishable key, emang dirancang buat dipasang di frontend */
+  /* Cloudflare Turnstile buat jaga form login dari bot. Site key diambil dari
+     dashboard Cloudflare (Turnstile → Add Site, domain: craxid.github.io).
+     Secret key-nya tempel di dashboard Supabase (Authentication → Bot and Abuse
+     Protection), JANGAN taruh di sini. Kosongin = captcha mati, login jalan normal. */
+  var TURNSTILE_SITEKEY='0x4AAAAAAFQK4lUPgNpQ4Ah3';
+  var _tsWidget=null, _tsScriptP=null, _tsPending=null;
+  function tsLoad(){ /* script turnstile diunduh pas butuh aja, biar gak ngeberatin yg gak login */
+    if(_tsScriptP) return _tsScriptP;
+    _tsScriptP=new Promise(function(res){
+      if(window.turnstile){ res(); return; }
+      var s=document.createElement('script');
+      s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      s.async=true; s.defer=true;
+      s.onload=function(){ res(); };
+      s.onerror=function(){ res(); }; /* gagal load (misal adblock) → login tetep jalan tanpa captcha */
+      document.head.appendChild(s);
+    });
+    return _tsScriptP;
+  }
+  function tsEnsure(){ /* render widget invisible sekali aja */
+    return tsLoad().then(function(){
+      if(!window.turnstile||!TURNSTILE_SITEKEY) return null;
+      if(_tsWidget!==null) return _tsWidget;
+      var el=document.getElementById('tsWidget');
+      if(!el) return null;
+      _tsWidget=turnstile.render(el,{
+        sitekey:TURNSTILE_SITEKEY,
+        size:'invisible',
+        callback:function(t){ /* token dapet → reset biar fresh buat percobaan berikut */
+          if(_tsPending){ var r=_tsPending; _tsPending=null; try{ turnstile.reset(_tsWidget); }catch(e){} r(t); }
+        },
+        'expired-callback':function(){ if(_tsPending){ var r=_tsPending; _tsPending=null; r(null); } },
+        'error-callback':function(){ if(_tsPending){ var r=_tsPending; _tsPending=null; r(null); } }
+      });
+      return _tsWidget;
+    });
+  }
+  function tsToken(){ /* minta token fresh tiap mau auth; null = lanjut tanpa captcha */
+    if(!TURNSTILE_SITEKEY) return Promise.resolve(null);
+    return tsEnsure().then(function(w){
+      if(w===null||!window.turnstile) return null;
+      return new Promise(function(res){
+        _tsPending=res;
+        try{ turnstile.execute(w); }catch(e){ _tsPending=null; res(null); }
+      });
+    });
+  }
   var SYNC_ORDER=['playlists','history','likes','dislikes'];
   var syncMeta=store('cxmusik_syncmeta')||{};
   var _supa=null, _supaP=null, _syncT=null, _pushing=false;
@@ -1277,6 +1324,7 @@
   }
   function friendlyErr(e){
     var m=String((e&&e.message)||'');
+    if(/captcha/i.test(m)) return 'Verifikasi keamanan gagal — coba lagi.';
     if(/invalid login credentials/i.test(m)) return 'Email atau kata sandi salah.';
     if(/email not confirmed/i.test(m)) return 'Email belum diverifikasi — periksa kotak masuk Anda.';
     if(/user already registered/i.test(m)) return 'Email sudah terdaftar, silakan masuk.';
@@ -1292,7 +1340,11 @@
     var em=($('accEmail').value||'').trim(), pw=$('accPass').value||'';
     if(!em||!pw){ setAccStatus('Isi email dan kata sandi terlebih dahulu.'); return; }
     setAccStatus('Memeriksa…');
-    supa().then(function(c){ return c.auth.signInWithPassword({email:em,password:pw}); })
+    tsToken().then(function(tok){
+      var cred={email:em,password:pw};
+      if(tok) cred.options={captchaToken:tok};
+      return supa().then(function(c){ return c.auth.signInWithPassword(cred); });
+    })
     .then(function(r){
       if(r.error){ setAccStatus('Gagal masuk: '+friendlyErr(r.error)); return; }
       onSignedIn(r.data.user);
@@ -1303,7 +1355,11 @@
     if(!em||!pw){ setAccStatus('Isi email dan kata sandi terlebih dahulu.'); return; }
     if(pw.length<6){ setAccStatus('Kata sandi minimal 6 karakter.'); return; }
     setAccStatus('Mendaftarkan…');
-    supa().then(function(c){ return c.auth.signUp({email:em,password:pw}); })
+    tsToken().then(function(tok){
+      var cred={email:em,password:pw};
+      if(tok) cred.options={captchaToken:tok};
+      return supa().then(function(c){ return c.auth.signUp(cred); });
+    })
     .then(function(r){
       if(r.error){ setAccStatus('Gagal mendaftar: '+friendlyErr(r.error)); return; }
       if(r.data.session) onSignedIn(r.data.user); /* verifikasi email mati → langsung masuk */
@@ -1313,7 +1369,11 @@
   function doGoogle(){
     setAccStatus('Membuka login Google…');
     var back=location.href.split('#')[0].split('?')[0]; /* balik ke halaman ini lagi abis dari google */
-    supa().then(function(c){ return c.auth.signInWithOAuth({provider:'google',options:{redirectTo:back}}); })
+    tsToken().then(function(tok){
+      var opt={redirectTo:back};
+      if(tok) opt.captchaToken=tok;
+      return supa().then(function(c){ return c.auth.signInWithOAuth({provider:'google',options:opt}); });
+    })
     .then(function(r){ if(r.error) setAccStatus('Gagal: '+friendlyErr(r.error)); })
     .catch(function(){ setAccStatus('Gagal membuka login Google.'); });
   }
