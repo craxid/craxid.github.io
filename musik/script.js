@@ -293,7 +293,7 @@
   function loadViaYT(t){
     useAudio=false; audioMeta=null;
     try{ audioEl.pause(); }catch(e){}
-    revokeBlob(); renderFpTech();
+    renderFpTech();
     if(!playerReady){ pendingTrack=t; return; }
     try{
       player.loadVideoById(t.id);
@@ -302,11 +302,9 @@
   }
   /* ambil link audio dari API, putar pake <audio> biar bisa background */
   var audioMeta=null;
-  var blobCacheUrl=null;
-  function revokeBlob(){ if(blobCacheUrl){ try{ URL.revokeObjectURL(blobCacheUrl); }catch(e){} blobCacheUrl=null; } }
-  /* langsung streaming (bunyi ~2 detik), blob diunduh diam2 di background buat seek.
-     server audionya ngabaikan range request, makanya seek butuh file utuh */
-  var blobReady=false, blobPromise=null, blobTrackId=null;
+  /* seek langsung via currentTime — server audio dukung Range request (terbukti 206),
+     jadi gak perlu unduh file utuh. (pendekatan blob via fetch() mati kena blokir CORS
+     googlevideo.com, makanya tombol ±3 dtk & progress bar ngaco) */
   /* ganti src lalu seek — wajib nunggu metadata kelar dimuat dulu.
      currentTime yg langsung diset abis ganti src dicuekin browser,
      ini biang tombol ±3 dtk (dan progress bar) ngaco */
@@ -339,64 +337,23 @@
       if(pr&&pr.catch) pr.catch(function(){ setSearchStatus('Ketuk putar untuk mulai.'); });
     }catch(e){ loadViaYT(t); }
   }
-  function startBlobFetch(t, meta){
-    blobTrackId=t.id;
-    var ctrl=('AbortController' in window)?new AbortController():null;
-    var timer=ctrl?setTimeout(function(){ ctrl.abort(); }, 120000):null;
-    blobPromise=fetch(meta.audioUrl, ctrl?{signal:ctrl.signal}:undefined)
-      .then(function(r){ if(timer) clearTimeout(timer); if(!r.ok) throw 0; return r.blob(); })
-      .then(function(blob){
-        if(blobTrackId!==t.id) return null; /* lagu sudah ganti */
-        revokeBlob();
-        blobCacheUrl=URL.createObjectURL(blob);
-        blobReady=true;
-        return blobCacheUrl;
-      })
-      .catch(function(){ return null; });
-    return blobPromise;
-  }
-  function ensureBlob(){
-    if(blobReady&&blobCacheUrl) return Promise.resolve(blobCacheUrl);
-    if(blobPromise) return blobPromise;
-    var t=queue[qi];
-    if(!t) return Promise.resolve(null);
-    /* URL bisa kedaluwarsa, resolve ulang dulu sebelum unduh */
-    return resolveAudio(t.id).then(function(meta){
-      if(!meta||!meta.audioUrl) throw 0;
-      audioMeta=meta;
-      return startBlobFetch(t, meta);
-    }).catch(function(){ return null; });
-  }
-  /* semua seek (progress bar & tombol ±3 dtk) lewat sini */
+  /* semua seek (progress bar & tombol ±3 dtk) lewat sini.
+     langsung set currentTime, browser yg urus Range request ke server */
   function doSeek(pos){
     pos=Math.max(0,pos);
     var dur=audioEl.duration||0;
     if(dur>0&&isFinite(dur)) pos=Math.min(pos,dur);
-    if(blobReady&&blobCacheUrl){ srcThenSeek(blobCacheUrl, pos, true); return; }
-    setSearchStatus('Mengunduh audio\u2026');
-    ensureBlob().then(function(url){
-      setSearchStatus('');
-      if(!url) return;
-      srcThenSeek(url, pos, true);
-    });
+    try{
+      audioEl.currentTime=pos;
+      if(audioEl.paused){ var pr=audioEl.play(); if(pr&&pr.catch) pr.catch(function(){}); }
+    }catch(e){}
   }
-  function playBlob(t, meta, resumePos){
+  function playAudio(t, meta, resumePos){
     setSearchStatus('');
-    revokeBlob(); blobReady=false; blobPromise=null; blobTrackId=null;
     audioMeta=meta; renderFpTech(); renderEngineBadge();
-    if(resumePos>0){
-      /* refetch abis error: butuh posisi pas, tunggu blob dulu (jalur lama) */
-      setSearchStatus('Mengunduh audio\u2026');
-      startBlobFetch(t, meta).then(function(url){
-        setSearchStatus('');
-        if(!url){ loadViaYT(t); renderEngineBadge(); return; }
-        startAudio(t, url, resumePos);
-      });
-      return;
-    }
-    /* jalur cepat: langsung streaming, blob nyusul di background */
-    startAudio(t, meta.audioUrl, 0);
-    startBlobFetch(t, meta);
+    /* langsung streaming; kalau resumePos>0 (refetch abis error),
+       startAudio yg nunggu metadata dulu baru seek */
+    startAudio(t, meta.audioUrl, resumePos||0);
   }
   /* pilih format audio paling enteng dari respons gaya resa (formats[]).
      prioritas m4a audio-only (kayak format 140); kalau nggak ada, yang penting ada url-nya */
@@ -506,7 +463,7 @@
     useAudio=true; audioRefetching=false; audioMeta=null; renderFpTech();
     setSearchStatus('Mengambil audio\u2026');
     resolveAudio(t.id).then(function(meta){
-      playBlob(t, meta, resumePos);
+      playAudio(t, meta, resumePos);
     }).catch(function(){
       setSearchStatus('');
       loadViaYT(t); /* fallback: player YouTube (foreground saja) */
@@ -525,7 +482,7 @@
     if(!t){ loadViaYT(t); return; }
     resolveAudio(t.id).then(function(meta){
       audioRefetching=false;
-      playBlob(t, meta, pos);
+      playAudio(t, meta, pos);
     }).catch(function(){ audioRefetching=false; loadViaYT(t); });
   });
   function playAt(i){
