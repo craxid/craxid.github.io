@@ -110,6 +110,7 @@
     .dash-section-title i {
       color: var(--accent);
     }
+    .dash-section-title .ga-live { margin: 0; } /* pil online nempel sebaris judul biar sejajar dgn seksi trafik */
     .commit-list {
       list-style: none;
       margin: 0 0 20px;
@@ -384,7 +385,7 @@
       </div>
         </section>
         <section class="dash-col" aria-label="Google Analytics">
-          <h2 class="dash-section-title"><i class="fa-brands fa-google"></i> Google Analytics</h2>
+          <h2 class="dash-section-title"><i class="fa-brands fa-google"></i> Google Analytics <span id="gaLive" class="ga-live" hidden><span class="live-dot"></span><span><b id="gaLiveNum">0</b> online saat ini</span></span></h2>
       <div id="gaSetup" class="panel-card liquid-glass">
         <h1 style="font-size:18px;"><i class="fa-brands fa-google"></i> Google Analytics</h1>
         <p class="desc">
@@ -408,7 +409,6 @@
         </details>
       </div>
       <div id="gaContent" hidden>
-        <p id="gaLive" class="ga-live" hidden><span class="live-dot"></span><span><b id="gaLiveNum">0</b> online saat ini</span></p>
         <div class="stat-grid" id="gaStats"></div>
         <h3 id="gaChartHeading" style="font-size:15px;margin:0 0 10px;">30 hari terakhir</h3>
         <div class="panel-card liquid-glass" style="padding:16px;">
