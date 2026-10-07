@@ -1039,19 +1039,22 @@
 
   /* ----- tab: animasi menyembul ala /props ----- */
   function popEl(el, cls){ el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  /* tab cari/library sekarang diganti tombol ngambang — ketuk buat toggle */
+  var libOpen = false, libFab = $('libFab');
+  function setFabIcon(){ libFab.innerHTML = '<i class="fa-solid ' + (libOpen ? 'fa-magnifying-glass' : 'fa-layer-group') + '"></i>';
+    libFab.setAttribute('aria-label', libOpen ? 'Kembali ke pencarian' : 'Buka library'); }
   function showMTab(which){
     var toLib = which==='lib';
-    $('tabSearchBtn').classList.toggle('active', !toLib);
-    $('tabLibBtn').classList.toggle('active', toLib);
+    libOpen = toLib;
     var showEl = toLib ? $('tabLib') : $('tabSearch');
     var hideEl = toLib ? $('tabSearch') : $('tabLib');
     hideEl.hidden = true;
     showEl.hidden = false;
     popEl(showEl, 'pop');
     if(toLib) renderLibrary();
+    setFabIcon();
   }
-  $('tabSearchBtn').addEventListener('click', function(){ showMTab('search'); });
-  $('tabLibBtn').addEventListener('click', function(){ showMTab('lib'); });
+  libFab.addEventListener('click', function(){ showMTab(libOpen ? 'search' : 'lib'); });
 
   /* ----- playlist baru ----- */
   $('newPlBtn').addEventListener('click', function(){
