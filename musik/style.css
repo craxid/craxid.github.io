@@ -16,6 +16,19 @@
       background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 84%, white), color-mix(in srgb, var(--accent) 92%, black));
       flex-shrink: 0; }
     .search-wrap button:active { transform: translateY(-50%) scale(.88); }
+    /* profil akun: avatar + nama + email */
+    .acc-profile { display: flex; gap: 14px; align-items: center; margin-bottom: 4px; }
+    .acc-avatar-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .acc-avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); background: var(--glass-bg); }
+    .acc-avatar-btn { font-size: 11px; padding: 4px 10px; }
+    .acc-id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .acc-id b { font-size: 16px; }
+    .acc-id span { font-size: 13px; color: var(--muted); word-break: break-all; }
+    .acc-set { margin: 12px 0; }
+    .acc-set label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--muted); }
+    .acc-set .row { display: flex; gap: 8px; }
+    .acc-set .row input { flex: 1; min-width: 0; }
+    .acc-hint { font-size: 12px; color: var(--muted); margin: 6px 0 0; }
     /* konten tab menyembul dari dalem ke luar, ala /props */
     @keyframes mtab-pop {
       0% { opacity: 0; transform: scale(.96) translateY(8px); }

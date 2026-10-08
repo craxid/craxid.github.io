@@ -1389,13 +1389,71 @@
     var uid=accUid(), out=$('accountLoggedOut'), inn=$('accountLoggedIn');
     if(out) out.style.display=uid?'none':'';
     if(inn) inn.style.display=uid?'':'none';
-    if(uid){ try{ $('accUserEmail').textContent=localStorage.getItem('cxmusik_uemail')||''; }catch(e){} }
     var ab=$('accountBtn'); if(ab) ab.classList.toggle('logged',!!uid); /* ikon ikut ijo kalo lagi login */
+    if(!uid) return;
+    supa().then(function(s){ return s.auth.getUser(); }).then(function(r){
+      var u=r.data&&r.data.user; if(!u||!accUid()) return;
+      var md=u.user_metadata||{}, name=md.display_name||md.full_name||'', av=md.avatar_url||'';
+      var prov=(u.app_metadata&&u.app_metadata.provider)||'';
+      try{
+        $('accUserEmail').textContent=u.email||'';
+        $('accUserName').textContent=name||u.email||'akun';
+        $('accNameInput').value=name;
+        $('accEmailInput').value=u.email||'';
+        var im=$('accAvatar'); if(av){ im.src=av; im.style.display=''; } else im.style.display='none';
+        /* akun google gak punya password di sini, opsinya diumpetin */
+        $('passSet').style.display=(prov==='google')?'none':'';
+        /* tombol header: kalo ada avatar, pasang fotonya */
+        if(ab){ ab.innerHTML=av?'<img src="'+esc(av)+'" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover"/>':'<i class="fa-solid fa-circle-user"></i>'; }
+      }catch(e){}
+    }).catch(function(){});
+  }
+  function accUser(){ return supa().then(function(s){ return s.auth.getUser().then(function(r){ return {s:s,u:r.data&&r.data.user}; }); }); }
+  function doSaveName(){
+    var v=$('accNameInput').value.trim(); if(!v){ setAccStatus('Isi dulu namanya.'); return; }
+    setAccStatus('Menyimpan nama…');
+    accUser().then(function(x){ if(!x.u) throw 0; return x.s.auth.updateUser({data:{display_name:v}}); })
+    .then(function(r){ if(r.error) throw r.error; setAccStatus('Nama tersimpan.'); renderAccount(); })
+    .catch(function(e){ setAccStatus('Gagal menyimpan nama'+(e&&e.message?': '+e.message:'.')); });
+  }
+  function doSaveEmail(){
+    var v=$('accEmailInput').value.trim(); if(!v||v.indexOf('@')<0){ setAccStatus('Email-nya belum valid.'); return; }
+    setAccStatus('Mengirim link konfirmasi…');
+    accUser().then(function(x){ if(!x.u) throw 0; if(x.u.email===v){ setAccStatus('Itu email yang lagi dipakai.'); throw 0; } return x.s.auth.updateUser({email:v}); })
+    .then(function(r){ if(r&&r.error) throw r.error; setAccStatus('Link konfirmasi dikirim ke '+v+'. Klik link itu biar ganti email-nya aktif.'); })
+    .catch(function(e){ if(e) setAccStatus('Gagal ganti email'+(e.message?': '+e.message:'.')); });
+  }
+  function doSavePass(){
+    var p1=$('accPass1').value, p2=$('accPass2').value;
+    if(p1.length<6){ setAccStatus('Kata sandi minimal 6 karakter.'); return; }
+    if(p1!==p2){ setAccStatus('Ulangannya tidak sama, cek lagi.'); return; }
+    setAccStatus('Menyimpan kata sandi…');
+    accUser().then(function(x){ if(!x.u) throw 0; return x.s.auth.updateUser({password:p1}); })
+    .then(function(r){ if(r.error) throw r.error; $('accPass1').value=''; $('accPass2').value=''; setAccStatus('Kata sandi diganti.'); })
+    .catch(function(e){ setAccStatus('Gagal ganti kata sandi'+(e&&e.message?': '+e.message:'.')); });
+  }
+  function doAvatarPick(){ $('avatarInput').click(); }
+  function doAvatarUpload(){
+    var f=$('avatarInput').files[0]; if(!f) return;
+    if(f.size>2*1024*1024){ setAccStatus('Fotonya kegedean, maksimal 2MB.'); return; }
+    setAccStatus('Mengunggah avatar…');
+    accUser().then(function(x){
+      if(!x.u) throw 0;
+      var ext=(f.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+      return x.s.storage.from('avatars').upload(x.u.id+'/avatar.'+ext, f, {upsert:true, contentType:f.type})
+        .then(function(up){ if(up.error) throw up.error; return x.s; })
+        .then(function(s){ var pub=s.storage.from('avatars').getPublicUrl(x.u.id+'/avatar.'+ext).data.publicUrl; return s.auth.updateUser({data:{avatar_url:pub+'?t='+Date.now()}}); });
+    })
+    .then(function(r){ if(r.error) throw r.error; $('avatarInput').value=''; setAccStatus('Avatar diganti.'); renderAccount(); })
+    .catch(function(e){ setAccStatus('Gagal ganti avatar'+(e&&e.message?': '+e.message+'. Periksa bucket avatars di Supabase.':'.')); });
   }
   function wireAccount(){
     var b=function(id,fn){ var el=$(id); if(el) el.addEventListener('click',fn); };
     b('loginBtn',doLogin); b('registerBtn',doRegister); b('googleBtn',doGoogle);
     b('logoutBtn',doLogout); b('syncNowBtn',function(){ pullCloud(false); });
+    b('saveNameBtn',doSaveName); b('saveEmailBtn',doSaveEmail); b('savePassBtn',doSavePass);
+    b('avatarBtn',doAvatarPick);
+    var ai=$('avatarInput'); if(ai) ai.addEventListener('change',doAvatarUpload);
     b('accountBtn', openAccount); /* tombol akun di header: buka dialog akun langsung */
     var p=$('accPass'); if(p) p.addEventListener('keydown',function(e){ if(e.key==='Enter') doLogin(); });
   }

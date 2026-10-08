@@ -159,7 +159,33 @@
             <div id="tsWidget"></div><!-- wadah turnstile invisible, gak keliatan kok -->
           </div>
           <div id="accountLoggedIn" style="display:none">
-            <p style="margin:0 0 8px">Masuk sebagai <b id="accUserEmail"></b></p>
+            <div class="acc-profile">
+              <div class="acc-avatar-wrap">
+                <img id="accAvatar" class="acc-avatar" alt="Avatar" />
+                <button class="mini-btn ghost acc-avatar-btn" id="avatarBtn"><i class="fa-solid fa-camera"></i> Ganti</button>
+                <input type="file" id="avatarInput" accept="image/*" hidden />
+              </div>
+              <div class="acc-id">
+                <b id="accUserName"></b>
+                <span id="accUserEmail"></span>
+              </div>
+            </div>
+            <hr class="set-sep" />
+            <div class="acc-set">
+              <label>Nama tampilan</label>
+              <div class="row"><input id="accNameInput" type="text" placeholder="Nama tampilan" maxlength="40" /><button class="mini-btn" id="saveNameBtn">Simpan</button></div>
+            </div>
+            <div class="acc-set">
+              <label>Email</label>
+              <div class="row"><input id="accEmailInput" type="email" placeholder="Email baru" autocomplete="email" /><button class="mini-btn" id="saveEmailBtn">Simpan</button></div>
+              <p class="acc-hint">Link konfirmasi dikirim ke email baru, klik untuk mengaktifkan.</p>
+            </div>
+            <div class="acc-set" id="passSet">
+              <label>Kata sandi baru</label>
+              <div class="row"><input id="accPass1" type="password" placeholder="Kata sandi baru" autocomplete="new-password" /></div>
+              <div class="row" style="margin-top:8px"><input id="accPass2" type="password" placeholder="Ulangi kata sandi" autocomplete="new-password" /><button class="mini-btn" id="savePassBtn">Simpan</button></div>
+            </div>
+            <hr class="set-sep" />
             <div class="row">
               <button class="mini-btn" id="syncNowBtn">Sinkronkan sekarang</button>
               <button class="mini-btn ghost" id="logoutBtn">Keluar</button>
