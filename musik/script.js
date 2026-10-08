@@ -1400,7 +1400,7 @@
         $('accUserName').textContent=name||u.email||'akun';
         $('accNameInput').value=name;
         $('accEmailInput').value=u.email||'';
-        var im=$('accAvatar'); if(av){ im.src=av; im.style.display=''; } else im.style.display='none';
+        var im=$('accAvatar'); im.src=av||DUMMY_AVATAR; im.style.display=''; im.onerror=function(){ this.onerror=null; this.src=DUMMY_AVATAR; };
         /* akun google gak punya password di sini, opsinya diumpetin */
         $('passSet').style.display=(prov==='google')?'none':'';
         /* tombol header: kalo ada avatar, pasang fotonya (dikunci 30px biar sejajar ikon lain) */
@@ -1408,6 +1408,7 @@
       }catch(e){}
     }).catch(function(){});
   }
+  var DUMMY_AVATAR='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#5b6470"/><circle cx="32" cy="23" r="11" fill="#c9d1dc"/><path d="M10 56c5-12 13-17 22-17s17 5 22 17" fill="#c9d1dc"/></svg>');
   function accUser(){ return supa().then(function(s){ return s.auth.getUser().then(function(r){ return {s:s,u:r.data&&r.data.user}; }); }); }
   function doSaveName(){
     var v=$('accNameInput').value.trim(); if(!v){ setAccStatus('Isi dulu namanya.'); return; }
