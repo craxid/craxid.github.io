@@ -8,15 +8,14 @@
     .search-bar { position: sticky; top: 0; z-index: 60; display: flex; gap: 8px; margin-bottom: 12px; padding: 10px 0; }
     .search-bar input { flex: 1; padding: 10px 16px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); background: var(--glass-bg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); color: var(--text); font-size: 14px; font-family: inherit; outline: none; }
     .search-bar input:focus { border-color: var(--accent); }
-    .search-bar button { width: 36px; height: 36px; border-radius: 50%; border: none; cursor: pointer; color: #fff; font-size: 14px;
-      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 84%, white), color-mix(in srgb, var(--accent) 92%, black)); flex-shrink: 0; }
-    /* tombol library di kiri search bar — gantiin tab yg dihapus, ketuk buat toggle buka/tutup */
-    .search-bar .lib-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent);
-      background: var(--glass-bg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); color: var(--text); font-size: 14px; cursor: pointer; flex-shrink: 0;
-      transform: scale(1); transition: transform var(--pop-duration, .38s) var(--pop-ease, cubic-bezier(0.34, 1.56, 0.64, 1)),
-        background .25s ease, color .25s ease, border-color .25s ease; }
-    .search-bar .lib-btn:active { transform: scale(.9); }
-    .search-bar .lib-btn.on { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); border-color: var(--accent); }
+    /* ikon cari di dalam pill: kiri polos, kanan tombol hijau */
+    .search-wrap { position: relative; flex: 1; display: flex; }
+    .search-wrap input { flex: 1; padding-right: 48px; }
+    .search-wrap button { position: absolute; right: 5px; top: 50%; transform: translateY(-50%);
+      width: 34px; height: 34px; border-radius: 50%; border: none; cursor: pointer; color: #fff; font-size: 14px;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 84%, white), color-mix(in srgb, var(--accent) 92%, black));
+      flex-shrink: 0; }
+    .search-wrap button:active { transform: translateY(-50%) scale(.88); }
     /* konten tab menyembul dari dalem ke luar, ala /props */
     @keyframes mtab-pop {
       0% { opacity: 0; transform: scale(.96) translateY(8px); }
@@ -24,7 +23,6 @@
     }
     #tabSearch.pop, #tabLib.pop { animation: mtab-pop .32s cubic-bezier(0.34, 1.4, 0.64, 1); }
     @media (prefers-reduced-motion: reduce) {
-      .search-bar .lib-btn { transition: none; transform: none; }
       #tabSearch.pop, #tabLib.pop { animation: none; }
     }
     .track { display: flex; align-items: flex-start; gap: 12px; padding: 10px; border-radius: 18px; margin-bottom: 8px; }

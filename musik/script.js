@@ -133,7 +133,8 @@
   }
   function doSearch(){
     var q=$('q').value.trim();
-    if(!q) return;
+    if(!q){ isSearching=false; updateMainView(); return; }
+    isSearching=true; updateMainView();
     setSearchStatus('Mencari…');
     resultsEl.innerHTML='<div class="loading-row"><i class="fa-solid fa-circle-notch fa-spin"></i> Mencari…</div>';
     var key=null; try{ key=localStorage.getItem('cxmusik_ytkey')||''; }catch(e){}
@@ -151,6 +152,7 @@
   }
   $('searchBtn').addEventListener('click', doSearch);
   $('q').addEventListener('keydown', function(e){ if(e.key==='Enter') doSearch(); });
+  $('q').addEventListener('search', function(){ if(!this.value.trim()){ isSearching=false; updateMainView(); } });
 
   /* ----- daftar hasil ----- */
   function trackRow(t, idx, ctx){
@@ -176,8 +178,7 @@
     return h;
   }
   function renderResults(){
-    resultsEl.innerHTML = results.map(function(t,i){ return trackRow(t,i,'r'); }).join('') ||
-      '<div class="empty-note">Cari lagu di kolom atas untuk mulai.</div>';
+    resultsEl.innerHTML = results.map(function(t,i){ return trackRow(t,i,'r'); }).join('');
     marqueeTrackTitles(resultsEl);
   }
   /* judul kepanjangan dibikin jalan kyk di full player */
@@ -1008,23 +1009,14 @@
 
   /* ----- tab: animasi menyembul ala /props ----- */
   function popEl(el, cls){ el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
-  /* tab cari/library sekarang diganti tombol ngambang — ketuk buat toggle */
-  var libOpen = false, libFab = $('libFab');
-  /* ikon dikunci layer-group biar gak dobel sama tombol cari; status aktif cukup dari warna aksen */
-  function setFabIcon(){ libFab.classList.toggle('on', libOpen);
-    libFab.setAttribute('aria-label', libOpen ? 'Kembali ke pencarian' : 'Buka library'); }
-  function showMTab(which){
-    var toLib = which==='lib';
-    libOpen = toLib;
-    var showEl = toLib ? $('tabLib') : $('tabSearch');
-    var hideEl = toLib ? $('tabSearch') : $('tabLib');
-    hideEl.hidden = true;
-    showEl.hidden = false;
-    popEl(showEl, 'pop');
-    if(toLib) renderLibrary();
-    setFabIcon();
+  /* satu tampilan: hasil cari & library (playlist/disukai/baru diputar) berbagi halaman.
+     lagi nyari -> hasil yg tampil; gak nyari -> library yg tampil */
+  var isSearching = false;
+  function updateMainView(){
+    $('results').hidden = !isSearching;
+    $('librarySections').hidden = isSearching;
+    if(!isSearching) renderLibrary();
   }
-  libFab.addEventListener('click', function(){ showMTab(libOpen ? 'search' : 'lib'); });
 
   /* ----- playlist baru ----- */
   $('newPlBtn').addEventListener('click', function(){
@@ -1435,8 +1427,7 @@
   })();
 
   renderResults(); renderLibrary();
-  /* kalo ada riwayat, langsung tampilin library (baru diputar) biar halaman depan gak kosong melompong */
-  if(hist.length) showMTab('lib');
+  updateMainView(); /* library (playlist/disukai/baru diputar) jadi tampilan awal */
 
   /* broadcast: pengumuman dari pemilik web */
   (function initBroadcast(){

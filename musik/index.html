@@ -58,31 +58,29 @@
         </div>
       </div>
       <div class="search-bar">
-        <button class="lib-btn" id="libFab" aria-label="Buka library"><i class="fa-solid fa-layer-group"></i></button>
-        <input id="q" type="search" placeholder="Cari lagu / artis di YouTube…" autocomplete="off" aria-label="Cari musik" />
-        <button id="searchBtn" aria-label="Cari"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <div class="search-wrap">
+          <input id="q" type="search" placeholder="Cari lagu / artis di YouTube…" autocomplete="off" aria-label="Cari musik" />
+          <button id="searchBtn" aria-label="Cari"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
       </div>
 
       <div class="api-status" id="searchStatus" style="margin:-6px 0 14px"></div>
 
-      <div id="tabSearch">
-        <div id="results"></div>
-      </div>
-
-      <div id="tabLib" hidden>
+      <div id="results" hidden></div>
+      <div id="librarySections">
         <div class="lib-section">
-          <h2>Baru diputar</h2>
-          <div id="historyList"></div>
+          <h2>Playlist</h2>
+          <div class="pl-chips" id="plChips"></div>
+          <div style="margin-top:10px"><button class="mini-btn ghost" id="newPlBtn"><i class="fa-solid fa-plus"></i> Buat playlist</button></div>
+          <div id="plTracks" style="margin-top:12px"></div>
         </div>
         <div class="lib-section">
           <h2>Disukai</h2>
           <div id="likedList"></div>
         </div>
         <div class="lib-section">
-          <h2>Playlist</h2>
-          <div class="pl-chips" id="plChips"></div>
-          <div style="margin-top:10px"><button class="mini-btn ghost" id="newPlBtn"><i class="fa-solid fa-plus"></i> Buat playlist</button></div>
-          <div id="plTracks" style="margin-top:12px"></div>
+          <h2>Baru diputar</h2>
+          <div id="historyList"></div>
         </div>
       </div>
 
