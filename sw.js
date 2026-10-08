@@ -1,4 +1,4 @@
-const CACHE_NAME = "craxid-project-v11";
+const CACHE_NAME = "craxid-project-v12";
 
 const STATIC_ASSETS = [
   "/",
@@ -21,8 +21,8 @@ const STATIC_ASSETS = [
   "/contact/index.html",
   "/privacy/",
   "/privacy/index.html",
-  "/panel/",
-  "/panel/index.html",
+  "/dashboard/",
+  "/dashboard/index.html",
   "/404.html",
   "/config.js",
   "/style.css",
