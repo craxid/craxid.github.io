@@ -1178,7 +1178,7 @@
   /* service worker (PWA): daftarin sw root biar /musik/ bisa di-install sebagai aplikasi */
   if('serviceWorker' in navigator){
     window.addEventListener('load', function(){
-      navigator.serviceWorker.register('/sw.js').catch(function(){});
+      navigator.serviceWorker.register('sw.js').catch(function(){});
     });
   }
 
