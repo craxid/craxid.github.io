@@ -29,7 +29,7 @@
     }
     .track { display: flex; align-items: flex-start; gap: 12px; padding: 10px; border-radius: 18px; margin-bottom: 8px; }
     .track:hover { background: color-mix(in srgb, var(--accent) 7%, transparent); }
-    .track img { width: 64px; height: 64px; border-radius: 14px; object-fit: cover; flex-shrink: 0; background: var(--code-bg); }
+    .track img { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; width: 64px; height: 64px; border-radius: 14px; object-fit: cover; flex-shrink: 0; background: var(--code-bg); }
     .track-info { flex: 1; min-width: 0; }
     .track-title { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; }
     .track-title.marquee span { display: inline-block; white-space: nowrap; animation: fpScroll linear infinite; }
@@ -144,7 +144,7 @@
       transition: opacity .3s ease, transform .34s cubic-bezier(0.34, 1.4, 0.64, 1); }
     .fp-top { width: 100%; max-width: 480px; display: flex; align-items: center; justify-content: space-between; }
     .fp-top-right { display: flex; align-items: center; gap: 2px; }
-    .fp-art { width: min(76vw, 340px, 38svh); aspect-ratio: 1; object-fit: cover; border-radius: 26px; margin: 0 0 20px;
+    .fp-art { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; width: min(76vw, 340px, 38svh); aspect-ratio: 1; object-fit: cover; border-radius: 26px; margin: 0 0 20px;
       /* svh (bukan dvh): tinggi viewport yg stabil walau toolbar Chrome muncul/hilang, dvh bikin artwork kedip membesar-mengecil */
       box-shadow: 0 18px 44px color-mix(in srgb, var(--accent) 30%, transparent); background: var(--code-bg); }
     .fp-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; text-align: center; width: 100%; max-width: 480px;
