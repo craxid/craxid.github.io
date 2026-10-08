@@ -1403,8 +1403,8 @@
         var im=$('accAvatar'); if(av){ im.src=av; im.style.display=''; } else im.style.display='none';
         /* akun google gak punya password di sini, opsinya diumpetin */
         $('passSet').style.display=(prov==='google')?'none':'';
-        /* tombol header: kalo ada avatar, pasang fotonya */
-        if(ab){ ab.innerHTML=av?'<img src="'+esc(av)+'" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover"/>':'<i class="fa-solid fa-circle-user"></i>'; }
+        /* tombol header: kalo ada avatar, pasang fotonya (dikunci 30px biar sejajar ikon lain) */
+        if(ab){ ab.innerHTML=av?'<img src="'+esc(av)+'" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:block"/>':'<i class="fa-solid fa-circle-user"></i>'; }
       }catch(e){}
     }).catch(function(){});
   }
