@@ -1435,6 +1435,8 @@
   })();
 
   renderResults(); renderLibrary();
+  /* kalo ada riwayat, langsung tampilin library (baru diputar) biar halaman depan gak kosong melompong */
+  if(hist.length) showMTab('lib');
 
   /* broadcast: pengumuman dari pemilik web */
   (function initBroadcast(){
