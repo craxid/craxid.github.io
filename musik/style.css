@@ -17,6 +17,11 @@
       flex-shrink: 0; }
     .search-wrap button { transition: transform .15s ease; }
     .search-wrap button:active { transform: translateY(-50%) scale(.88); }
+    /* kepala seksi library: judul + tombol hapus semua */
+    .lib-head { display: flex; align-items: center; justify-content: space-between; }
+    .lib-head h2 { margin: 0; }
+    .lib-clear { color: var(--muted); }
+    .lib-clear:hover { color: #e5484d; }
     /* profil akun: avatar + nama + email */
     .acc-profile { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 4px; }
     .acc-avatar-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
@@ -39,8 +44,11 @@
     @media (prefers-reduced-motion: reduce) {
       #tabSearch.pop, #tabLib.pop { animation: none; }
     }
-    .track { display: flex; align-items: flex-start; gap: 12px; padding: 10px; border-radius: 18px; margin-bottom: 8px; }
-    .track:hover { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+    .track { display: flex; align-items: flex-start; gap: 12px; padding: 10px; border-radius: 18px; margin-bottom: 8px;
+      background: color-mix(in srgb, var(--text) 7%, transparent);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid color-mix(in srgb, var(--text) 9%, transparent); }
+    .track:hover { background: color-mix(in srgb, var(--text) 11%, transparent); }
     .track img { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; width: 64px; height: 64px; border-radius: 14px; object-fit: cover; flex-shrink: 0; background: var(--code-bg); }
     .track-info { flex: 1; min-width: 0; }
     .track-title { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; }

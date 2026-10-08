@@ -41,6 +41,10 @@
   var dislikes = store('cxmusik_dislikes') || [];
   var playlists = store('cxmusik_playlists') || {};
   var hist = store('cxmusik_history') || [];
+  /* cache judul/thumbnail per ID biar daftar disukai gak jadi ID doang kalo hist ke-replace pas sync */
+  var trackMeta = store('cxmusik_trackmeta') || {};
+  function cacheMeta(t){ if(t&&t.id){ trackMeta[t.id]={id:t.id,title:t.title||t.id,author:t.author||'',thumb:t.thumb||'',dur:t.dur||0}; } }
+  hist.forEach(cacheMeta); /* isi dari riwayat yg udah ada */
   var activePl = null, pickerFor = -1;
 
   var $ = function(id){ return document.getElementById(id); };
@@ -189,7 +193,7 @@
   }
 
   /* ----- library ----- */
-  function saveLib(meta){ store('cxmusik_likes',likes); store('cxmusik_playlists',playlists); store('cxmusik_history',hist); store('cxmusik_dislikes',dislikes);
+  function saveLib(meta){ store('cxmusik_likes',likes); store('cxmusik_playlists',playlists); store('cxmusik_history',hist); store('cxmusik_dislikes',dislikes); store('cxmusik_trackmeta',trackMeta);
     var now=new Date().toISOString(); /* kapan terakhir berubah, buat diadu sama versi cloud */
     SYNC_ORDER.forEach(function(k){ syncMeta[k]=(meta&&meta[k])||now; });
     store('cxmusik_syncmeta',syncMeta); schedulePush(); }
@@ -200,13 +204,13 @@
   }
   function likeTrack(t){
     var i=likes.indexOf(t.id);
-    if(i>=0) likes.splice(i,1); else { likes.unshift(t.id); var d=dislikes.indexOf(t.id); if(d>=0) dislikes.splice(d,1); }
+    if(i>=0) likes.splice(i,1); else { likes.unshift(t.id); cacheMeta(t); var d=dislikes.indexOf(t.id); if(d>=0) dislikes.splice(d,1); }
     saveLib(); renderResults(); renderLibrary();
   }
   function pushHistory(t){
     hist=hist.filter(function(h){ return h.id!==t.id; });
     hist.unshift({id:t.id,title:t.title,author:t.author,dur:t.dur,thumb:t.thumb});
-    hist=hist.slice(0,30); saveLib();
+    hist=hist.slice(0,30); cacheMeta(t); saveLib();
   }
   function renderLibrary(){
     historyEl.innerHTML = hist.length ? hist.map(function(t,i){
@@ -214,16 +218,18 @@
         '<div class="track-info"><div class="track-title">'+esc(t.title)+'</div>'+
         '<div class="track-sub">'+esc(t.author)+'</div>'+
         '<div class="track-actions"><button class="icon-btn" data-hplay="'+i+'" aria-label="Putar"><i class="fa-solid fa-play"></i></button>'+
-        '<button class="icon-btn" data-hdl="'+i+'" aria-label="Unduh"><i class="fa-solid fa-download"></i></button></div></div></div>';
+        '<button class="icon-btn" data-hdl="'+i+'" aria-label="Unduh"><i class="fa-solid fa-download"></i></button>'+
+        '<button class="icon-btn" data-hrm="'+i+'" aria-label="Hapus"><i class="fa-solid fa-trash"></i></button></div></div></div>';
     }).join('') : '<div class="empty-note">Belum ada riwayat.</div>';
     likedEl.innerHTML = likes.length ? likes.map(function(id){
-      var t=findTrack(id)||{id:id,title:id,author:'',dur:0,thumb:thumb(id)};
+      var t=trackMeta[id]||findTrack(id)||{id:id,title:id,author:'',dur:0,thumb:thumb(id)};
       return '<div class="track"><img src="'+esc(t.thumb)+'" alt="" loading="lazy"/>'+
         '<div class="track-info"><div class="track-title">'+esc(t.title)+'</div>'+
         '<div class="track-sub">'+esc(t.author)+'</div>'+
         '<div class="track-actions"><button class="icon-btn" data-lplay="'+esc(id)+'" aria-label="Putar"><i class="fa-solid fa-play"></i></button>'+
         '<button class="icon-btn" data-ldl="'+esc(id)+'" aria-label="Unduh"><i class="fa-solid fa-download"></i></button>'+
-        '<button class="icon-btn liked" data-lunlike="'+esc(id)+'" aria-label="Hapus"><i class="fa-solid fa-heart"></i></button></div></div></div>';
+        '<button class="icon-btn liked" data-lunlike="'+esc(id)+'" aria-label="Batal suka"><i class="fa-solid fa-heart"></i></button>'+
+        '<button class="icon-btn" data-lrm="'+esc(id)+'" aria-label="Hapus"><i class="fa-solid fa-trash"></i></button></div></div></div>';
     }).join('') : '<div class="empty-note">Ketuk ♥ di lagu untuk menyimpan di sini.</div>';
     var names=Object.keys(playlists);
     plChipsEl.innerHTML = names.map(function(n){
@@ -970,7 +976,7 @@
 
   /* ----- aksi baris lagu ----- */
   document.addEventListener('click', function(e){
-    var btn=e.target.closest('[data-act],[data-plpick],[data-hplay],[data-hdl],[data-lplay],[data-ldl],[data-lunlike],[data-pl],[data-pplay],[data-pdl],[data-prm]');
+    var btn=e.target.closest('[data-act],[data-plpick],[data-hplay],[data-hdl],[data-hrm],[data-lplay],[data-ldl],[data-lunlike],[data-lrm],[data-pl],[data-pplay],[data-pdl],[data-prm]');
     if(!btn) return;
     var act=btn.dataset.act, ctx;
     if(act){
@@ -995,10 +1001,15 @@
     }
     if(btn.dataset.hplay!==undefined){ var h=hist[parseInt(btn.dataset.hplay,10)]; if(h){ playTrack(h); openFull(); } return; }
     if(btn.dataset.hdl!==undefined){ var hd=hist[parseInt(btn.dataset.hdl,10)]; if(hd) downloadTrack(hd.id, btn); return; }
+    if(btn.dataset.hrm!==undefined){ hist.splice(parseInt(btn.dataset.hrm,10),1); saveLib(); renderLibrary(); return; }
     if(btn.dataset.lplay!==undefined){ var lt=findTrack(btn.dataset.lplay); if(lt){ playTrack(lt); openFull(); } return; }
     if(btn.dataset.ldl!==undefined){ var ld=findTrack(btn.dataset.ldl); if(ld) downloadTrack(ld.id, btn); return; }
     if(btn.dataset.lunlike!==undefined){
       var li=likes.indexOf(btn.dataset.lunlike); if(li>=0) likes.splice(li,1);
+      saveLib(); renderResults(); renderLibrary(); return;
+    }
+    if(btn.dataset.lrm!==undefined){
+      var lr=likes.indexOf(btn.dataset.lrm); if(lr>=0) likes.splice(lr,1);
       saveLib(); renderResults(); renderLibrary(); return;
     }
     if(btn.dataset.pl!==undefined){ activePl = (activePl===btn.dataset.pl? null:btn.dataset.pl); renderLibrary(); return; }
@@ -1017,6 +1028,20 @@
     $('librarySections').hidden = isSearching;
     if(!isSearching) renderLibrary();
   }
+
+  /* ----- hapus semua per seksi (konfirmasi dulu, destruktif) ----- */
+  $('clearAllHist').addEventListener('click', function(){
+    if(!hist.length||!confirm('Hapus semua riwayat putar?')) return;
+    hist=[]; saveLib(); renderLibrary();
+  });
+  $('clearAllLiked').addEventListener('click', function(){
+    if(!likes.length||!confirm('Hapus semua lagu yang disukai?')) return;
+    likes=[]; saveLib(); renderResults(); renderLibrary();
+  });
+  $('clearAllPl').addEventListener('click', function(){
+    if(!Object.keys(playlists).length||!confirm('Hapus semua playlist?')) return;
+    playlists={}; activePl=null; saveLib(); renderLibrary();
+  });
 
   /* ----- playlist baru ----- */
   $('newPlBtn').addEventListener('click', function(){
@@ -1225,7 +1250,7 @@
       });
     });
   }
-  var SYNC_ORDER=['playlists','history','likes','dislikes'];
+  var SYNC_ORDER=['playlists','history','likes','dislikes','trackmeta'];
   var syncMeta=store('cxmusik_syncmeta')||{};
   var _supa=null, _supaP=null, _syncT=null, _pushing=false;
   function supa(){
@@ -1238,12 +1263,13 @@
   }
   function accUid(){ try{ return localStorage.getItem('cxmusik_uid'); }catch(e){ return null; } }
   function setAccStatus(s){ var el=$('accountStatus'); if(el) el.textContent=s||''; }
-  function libData(){ return {playlists:playlists, history:hist, likes:likes, dislikes:dislikes}; }
+  function libData(){ return {playlists:playlists, history:hist, likes:likes, dislikes:dislikes, trackmeta:trackMeta}; }
   function setOne(k,items){
     if(k==='playlists'&&items) playlists=items;
     else if(k==='history'&&items) hist=items;
     else if(k==='likes'&&items) likes=items;
     else if(k==='dislikes'&&items) dislikes=items;
+    else if(k==='trackmeta'&&items) trackMeta=items;
   }
   function wrapSync(){ var o={}; SYNC_ORDER.forEach(function(k){ o[k]={at:syncMeta[k]||new Date().toISOString(), items:libData()[k]}; }); return o; }
   function schedulePush(){
@@ -1266,7 +1292,7 @@
     })
     .catch(function(e){ _pushing=false; if(e&&!quiet) setAccStatus('Gagal menyinkronkan, periksa koneksi internet.'); });
   }
-  function localEmpty(){ return !Object.keys(playlists).length&&!hist.length&&!likes.length&&!dislikes.length; }
+  function localEmpty(){ return !Object.keys(playlists).length&&!hist.length&&!likes.length&&!dislikes.length&&!Object.keys(trackMeta).length; }
   /* login pertama di perangkat yg udah ada datanya: gabung semuanya, jangan sampe ada yg ilang */
   function unionMerge(cloud){
     var cpl=(cloud.playlists&&cloud.playlists.items)||{};
@@ -1285,6 +1311,9 @@
     hist.forEach(function(t){ seenH[t.id]=1; });
     ch.forEach(function(t){ if(t&&t.id&&!seenH[t.id]) hist.push(t); });
     hist=hist.slice(0,30);
+    var ctm=(cloud.trackmeta&&cloud.trackmeta.items)||{};
+    Object.keys(ctm).forEach(function(id){ if(!trackMeta[id]&&ctm[id]) trackMeta[id]=ctm[id]; });
+    hist.forEach(cacheMeta);
   }
   function pullCloud(quiet){
     if(!quiet) setAccStatus('Mengambil data dari cloud…');
