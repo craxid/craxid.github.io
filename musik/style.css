@@ -11,10 +11,10 @@
     /* ikon cari di dalam pill: kiri polos, kanan tombol hijau */
     .search-wrap { position: relative; flex: 1; display: flex; }
     .search-wrap input { flex: 1; padding-right: 48px; }
-    .search-wrap button { position: absolute; right: 5px; top: 50%; transform: translateY(-50%);
-      width: 34px; height: 34px; border-radius: 50%; border: none; cursor: pointer; color: #fff; font-size: 14px;
+    .search-wrap button { position: absolute !important; right: 5px !important; top: 50% !important; transform: translateY(-50%) !important;
+      width: 34px !important; height: 34px !important; border-radius: 50%; border: none; cursor: pointer; color: #fff; font-size: 14px;
       background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 84%, white), color-mix(in srgb, var(--accent) 92%, black));
-      flex-shrink: 0; }
+      flex-shrink: 0; padding: 0 !important; margin: 0 !important; }
     .search-wrap button { transition: transform .15s ease; }
     .search-wrap button:active { transform: translateY(-50%) scale(.88); }
     /* kepala seksi library: judul + tombol hapus semua */
