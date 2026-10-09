@@ -212,7 +212,7 @@
     .head-pill .pill-div { margin: 8px 0; }
     .head-pill button.logged { color: var(--accent); } /* penanda sudah login, ngikut aksen global */
     /* avatar di tombol akun header dikunci 30px via CSS biar gak tergantung versi JS */
-    #accountBtn img { width: 20px !important; height: 20px !important; border-radius: 50%; object-fit: cover; display: block; }
+    #accountBtn img { width: 16px !important; height: 16px !important; border-radius: 50%; object-fit: cover; display: block; }
     .fp-progress { width: 100%; max-width: 480px; height: 8px; border-radius: 999px;
       background: rgba(127,127,127,.35); background: color-mix(in srgb, var(--text) 28%, transparent);
       margin-top: 20px; cursor: pointer; }
