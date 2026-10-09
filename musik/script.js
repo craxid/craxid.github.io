@@ -1433,7 +1433,7 @@
         /* akun google gak punya password di sini, opsinya diumpetin */
         $('passSet').style.display=(prov==='google')?'none':'';
         /* tombol header: kalo ada avatar, pasang fotonya (dikunci 30px biar sejajar ikon lain) */
-        if(ab){ ab.innerHTML=av?'<img src="'+esc(av)+'" alt="" style="width:20px;height:20px;border-radius:50%;object-fit:cover;display:block"/>':'<i class="fa-solid fa-circle-user"></i>'; }
+        if(ab){ ab.innerHTML=av?'<img src="'+esc(av)+'" alt="" style="width:16px;height:16px;border-radius:50%;object-fit:cover;display:block"/>':'<i class="fa-solid fa-circle-user"></i>'; }
       }catch(e){}
     }).catch(function(){});
   }
