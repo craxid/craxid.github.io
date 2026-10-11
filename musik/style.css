@@ -99,11 +99,9 @@
     #accountModal.show .settings-sheet { transform: none; opacity: 1; }
     /* kepala dialog akun persisten: nempel di atas walau konten digeser, menyatu dgn background */
     #accountModal .queue-head { position: sticky; top: 0; z-index: 5;
-      background: linear-gradient(to bottom, color-mix(in srgb, var(--bg) 55%, transparent), transparent);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent);
-      mask-image: linear-gradient(to bottom, black 70%, transparent);
-      margin: 0 -20px; padding: 4px 20px 6px; }
+      background: transparent;
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      margin: 0 -20px; padding: 4px 20px 8px; }
     #accountModal .queue-head h3 { font-size: 13px; }
     @media (prefers-reduced-motion: reduce) { #accountModal .settings-sheet { transition: opacity .2s ease; transform: none; } }
     /* overlay loading login google: spinner di tengah layar, latar blur polos */
