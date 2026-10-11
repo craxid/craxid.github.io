@@ -99,7 +99,7 @@
     #accountModal.show .settings-sheet { transform: none; opacity: 1; }
     /* kepala dialog akun persisten: nempel di atas walau konten digeser, menyatu dgn background */
     #accountModal .queue-head { position: sticky; top: 0; z-index: 5;
-      margin: -18px -20px 0; padding: 0 20px 6px; }
+      margin: -18px -20px 0; padding: 0 12px 6px 20px; }
     #accountModal .queue-head h3 { font-size: 13px; }
     @media (prefers-reduced-motion: reduce) { #accountModal .settings-sheet { transition: opacity .2s ease; transform: none; } }
     /* overlay loading login google: spinner di tengah layar, latar blur polos */
