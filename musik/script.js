@@ -1452,7 +1452,7 @@
     var v=$('accEmailInput').value.trim(); if(!v||v.indexOf('@')<0){ setAccStatus('Email-nya belum valid.'); return; }
     setAccStatus('Mengirim link konfirmasi…');
     accUser().then(function(x){ if(!x.u) throw 0; if(x.u.email===v){ setAccStatus('Itu email yang lagi dipakai.'); throw 0; } return x.s.auth.updateUser({email:v}); })
-    .then(function(r){ if(r&&r.error) throw r.error; setAccStatus('Link konfirmasi dikirim ke '+v+'. Klik link itu biar ganti email-nya aktif.'); })
+    .then(function(r){ if(r&&r.error) throw r.error; setAccStatus('Link konfirmasi dikirim ke '+v+'. Klik link itu biar ganti email-nya aktif.'); var h=$('emailHint'); if(h) h.style.display=''; })
     .catch(function(e){ if(e) setAccStatus('Gagal ganti email'+(e.message?': '+e.message:'.')); });
   }
   function doSavePass(){
