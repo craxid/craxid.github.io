@@ -97,11 +97,11 @@
       padding: 18px 20px 22px; transform: scale(.9); opacity: 0;
       transition: transform .22s ease, opacity .22s ease; }
     #accountModal.show .settings-sheet { transform: none; opacity: 1; }
-    /* kepala dialog akun persisten: nempel di atas walau konten digeser, menyatu dgn background */
+    /* header dialog akun: sticky, ramping, nempel ke pojok atas */
     #accountModal .queue-head { position: sticky; top: 0; z-index: 5;
       margin: -18px -20px 0; padding: 0 20px 6px; }
-    #accountModal .queue-head .icon-btn { margin-right: -8px; }
     #accountModal .queue-head h3 { font-size: 13px; }
+    #accountModal .queue-head .icon-btn { margin-right: -8px; }
     @media (prefers-reduced-motion: reduce) { #accountModal .settings-sheet { transition: opacity .2s ease; transform: none; } }
     /* overlay loading login google: spinner di tengah layar, latar blur polos */
     #loginLoader { position: fixed; inset: 0; z-index: 1200; display: flex; align-items: center; justify-content: center;
