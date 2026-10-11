@@ -103,8 +103,8 @@
       backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent);
       mask-image: linear-gradient(to bottom, black 70%, transparent);
-      margin: 0 -20px; padding: 10px 20px 14px; }
-    #accountModal .queue-head h3 { font-size: 14px; }
+      margin: 0 -20px; padding: 4px 20px 6px; }
+    #accountModal .queue-head h3 { font-size: 13px; }
     @media (prefers-reduced-motion: reduce) { #accountModal .settings-sheet { transition: opacity .2s ease; transform: none; } }
     /* overlay loading login google: spinner di tengah layar, latar blur polos */
     #loginLoader { position: fixed; inset: 0; z-index: 1200; display: flex; align-items: center; justify-content: center;
