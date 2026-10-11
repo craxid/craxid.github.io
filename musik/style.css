@@ -34,6 +34,7 @@
     .acc-set label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--muted); }
     .acc-set .row { display: flex; gap: 8px; }
     .acc-set .row input { flex: 1; min-width: 0; }
+    .acc-set .mini-btn { padding: 8px 14px; font-size: 12px; flex-shrink: 0; align-self: center; } /* tombol simpan versi ramping */
     .acc-hint { font-size: 12px; color: var(--muted); margin: 6px 0 0; }
     /* konten tab menyembul dari dalem ke luar, ala /props */
     @keyframes mtab-pop {
@@ -96,6 +97,11 @@
       padding: 18px 20px 22px; transform: scale(.9); opacity: 0;
       transition: transform .22s ease, opacity .22s ease; }
     #accountModal.show .settings-sheet { transform: none; opacity: 1; }
+    /* kepala dialog akun persisten: nempel di atas walau konten digeser */
+    #accountModal .queue-head { position: sticky; top: -18px; z-index: 5;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      margin: 0 -20px; padding: 18px 20px 10px; }
     @media (prefers-reduced-motion: reduce) { #accountModal .settings-sheet { transition: opacity .2s ease; transform: none; } }
     /* overlay loading login google: spinner di tengah layar, latar blur polos */
     #loginLoader { position: fixed; inset: 0; z-index: 1200; display: flex; align-items: center; justify-content: center;
@@ -212,7 +218,7 @@
     .head-pill .pill-div { margin: 8px 0; }
     .head-pill button.logged { color: var(--accent); } /* penanda sudah login, ngikut aksen global */
     /* avatar di tombol akun header dikunci 30px via CSS biar gak tergantung versi JS */
-    #accountBtn img { width: 16px !important; height: 16px !important; border-radius: 50%; object-fit: cover; display: block; }
+    #accountBtn img { width: 25px !important; height: 25px !important; border-radius: 50%; object-fit: cover; display: block; }
     .fp-progress { width: 100%; max-width: 480px; height: 8px; border-radius: 999px;
       background: rgba(127,127,127,.35); background: color-mix(in srgb, var(--text) 28%, transparent);
       margin-top: 20px; cursor: pointer; }

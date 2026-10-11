@@ -180,7 +180,10 @@
               <div class="row"><input id="accEmailInput" type="email" placeholder="Email baru" autocomplete="email" /><button class="mini-btn" id="saveEmailBtn">Simpan</button></div>
               <p class="acc-hint">Link konfirmasi dikirim ke email baru, klik untuk mengaktifkan.</p>
             </div>
-            <div class="acc-set" id="passSet">
+            <div class="acc-set" id="passToggleWrap">
+              <button class="mini-btn ghost" id="showPassBtn" style="width:100%">Ubah kata sandi</button>
+            </div>
+            <div class="acc-set" id="passSet" style="display:none">
               <label>Kata sandi baru</label>
               <div class="row"><input id="accPass1" type="password" placeholder="Kata sandi baru" autocomplete="new-password" /></div>
               <div class="row" style="margin-top:8px"><input id="accPass2" type="password" placeholder="Ulangi kata sandi" autocomplete="new-password" /><button class="mini-btn" id="savePassBtn">Simpan</button></div>
