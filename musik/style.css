@@ -26,7 +26,7 @@
     .acc-profile { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 4px; }
     .acc-avatar-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
     .acc-avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); background: var(--glass-bg); }
-    .acc-avatar-btn { font-size: 11px; padding: 4px 10px; }
+    .acc-avatar-btn { font-size: 12px; padding: 8px 14px; }
     .acc-id { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding-top: 10px; }
     .acc-id b { font-size: 16px; }
     .acc-id span { font-size: 13px; color: var(--muted); word-break: break-all; }
@@ -99,9 +99,11 @@
     #accountModal.show .settings-sheet { transform: none; opacity: 1; }
     /* kepala dialog akun persisten: nempel di atas walau konten digeser, menyatu dgn background */
     #accountModal .queue-head { position: sticky; top: 0; z-index: 5;
-      background: transparent;
+      background: linear-gradient(to bottom, color-mix(in srgb, var(--bg) 55%, transparent), transparent);
       backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      margin: 0 -20px; padding: 10px 20px 8px; }
+      -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent);
+      mask-image: linear-gradient(to bottom, black 70%, transparent);
+      margin: 0 -20px; padding: 10px 20px 14px; }
     #accountModal .queue-head h3 { font-size: 14px; }
     @media (prefers-reduced-motion: reduce) { #accountModal .settings-sheet { transition: opacity .2s ease; transform: none; } }
     /* overlay loading login google: spinner di tengah layar, latar blur polos */
