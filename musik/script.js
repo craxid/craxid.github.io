@@ -294,6 +294,7 @@
   });
   var audioEl=$('audioEl'), useAudio=false, audioRefetching=false;
   function loadTrack(t){
+    if(t&&t.local){ loadLocal(t); return; }
     if(audioApiUrl()){ loadViaApi(t); return; }
     loadViaYT(t);
   }
@@ -1096,11 +1097,11 @@
   /* kualitas audio pilihan user, cuma kepake buat sumber LOCAL. default: otomatis */
   function audioQuality(){ try{ return localStorage.getItem('cxmusik_audioq')||'auto'; }catch(e){ return 'auto'; } }
 
-  /* ----- unduh lagu: via /api/yt-download di host API yang sama ----- */
+  /* ----- unduh lagu: masuk penyimpanan aplikasi (IndexedDB), dikelola di halaman Download ----- */
   function dlFormat(){ try{ var v=localStorage.getItem('cxmusik_dlfmt')||'m4a'; return v==='mp3'?'mp3':'m4a'; }catch(e){ return 'm4a'; } }
   function dlApiBase(){ var u=audioApiUrl(), b=u.replace(/\/api\/yt-audio\/?$/,'');
     return b===u ? DEFAULT_AUDIO_API.replace(/\/api\/yt-audio$/,'') : b; } /* nempel ke host API yg sama */
-  var dlBusy={}, dlToastTimer=null;
+  var dlToastTimer=null;
   function showDlToast(msg,isErr){
     var el=$('dlToast'); if(!el) return;
     el.textContent=msg; el.classList.toggle('err',!!isErr); el.classList.add('show');
@@ -1112,28 +1113,196 @@
     if(on){ btn.dataset.orig=btn.innerHTML; var ic=btn.querySelector('i'); if(ic) ic.className='fa-solid fa-spinner fa-spin'; }
     else if(btn.dataset.orig){ btn.innerHTML=btn.dataset.orig; delete btn.dataset.orig; }
   }
+  /* blob lagu + metanya disimpan di IndexedDB; yg dipegang di memori cuma
+     daftar ringannya (buat badge & cek dobel) dan progres unduhan berjalan */
+  var dlDbP=null;
+  function dlDb(){
+    if(dlDbP) return dlDbP;
+    dlDbP=new Promise(function(res,rej){
+      var rq=indexedDB.open('cxmusik-dl',1);
+      rq.onupgradeneeded=function(){ var db=rq.result; if(!db.objectStoreNames.contains('dl')) db.createObjectStore('dl',{keyPath:'id'}); };
+      rq.onsuccess=function(){ res(rq.result); };
+      rq.onerror=function(){ rej(rq.error); };
+    });
+    return dlDbP;
+  }
+  function dlWrite(fn){ return dlDb().then(function(db){ return new Promise(function(res,rej){ var tx=db.transaction('dl','readwrite'); fn(tx.objectStore('dl')); tx.oncomplete=function(){ res(); }; tx.onerror=function(){ rej(tx.error); }; }); }); }
+  function dlPut(rec){ return dlWrite(function(os){ os.put(rec); }); }
+  function dlDel(id){ return dlWrite(function(os){ os.delete(id); }); }
+  function dlRead(fn){ return dlDb().then(function(db){ return new Promise(function(res,rej){ var rq=fn(db.transaction('dl').objectStore('dl')); rq.onsuccess=function(){ res(rq.result); }; rq.onerror=function(){ rej(rq.error); }; }); }); }
+  function dlGetAll(){ return dlRead(function(os){ return os.getAll(); }); }
+  function dlGetOne(id){ return dlRead(function(os){ return os.get(id); }); }
+  var dlDone=[], dlProg={};
+  function dlRefreshMeta(){ return dlGetAll().then(function(rows){
+    dlDone=rows.map(function(r){ return {id:r.id,title:r.title,author:r.author,thumb:r.thumb,dur:r.dur,fmt:r.fmt,size:r.size,date:r.date,name:r.name}; })
+      .sort(function(a,b){ return b.date-a.date; });
+    dlBadge(); renderDlList();
+  }).catch(function(){}); }
+  function dlMeta(id){
+    var t=findTrack(id)||trackMeta[id];
+    if(t) return {id:id,title:t.title||id,author:t.author||'YouTube',thumb:t.thumb||thumb(id),dur:t.dur||0};
+    for(var n in playlists){ var arr=playlists[n]||[]; for(var i=0;i<arr.length;i++) if(arr[i]&&arr[i].id===id) return {id:id,title:arr[i].title||id,author:arr[i].author||'YouTube',thumb:arr[i].thumb||thumb(id),dur:arr[i].dur||0}; }
+    return {id:id,title:id,author:'YouTube',thumb:thumb(id),dur:0};
+  }
   function downloadTrack(id,btn){
     if(!id) return;
-    if(dlBusy[id]){ showDlToast('Lagu ini sedang diunduh…'); return; }
-    var fmt=dlFormat();
+    if(dlProg[id]){ showDlToast('Lagu ini sedang diunduh…'); openDl(); return; }
+    if(dlDone.some(function(d){ return d.id===id; })){ showDlToast('Sudah tersimpan di Download'); openDl(); return; }
+    var meta=dlMeta(id), fmt=dlFormat();
     var url=dlApiBase()+'/api/yt-download?id='+encodeURIComponent(id)+'&format='+fmt;
-    dlBusy[id]=1; setDlBtnBusy(btn,true); showDlToast('Menyiapkan unduhan…');
-    fetch(url).then(function(r){
+    var ctrl=('AbortController' in window)?new AbortController():null;
+    dlProg[id]={t:meta,pct:0,loaded:0,total:0,ctrl:ctrl};
+    setDlBtnBusy(btn,true); renderDlList();
+    showDlToast('Mengunduh: '+meta.title);
+    fetch(url, ctrl?{signal:ctrl.signal}:undefined).then(function(r){
       if(!r.ok) throw 0;
       var disp=r.headers.get('Content-Disposition')||'', fname='audio.'+fmt, m;
-      m=/filename\*=utf-8''([^;]+)/i.exec(disp)||/filename="([^"]+)"/.exec(disp); /* i = biar cocok mau huruf besar/kecil */
+      m=/filename\*=utf-8''([^;]+)/i.exec(disp)||/filename="([^"]+)"/.exec(disp);
       if(m) fname=m[1]||m[2];
       try{ fname=decodeURIComponent(fname); }catch(e){}
-      return r.blob().then(function(b){ return {b:b,f:fname}; });
+      dlProg[id].total=parseInt(r.headers.get('Content-Length')||'0',10)||0;
+      if(!r.body||!r.body.getReader()) return r.blob().then(function(b){ return {b:b,f:fname}; });
+      var reader=r.body.getReader(), chunks=[];
+      function pump(){
+        return reader.read().then(function(x){
+          if(x.done) return {b:new Blob(chunks,{type:r.headers.get('Content-Type')||'audio/mp4'}),f:fname};
+          chunks.push(x.value);
+          var p=dlProg[id];
+          if(p){ p.loaded+=x.value.length; if(p.total) p.pct=Math.min(99,Math.floor(p.loaded/p.total*100)); renderDlList(); }
+          return pump();
+        });
+      }
+      return pump();
     }).then(function(o){
+      return dlPut({id:id,title:meta.title,author:meta.author,thumb:meta.thumb,dur:meta.dur,fmt:fmt,size:o.b.size,date:Date.now(),name:o.f,blob:o.b});
+    }).then(function(){
+      delete dlProg[id]; setDlBtnBusy(btn,false);
+      showDlToast('Tersimpan di Download: '+meta.title);
+      dlRefreshMeta();
+    }).catch(function(err){
+      delete dlProg[id]; setDlBtnBusy(btn,false); renderDlList();
+      if(err&&err.name==='AbortError') showDlToast('Unduhan dibatalkan');
+      else showDlToast('Unduhan gagal — coba lagi nanti',true);
+    });
+  }
+  function dlCancel(id){ var p=dlProg[id]; if(p&&p.ctrl) p.ctrl.abort(); }
+
+  /* ----- halaman Download: daftar unduhan ala download manager ----- */
+  var dlTab='all';
+  function openDl(){ var m=$('dlModal'); if(m) m.classList.add('show'); renderDlList(); }
+  function closeDl(){ var m=$('dlModal'); if(m) m.classList.remove('show'); }
+  function fmtSize(n){ if(!n) return '0 KB'; if(n>=1048576) return (n/1048576).toFixed(1).replace('.',',')+' MB'; return Math.max(1,Math.round(n/1024))+' KB'; }
+  function fmtTgl(ts){ try{ return new Date(ts).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}); }catch(e){ return ''; } }
+  function renderDlList(){
+    var list=$('dlList'); if(!list) return;
+    var tabs=document.querySelectorAll('.dl-tab');
+    for(var i=0;i<tabs.length;i++) tabs[i].classList.toggle('active', tabs[i].dataset.dtab===dlTab);
+    var busyIds=Object.keys(dlProg);
+    $('dlCntAll').textContent=dlDone.length+busyIds.length;
+    $('dlCntBusy').textContent=busyIds.length;
+    $('dlCntDone').textContent=dlDone.length;
+    var h='';
+    if(dlTab!=='done'){
+      busyIds.forEach(function(id){ var p=dlProg[id], t=p.t;
+        h+='<div class="dl-item"><img src="'+esc(t.thumb)+'" alt=""/><div class="dl-info">'+
+          '<div class="dl-title">'+esc(t.title)+'</div>'+
+          '<div class="dl-sub">'+(p.total?fmtSize(p.loaded)+' / '+fmtSize(p.total)+' • ':'Mengunduh • ')+p.pct+'%</div>'+
+          '<div class="dl-prog"><i style="width:'+p.pct+'%"></i></div></div>'+
+          '<div class="dl-acts"><button class="icon-btn" data-dcancel="'+esc(id)+'" aria-label="Batalkan unduhan"><i class="fa-solid fa-xmark"></i></button></div></div>';
+      });
+    }
+    if(dlTab!=='busy'){
+      dlDone.forEach(function(d){
+        h+='<div class="dl-item"><img src="'+esc(d.thumb)+'" alt=""/><div class="dl-info">'+
+          '<div class="dl-title">'+esc(d.title)+'</div>'+
+          '<div class="dl-sub">'+esc(d.author)+' • '+fmtSize(d.size)+' • '+fmtTgl(d.date)+'</div></div>'+
+          '<div class="dl-acts">'+
+          '<button class="icon-btn" data-dplay="'+esc(d.id)+'" aria-label="Putar"><i class="fa-solid fa-play"></i></button>'+
+          '<button class="icon-btn" data-dsave="'+esc(d.id)+'" aria-label="Simpan ke perangkat"><i class="fa-solid fa-file-arrow-down"></i></button>'+
+          '<button class="icon-btn" data-ddel="'+esc(d.id)+'" aria-label="Hapus"><i class="fa-solid fa-trash"></i></button>'+
+          '</div></div>';
+      });
+    }
+    if(!h) h='<div class="empty-note">'+(dlTab==='busy'?'Tidak ada unduhan yang sedang berjalan.':dlTab==='done'?'Belum ada lagu yang selesai diunduh.':'Belum ada unduhan. Ketuk ikon unduh pada lagu, lagu tersimpan di sini.')+'</div>';
+    list.innerHTML=h;
+  }
+  /* putar dari unduhan: antrean diisi semua unduhan, audionya dari blob lokal (offline) */
+  var localUrl=null;
+  function loadLocal(t){
+    dlGetOne(t.id).then(function(rec){
+      if(!rec||!rec.blob) throw 0;
+      if(localUrl) URL.revokeObjectURL(localUrl);
+      localUrl=URL.createObjectURL(rec.blob);
+      useAudio=true;
+      playAudio(t, {audioUrl:localUrl, audioType:rec.blob.type||'audio/mp4', engine:'Download'});
+    }).catch(function(){ loadViaApi(t); });
+  }
+  function playDownloaded(id){
+    closeDl();
+    queue=dlDone.map(function(d){ return {id:d.id,title:d.title,author:d.author,dur:d.dur,thumb:d.thumb,local:1}; });
+    renderQueue();
+    var i=queue.findIndex(function(x){ return x.id===id; });
+    playAt(i<0?0:i);
+  }
+  function saveDlToDevice(id){
+    dlGetOne(id).then(function(rec){
+      if(!rec||!rec.blob){ showDlToast('File tidak ditemukan',true); return; }
       var a=document.createElement('a');
-      a.href=URL.createObjectURL(o.b); a.download=o.f;
+      a.href=URL.createObjectURL(rec.blob);
+      a.download=rec.name||(rec.title+'.'+rec.fmt);
       document.body.appendChild(a); a.click();
       setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },5000);
-      showDlToast('Unduhan selesai');
-    }).catch(function(){ showDlToast('Unduhan gagal — coba lagi nanti',true); })
-    .then(function(){ delete dlBusy[id]; setDlBtnBusy(btn,false); });
+      showDlToast('Menyimpan ke perangkat…');
+    });
   }
+  function delDownloaded(id){
+    var d=null; dlDone.forEach(function(x){ if(x.id===id) d=x; });
+    if(!confirm('Hapus "'+(d?d.title:id)+'" dari Download?')) return;
+    dlDel(id).then(function(){ showDlToast('Unduhan dihapus'); dlRefreshMeta(); });
+  }
+  function dlBadge(){ var b=$('abBadge'); if(!b) return; b.hidden=!dlDone.length; b.textContent=dlDone.length; }
+
+  /* binding halaman Download */
+  $('dlClose').addEventListener('click', closeDl);
+  $('dlModal').addEventListener('click', function(e){ if(e.target===this) closeDl(); });
+  $('dlTabs').addEventListener('click', function(e){ var b=e.target.closest('[data-dtab]'); if(!b) return; dlTab=b.dataset.dtab; renderDlList(); });
+  $('dlList').addEventListener('click', function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    if(b.dataset.dcancel) dlCancel(b.dataset.dcancel);
+    else if(b.dataset.dplay) playDownloaded(b.dataset.dplay);
+    else if(b.dataset.dsave) saveDlToDevice(b.dataset.dsave);
+    else if(b.dataset.ddel) delDownloaded(b.dataset.ddel);
+  });
+
+  /* ----- bar bawah khusus mode aplikasi (di dalam APK) -----
+     tombolnya mencet tombol asli di pill header, jadi semua fungsi
+     (tema, akun, setelan) tetap jalan persis seperti sebelumnya */
+  var INAPP=false;
+  try{ INAPP=localStorage.getItem('cx_inapp')==='1'; }catch(e){}
+  if(INAPP){
+    document.body.classList.add('inapp');
+    var thBtn=$('themeToggle'), abTheme=$('abTheme');
+    function syncThemeIcon(){ if(abTheme&&thBtn) abTheme.innerHTML=thBtn.innerHTML; }
+    syncThemeIcon();
+    if(thBtn) new MutationObserver(syncThemeIcon).observe(thBtn,{childList:true});
+    if(abTheme) abTheme.addEventListener('click', function(){ thBtn.click(); setTimeout(syncThemeIcon,60); });
+    var accBtn=$('accountBtn'), abAcc=$('abAccount');
+    function syncAccIcon(){ if(!abAcc||!accBtn) return; abAcc.innerHTML=accBtn.innerHTML; abAcc.style.color=accBtn.style.color||''; }
+    syncAccIcon();
+    if(accBtn) new MutationObserver(syncAccIcon).observe(accBtn,{childList:true,attributes:true,attributeFilter:['style','class']});
+    if(abAcc) abAcc.addEventListener('click', function(){ accBtn.click(); });
+    var setBtn=$('settingsBtn'), abSet=$('abSettings');
+    if(abSet&&setBtn) abSet.addEventListener('click', function(){ setBtn.click(); });
+    var abDl=$('abDl');
+    if(abDl) abDl.addEventListener('click', openDl);
+    /* mini player tampil -> bar naik ke atasnya biar gak ketumpuk */
+    var pbEl=$('playerBar'), barEl=$('appBar');
+    if(pbEl&&barEl) new MutationObserver(function(){ barEl.classList.toggle('ab-up', pbEl.classList.contains('show')); })
+      .observe(pbEl,{attributes:true,attributeFilter:['class']});
+  }
+  dlRefreshMeta();
+  renderDlList();
+
   try{ $('audioApi').value=localStorage.getItem('cxmusik_audioapi')||''; }catch(e){}
   $('saveAudioApiBtn').addEventListener('click', function(){
     var v=$('audioApi').value.trim().replace(/\/$/,'');

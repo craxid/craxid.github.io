@@ -308,3 +308,43 @@
       .vol-wrap input { width: 90px; accent-color: var(--accent); }
       .player-bar { left: auto; right: 24px; bottom: 24px; width: 420px; }
     }
+    /* bar bawah ala aplikasi (cuma tampil di dalem APK): melayang, bulat,
+       warnanya ngikutin variabel tema global biar nyatu sama mode terang/gelap */
+    .app-bar { display: none; }
+    body.inapp .app-bar { position: fixed; left: 50%; transform: translateX(-50%);
+      bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 940;
+      display: flex; gap: 4px; padding: 8px 12px; border-radius: 999px;
+      background: var(--glass-bg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+      box-shadow: 0 12px 32px rgba(0,0,0,.35); transition: bottom .25s ease; }
+    body.inapp .app-bar.ab-up { bottom: calc(106px + env(safe-area-inset-bottom, 0px)); }
+    body.inapp .head-pill { display: none !important; }
+    body.inapp { padding-bottom: 92px; }
+    .ab-btn { position: relative; width: 52px; height: 52px; border-radius: 50%; border: none;
+      background: transparent; color: var(--text); font-size: 21px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: transform .12s ease; }
+    .ab-btn:active { transform: scale(.9); }
+    .ab-btn img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+    .ab-badge { position: absolute; top: 1px; right: 1px; min-width: 18px; height: 18px;
+      padding: 0 5px; border-radius: 999px; background: var(--accent); color: #fff;
+      font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .ab-badge[hidden] { display: none; }
+    /* halaman download: daftar unduhan ala download manager (tab + progres + aksi) */
+    .dl-sheet { max-height: 88vh; }
+    .dl-tabs { display: flex; gap: 8px; margin: 12px 0 4px; }
+    .dl-tab { flex: 1; padding: 9px 2px; border-radius: 999px; cursor: pointer;
+      border: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
+      background: transparent; color: var(--muted); font-size: 12.5px; font-weight: 600; font-family: inherit; }
+    .dl-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .dl-item { display: flex; gap: 10px; align-items: center; padding: 10px 4px;
+      border-bottom: 1px solid color-mix(in srgb, var(--text) 8%, transparent); }
+    .dl-item:last-child { border-bottom: none; }
+    .dl-item > img { width: 46px; height: 46px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+    .dl-info { flex: 1; min-width: 0; }
+    .dl-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dl-sub { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+    .dl-prog { height: 5px; border-radius: 99px; margin-top: 7px; overflow: hidden;
+      background: color-mix(in srgb, var(--text) 12%, transparent); }
+    .dl-prog i { display: block; height: 100%; border-radius: 99px; background: var(--accent); transition: width .2s ease; }
+    .dl-acts { display: flex; gap: 2px; flex-shrink: 0; }
+    .dl-acts .icon-btn { width: 36px; height: 36px; font-size: 15px; }

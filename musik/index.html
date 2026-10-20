@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" /></noscript>
   <link rel="stylesheet" href="/style.css" />
-  <link rel="stylesheet" href="style.css?v=0" />
+  <link rel="stylesheet" href="style.css?v=1" />
 </head>
 <body>
   <div id="ytplayer" aria-hidden="true"></div>
@@ -290,6 +290,28 @@
       </div>
     </div>
   </div>
+
+  <div class="settings-modal" id="dlModal">
+    <div class="settings-sheet liquid-glass dl-sheet">
+      <div class="queue-head">
+        <h3><i class="fa-solid fa-download"></i> Download</h3>
+        <button class="icon-btn" id="dlClose" aria-label="Tutup download"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="dl-tabs" id="dlTabs">
+        <button class="dl-tab active" data-dtab="all">Semua (<span id="dlCntAll">0</span>)</button>
+        <button class="dl-tab" data-dtab="busy">Mengunduh (<span id="dlCntBusy">0</span>)</button>
+        <button class="dl-tab" data-dtab="done">Selesai (<span id="dlCntDone">0</span>)</button>
+      </div>
+      <div id="dlList"></div>
+    </div>
+  </div>
+
+  <nav class="app-bar" id="appBar" aria-label="Navigasi aplikasi">
+    <button class="ab-btn" id="abDl" aria-label="Download"><i class="fa-solid fa-download"></i><span class="ab-badge" id="abBadge" hidden>0</span></button>
+    <button class="ab-btn" id="abTheme" aria-label="Ganti tema"></button>
+    <button class="ab-btn" id="abAccount" aria-label="Akun"><i class="fa-solid fa-circle-user"></i></button>
+    <button class="ab-btn" id="abSettings" aria-label="Pengaturan"><i class="fa-solid fa-gear"></i></button>
+  </nav>
 
   <div class="player-bar liquid-glass" id="playerBar">
     <div class="pb-main">
