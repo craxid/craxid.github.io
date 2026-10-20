@@ -1265,7 +1265,7 @@
       dlRefreshMeta();
     });
   }
-  function dlBadge(){ var b=$('abBadge'); if(!b) return; b.hidden=!dlDone.length; b.textContent=dlDone.length; }
+  function dlBadge(){ var b=$('pillBadge'); if(!b) return; b.hidden=!dlDone.length; b.textContent=dlDone.length; }
 
   /* binding halaman Download */
   $('dlClose').addEventListener('click', closeDl);
@@ -1279,32 +1279,10 @@
     else if(b.dataset.ddel) delDownloaded(b.dataset.ddel);
   });
 
-  /* ----- bar bawah khusus mode aplikasi (di dalam APK) -----
-     tombolnya mencet tombol asli di pill header, jadi semua fungsi
-     (tema, akun, setelan) tetap jalan persis seperti sebelumnya */
-  var INAPP=false;
-  try{ INAPP=localStorage.getItem('cx_inapp')==='1'; }catch(e){}
-  if(INAPP){
-    document.body.classList.add('inapp');
-    var thBtn=$('themeToggle'), abTheme=$('abTheme');
-    function syncThemeIcon(){ if(abTheme&&thBtn) abTheme.innerHTML=thBtn.innerHTML; }
-    syncThemeIcon();
-    if(thBtn) new MutationObserver(syncThemeIcon).observe(thBtn,{childList:true});
-    if(abTheme) abTheme.addEventListener('click', function(){ thBtn.click(); setTimeout(syncThemeIcon,60); });
-    var accBtn=$('accountBtn'), abAcc=$('abAccount');
-    function syncAccIcon(){ if(!abAcc||!accBtn) return; abAcc.innerHTML=accBtn.innerHTML; abAcc.style.color=accBtn.style.color||''; }
-    syncAccIcon();
-    if(accBtn) new MutationObserver(syncAccIcon).observe(accBtn,{childList:true,attributes:true,attributeFilter:['style','class']});
-    if(abAcc) abAcc.addEventListener('click', function(){ accBtn.click(); });
-    var setBtn=$('settingsBtn'), abSet=$('abSettings');
-    if(abSet&&setBtn) abSet.addEventListener('click', function(){ setBtn.click(); });
-    var abDl=$('abDl');
-    if(abDl) abDl.addEventListener('click', openDl);
-    /* mini player tampil -> bar naik ke atasnya biar gak ketumpuk */
-    var pbEl=$('playerBar'), barEl=$('appBar');
-    if(pbEl&&barEl) new MutationObserver(function(){ barEl.classList.toggle('ab-up', pbEl.classList.contains('show')); })
-      .observe(pbEl,{attributes:true,attributeFilter:['class']});
-  }
+  /* tombol download di pill header: buka halaman Download */
+  var pillDlBtn=$('pillDl');
+  if(pillDlBtn) pillDlBtn.addEventListener('click', openDl);
+
   dlRefreshMeta();
   renderDlList();
 

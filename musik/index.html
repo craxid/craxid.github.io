@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" /></noscript>
   <link rel="stylesheet" href="/style.css" />
-  <link rel="stylesheet" href="style.css?v=1" />
+  <link rel="stylesheet" href="style.css?v=0" />
 </head>
 <body>
   <div id="ytplayer" aria-hidden="true"></div>
@@ -50,6 +50,8 @@
         <a href="/" class="back-btn liquid-glass" aria-label="Kembali"><i class="fa-solid fa-chevron-left"></i></a>
         <h1>Musik</h1>
         <div class="like-pill head-pill" role="group" aria-label="Tombol cepat">
+          <button id="pillDl" aria-label="Download" style="border:none;cursor:pointer;position:relative"><i class="fa-solid fa-download"></i><span class="pill-badge" id="pillBadge" hidden>0</span></button>
+          <span class="pill-div"></span>
           <button id="themeToggle" aria-label="Ganti tema" style="border:none;cursor:pointer"></button>
           <span class="pill-div"></span>
           <button id="accountBtn" aria-label="Akun" style="border:none;cursor:pointer"><i class="fa-solid fa-circle-user"></i></button>
@@ -305,13 +307,6 @@
       <div id="dlList"></div>
     </div>
   </div>
-
-  <nav class="app-bar" id="appBar" aria-label="Navigasi aplikasi">
-    <button class="ab-btn" id="abDl" aria-label="Download"><i class="fa-solid fa-download"></i><span class="ab-badge" id="abBadge" hidden>0</span></button>
-    <button class="ab-btn" id="abTheme" aria-label="Ganti tema"></button>
-    <button class="ab-btn" id="abAccount" aria-label="Akun"><i class="fa-solid fa-circle-user"></i></button>
-    <button class="ab-btn" id="abSettings" aria-label="Pengaturan"><i class="fa-solid fa-gear"></i></button>
-  </nav>
 
   <div class="player-bar liquid-glass" id="playerBar">
     <div class="pb-main">
