@@ -1258,7 +1258,12 @@
   function delDownloaded(id){
     var d=null; dlDone.forEach(function(x){ if(x.id===id) d=x; });
     if(!confirm('Hapus "'+(d?d.title:id)+'" dari Download?')) return;
-    dlDel(id).then(function(){ showDlToast('Unduhan dihapus'); dlRefreshMeta(); });
+    dlDel(id).then(function(){
+      showDlToast('Unduhan dihapus');
+      /* di dalem aplikasi: file ekspornya di folder Download HP ikut dibuang juga */
+      if(d){ try{ if(window.CraxDL&&CraxDL.remove) CraxDL.remove(d.name||(d.title+'.'+d.fmt)); }catch(e){} }
+      dlRefreshMeta();
+    });
   }
   function dlBadge(){ var b=$('abBadge'); if(!b) return; b.hidden=!dlDone.length; b.textContent=dlDone.length; }
 

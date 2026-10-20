@@ -1,7 +1,7 @@
 /* service worker khusus /musik/ — scope-nya cuma /musik/ aja.
    root sw.js (/) nggak ikut campur di sini, biar cache musik kepisah rapi. */
 
-const CACHE_NAME = "craxid-musik-v5"; /* naik biar klien buang cache lama (halaman download + bar bawah) */
+const CACHE_NAME = "craxid-musik-v6"; /* naik biar klien buang cache lama (hapus unduhan ikut buang file ekspor) */
 
 const STATIC_ASSETS = [
   "/musik/",
