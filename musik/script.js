@@ -1123,7 +1123,7 @@
       rq.onupgradeneeded=function(){ var db=rq.result; if(!db.objectStoreNames.contains('dl')) db.createObjectStore('dl',{keyPath:'id'}); };
       rq.onsuccess=function(){ res(rq.result); };
       rq.onerror=function(){ rej(rq.error); };
-    });
+    }).catch(function(e){ dlDbP=null; throw e; }); /* gagal buka db jangan di-cache, biar bisa nyoba lagi */
     return dlDbP;
   }
   function dlWrite(fn){ return dlDb().then(function(db){ return new Promise(function(res,rej){ var tx=db.transaction('dl','readwrite'); fn(tx.objectStore('dl')); tx.oncomplete=function(){ res(); }; tx.onerror=function(){ rej(tx.error); }; }); }); }
@@ -1174,15 +1174,24 @@
       }
       return pump();
     }).then(function(o){
-      return dlPut({id:id,title:meta.title,author:meta.author,thumb:meta.thumb,dur:meta.dur,fmt:fmt,size:o.b.size,date:Date.now(),name:o.f,blob:o.b});
-    }).then(function(){
+      return dlPut({id:id,title:meta.title,author:meta.author,thumb:meta.thumb,dur:meta.dur,fmt:fmt,size:o.b.size,date:Date.now(),name:o.f,blob:o.b})
+        .then(function(){ return true; }, function(){
+          /* nyimpen ke aplikasi gagal (db/kuota) — jangan sampe lagu ilang,
+             lempar ke folder Download perangkat kayak cara lama */
+          var a=document.createElement('a');
+          a.href=URL.createObjectURL(o.b); a.download=o.f;
+          document.body.appendChild(a); a.click();
+          setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },5000);
+          return false;
+        });
+    }).then(function(keApp){
       delete dlProg[id]; setDlBtnBusy(btn,false);
-      showDlToast('Tersimpan di Download: '+meta.title);
+      showDlToast(keApp?('Tersimpan di Download: '+meta.title):('Penyimpanan aplikasi bermasalah, file disimpan ke perangkat'));
       dlRefreshMeta();
     }).catch(function(err){
       delete dlProg[id]; setDlBtnBusy(btn,false); renderDlList();
       if(err&&err.name==='AbortError') showDlToast('Unduhan dibatalkan');
-      else showDlToast('Unduhan gagal — coba lagi nanti',true);
+      else showDlToast('Unduhan gagal mengambil file dari server',true);
     });
   }
   function dlCancel(id){ var p=dlProg[id]; if(p&&p.ctrl) p.ctrl.abort(); }
