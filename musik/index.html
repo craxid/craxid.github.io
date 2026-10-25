@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" /></noscript>
   <link rel="stylesheet" href="/style.css" />
-  <link rel="stylesheet" href="style.css?v=1" />
+  <link rel="stylesheet" href="style.css?v=0" />
 </head>
 <body>
   <div id="ytplayer" aria-hidden="true"></div>
@@ -50,8 +50,6 @@
         <a href="/" class="back-btn liquid-glass" aria-label="Kembali"><i class="fa-solid fa-chevron-left"></i></a>
         <h1>Musik</h1>
         <div class="like-pill head-pill" role="group" aria-label="Tombol cepat">
-          <button id="pillDl" aria-label="Download" style="border:none;cursor:pointer;position:relative"><i class="fa-solid fa-download"></i><span class="pill-badge" id="pillBadge" hidden>0</span></button>
-          <span class="pill-div"></span>
           <button id="themeToggle" aria-label="Ganti tema" style="border:none;cursor:pointer"></button>
           <span class="pill-div"></span>
           <button id="accountBtn" aria-label="Akun" style="border:none;cursor:pointer"><i class="fa-solid fa-circle-user"></i></button>
@@ -290,21 +288,6 @@
         <img src="/media/qris.png" alt="QRIS donasi" class="donate-qr" />
         <p>Suka dengerin musik di sini? Traktir kopi via QRIS biar makin semangat ngembanginnya. Makasih banyak!</p>
       </div>
-    </div>
-  </div>
-
-  <div class="settings-modal" id="dlModal">
-    <div class="settings-sheet liquid-glass dl-sheet">
-      <div class="queue-head">
-        <h3><i class="fa-solid fa-download"></i> Download</h3>
-        <button class="icon-btn" id="dlClose" aria-label="Tutup download"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="dl-tabs" id="dlTabs">
-        <button class="dl-tab active" data-dtab="all">Semua (<span id="dlCntAll">0</span>)</button>
-        <button class="dl-tab" data-dtab="busy">Mengunduh (<span id="dlCntBusy">0</span>)</button>
-        <button class="dl-tab" data-dtab="done">Selesai (<span id="dlCntDone">0</span>)</button>
-      </div>
-      <div id="dlList"></div>
     </div>
   </div>
 
