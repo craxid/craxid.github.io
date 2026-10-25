@@ -1084,7 +1084,7 @@
   });
   /* ----- Audio API: sumber audio buat background playback.
      default = API sendiri (jalan di Termux); Vercel paling terakhir ----- */
-  var DEFAULT_AUDIO_API='https://yt.hxa.my.id/api/yt-audio';
+  var DEFAULT_AUDIO_API='https://api.myl.pp.ua/api/yt-audio';
   var VERCEL_AUDIO_API='https://ytdl-green-zeta.vercel.app/api/yt-audio';
   var BROADCAST_WORKER=''; /* URL Worker broadcast. dikosongin = mati */
   /* URL API audio. kalau yang kesimpen masih URL trycloudflare lama (tunnelnya udah ganti),

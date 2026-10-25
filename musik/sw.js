@@ -1,7 +1,7 @@
 /* service worker khusus /musik/ — scope-nya cuma /musik/ aja.
    root sw.js (/) nggak ikut campur di sini, biar cache musik kepisah rapi. */
 
-const CACHE_NAME = "craxid-musik-v4"; /* naik biar klien buang cache lama (ramping header dialog akun) */
+const CACHE_NAME = "craxid-musik-v5"; /* naik biar klien buang cache lama (API bawaan pindah host) */
 
 const STATIC_ASSETS = [
   "/musik/",
@@ -48,7 +48,7 @@ self.addEventListener("fetch", (event) => {
   /* API audio & lirik: selalu fresh, jangan di-cache.
      respons gagal yg ke-cache bikin lagu macet walau koneksi udah pulih. */
   const isLiveApi =
-    url.hostname === "yt.hxa.my.id" ||
+    url.hostname === "api.myl.pp.ua" ||
     url.hostname === "lrclib.net" ||
     url.pathname.startsWith("/api/yt-audio");
   if (isLiveApi) {
