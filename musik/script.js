@@ -1070,6 +1070,20 @@
   }
   $('accountClose').addEventListener('click', closeAccount);
   $('accountModal').addEventListener('click', function(e){ if(e.target===$('accountModal')) closeAccount(); });
+  /* ----- kunci scroll halaman pas ada jendela yg kebuka ----- */
+  /* ngintip kelas show semua modal + full player: kalo ada satu aja yg kebuka, body dikunci biar halaman belakangnya gak ikut kegeser */
+  (function(){
+    var jendela=document.querySelectorAll('.settings-modal, .queue-modal, .fullplayer');
+    if(!jendela.length||!window.MutationObserver) return;
+    function cek(){
+      var kebuka=false;
+      jendela.forEach(function(m){ if(m.classList.contains('show')) kebuka=true; });
+      document.body.classList.toggle('modal-open', kebuka);
+    }
+    var obs=new MutationObserver(cek);
+    jendela.forEach(function(m){ obs.observe(m,{attributes:true,attributeFilter:['class']}); });
+    cek();
+  })();
   $('notifClose').addEventListener('click', hideSearchNotif);
   $('notifSettingBtn').addEventListener('click', function(){ openSettings(); });
   try{ $('ytKey').value=localStorage.getItem('cxmusik_ytkey')||''; }catch(e){}

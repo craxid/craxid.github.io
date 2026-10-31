@@ -1,7 +1,7 @@
 /* service worker khusus /musik/ — scope-nya cuma /musik/ aja.
    root sw.js (/) nggak ikut campur di sini, biar cache musik kepisah rapi. */
 
-const CACHE_NAME = "craxid-musik-v5"; /* naik biar klien buang cache lama (API bawaan pindah host) */
+const CACHE_NAME = "craxid-musik-v6"; /* naik biar klien buang cache lama (sheet solid + kunci scroll modal) */
 
 const STATIC_ASSETS = [
   "/musik/",
