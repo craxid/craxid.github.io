@@ -6,7 +6,7 @@
     .back-btn { width: 46px; height: 46px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--text); font-size: 17px; flex-shrink: 0; text-decoration: none; }
     /* search bar dibikin ramping + nempel di atas pas scroll, biar gampang cari lagu kapan aja */
     .search-bar { position: sticky; top: 0; z-index: 60; display: flex; gap: 8px; margin-bottom: 12px; padding: 10px 0; }
-    .search-bar input { flex: 1; padding: 10px 16px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); background: var(--glass-bg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); color: var(--text); font-size: 14px; font-family: inherit; outline: none; }
+    .search-bar input { flex: 1; padding: 10px 16px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; outline: none; }
     .search-bar input:focus { border-color: var(--accent); }
     /* ikon cari di dalam pill: kiri polos, kanan tombol hijau */
     .search-wrap { position: relative; flex: 1; display: flex; }
@@ -71,7 +71,7 @@
     /* notif gangguan pencarian (muncul cuma pas pencarian standar mati) */
     .search-notif { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 12px; right: 12px; max-width: 520px; margin: 0 auto; z-index: 940;
       display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px;
-      background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      background: var(--bg);
       border: 1px solid color-mix(in srgb, #f0a020 45%, transparent); box-shadow: 0 14px 34px rgba(0,0,0,.35);
       transform: translateY(-16px) scale(.96); opacity: 0; visibility: hidden;
       transition: transform .34s cubic-bezier(0.34, 1.4, 0.64, 1), opacity .25s ease, visibility .25s; }
@@ -85,12 +85,16 @@
     @media (prefers-reduced-motion: reduce) { .search-notif { transition: opacity .2s ease, visibility .2s; transform: none; } }
     /* modal pengaturan pencarian (bottom sheet, polanya sama kyk antrean) */
     .settings-modal { position: fixed; inset: 0; z-index: 965; display: flex; align-items: flex-end; justify-content: center;
-      background: rgba(0,0,0,.45); opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s; }
+      background: rgba(0,0,0,.45); opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s;
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
     .settings-modal.show { opacity: 1; visibility: visible; }
     .settings-sheet { width: 100%; max-width: 520px; max-height: 80vh; overflow-y: auto;
       border-radius: 24px 24px 0 0; padding: 16px 18px calc(20px + env(safe-area-inset-bottom, 0px));
       transform: translateY(48px); transition: transform .25s ease; }
     .settings-modal.show .settings-sheet { transform: none; }
+    /* semua sheet modal dibuat pekat biar teks gampang dibaca; efek blur cuma di overlay belakangnya */
+    .settings-sheet, .queue-sheet { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; }
+    .settings-sheet::before, .queue-sheet::before { display: none; }
     /* dialog akun: modal di tengah yg menyembul, bukan bottom sheet */
     #accountModal { align-items: center; padding: 20px; }
     #accountModal .settings-sheet { width: 100%; max-width: 420px; border-radius: 24px;
@@ -130,6 +134,9 @@
     .player-bar { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 900;
       border-radius: 22px; padding: 10px 14px; display: none; }
     .player-bar.show { display: block; }
+    /* player bar ikut pekat kyk sheet modal, biar judul lagunya jelas kebaca */
+    .player-bar { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; }
+    .player-bar::before { display: none; }
     .pb-main { display: flex; align-items: center; gap: 12px; }
     .pb-main img { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; flex-shrink: 0; background: var(--code-bg); }
     .pb-info { flex: 1; min-width: 0; cursor: pointer; }
@@ -252,7 +259,8 @@
     .fp-actions { display: flex; gap: 10px; margin-top: 20px; }
     /* popup antrean (bottom sheet) */
     .queue-modal { position: fixed; inset: 0; z-index: 960; display: flex; align-items: flex-end; justify-content: center;
-      background: rgba(0,0,0,.45); opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s; }
+      background: rgba(0,0,0,.45); opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s;
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
     .queue-modal.show { opacity: 1; visibility: visible; }
     .queue-sheet { width: 100%; max-width: 520px; max-height: 72vh; overflow-y: auto;
       border-radius: 24px 24px 0 0; padding: 16px 18px calc(20px + env(safe-area-inset-bottom, 0px));

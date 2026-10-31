@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" /></noscript>
   <link rel="stylesheet" href="/style.css" />
-  <link rel="stylesheet" href="style.css?v=0" />
+  <link rel="stylesheet" href="style.css?v=1" />
 </head>
 <body>
   <div id="ytplayer" aria-hidden="true"></div>
@@ -92,14 +92,13 @@
           </div>
 <hr class="set-sep" />
           <h3 style="margin-top:12px"><i class="fa-solid fa-mobile-screen"></i> Jaga layar tetap hidup</h3>
-          <p>Saat aktif, layar perangkat dijaga tetap menyala selama musik diputar — berguna saat mengikuti lirik. Konsumsi baterai lebih tinggi saat fitur ini aktif.</p>
           <div class="row">
             <button class="mini-btn" id="wakeLockBtn">Aktifkan</button>
           </div>
           <div class="api-status" id="wakeLockStatus"></div>
+          <p>Saat aktif, layar perangkat dijaga tetap menyala selama musik diputar — berguna saat mengikuti lirik. Konsumsi baterai lebih tinggi saat fitur ini aktif.</p>
           <hr class="set-sep" />
           <h3 style="margin-top:12px"><i class="fa-solid fa-gauge-high"></i> Kualitas audio</h3>
-          <p>Pilih kualitas audio yang dipakai saat sumbernya LOCAL. Berlaku mulai lagu berikutnya.</p>
           <select id="audioQuality">
             <option value="auto">Otomatis</option>
             <option value="160">Tertinggi (~160 kbps)</option>
@@ -108,26 +107,26 @@
             <option value="50">Hemat (~50 kbps)</option>
           </select>
           <div class="api-status" id="audioQualityStatus"></div>
+          <p>Pilih kualitas audio yang dipakai saat sumbernya LOCAL. Berlaku mulai lagu berikutnya.</p>
           <hr class="set-sep" />
           <h3 style="margin-top:12px"><i class="fa-solid fa-download"></i> Format unduhan</h3>
-          <p>Pilih format file saat mengunduh lagu. M4A memakai audio asli tanpa konversi (kualitas tertinggi); MP3 dikonversi ke 256 kbps agar kompatibel dengan semua pemutar.</p>
           <select id="dlFormat">
             <option value="m4a">M4A (kualitas asli)</option>
             <option value="mp3">MP3 (256 kbps)</option>
           </select>
           <div class="api-status" id="dlFormatStatus"></div>
+          <p>Pilih format file saat mengunduh lagu. M4A memakai audio asli tanpa konversi (kualitas tertinggi); MP3 dikonversi ke 256 kbps agar kompatibel dengan semua pemutar.</p>
           <hr class="set-sep" />
           <h3 style="margin-top:12px"><i class="fa-solid fa-key"></i> YouTube Data API key</h3>
-          <p>Sumber pencarian bawaan memakai instance publik (gratis, ketersediaan tidak terjamin). Untuk hasil yang konsisten, gunakan <b>YouTube Data API key</b> pribadi — tersimpan lokal di perangkat ini dan tidak dikirim ke mana pun. Cara membuat: Google Cloud Console → aktifkan <i>YouTube Data API v3</i> → buat API key. Jika tidak memahami pengaturan ini, kosongkan saja — pencarian tetap berjalan normal.</p>
           <input id="ytKey" type="text" placeholder="YouTube Data API key (opsional)" autocomplete="off" />
           <div class="row">
             <button class="mini-btn" id="saveKeyBtn">Simpan</button>
             <button class="mini-btn ghost" id="delKeyBtn">Hapus</button>
           </div>
           <div class="api-status" id="apiStatus"></div>
+          <p>Sumber pencarian bawaan memakai instance publik (gratis, ketersediaan tidak terjamin). Untuk hasil yang konsisten, gunakan <b>YouTube Data API key</b> pribadi — tersimpan lokal di perangkat ini dan tidak dikirim ke mana pun. Cara membuat: Google Cloud Console → aktifkan <i>YouTube Data API v3</i> → buat API key. Jika tidak memahami pengaturan ini, kosongkan saja — pencarian tetap berjalan normal.</p>
           <hr class="set-sep" />
           <h3 style="margin-top:12px"><i class="fa-solid fa-cloud"></i> Audio API (background playback)</h3>
-          <p>Sumber audio dicoba berurutan: <b>LOCAL</b> &rarr; savenow.to &rarr; Vercel &rarr; player YouTube. Kosongkan kolom untuk kembali ke bawaan.</p><p>Untuk memakai API sendiri: isi URL endpoint milikmu yang menerima <b>?url=</b> (URL video YouTube) dan merespons <b>{success, formats[]}</b>, atau gaya <b>?id=</b> dengan <b>{status, audioUrl}</b> &mdash; lalu tekan <b>Tes</b> untuk memastikan.</p>
           <input id="audioApi" type="text" placeholder="https://api.milikmu.com/api/yt-audio" autocomplete="off" />
           <div class="row">
             <button class="mini-btn" id="saveAudioApiBtn">Simpan</button>
@@ -135,6 +134,7 @@
             <button class="mini-btn ghost" id="delAudioApiBtn">Hapus</button>
           </div>
           <div class="api-status" id="audioApiStatus"></div>
+          <p>Sumber audio dicoba berurutan: <b>LOCAL</b> &rarr; savenow.to &rarr; Vercel &rarr; player YouTube. Kosongkan kolom untuk kembali ke bawaan.</p><p>Untuk memakai API sendiri: isi URL endpoint milikmu yang menerima <b>?url=</b> (URL video YouTube) dan merespons <b>{success, formats[]}</b>, atau gaya <b>?id=</b> dengan <b>{status, audioUrl}</b> &mdash; lalu tekan <b>Tes</b> untuk memastikan.</p>
           
         </div>
       </div>
