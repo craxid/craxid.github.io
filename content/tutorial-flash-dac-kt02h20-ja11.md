@@ -37,12 +37,13 @@ Cara ngenalinnya sebelum beli: penjual yang jujur biasanya nulis nama chip di de
 
 Siapkan dua hal ini:
 
-1. **Aplikasi KT Flasher.** Unduh APK versi terbarunya dari halaman rilis resmi:
-   https://github.com/craxid/kt-flasher/releases
-   Versi terbaru pas artikel ini ditulis itu v1.3.1. Aplikasinya nggak nyertain firmware di dalamnya, jadi firmware tetap kamu unduh sendiri dari poin berikutnya.
-2. **Firmware resmi JadeAudio JA11 V2.2 dari FiiO.** Unduh dari server resmi FiiO:
-   https://fiio-firmware.fiio.net/JA11/%E8%8B%B1%E6%96%87%E5%9B%BA%E4%BB%B6/JadeAudio%20JA11%20Firmware%20V2.2.zip
-   Berkasnya berupa ZIP sekitar 9 MB. Ekstrak dulu, yang kita butuhkan cuma berkas `JadeAudio JA11_V2.2.bin` di dalam folder `Firmware`. Di dalam ZIP itu juga ada upgrade tool buat Windows dari FiiO, abaikan aja, kita nggak pakai itu. Data firmware yang benar: ukuran **67.312 byte**, **67 paket**, chip **KT02H20B**, CRC **0xcf975bc0**. Nanti langkah validasi bakal nampilin angka-angka ini, cocokkan ya. Kalau beda, berarti berkasmu salah atau rusak.
+**1. Aplikasi KT Flasher.** Unduh APK versi terbarunya dari halaman rilis resmi. Versi terbaru pas artikel ini ditulis itu v1.3.1. Aplikasinya nggak nyertain firmware di dalamnya, jadi firmware tetap kamu unduh sendiri dari poin berikutnya.
+
+<a class="global-btn primary-btn" href="https://github.com/craxid/kt-flasher/releases">Unduh KT Flasher</a>
+
+**2. Firmware resmi JadeAudio JA11 V2.2 dari FiiO.** Berkasnya berupa ZIP sekitar 9 MB dari server resmi FiiO. Ekstrak dulu, yang kita butuhkan cuma berkas `JadeAudio JA11_V2.2.bin` di dalam folder `Firmware`. Di dalam ZIP itu juga ada upgrade tool buat Windows dari FiiO, abaikan aja, kita nggak pakai itu. Data firmware yang benar: ukuran **67.312 byte**, **67 paket**, chip **KT02H20B**, CRC **0xcf975bc0**. Nanti langkah validasi bakal nampilin angka-angka ini, cocokkan ya. Kalau beda, berarti berkasmu salah atau rusak.
+
+<a class="global-btn primary-btn" href="https://fiio-firmware.fiio.net/JA11/%E8%8B%B1%E6%96%87%E5%9B%BA%E4%BB%B6/JadeAudio%20JA11%20Firmware%20V2.2.zip">Unduh Firmware JA11 V2.2</a>
 
 Buat verifikasi hasil di akhir, pasang juga aplikasi **FiiO Control** dari Play Store.
 
@@ -91,6 +92,6 @@ Jangan panik. Gagal tulis itu normalnya bikin dongle nyangkut di mode bootloader
 
 ## Kredit dan Penutup
 
-KT Flasher adalah aplikasi buatan CraXID Project, porting Android dari alat flash hasil reverse engineering updater resmi KTMicro oleh txtsamu dan dragonzords (berlisensi MIT): https://github.com/craxid/kt-flasher. Firmware JA11 adalah milik FiiO / JadeAudio dan tautan unduh di atas adalah tautan resmi dari server FiiO.
+KT Flasher adalah aplikasi buatan CraXID Project, porting Android dari alat flash hasil reverse engineering updater resmi KTMicro oleh txtsamu dan dragonzords (berlisensi MIT). Kode sumber dan rilisnya ada di [repo KT Flasher](https://github.com/craxid/kt-flasher). Firmware JA11 adalah milik FiiO / JadeAudio dan tombol unduh di atas mengarah ke tautan resmi dari server FiiO.
 
 Saya nggak berafiliasi sama FiiO, JadeAudio, JCALLY, maupun KTMicro. Risiko flashing ditanggung sendiri, tapi selama chip dongle kamu beneran KT02H20 dan langkahnya diikuti berurutan, prosesnya udah terbukti aman dan bisa dipulihkan. Selamat ngoprek.
