@@ -39,11 +39,11 @@ Siapkan dua hal ini:
 
 **1. Aplikasi KT Flasher.** Unduh APK versi terbarunya dari halaman rilis resmi. Versi terbaru pas artikel ini ditulis itu v1.3.1. Aplikasinya nggak nyertain firmware di dalamnya, jadi firmware tetap kamu unduh sendiri dari poin berikutnya.
 
-<a class="global-btn primary-btn" href="https://github.com/craxid/kt-flasher/releases">Unduh KT Flasher</a>
+<a class="tombol-unduh" href="https://github.com/craxid/kt-flasher/releases"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>Unduh KT Flasher</a>
 
 **2. Firmware resmi JadeAudio JA11 V2.2 dari FiiO.** Berkasnya berupa ZIP sekitar 9 MB dari server resmi FiiO. Ekstrak dulu, yang kita butuhkan cuma berkas `JadeAudio JA11_V2.2.bin` di dalam folder `Firmware`. Di dalam ZIP itu juga ada upgrade tool buat Windows dari FiiO, abaikan aja, kita nggak pakai itu. Data firmware yang benar: ukuran **67.312 byte**, **67 paket**, chip **KT02H20B**, CRC **0xcf975bc0**. Nanti langkah validasi bakal nampilin angka-angka ini, cocokkan ya. Kalau beda, berarti berkasmu salah atau rusak.
 
-<a class="global-btn primary-btn" href="https://fiio-firmware.fiio.net/JA11/%E8%8B%B1%E6%96%87%E5%9B%BA%E4%BB%B6/JadeAudio%20JA11%20Firmware%20V2.2.zip">Unduh Firmware JA11 V2.2</a>
+<a class="tombol-unduh" href="https://fiio-firmware.fiio.net/JA11/%E8%8B%B1%E6%96%87%E5%9B%BA%E4%BB%B6/JadeAudio%20JA11%20Firmware%20V2.2.zip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>Unduh Firmware JA11 V2.2</a>
 
 Buat verifikasi hasil di akhir, pasang juga aplikasi **FiiO Control** dari Play Store.
 
