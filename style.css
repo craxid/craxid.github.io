@@ -1157,6 +1157,17 @@ footer {
   color: #fff;
 }
 
+/* khusus tema gelap tombol artikel digelapin, soalnya gradien tombol utama
+   di dark mode terlalu terang buat teks putih */
+body.dark .post-content a.global-btn {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 55%, black),
+      color-mix(in srgb, var(--accent) 38%, black)
+    );
+}
+
 .post-content a.global-btn:hover {
   text-decoration: none;
 }
