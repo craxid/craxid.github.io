@@ -1152,6 +1152,15 @@ footer {
   text-decoration: underline;
 }
 
+/* tombol di dalem artikel jangan ikut warna link, teksnya tetep putih di dua tema */
+.post-content a.global-btn {
+  color: #fff;
+}
+
+.post-content a.global-btn:hover {
+  text-decoration: none;
+}
+
 .post-content ul,
 .post-content ol {
   margin: 0 0 16px;
