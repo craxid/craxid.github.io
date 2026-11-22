@@ -1171,6 +1171,39 @@ body.dark .post-content a.global-btn {
 .post-content a.global-btn:hover {
   text-decoration: none;
 }
+/* tombol unduh lebar penuh, ngambil template tombol download halaman musik:
+   hijau solid + teks gelap, tampilannya sama persis di tema terang dan gelap */
+.post-content a.tombol-unduh {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  background: #52b788;
+  color: #08130d;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 14px;
+  padding: 15px 18px;
+  margin: 20px 0 16px;
+}
+
+.post-content a.tombol-unduh:hover {
+  text-decoration: none;
+}
+
+.post-content a.tombol-unduh:active {
+  transform: scale(0.99);
+}
+
+.post-content a.tombol-unduh svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
 
 .post-content ul,
 .post-content ol {
