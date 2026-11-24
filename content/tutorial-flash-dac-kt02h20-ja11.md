@@ -78,7 +78,11 @@ Satu lagi: kalau handshake gagal gara-gara dongle ketinggalan di mode bootloader
 
 KT Flasher itu pada dasarnya generik: dia nulis image KT02H20B apa pun yang kamu kasih, bukan cuma JA11. Ini udah dibuktiin salah satu pembaca, [Andreas Puji](https://www.facebook.com/share/1J2hRCyh2X/) di grup Tongkrongan Audio Indonesia, yang flash firmware Tinhifi (`KT02H20_TINHIFI.bin`, 62.784 byte, 63 paket, CRC `0x294138e7`) ke dongle-nya yang sebelumnya udah pakai JA11, dan berhasil. Postingannya soal percobaan ini bisa kamu lihat [di sini](https://www.facebook.com/share/p/1H5xrTJVYW/). Makasih banyak buat Andreas yang udah nyobain dan ngabarin hasilnya. Jadi kalau kamu kurang sreg sama JA11, firmware Tinhifi bisa jadi pilihan lain. Dari Tinhifi pun bisa pindah lagi ke image KT02H20B lain, selama berkas firmwarenya kamu punya.
 
-Langkahnya sama persis kayak tutorial di atas, bedanya cuma di berkas yang dipilih pas langkah validasi: pilih `KT02H20_TINHIFI.bin`, pastikan chipnya kebaca `KT02H20B`, terus lanjut dry run dan flash kayak biasa. Firmware Tinhifi nggak saya sediakan di sini, cari dari sumber Tinhifi-nya ya. Catatan satu arah di atas tetap berlaku: yang nggak bisa itu balik ke firmware bawaan dongle, soalnya firmware bawaan emang nggak bisa di-backup.
+Langkahnya sama persis kayak tutorial di atas, bedanya cuma di berkas yang dipilih pas langkah validasi: pilih `KT02H20_TINHIFI.bin`, pastikan chipnya kebaca `KT02H20B`, terus lanjut dry run dan flash kayak biasa. Catatan satu arah di atas tetap berlaku: yang nggak bisa itu balik ke firmware bawaan dongle, soalnya firmware bawaan emang nggak bisa di-backup.
+
+Firmware-nya bisa kamu unduh dari situs resmi Tinhifi. Berkasnya berupa ZIP sekitar 22,5 MB, ekstrak dulu, yang kita butuhkan cuma berkas `KT02H20_TINHIFI.bin` di dalamnya. Di dalam ZIP itu juga ada aplikasi buat Windows dari Tinhifi, abaikan aja, kita nggak pakai itu. Data firmware yang benar: ukuran **62.784 byte**, **63 paket**, chip **KT02H20B**, CRC **0x294138e7**. Cocokkan pas langkah validasi ya, sama kayak firmware JA11 di atas. Berkas dari tautan ini persis sama dengan yang berhasil diflash Andreas, CRC-nya udah saya cocokkan sendiri.
+
+<a class="tombol-unduh" href="https://tinhifi.com/u_file/2406/14/file/writechip.zip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>Unduh Firmware Tinhifi</a>
 
 ## Pemulihan Kalau Flash Gagal di Tengah
 
