@@ -17,7 +17,7 @@ Saya udah buktiin sendiri di dongle saya: flash-nya kelar dalam hitungan detik, 
 
 Tiga hal ini wajib dipahami sebelum nyentuh tombol flash apa pun:
 
-- **Satu arah.** Boot ROM chip KT02H20 itu nggak punya perintah baca, jadi firmware bawaan dongle **nggak bisa di-backup**. Sekali firmware JA11 masuk, nggak ada jalan balik ke firmware bawaan. Yang masih bisa ditimpa ulang cuma firmware JA11 itu sendiri atau image KT02H20B lain, misalnya buat downgrade versi JA11.
+- **Satu arah.** Boot ROM chip KT02H20 itu nggak punya perintah baca, jadi firmware bawaan dongle **nggak bisa di-backup**. Sekali firmware JA11 masuk, nggak ada jalan balik ke firmware bawaan. Yang masih bisa ditimpa ulang cuma firmware JA11 itu sendiri atau image KT02H20B lain, misalnya buat downgrade versi JA11 atau pindah ke firmware Tinhifi (ada bagiannya di bawah).
 - **Pastikan chip dongle kamu emang KT02H20.** Satu listing penjual yang sama sering jualan banyak varian chip (CX31993, ALC5686, CS46L41, dan lain-lain) dalam kemasan yang mirip-mirip. Tutorial ini **cuma** buat varian KT02H20. Untungnya KT Flasher bakal ngecek ID chip dulu sebelum ngapus apa pun, dan berhenti sendiri dengan aman kalau chipnya bukan KT02H20B. Jadi selama langkahnya diikuti berurutan, dongle beda chip nggak bakal rusak, prosesnya cuma batal.
 - **Risiko brick permanen kecil.** Boot ROM nggak pernah ditimpa dan header firmware ditulis paling akhir, jadi kalau tulisnya gagal di tengah, normalnya dongle cuma nyangkut di mode bootloader. Itu bisa dipulihkan, ada bagian Pemulihan di bawah.
 
@@ -73,6 +73,12 @@ Satu lagi: kalau handshake gagal gara-gara dongle ketinggalan di mode bootloader
 - Putar lagu, pastikan suara keluar normal di kiri dan kanan.
 - Tes mic pakai headset yang ada mic-nya, pastikan mic tetap jalan.
 - Buka **FiiO Control**: dongle harusnya dikenali sebagai JadeAudio JA11 dan pengaturan kayak EQ / PEQ bisa diakses. Ini dia keuntungan utama firmware JA11 dibanding firmware bawaan dongle generik.
+
+## Firmware Lain: Tinhifi Juga Bisa
+
+KT Flasher itu pada dasarnya generik: dia nulis image KT02H20B apa pun yang kamu kasih, bukan cuma JA11. Ini udah dibuktiin salah satu pembaca, Andreas Puji di grup Tongkrongan Audio Indonesia, yang flash firmware Tinhifi (`KT02H20_TINHIFI.bin`, 62.784 byte, 63 paket, CRC `0x294138e7`) ke dongle-nya yang sebelumnya udah pakai JA11, dan berhasil. Jadi kalau kamu kurang sreg sama JA11, firmware Tinhifi bisa jadi pilihan lain. Dari Tinhifi pun bisa pindah lagi ke image KT02H20B lain, selama berkas firmwarenya kamu punya.
+
+Langkahnya sama persis kayak tutorial di atas, bedanya cuma di berkas yang dipilih pas langkah validasi: pilih `KT02H20_TINHIFI.bin`, pastikan chipnya kebaca `KT02H20B`, terus lanjut dry run dan flash kayak biasa. Firmware Tinhifi nggak saya sediakan di sini, cari dari sumber Tinhifi-nya ya. Catatan satu arah di atas tetap berlaku: yang nggak bisa itu balik ke firmware bawaan dongle, soalnya firmware bawaan emang nggak bisa di-backup.
 
 ## Pemulihan Kalau Flash Gagal di Tengah
 
