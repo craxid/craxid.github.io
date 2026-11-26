@@ -1050,8 +1050,9 @@ minMagisk=2318
 })();
 
 // ===== Komentar Facebook (khusus halaman artikel) =====
-// Kolomnya nempel di bawah isi postingan, benangnya per URL canonical
-// jadi tiap artikel punya komentarnya sendiri. App ID diisi sekali di sini.
+// Gaya buka tutup: kolomnya baru dimuat pas pembaca ngeklik kepalanya,
+// jadi halaman tetap ringan buat yang cuma mau baca. Benang komentarnya
+// per URL canonical, tiap artikel punya komentarnya sendiri.
 (function () {
   var badan = document.getElementById("post-body");
   if (!badan) return; // bukan halaman artikel, skip
@@ -1062,33 +1063,78 @@ minMagisk=2318
   bungkus.className = "project-card komentar-fb";
   bungkus.style.cssText = "text-align:left; margin-top:24px;";
 
+  // kepala seksi sekalian jadi tombol buka tutupnya
+  var kepala = document.createElement("div");
+  kepala.setAttribute("role", "button");
+  kepala.setAttribute("tabindex", "0");
+  kepala.setAttribute("aria-expanded", "false");
+  kepala.style.cssText =
+    "display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer;";
+
   var judul = document.createElement("h2");
   judul.textContent = "Komentar";
-  judul.style.marginTop = "0";
-  bungkus.appendChild(judul);
+  judul.style.margin = "0";
+  kepala.appendChild(judul);
 
-  var kotak = document.createElement("div");
-  kotak.className = "fb-comments";
-  var tautan = document.querySelector('link[rel="canonical"]');
-  kotak.setAttribute("data-href", tautan ? tautan.href : window.location.href.split(/[?#]/)[0]);
-  kotak.setAttribute("data-width", "100%");
-  kotak.setAttribute("data-numposts", "10");
-  // ikut tema situs pas halaman dimuat
-  kotak.setAttribute("data-colorscheme", document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
-  bungkus.appendChild(kotak);
+  var panah = document.createElement("span");
+  panah.textContent = "▾";
+  panah.style.cssText = "font-size:20px; line-height:1; transition:transform .2s ease;";
+  kepala.appendChild(panah);
+  bungkus.appendChild(kepala);
+
+  var isi = document.createElement("div");
+  isi.style.cssText = "display:none; margin-top:16px;";
+  bungkus.appendChild(isi);
   badan.parentNode.insertBefore(bungkus, badan.nextSibling);
 
-  var akar = document.createElement("div");
-  akar.id = "fb-root";
-  document.body.appendChild(akar);
+  var sudahDimuat = false;
+  function muatKomentar() {
+    if (sudahDimuat) return;
+    sudahDimuat = true;
 
-  window.fbAsyncInit = function () {
-    FB.init({ appId: FB_APP_ID, xfbml: true, version: "v21.0" });
-  };
-  var s = document.createElement("script");
-  s.src = "https://connect.facebook.net/id_ID/sdk.js";
-  s.async = true;
-  s.defer = true;
-  s.crossOrigin = "anonymous";
-  document.body.appendChild(s);
+    var kotak = document.createElement("div");
+    kotak.className = "fb-comments";
+    var tautan = document.querySelector('link[rel="canonical"]');
+    kotak.setAttribute("data-href", tautan ? tautan.href : window.location.href.split(/[?#]/)[0]);
+    kotak.setAttribute("data-width", "100%");
+    kotak.setAttribute("data-numposts", "10");
+    // ikut tema situs pas kolomnya dibuka
+    kotak.setAttribute("data-colorscheme", document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
+    isi.appendChild(kotak);
+
+    var akar = document.createElement("div");
+    akar.id = "fb-root";
+    document.body.appendChild(akar);
+
+    window.fbAsyncInit = function () {
+      FB.init({ appId: FB_APP_ID, xfbml: true, version: "v21.0" });
+    };
+    var s = document.createElement("script");
+    s.src = "https://connect.facebook.net/id_ID/sdk.js";
+    s.async = true;
+    s.defer = true;
+    s.crossOrigin = "anonymous";
+    document.body.appendChild(s);
+  }
+
+  function bukaTutup() {
+    var terbuka = isi.style.display !== "none";
+    if (terbuka) {
+      isi.style.display = "none";
+      panah.style.transform = "";
+      kepala.setAttribute("aria-expanded", "false");
+    } else {
+      isi.style.display = "block";
+      panah.style.transform = "rotate(180deg)";
+      kepala.setAttribute("aria-expanded", "true");
+      muatKomentar();
+    }
+  }
+  kepala.addEventListener("click", bukaTutup);
+  kepala.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      bukaTutup();
+    }
+  });
 })();
