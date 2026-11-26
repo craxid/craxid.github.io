@@ -1048,3 +1048,47 @@ minMagisk=2318
     })
     .catch(() => {});
 })();
+
+// ===== Komentar Facebook (khusus halaman artikel) =====
+// Kolomnya nempel di bawah isi postingan, benangnya per URL canonical
+// jadi tiap artikel punya komentarnya sendiri. App ID diisi sekali di sini.
+(function () {
+  var badan = document.getElementById("post-body");
+  if (!badan) return; // bukan halaman artikel, skip
+
+  var FB_APP_ID = "986366284119707";
+
+  var bungkus = document.createElement("section");
+  bungkus.className = "project-card komentar-fb";
+  bungkus.style.cssText = "text-align:left; margin-top:24px;";
+
+  var judul = document.createElement("h2");
+  judul.textContent = "Komentar";
+  judul.style.marginTop = "0";
+  bungkus.appendChild(judul);
+
+  var kotak = document.createElement("div");
+  kotak.className = "fb-comments";
+  var tautan = document.querySelector('link[rel="canonical"]');
+  kotak.setAttribute("data-href", tautan ? tautan.href : window.location.href.split(/[?#]/)[0]);
+  kotak.setAttribute("data-width", "100%");
+  kotak.setAttribute("data-numposts", "10");
+  // ikut tema situs pas halaman dimuat
+  kotak.setAttribute("data-colorscheme", document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
+  bungkus.appendChild(kotak);
+  badan.parentNode.insertBefore(bungkus, badan.nextSibling);
+
+  var akar = document.createElement("div");
+  akar.id = "fb-root";
+  document.body.appendChild(akar);
+
+  window.fbAsyncInit = function () {
+    FB.init({ appId: FB_APP_ID, xfbml: true, version: "v21.0" });
+  };
+  var s = document.createElement("script");
+  s.src = "https://connect.facebook.net/id_ID/sdk.js";
+  s.async = true;
+  s.defer = true;
+  s.crossOrigin = "anonymous";
+  document.body.appendChild(s);
+})();
