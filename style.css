@@ -1330,56 +1330,60 @@ body.dark .post-content a.global-btn {
   background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
-/* post dock (halaman artikel): toggle tema + tombol kembali ngambang di bawah */
+/* post topbar (halaman artikel): tombol kembali + toggle tema di bar atas sticky */
 
 .post-page {
-  padding-bottom: 110px;
+  padding-top: 92px;
+  padding-bottom: 48px;
 }
 
-.post-dock {
+.post-topbar {
   position: fixed;
-  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  top: calc(12px + env(safe-area-inset-top, 0px));
   left: 50%;
   transform: translateX(-50%);
+  width: min(760px, calc(100% - 24px));
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px;
+  justify-content: space-between;
+  padding: 6px;
   border-radius: 999px;
   z-index: 999;
 }
 
-.post-dock .theme-toggle {
+.post-topbar .theme-toggle {
   position: static;
   top: auto;
   right: auto;
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   z-index: auto;
+  flex: none;
 }
 
-.dock-back {
+.topbar-back {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px 0 13px;
+  border-radius: 999px;
   color: var(--accent);
-  font-size: 18px;
+  font-size: 15px;
+  font-weight: 600;
   text-decoration: none;
-  transition: transform var(--pop-duration) var(--pop-ease);
+  transition: transform var(--pop-duration) var(--pop-ease), background 0.2s ease;
 }
 
-.dock-back:hover {
-  transform: scale(1.08);
+.topbar-back:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
-.dock-back:active {
-  transform: scale(0.94);
+.topbar-back:active {
+  transform: scale(0.96);
 }
 
-.dock-back:focus-visible {
+.topbar-back:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--accent), white 30%);
   outline-offset: 2px;
 }
