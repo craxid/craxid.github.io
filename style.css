@@ -1331,8 +1331,9 @@ body.dark .post-content a.global-btn {
 .post-topbar {
   position: fixed;
   top: calc(12px + env(safe-area-inset-top, 0px));
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  margin-inline: auto;
   width: min(760px, calc(100% - 24px));
   display: flex;
   align-items: center;
@@ -1340,6 +1341,14 @@ body.dark .post-content a.global-btn {
   padding: 6px;
   border-radius: 999px;
   z-index: 999;
+}
+
+/* bar atas jangan ikut efek angkat/tekan liquid-glass: transform-nya bikin bar geser dari tengah */
+.post-topbar:hover,
+.post-topbar:active,
+.post-topbar:focus-visible,
+.post-topbar:focus-within {
+  transform: none;
 }
 
 .post-topbar .theme-toggle {
