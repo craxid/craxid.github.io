@@ -5,6 +5,15 @@ tags: [android, dac, audio, tutorial]
 description: Dongle DAC murah berchip KT02H20 (termasuk JCALLY JM12) bisa disulap jadi JadeAudio JA11 cuma modal HP, tanpa PC. Ini tutorial lengkapnya pakai aplikasi KT Flasher: link unduh aplikasinya dan firmware resmi JA11 V2.2, langkah flash dari awal sampai verifikasi, plus cara pulih kalau gagal di tengah.
 ---
 
+<div style="background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);border-radius:16px;padding:28px 24px;margin:0 0 24px;color:#ffffff;text-align:center">
+<div style="font-size:29px;font-weight:800;line-height:1.3">Dongle Rp60 Ribu, Disulap Jadi JadeAudio JA11</div>
+<p style="margin:10px 0 18px;opacity:.92">Tutorial flash firmware KT02H20 pakai aplikasi KT Flasher. Semua dari HP, langsung praktik.</p>
+<span style="display:inline-block;background:rgba(255,255,255,.16);border-radius:999px;padding:5px 13px;margin:2px;font-size:13px;font-weight:600">Chip KT02H20B</span>
+<span style="display:inline-block;background:rgba(255,255,255,.16);border-radius:999px;padding:5px 13px;margin:2px;font-size:13px;font-weight:600">Tanpa PC</span>
+<span style="display:inline-block;background:rgba(255,255,255,.16);border-radius:999px;padding:5px 13px;margin:2px;font-size:13px;font-weight:600">Tanpa Root</span>
+<span style="display:inline-block;background:rgba(255,255,255,.16);border-radius:999px;padding:5px 13px;margin:2px;font-size:13px;font-weight:600">Flash Kurang dari 2 Detik</span>
+</div>
+
 ## Dongle Enam Puluh Ribu yang Isinya JA11
 
 Kemarin saya beli dongle DAC USB-C generik, harganya cuma Rp62.400. Nggak ada merek yang meyakinkan, kemasannya polos banget. Tapi yang bikin saya penasaran itu chip di dalamnya: **KTMicro KT02H20**. Ternyata chip ini hardware-nya sama persis kayak yang dipakai **FiiO JA11** dan **JCALLY JM12**. Bedanya cuma di firmware doang.
@@ -13,13 +22,27 @@ Jadi ceritanya, dongle generik itu sebenarnya tinggal sekali flash buat berubah 
 
 Saya udah buktiin sendiri di dongle saya: flash-nya kelar dalam hitungan detik, dongle kedeteksi ulang sebagai JadeAudio JA11, dan FiiO Control langsung mengenalinya. Beberapa pemilik JM12 juga udah berhasil pakai cara yang sama. Nah, di artikel ini saya tulis tutorial lengkapnya pakai aplikasi **KT Flasher**. Semua dari HP, tanpa PC, tanpa root, tanpa Termux.
 
+<div style="border:1.5px solid rgba(127,127,127,.45);border-radius:14px;padding:16px 20px;margin:0 0 24px">
+<div style="font-weight:800;margin-bottom:8px">Sekilas Isi Tutorial</div>
+<table style="width:100%;border-collapse:collapse;font-size:15px">
+<tr><td style="padding:3px 8px 3px 0;white-space:nowrap"><strong>Alat</strong></td><td style="padding:3px 0">Aplikasi KT Flasher di HP Android</td></tr>
+<tr><td style="padding:3px 8px 3px 0;white-space:nowrap"><strong>Firmware</strong></td><td style="padding:3px 0">JadeAudio JA11 V2.2 resmi dari FiiO</td></tr>
+<tr><td style="padding:3px 8px 3px 0;white-space:nowrap"><strong>Data image</strong></td><td style="padding:3px 0">67.312 byte, 67 paket, chip KT02H20B, CRC 0xcf975bc0</td></tr>
+<tr><td style="padding:3px 8px 3px 0;white-space:nowrap"><strong>Hasil akhir</strong></td><td style="padding:3px 0">Dongle terbaca sebagai JadeAudio JA11 dan dikenali FiiO Control</td></tr>
+</table>
+</div>
+
 ## Baca Dulu Sebelum Mulai
 
 Tiga hal ini wajib dipahami sebelum nyentuh tombol flash apa pun:
 
-- **Satu arah.** Boot ROM chip KT02H20 itu nggak punya perintah baca, jadi firmware bawaan dongle **nggak bisa di-backup**. Sekali firmware JA11 masuk, nggak ada jalan balik ke firmware bawaan. Yang masih bisa ditimpa ulang cuma firmware JA11 itu sendiri atau image KT02H20B lain, misalnya buat downgrade versi JA11 atau pindah ke firmware Tinhifi (ada bagiannya di bawah).
-- **Pastikan chip dongle kamu emang KT02H20.** Satu listing penjual yang sama sering jualan banyak varian chip (CX31993, ALC5686, CS46L41, dan lain-lain) dalam kemasan yang mirip-mirip. Tutorial ini **cuma** buat varian KT02H20. Untungnya KT Flasher bakal ngecek ID chip dulu sebelum ngapus apa pun, dan berhenti sendiri dengan aman kalau chipnya bukan KT02H20B. Jadi selama langkahnya diikuti berurutan, dongle beda chip nggak bakal rusak, prosesnya cuma batal.
-- **Risiko brick permanen kecil.** Boot ROM nggak pernah ditimpa dan header firmware ditulis paling akhir, jadi kalau tulisnya gagal di tengah, normalnya dongle cuma nyangkut di mode bootloader. Itu bisa dipulihkan, ada bagian Pemulihan di bawah.
+<div style="border-left:5px solid #e8a13a;background:rgba(232,161,58,.12);border-radius:10px;padding:14px 18px;margin:0 0 20px">
+<ul style="margin:0;padding-left:20px">
+<li><strong>Satu arah.</strong> Boot ROM chip KT02H20 itu nggak punya perintah baca, jadi firmware bawaan dongle <strong>nggak bisa di-backup</strong>. Sekali firmware JA11 masuk, nggak ada jalan balik ke firmware bawaan. Yang masih bisa ditimpa ulang cuma firmware JA11 itu sendiri atau image KT02H20B lain, misalnya buat downgrade versi JA11 atau pindah ke firmware Tinhifi (ada bagiannya di bawah).</li>
+<li><strong>Pastikan chip dongle kamu emang KT02H20.</strong> Satu listing penjual yang sama sering jualan banyak varian chip (CX31993, ALC5686, CS46L41, dan lain-lain) dalam kemasan yang mirip-mirip. Tutorial ini <strong>cuma</strong> buat varian KT02H20. Untungnya KT Flasher bakal ngecek ID chip dulu sebelum ngapus apa pun, dan berhenti sendiri dengan aman kalau chipnya bukan KT02H20B. Jadi selama langkahnya diikuti berurutan, dongle beda chip nggak bakal rusak, prosesnya cuma batal.</li>
+<li><strong>Risiko brick permanen kecil.</strong> Boot ROM nggak pernah ditimpa dan header firmware ditulis paling akhir, jadi kalau tulisnya gagal di tengah, normalnya dongle cuma nyangkut di mode bootloader. Itu bisa dipulihkan, ada bagian Pemulihan di bawah.</li>
+</ul>
+</div>
 
 Selama flash jalan: baterai HP usahakan cukup, kabel atau adapter OTG yang bagus, dan jangan sentuh atau cabut konektor sampai prosesnya selesai.
 
@@ -39,7 +62,13 @@ Siapkan dua hal ini:
 
 **1. Aplikasi KT Flasher.** Unduh APK versi terbarunya dari halaman rilis resmi. Versi terbaru pas artikel ini ditulis itu v1.3.1. Aplikasinya nggak nyertain firmware di dalamnya, jadi firmware tetap kamu unduh sendiri dari poin berikutnya.
 
-<a class="tombol-unduh" href="https://github.com/craxid/kt-flasher/releases"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>Unduh KT Flasher</a>
+<div style="border:1.5px solid rgba(127,127,127,.45);border-radius:14px;padding:18px 20px;margin:0 0 20px;text-align:center">
+<div style="font-size:19px;font-weight:800">KT Flasher</div>
+<p style="margin:6px 0 10px">Aplikasi flash firmware KT02H20 buat Android, by CraXID Project</p>
+<img src="https://img.shields.io/github/v/release/craxid/kt-flasher" alt="Versi rilis terbaru KT Flasher">
+<img src="https://img.shields.io/github/stars/craxid/kt-flasher" alt="Bintang repo KT Flasher">
+<div style="margin-top:12px"><a class="tombol-unduh" href="https://github.com/craxid/kt-flasher/releases/latest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>Unduh KT Flasher</a></div>
+</div>
 
 **2. Firmware resmi JadeAudio JA11 V2.2 dari FiiO.** Berkasnya berupa ZIP sekitar 9 MB dari server resmi FiiO. Ekstrak dulu, yang kita butuhkan cuma berkas `JadeAudio JA11_V2.2.bin` di dalam folder `Firmware`. Di dalam ZIP itu juga ada upgrade tool buat Windows dari FiiO, abaikan aja, kita nggak pakai itu. Data firmware yang benar: ukuran **67.312 byte**, **67 paket**, chip **KT02H20B**, CRC **0xcf975bc0**. Nanti langkah validasi bakal nampilin angka-angka ini, cocokkan ya. Kalau beda, berarti berkasmu salah atau rusak.
 
