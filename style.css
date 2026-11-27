@@ -266,7 +266,7 @@ body.dark .whatsapp-btn {
   }
 }
 
-/* tombol ganti tema */
+/* tombol ganti tema: diam, tanpa animasi gerak */
 .theme-toggle {
   position: fixed;
   top: 20px;
@@ -279,15 +279,6 @@ body.dark .whatsapp-btn {
   color: var(--accent);
   font-size: 18px;
   z-index: 999;
-  transition: transform var(--pop-duration) var(--pop-ease);
-}
-
-.theme-toggle:hover {
-  transform: scale(1.12);
-}
-
-.theme-toggle:active {
-  transform: scale(0.92);
 }
 
 /* ===== profil ===== */
